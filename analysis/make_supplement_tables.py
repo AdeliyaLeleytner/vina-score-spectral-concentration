@@ -154,6 +154,7 @@ def main() -> None:
     parallel = evidence["parallel_analysis_common_protocol"]
     scaffold = evidence["ligand_sampling_sensitivity"]["dockstring_scaffold_bootstrap"]
     additive = evidence["additive_main_effect_null"]
+    empirical = evidence["empirical_residual_permutation_null"]
     lines.extend([
         r"\begin{table}[htbp]",
         r"\centering\small",
@@ -187,7 +188,12 @@ def main() -> None:
          f"{additive['docking44']['null_residual']['median']:.2f} and "
          f"{additive['dockstring58']['null_residual']['median']:.2f}, compared with observed values "
          f"{additive['docking44']['observed']['residual']:.2f} and "
-         f"{additive['dockstring58']['observed']['residual']:.2f}.}}"),
+         f"{additive['dockstring58']['observed']['residual']:.2f}. The empirical residual-permutation null gave "
+         f"medians {empirical['docking44']['null_residual']['median']:.2f} and "
+         f"{empirical['dockstring58']['null_residual']['median']:.2f}. Across 200 matched one-ligand-per-Butina-cluster "
+         f"Docking-44 supports, the observed median was "
+         f"{empirical['docking44']['one_ligand_per_cluster_sensitivity']['observed_residual']['median']:.2f} versus "
+         f"{empirical['docking44']['one_ligand_per_cluster_sensitivity']['matched_empirical_null_residual']['median']:.2f} under permutation.}}"),
         r"\end{table}",
         "",
     ])
@@ -238,21 +244,42 @@ def main() -> None:
     residual_cohort_prior = preference["paired_comparisons"][
         "two_way_residual_minus_cohort_experimental_target_prior"
     ]
+    unscaled_identity = preference["paired_comparisons"][
+        "two_way_centered_unscaled_minus_target_centered_unscaled"
+    ]
+    residual_scale_only = preference["representations"][
+        "target_centered_residual_scaled"
+    ]
+    target_centered = preference["representations"]["target_centered_unscaled"]
+    same_endpoint = expanded["assay_sensitivities"][
+        "same_endpoint_pairs_on_fixed_primary_support"
+    ]
     coverage_three = preference["coverage_sensitivity"]["3"]
     human_binding = expanded["assay_sensitivities"]["human_binding_all_endpoints"]
     human_kikd = expanded["assay_sensitivities"]["human_binding_Ki_Kd"]
-    human_binding_residual_column = human_binding["paired_comparisons"][
-        "two_way_residual_minus_column_standardized"
+    human_kikd_residual_absolute = human_kikd["paired_comparisons"][
+        "two_way_residual_minus_absolute_vina"
     ]
-    human_binding_residual_cohort = human_binding["paired_comparisons"][
-        "two_way_residual_minus_cohort_experimental_target_prior"
+    same_endpoint_residual_absolute = same_endpoint["paired_comparisons"][
+        "two_way_residual_minus_absolute_vina"
     ]
-    human_kikd_residual_column = human_kikd["paired_comparisons"][
-        "two_way_residual_minus_column_standardized"
-    ]
-    human_kikd_residual_cohort = human_kikd["paired_comparisons"][
-        "two_way_residual_minus_cohort_experimental_target_prior"
-    ]
+
+    def union_cluster_interval(record: dict) -> tuple[float, float]:
+        intervals = [
+            record["scaffold_cluster_bootstrap"]["interval_95"],
+            record["butina_cluster_bootstrap"]["interval_95"],
+        ]
+        return (
+            min(interval[0] for interval in intervals),
+            max(interval[1] for interval in intervals),
+        )
+
+    same_endpoint_residual_absolute_union = union_cluster_interval(
+        same_endpoint_residual_absolute
+    )
+    human_kikd_residual_absolute_union = union_cluster_interval(
+        human_kikd_residual_absolute
+    )
     dense_absolute = dense_preference["representations"]["absolute_vina"]
     dense_docking_prior = dense_preference["representations"]["docking_target_prior"]
     dense_experimental_prior = dense_preference["representations"]["experimental_target_prior"]
@@ -265,31 +292,26 @@ def main() -> None:
         (r"\parbox{0.94\textwidth}{\footnotesize The residual-minus-column difference was "
          f"{residual_column['plugin_mean_difference']:+.3f} with a scaffold-bootstrap interval "
          f"{residual_column['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--"
-         f"{residual_column['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}; the approximate "
-         f"ligand-i.i.d. normal-approximation 80\\% power minimum detectable difference was {residual_column['normal_approx_80pct_power_mde_two_sided_alpha_0.05']:.3f}. "
+         f"{residual_column['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}; its conservative Murcko/Butina "
+         f"90\\% interval was {residual_column['post_hoc_equivalence_sensitivity']['conservative_cluster_bootstrap_interval_90'][0]:.3f}--"
+         f"{residual_column['post_hoc_equivalence_sensitivity']['conservative_cluster_bootstrap_interval_90'][1]:.3f}. "
          f"The residual-minus-absolute difference was {residual_absolute['plugin_mean_difference']:+.3f} "
          f"({residual_absolute['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--"
-         f"{residual_absolute['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}). "
-         f"Against the scaffold-held-out cohort experimental prior, the residual contrast was "
-         f"{residual_cohort_prior['plugin_mean_difference']:+.3f} "
-         f"({residual_cohort_prior['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--"
-         f"{residual_cohort_prior['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}). "
-         f"When at least three observed targets were required ({coverage_three['n_ligands']} ligands), "
-         f"residual accuracy was {coverage_three['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f}, "
-         f"versus {coverage_three['representations']['docking_target_prior']['mean_per_ligand_pairwise_accuracy']:.3f} for the docking prior and "
-         f"{coverage_three['representations']['cohort_experimental_target_prior']['mean_per_ligand_pairwise_accuracy']:.3f} for the cohort prior. "
-         f"Residual accuracy was {human_binding['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f} on the human binding sensitivity, with residual-minus-column and residual-minus-cohort intervals "
-         f"{human_binding_residual_column['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--{human_binding_residual_column['scaffold_cluster_bootstrap']['interval_95'][1]:.3f} and "
-         f"{human_binding_residual_cohort['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--{human_binding_residual_cohort['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}. "
-         f"On human binding Ki/Kd, residual accuracy was {human_kikd['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f}; the corresponding intervals were "
-         f"{human_kikd_residual_column['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--{human_kikd_residual_column['scaffold_cluster_bootstrap']['interval_95'][1]:.3f} and "
-         f"{human_kikd_residual_cohort['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--{human_kikd_residual_cohort['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}. "
-         f"The separate dense 74-by-6 control gave {dense_absolute['mean_per_ligand_pairwise_accuracy']:.3f} for absolute Vina, "
-         f"{dense_docking_prior['mean_per_ligand_pairwise_accuracy']:.3f} for the docking prior, "
-         f"{dense_experimental_prior['mean_per_ligand_pairwise_accuracy']:.3f} for the experimental prior, "
-         f"{dense_standard['mean_per_ligand_pairwise_accuracy']:.3f} for column-standardized Vina and "
-         f"{dense_residual['mean_per_ligand_pairwise_accuracy']:.3f} for residual Vina; the absolute-score identity-shuffle probability was "
-         f"{dense_absolute['ligand_identity_shuffle_null']['one_sided_empirical_p_observed_at_least_as_large']:.3f}. It is retained as a same-support spectral control, not the primary operational benchmark.}}"),
+         f"{residual_absolute['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}); its conservative 90\\% interval was "
+         f"{residual_absolute['post_hoc_equivalence_sensitivity']['conservative_cluster_bootstrap_interval_90'][0]:.3f}--"
+         f"{residual_absolute['post_hoc_equivalence_sensitivity']['conservative_cluster_bootstrap_interval_90'][1]:.3f}. "
+         f"Post hoc equivalence was not established at $\\pm0.02$ for either contrast or at $\\pm0.05$ for residual versus absolute; "
+         f"residual versus column-standardized met only the liberal $\\pm0.05$ criterion. Unscaled target-centered and two-way-centered "
+         f"representations were rank-identical at accuracy {target_centered['mean_per_ligand_pairwise_accuracy']:.3f} "
+         f"(difference {unscaled_identity['plugin_mean_difference']:+.3f}); residual-target scaling alone gave "
+         f"{residual_scale_only['mean_per_ligand_pairwise_accuracy']:.3f}. On fixed support and same-endpoint pairs, absolute, "
+         f"column-standardized and residual accuracies were "
+         f"{same_endpoint['representations']['absolute_vina']['mean_per_ligand_pairwise_accuracy']:.3f}, "
+         f"{same_endpoint['representations']['column_standardized']['mean_per_ligand_pairwise_accuracy']:.3f} and "
+         f"{same_endpoint['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f}; the residual-minus-absolute "
+         f"cluster-interval union was {same_endpoint_residual_absolute_union[0]:.3f}--{same_endpoint_residual_absolute_union[1]:.3f}. "
+         f"On human binding Ki/Kd, residual accuracy was {human_kikd['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f} "
+         f"and residual minus absolute was {human_kikd_residual_absolute_union[0]:.3f}--{human_kikd_residual_absolute_union[1]:.3f}.}}"),
         r"\end{table}",
         "",
     ])
@@ -379,6 +401,133 @@ def main() -> None:
         r"\end{table}",
         "",
     ])
+
+    protocol_rows = [
+        (1, "Define matrix and preprocessing", "ligands, targets, missingness, clipping and scaling", "verify_inputs.py; spectral_audit.py"),
+        (2, "Separate estimands", "column-standardized and two-way-centered residual surfaces", "centering_ladder"),
+        (3, "Summarize concentration", "PR, entropy rank, PC1 fraction, components for 90% variance", "rank_summary"),
+        (4, "Quantify chemical-support uncertainty", "paired ligand or scaffold-cluster intervals", "surface_bootstrap"),
+        (5, "Probe target composition", "leave-one-target-out and uniform/family-stratified subsampling", "target_jackknife; target_subsampling"),
+        (6, "Use transformation-matched nulls", "parallel analysis, Gaussian additive and empirical residual nulls", "parallel_analysis; additive_main_effect_null; empirical_residual_permutation_null"),
+        (7, "Check ranking invariance", "decompose offsets, row effects and target-specific scales before task claims", "score-representation decomposition"),
+        (8, "Validate operationally", "absolute/transformed scores, target priors, identity/outcome permutations, assay and coverage strata", "expanded operational benchmark"),
+        (9, "State the boundary", "report uncertainty and equivalence status; do not equate dimension with accuracy", "manuscript interpretation rule"),
+    ]
+    lines.extend([
+        r"\begin{landscape}",
+        r"\begin{table}[p]",
+        r"\centering\small",
+        r"\setlength{\tabcolsep}{3pt}",
+        r"\caption{\textbf{Reusable spectral-audit protocol.} Each step has a machine-readable implementation in the release. The generic command-line wrapper is \texttt{analysis/spectral\_audit.py}; task-level validation remains dataset-specific.}",
+        r"\label{tab:s9protocol}",
+        r"\begin{tabular}{r>{\raggedright\arraybackslash}p{4.7cm}>{\raggedright\arraybackslash}p{8.0cm}>{\raggedright\arraybackslash}p{8.2cm}}",
+        r"\toprule Step & question / action & required output & release implementation \\ \midrule",
+    ])
+    for step, action, output, implementation in protocol_rows:
+        lines.append(
+            f"{step} & {tex(action)} & {tex(output)} & {tex(implementation)} \\\\"
+        )
+    lines.extend([
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\end{table}",
+        r"\end{landscape}",
+        "",
+    ])
+
+    representation_rows = []
+    for key, record in preference["representations"].items():
+        representation_rows.append({
+            "representation": key,
+            "mean_per_ligand_pairwise_accuracy": record["mean_per_ligand_pairwise_accuracy"],
+            "evaluated_ligands": record["evaluated_ligands"],
+            "evaluated_pairs": record["evaluated_pairs"],
+            "murcko_ci95_low": record["scaffold_cluster_bootstrap"]["interval_95"][0],
+            "murcko_ci95_high": record["scaffold_cluster_bootstrap"]["interval_95"][1],
+            "butina_ci95_low": record["butina_cluster_bootstrap"]["interval_95"][0],
+            "butina_ci95_high": record["butina_cluster_bootstrap"]["interval_95"][1],
+        })
+    pd.DataFrame(representation_rows).to_csv(
+        RESULTS / "operational_benchmark_representations.csv", index=False
+    )
+
+    assay_rows = []
+    for label, block in [
+        ("all exact endpoints", preference),
+        ("human binding all endpoints", human_binding),
+        ("human binding Ki/Kd", human_kikd),
+    ]:
+        for key in ["absolute_vina", "column_standardized", "two_way_residual"]:
+            record = block["representations"][key]
+            murcko = record["scaffold_cluster_bootstrap"]
+            butina = record["butina_cluster_bootstrap"]
+            assay_rows.append({
+                "analysis": label,
+                "representation": key,
+                "n_ligands": block["n_ligands"],
+                "n_targets": block["n_targets"],
+                "evaluated_pairs": record["evaluated_pairs"],
+                "mean_per_ligand_pairwise_accuracy": record["mean_per_ligand_pairwise_accuracy"],
+                "murcko_ci95_low": murcko["interval_95"][0],
+                "murcko_ci95_high": murcko["interval_95"][1],
+                "butina_ci95_low": butina["interval_95"][0],
+                "butina_ci95_high": butina["interval_95"][1],
+            })
+    for key, record in same_endpoint["representations"].items():
+        murcko = record["murcko_scaffold_cluster_bootstrap"]
+        butina = record["butina_cluster_bootstrap"]
+        assay_rows.append({
+            "analysis": "same-endpoint pairs on fixed primary support",
+            "representation": key,
+            "n_ligands": same_endpoint["fixed_support"]["ligands"],
+            "n_targets": same_endpoint["fixed_support"]["targets"],
+            "evaluated_pairs": same_endpoint["fixed_support"]["endpoint_specific_pair_instances"],
+            "mean_per_ligand_pairwise_accuracy": record["mean_per_ligand_pairwise_accuracy"],
+            "murcko_ci95_low": murcko["interval_95"][0],
+            "murcko_ci95_high": murcko["interval_95"][1],
+            "butina_ci95_low": butina["interval_95"][0],
+            "butina_ci95_high": butina["interval_95"][1],
+        })
+    pd.DataFrame(assay_rows).to_csv(
+        RESULTS / "operational_assay_sensitivities.csv", index=False
+    )
+
+    contrast_rows = []
+    for label, block in [
+        ("all exact endpoints", preference),
+        ("human binding all endpoints", human_binding),
+        ("human binding Ki/Kd", human_kikd),
+        ("same-endpoint pairs on fixed primary support", same_endpoint),
+    ]:
+        for contrast in [
+            "two_way_residual_minus_absolute_vina",
+            "two_way_residual_minus_column_standardized",
+        ]:
+            record = block["paired_comparisons"][contrast]
+            equivalence = record["post_hoc_equivalence_sensitivity"]
+            contrast_rows.append({
+                "analysis": label,
+                "contrast": contrast,
+                "plugin_mean_difference": record["plugin_mean_difference"],
+                "murcko_ci95_low": record["scaffold_cluster_bootstrap"]["interval_95"][0],
+                "murcko_ci95_high": record["scaffold_cluster_bootstrap"]["interval_95"][1],
+                "butina_ci95_low": record["butina_cluster_bootstrap"]["interval_95"][0],
+                "butina_ci95_high": record["butina_cluster_bootstrap"]["interval_95"][1],
+                "conservative_cluster_ci90_low": equivalence["conservative_cluster_bootstrap_interval_90"][0],
+                "conservative_cluster_ci90_high": equivalence["conservative_cluster_bootstrap_interval_90"][1],
+                "equivalent_at_post_hoc_margin_0.02": equivalence["margins"]["0.02"]["equivalence_established"],
+                "equivalent_at_post_hoc_margin_0.05": equivalence["margins"]["0.05"]["equivalence_established"],
+                "normal_approximation_mde_80pct_power": record.get(
+                    "normal_approx_80pct_power_mde_two_sided_alpha_0.05"
+                ),
+            })
+    pd.DataFrame(contrast_rows).to_csv(
+        RESULTS / "operational_benchmark_contrasts.csv", index=False
+    )
+    pd.DataFrame(
+        protocol_rows,
+        columns=["step", "action", "required_output", "release_implementation"],
+    ).to_csv(RESULTS / "spectral_audit_protocol.csv", index=False)
     (RESULTS / "supplement_tables.tex").write_text("\n".join(lines))
     print(f"Wrote {RESULTS / 'supplement_tables.tex'}")
 

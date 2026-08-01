@@ -88,7 +88,7 @@ DOCKSTRING-58 & two-way-centered residual & 18.206 & 17.662 & 17.931 & 20.045 & 
 \bottomrule
 \end{tabular}
 \vspace{5pt}
-\parbox{0.94\textwidth}{\footnotesize Family-stratified target subsampling is shown in Fig.~1c,d. The descriptive rank-wise and family-wise-error-controlled simultaneous mode counts were both 3 versus 7 for Docking-44 and 4 versus 10 for DOCKSTRING-58. Across 5 independent 15,000-molecule DOCKSTRING supports, raw point estimates ranged from 2.252 to 2.294 and residual estimates from 18.161 to 18.322; support-specific scaffold intervals are plotted in Fig.~S6. The fitted additive null gave median residual PR dimensions 42.40 and 56.48, compared with observed values 9.29 and 18.16.}
+\parbox{0.94\textwidth}{\footnotesize Family-stratified target subsampling is shown in Fig.~1c,d. The descriptive rank-wise and family-wise-error-controlled simultaneous mode counts were both 3 versus 7 for Docking-44 and 4 versus 10 for DOCKSTRING-58. Across 5 independent 15,000-molecule DOCKSTRING supports, raw point estimates ranged from 2.252 to 2.294 and residual estimates from 18.161 to 18.322; support-specific scaffold intervals are plotted in Fig.~S6. The fitted additive null gave median residual PR dimensions 42.40 and 56.48, compared with observed values 9.29 and 18.16. The empirical residual-permutation null gave medians 42.40 and 56.48. Across 200 matched one-ligand-per-Butina-cluster Docking-44 supports, the observed median was 9.43 versus 42.33 under permutation.}
 \end{table}
 
 \begin{table}[p]
@@ -99,15 +99,15 @@ DOCKSTRING-58 & two-way-centered residual & 18.206 & 17.662 & 17.931 & 20.045 & 
 \begin{tabular}{p{4.3cm}rrrrr}
 \toprule Representation & accuracy & scaffold 95\% CI & pair-weighted & pairs & identity-shuffle mean / $p$ \\ \midrule
 absolute Vina & 0.566 & 0.502--0.623 & 0.584 & 2,522 & 0.519 / 0.014 \\
-docking target prior & 0.525 & 0.453--0.594 & 0.585 & 2,522 & -- \\
-external ChEMBL target prior & 0.525 & 0.470--0.581 & 0.565 & 2,522 & -- \\
-cohort experimental target prior (scaffold held out) & 0.592 & 0.531--0.656 & 0.644 & 2,522 & -- \\
-column-standardized Vina & 0.546 & 0.483--0.603 & 0.513 & 2,522 & 0.499 / 0.048 \\
-two-way residual Vina & 0.564 & 0.500--0.626 & 0.532 & 2,522 & 0.508 / 0.024 \\
+docking target prior & 0.525 & 0.456--0.591 & 0.585 & 2,522 & -- \\
+external ChEMBL target prior & 0.525 & 0.472--0.579 & 0.565 & 2,522 & -- \\
+cohort experimental target prior (scaffold held out) & 0.592 & 0.531--0.654 & 0.644 & 2,522 & -- \\
+column-standardized Vina & 0.546 & 0.485--0.604 & 0.513 & 2,522 & 0.499 / 0.048 \\
+two-way residual Vina & 0.564 & 0.501--0.626 & 0.532 & 2,522 & 0.508 / 0.024 \\
 \bottomrule
 \end{tabular}
 \vspace{4pt}
-\parbox{0.94\textwidth}{\footnotesize The residual-minus-column difference was +0.017 with a scaffold-bootstrap interval -0.022--0.054; the approximate ligand-i.i.d. normal-approximation 80\% power minimum detectable difference was 0.054. The residual-minus-absolute difference was -0.002 (-0.065--0.062). Against the scaffold-held-out cohort experimental prior, the residual contrast was -0.028 (-0.127--0.066). When at least three observed targets were required (93 ligands), residual accuracy was 0.530, versus 0.590 for the docking prior and 0.636 for the cohort prior. Residual accuracy was 0.581 on the human binding sensitivity, with residual-minus-column and residual-minus-cohort intervals -0.005--0.075 and -0.089--0.092. On human binding Ki/Kd, residual accuracy was 0.579; the corresponding intervals were -0.009--0.057 and -0.131--0.075. The separate dense 74-by-6 control gave 0.619 for absolute Vina, 0.625 for the docking prior, 0.643 for the experimental prior, 0.537 for column-standardized Vina and 0.540 for residual Vina; the absolute-score identity-shuffle probability was 0.638. It is retained as a same-support spectral control, not the primary operational benchmark.}
+\parbox{0.94\textwidth}{\footnotesize The residual-minus-column difference was +0.017 with a scaffold-bootstrap interval -0.022--0.054; its conservative Murcko/Butina 90\% interval was -0.015--0.049. The residual-minus-absolute difference was -0.002 (-0.065--0.062); its conservative 90\% interval was -0.056--0.051. Post hoc equivalence was not established at $\pm0.02$ for either contrast or at $\pm0.05$ for residual versus absolute; residual versus column-standardized met only the liberal $\pm0.05$ criterion. Unscaled target-centered and two-way-centered representations were rank-identical at accuracy 0.556 (difference +0.000); residual-target scaling alone gave 0.549. On fixed support and same-endpoint pairs, absolute, column-standardized and residual accuracies were 0.553, 0.538 and 0.555; the residual-minus-absolute cluster-interval union was -0.060--0.064. On human binding Ki/Kd, residual accuracy was 0.579 and residual minus absolute was -0.052--0.085.}
 \end{table}
 
 \begin{table}[htbp]
@@ -193,3 +193,25 @@ all 20 scorers & residual PR & AUPRC & 0.065 & 0.7866 & 0.373 & 0.1053 & 0.221 &
 \vspace{4pt}
 \parbox{0.93\textwidth}{\footnotesize For column-standardized PR versus P@5 in the 12-arm subset, the arm-resampling 95\% interval was -0.39--0.89, leave-one-arm-out values ranged from 0.15 to 0.57, and the approximate two-sided 0.05 detectable absolute correlation was 0.58.}
 \end{table}
+
+\begin{landscape}
+\begin{table}[p]
+\centering\small
+\setlength{\tabcolsep}{3pt}
+\caption{\textbf{Reusable spectral-audit protocol.} Each step has a machine-readable implementation in the release. The generic command-line wrapper is \texttt{analysis/spectral\_audit.py}; task-level validation remains dataset-specific.}
+\label{tab:s9protocol}
+\begin{tabular}{r>{\raggedright\arraybackslash}p{4.7cm}>{\raggedright\arraybackslash}p{8.0cm}>{\raggedright\arraybackslash}p{8.2cm}}
+\toprule Step & question / action & required output & release implementation \\ \midrule
+1 & Define matrix and preprocessing & ligands, targets, missingness, clipping and scaling & verify\_inputs.py; spectral\_audit.py \\
+2 & Separate estimands & column-standardized and two-way-centered residual surfaces & centering\_ladder \\
+3 & Summarize concentration & PR, entropy rank, PC1 fraction, components for 90\% variance & rank\_summary \\
+4 & Quantify chemical-support uncertainty & paired ligand or scaffold-cluster intervals & surface\_bootstrap \\
+5 & Probe target composition & leave-one-target-out and uniform/family-stratified subsampling & target\_jackknife; target\_subsampling \\
+6 & Use transformation-matched nulls & parallel analysis, Gaussian additive and empirical residual nulls & parallel\_analysis; additive\_main\_effect\_null; empirical\_residual\_permutation\_null \\
+7 & Check ranking invariance & decompose offsets, row effects and target-specific scales before task claims & score-representation decomposition \\
+8 & Validate operationally & absolute/transformed scores, target priors, identity/outcome permutations, assay and coverage strata & expanded operational benchmark \\
+9 & State the boundary & report uncertainty and equivalence status; do not equate dimension with accuracy & manuscript interpretation rule \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{landscape}

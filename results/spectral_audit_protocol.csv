@@ -1,0 +1,10 @@
+step,action,required_output,release_implementation
+1,Define matrix and preprocessing,"ligands, targets, missingness, clipping and scaling",verify_inputs.py; spectral_audit.py
+2,Separate estimands,column-standardized and two-way-centered residual surfaces,centering_ladder
+3,Summarize concentration,"PR, entropy rank, PC1 fraction, components for 90% variance",rank_summary
+4,Quantify chemical-support uncertainty,paired ligand or scaffold-cluster intervals,surface_bootstrap
+5,Probe target composition,leave-one-target-out and uniform/family-stratified subsampling,target_jackknife; target_subsampling
+6,Use transformation-matched nulls,"parallel analysis, Gaussian additive and empirical residual nulls",parallel_analysis; additive_main_effect_null; empirical_residual_permutation_null
+7,Check ranking invariance,"decompose offsets, row effects and target-specific scales before task claims",score-representation decomposition
+8,Validate operationally,"absolute/transformed scores, target priors, identity/outcome permutations, assay and coverage strata",expanded operational benchmark
+9,State the boundary,report uncertainty and equivalence status; do not equate dimension with accuracy,manuscript interpretation rule

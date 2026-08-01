@@ -18,7 +18,7 @@
 \linenumbers
 \renewcommand{\arraystretch}{1.15}
 
-\title{Spectral concentration in Vina docking-score matrices: what two-way centering reveals and does not correct}
+\title{Spectral concentration in two large Vina docking-score matrices: two-way centering reveals structured residual variation without a resolved target-ranking gain}
 
 \author{
 Adeliya Leleytner$^{1,*}$, Victor Safronov$^{1}$, Maxim Fedorov$^{1}$\\[4pt]
@@ -35,31 +35,27 @@ Adeliya Leleytner$^{1,*}$, Victor Safronov$^{1}$, Maxim Fedorov$^{1}$\\[4pt]
 Reverse docking, off-target profiling and multiobjective design use docking scores as a
 ligand-by-target matrix, yet the statistical structure of this matrix can confound shared
 score tendencies with target-resolved information. We measured spectral concentration in
-two large AutoDock Vina matrices using the participation-ratio (PR) effective dimension of
-the target-correlation spectrum. A 12,651-compound by 44-target panel had PR dimension 1.83,
-and DOCKSTRING, with 260,060 complete molecules by 58 targets, had PR dimension 2.27.
-Removing ligand and target main effects changed the estimand and increased these values to
-9.30 and 18.21. Chemical-cluster resampling and independently seeded chemical supports
-confirmed the increase, while fitted additive-noise nulls showed that the residual surfaces
-remained concentrated. On a dense matched
-74-compound by six-target ChEMBL surface, the experimental-minus-docking PR difference was
-2.01 (paired ligand-bootstrap interval 1.17--2.67) before centering but 0.48
-($-0.07$--0.92) afterward. We then expanded the operational comparison to 137 ligands, 38
-targets and 2,522 non-tied observed experimental target pairs without activity imputation.
-Absolute, column-standardized and two-way-residual Vina reached mean per-ligand pairwise
-accuracies of 0.566, 0.546 and 0.564, with no resolved paired difference. An external
-experimental target prior reached 0.525; a non-deployable prior fitted with each ligand's
-scaffold cluster held out reached 0.592, revealing observation-cohort structure. Rankings
-changed when more extensively profiled ligands were required. Two-way centering is therefore
-useful for diagnosing residual score structure, but higher residual dimension is not by
-itself a validated correction for target ranking.
+two independently sourced AutoDock Vina panels using the participation-ratio (PR) effective
+dimension of the target-correlation spectrum. A 12,651-compound by 44-target panel and the
+260,060-compound by 58-target DOCKSTRING panel had PR dimensions 1.83 and 2.27. Removing
+ligand and target main effects changed the estimand and increased these values to 9.30 and
+18.21, but Gaussian additive and empirical residual-permutation nulls remained near their
+algebraic maxima. An expanded ChEMBL comparison used 137 ligands, 38 targets and 2,522
+observed, non-tied target pairs without activity imputation. Absolute, column-standardized
+and two-way-residual Vina accuracies were 0.566, 0.546 and 0.564; the residual-minus-absolute
+cluster-bootstrap interval was $-0.065$--0.063, and post hoc equivalence was not established
+even at a $\pm0.05$ margin. Before target-specific scaling, removal of the ligand row effect
+was exactly rank-invariant; operational differences arose from scale choices rather than
+centering alone. A fixed-support sensitivity restricted comparisons to identical endpoint
+types and gave accuracies 0.553, 0.538 and 0.555. Thus, two-way centering diagnoses structured
+residual variation, whereas any target-ranking use of the resulting scaled representation
+requires external task-level validation.
 
-\medskip\noindent\textbf{Scientific Contribution.} We provide a preprocessing-matched
-spectral analysis of two large dense Vina panels and separate uncertainty in chemical and
-target-panel composition from transformation effects. A dense matched spectral control and
-an expanded observed-pair experimental benchmark show both what two-way centering
-reveals---higher-dimensional residual structure---and what it does not establish: improved
-target ranking.
+\medskip\noindent\textbf{Scientific Contribution.} We provide a reusable spectral-audit
+protocol that separates column-standardized and main-effect-free estimands, chemical and
+target composition uncertainty, and parametric and empirical null expectations. A ranking
+decomposition and endpoint-aligned ChEMBL benchmark show why higher residual dimension is a
+matrix diagnostic rather than evidence that a scaled residual score ranks targets better.
 \end{abstract}
 
 \noindent\textbf{Keywords:} molecular docking; AutoDock Vina; effective dimension; spectral
@@ -86,15 +82,26 @@ observations identify ligand and target main effects. They do not say how much o
 score matrix those effects occupy, how many collective directions remain, or whether a
 low-dimensional column-standardized surface is equivalent to poor selectivity.
 
+Operational target-fishing studies reinforce the need to separate normalization from
+validation. A 13-procedure benchmark found strong target-dependent variation and evaluated
+consensus docking, while CRDS combined min--max-normalized GOLD, Vina and LeDock scores over
+5,254 binding sites.\cite{lapillo2019,lee2020crds} Large external reverse-screening experiments
+also show that target retrieval depends on the amount and diversity of bioactivity knowledge,
+and recent open-source reverse-docking systems combine Vina with alternative or corrected
+scores rather than treating one raw energy scale as universal.\cite{daina2024,autorevdock2025}
+These studies evaluate retrieval systems. Our analysis instead asks what the score matrix
+contains before a target-ranking rule is chosen and which transformations can change that rule.
+
 Two-directional normalization and principal-component analysis of docking matrices also
 precede this study. SePreSA applied a ligand-wise Z transformation followed by normalization
 of protein-score vectors to a 79-compound by 86-protein docking matrix.
 \cite{sepresa2009} Fukunishi and colleagues applied PCA to a complete docking matrix for
 compound and pocket classification, and later used multi-protein docking-score profiles as
 QSAR descriptors.\cite{fukunishi2006,fukunishi2018} These studies establish that matrix-wide normalization and
-PCA are useful. The contribution here is narrower: a large-scale quantitative estimate of
-spectral concentration, explicit comparison of column-standardized and two-way-centered
-estimands, and uncertainty analyses for chemical and target-panel composition.
+PCA are useful. The contribution here is narrower: large-panel quantification of spectral
+concentration, explicit separation of column-standardized and two-way-centered estimands,
+chemical- and target-composition uncertainty, transformation-matched nulls, and a reusable
+audit protocol connecting these diagnostics to an operational ranking check.
 
 The distinction matters because docking has several separable tasks. A method may reproduce
 a crystallographic pose yet rank affinities poorly, and no single program performs uniformly
@@ -135,15 +142,15 @@ summaries rather than a chosen latent dimension.\cite{lee2016,roy2007}
 
 We ask four linked questions. Do the two large tested Vina panels concentrate their variance
 into a few PR effective dimensions? Is that observation stable to chemical and target-panel
-composition? What remains after ligand and target main effects are removed? Finally, does a
-higher-dimensional residual representation improve the operational task of ranking targets
-for a ligand? The last comparison is necessary because a transformation can clarify an
-estimand without becoming a better scoring rule. Our evidence supports two-way centering as
-a spectral diagnostic, not as an automatically beneficial correction for reverse docking.
+composition? What remains after ligand and target main effects are removed? Finally, which
+parts of the residual transformation can alter within-ligand target order, and how precisely
+can their task-level effects be estimated on matched experimental data? The last comparison
+is necessary because a transformation can clarify an estimand without becoming a better
+scoring rule.
 
 \section{Results}
 
-\subsection{Two independent Vina panels have concentrated column-standardized spectra}
+\subsection{Two large Vina panels have concentrated spectra}
 
 The 12,651-by-44 antitarget panel was analyzed after clipping the rare positive Vina
 scores to zero, mean-imputing missing entries and standardizing each target column. The
@@ -342,14 +349,21 @@ was 16.47 (target-subset interval 13.72--20.03), compared with 9.30 for the full
 panel. The cross-dataset difference therefore remained at matched $P$, although part of the
 18.21-versus-9.30 contrast reflects different target counts.
 
-Higher-dimensional did not mean unconcentrated. We fitted an additive null retaining the
+Higher-dimensional did not mean unconcentrated. A fitted additive Gaussian null retained the
 observed grand mean, ligand effects, target effects and target-specific residual variances,
-but drawing residuals independently. After two-way centering, its median PR dimensions were
-42.40 for Docking-44 and 56.48 for DOCKSTRING, close to the respective $P-1$ ceilings of 43
-and 57. The observed residual values, 9.29 and 18.16 on the same 12,000-row supports, were
-smaller than every one of 500 null realizations (one-sided empirical $p=0.002$ for each;
-Fig.~\ref{fig:centering}b). Centering therefore exposes more residual directions, while the
-residual correlations remain far stronger than independent-noise expectations.
+but drew residuals independently. Its median residual PR dimensions were 42.40 for
+Docking-44 and 56.48 for DOCKSTRING, close to the respective $P-1$ ceilings of 43 and 57.
+A nonparametric companion independently permuted each observed residual target column,
+sampling from its empirical values without a Gaussian assumption; its medians were also
+42.40 and 56.48.
+The observed values, 9.29 and 18.16 on the same 12,000-row supports, were smaller than every
+one of 500 realizations under either null (one-sided empirical $p=0.002$;
+Fig.~\ref{fig:centering}b). Chemical redundancy did not account for this separation: across
+200 supports containing one ligand from each of 8,150 Docking-44 Butina clusters, the median
+observed residual PR was 9.43 and the matched empirical-null median was 42.33. The empirical
+null removes the Gaussian assumption but not all ligand-specific heteroskedasticity;
+together the controls show residual dependence far stronger than target-wise independent
+expectations.
 
 In the transformation-matched permutation analysis, the descriptive rank-wise mode counts
 increased from 3 to 7 and from 4 to 10. The same counts survived the simultaneous
@@ -371,34 +385,59 @@ occur despite, not because of, a larger algebraic maximum.
 concentration.} \textbf{a}, Paired raw-to-residual changes. Docking-44 error bars are 95\%
 Butina-cluster bootstrap intervals; DOCKSTRING error bars span point estimates across five
 independently seeded 15,000-molecule supports. \textbf{b}, Observed residual PR dimensions
-and fitted additive-null medians, each divided by its $P-1$ algebraic maximum. Open-marker
-bars are the central 95\% of 500 null realizations and are visually narrower than the marker.
-The null preserves fitted ligand and target effects and target-specific residual variance,
-but removes cross-target residual dependence.}
+and null medians, each divided by its $P-1$ algebraic maximum. Open markers and upper bars
+show the fitted Gaussian additive null; crosses and lower bars show the nonparametric
+residual-permutation null. Each bar is the central 95\% of 500 realizations and is visually
+narrower than its marker. Both nulls remove cross-target residual correspondence; the
+empirical null additionally starts from independently permuted observed residual columns and
+therefore avoids a Gaussian sampling assumption.}
 \label{fig:centering}
 \end{figure}
 
-\subsection{Higher residual dimension does not by itself improve target ranking}
+\subsection{Only target-specific scaling changes target order}
 
 We expanded the operational endpoint beyond the dense six-target block. Exact full-InChIKey
 matching identified 276 Docking-44 ligands with at least one exact-relation Ki, Kd, IC50 or
 EC50 measurement in ChEMBL. Requiring at least two observed targets retained 137 ligands, 38
 targets, 691 experimental cells and 2,522 non-tied within-ligand target pairs. No
 experimental activity was imputed. The primary mean gave every ligand equal weight; predicted
-score ties received half credit, and its 95\% interval resampled 95 Bemis--Murcko scaffold
-clusters. All docking offsets, scales and imputation means were fitted after excluding the
+score ties received half credit, and its 95\% intervals resampled either 95 Bemis--Murcko
+scaffold clusters or 104 fingerprint-based Butina clusters. All docking offsets, scales and
+imputation means were fitted after excluding the
 137 evaluation ligands from the 12,651-ligand reference panel; 89 of their 6,028 docking
 scores were imputed from these external target means.
 
+The ranking effect admits a useful algebraic decomposition. Let $m_j$ be the external mean
+for target $j$, $r_i$ the mean of evaluation ligand $i$ over all 44 targets and $g$ the
+external grand mean. Before target-specific scaling, target-centered scores
+$C_{ij}=X_{ij}-m_j$ and two-way-centered scores
+$R_{ij}=X_{ij}-m_j-r_i+g$ obey
+\begin{equation}
+R_{ij}-R_{ik}=C_{ij}-C_{ik}.
+\label{eq:ranking-invariance}
+\end{equation}
+Thus row centering alone cannot change any within-ligand target order. The two unscaled
+representations consequently had exactly the same accuracy, 0.556. Column standardization,
+target centering followed by residual target-scale standardization, and full two-way-residual
+standardization reached 0.546, 0.549 and 0.564, respectively. Division by target-specific
+scales makes the term $(-r_i+g)/s_j$ target dependent; any ranking change attributed to the
+operational residual representation therefore arises from the interaction between this
+ligand offset and target-specific scaling, not from unscaled row centering itself.
+
 Absolute Vina reached mean per-ligand pairwise target-preference accuracy 0.566
-(scaffold-bootstrap interval 0.502--0.623; Fig.~\ref{fig:preference}a). Two-way-residual and
-column-standardized scores reached 0.564 (0.500--0.626) and 0.546 (0.483--0.603). The paired
-residual-minus-column difference was 0.017 ($-0.022$--0.054), and the residual-minus-absolute
-difference was $-0.002$ ($-0.065$--0.062). Thus, the point estimates do not resolve a
-practical advantage for any score transformation. Ligand-identity permutation placed the
-absolute and residual results above their nulls ($p=0.014$ and 0.024), and within-ligand
-permutation of the experimental order gave $p=0.009$ and 0.012; these tests assess
-association, not superiority over another representation.
+(Murcko-cluster interval 0.502--0.623; Fig.~\ref{fig:preference}a). The paired
+residual-minus-column difference was 0.017 (union of cluster-bootstrap 95\% intervals,
+$-0.022$--0.055), and the residual-minus-absolute difference was $-0.002$
+($-0.065$--0.063). Conservative unions of the corresponding 90\% intervals were
+$-0.015$--0.049 and $-0.056$--0.051. In post hoc equivalence sensitivities neither contrast
+met a $\pm0.02$ margin; residual minus absolute also failed a $\pm0.05$ margin, while residual
+minus column met only that more permissive margin. These margins were not prospectively
+registered. The benchmark therefore excludes neither moderate benefit nor moderate harm and
+does not establish equivalence among the representations; its estimated minimum detectable
+difference was approximately 0.054. Ligand-identity permutation placed the absolute and
+residual results above their nulls ($p=0.014$ and 0.024), and within-ligand permutation of the
+experimental order gave $p=0.009$ and 0.012. These tests assess score--experiment association,
+not superiority of one representation.
 
 Target priors exposed a more consequential boundary. A target order fitted on the 12,514
 non-evaluation docking ligands reached 0.525, and an external ChEMBL target prior fitted after
@@ -407,8 +446,8 @@ Vina, although the paired residual-minus-prior intervals included zero. By contr
 prior within the broadly
 profiled evaluation cohort, fitted with the held-out ligand's entire scaffold cluster
 excluded, reached 0.592 (0.531--0.656). It exceeded residual Vina by 0.028 on average, but the
-paired interval ($-0.127$--0.066) was wide. This cohort prior is not a deployable score; it
-diagnoses target and observation-process structure among these multiply assayed ligands.
+paired interval ($-0.127$--0.066) was wide. This cohort prior is a supervised
+observation-process diagnostic, not a deployable target-fishing score.
 
 Coverage sensitivity changed the score-based ordering (Fig.~\ref{fig:preference}b). Requiring
 at least three observed targets retained 93 ligands: absolute Vina reached 0.587
@@ -417,21 +456,26 @@ at least three observed targets retained 93 ligands: absolute Vina reached 0.587
 observed targets, absolute accuracy remained 0.581 and 0.587 while residual accuracy was
 0.540 and 0.537. These nested, smaller strata have broad pointwise intervals, but they show
 that the inclusive ordering depends in part on the 44 ligands observed for exactly two
-targets. Restriction to human binding assays gave residual and cohort-prior accuracies 0.581
-and 0.581 on 128 ligands; the paired interval was $-0.089$--0.092. On the 107-ligand human
-binding Ki/Kd block, they were 0.579 and 0.608, with an interval of $-0.131$--0.075. Neither
-residual-minus-column interval excluded zero (Supplementary Table~S5). Removing cells whose
-repeated measurements spanned more than one pChEMBL unit gave residual accuracy 0.560 on
-1,912 pairs.
+targets.
+
+Two assay-focused checks reached the same precision-limited conclusion. Holding the broad
+137-by-38 ligand--target support and all docking transformations fixed, comparison only within
+the same endpoint type produced 4,330 endpoint-specific instances across 132 evaluable
+ligands. Absolute, column-standardized and residual accuracies were 0.553, 0.538 and 0.555;
+the residual-minus-absolute union of cluster-bootstrap intervals was $-0.060$--0.064. On the
+107-ligand, 30-target human binding Ki/Kd subset, the corresponding accuracies were 0.565,
+0.554 and 0.579 over 2,224 pairs, with residual minus absolute $-0.052$--0.085. The favorable
+residual point shift in the cleaner endpoint subset was therefore unresolved. Removing cells
+whose repeated measurements spanned more than one pChEMBL unit gave residual accuracy 0.560
+on 1,912 pairs (Supplementary Table~S5 and the accompanying machine-readable tables).
 
 This comparison supplies the operational boundary of the spectral analysis. Two-way
-centering answers whether ligand and target main effects conceal structured residual
-variation. It does not determine whether that variation orders targets correctly, and the
-sparse ChEMBL observation process can make target priors stronger than molecule-specific
-docking contrasts. A reverse-docking workflow should therefore report target-prior and
-ligand/outcome-permutation baselines, stratify performance by experimental coverage and
-choose its score transformation by external task-level validation, not by effective
-dimension alone.
+centering reveals whether ligand and target main effects conceal structured residual
+variation, but unscaled row centering cannot change target order and residual dimension does
+not determine ranking accuracy. A reverse-docking workflow should decompose centering from
+scaling, report target-prior and ligand/outcome-permutation baselines, stratify by assay type
+and experimental coverage, and choose its score representation by external task-level
+validation rather than by effective dimension alone.
 
 \begin{figure}[htbp]
 \centering
@@ -439,11 +483,12 @@ dimension alone.
 \caption{\textbf{Spectral and operational conclusions are distinct.}
 \textbf{a}, Mean per-ligand pairwise target-preference accuracy over 2,522 observed,
 non-tied experimental target pairs from 137 ligands and 38 targets. Colored intervals are
-95\% Bemis--Murcko scaffold-cluster bootstrap intervals. Grey bars and crosses show the
+95\% Bemis--Murcko scaffold-cluster bootstrap intervals; the independent Butina-cluster
+intervals are tabulated in Supplementary Table~S5. Grey bars and crosses show the
 central 95\% and mean of 5,000 ligand-identity permutations for score-based representations;
 labels give one-sided empirical probabilities. The cohort experimental prior is fitted
-with the evaluation ligand's entire scaffold cluster held out and is a diagnostic baseline
-rather than a docking score.
+with the evaluation ligand's entire scaffold cluster held out and is a supervised
+observation-process diagnostic rather than a deployable docking score.
 \textbf{b}, Accuracy after requiring each ligand to have measurements for at least two,
 three, five or six targets; vertical lines are pointwise 95\% scaffold-bootstrap intervals
 and labels give the number of retained ligands. The strata are nested rather than independent.
@@ -454,20 +499,21 @@ The dashed line is chance.}
 \section{Discussion}
 
 The two large Vina panels share a concentrated column-standardized spectrum, but centering
-does not make the residuals unconcentrated. The raw PR dimensions of 1.83 and 2.27 rose to
-9.30 and 18.21 after ligand and target main effects were removed; the fitted additive nulls,
-however, placed independent residual noise near 42 and 56 dimensions. The empirical
-residuals therefore contain more directions than the shared-score surface while remaining
-strongly correlated. The result is a reduction in spectral concentration, not its
-disappearance.
+does not make the residuals unconcentrated. The PR dimensions of 1.83 and 2.27 rose to 9.30
+and 18.21 after ligand and target main effects were removed; fitted Gaussian additive nulls
+and nonparametric residual-permutation nulls both placed target-wise independent residuals
+near 42 and 56 dimensions. The empirical residuals therefore contain more directions than
+the shared-score surface while remaining strongly correlated. The result is a reduction in
+spectral concentration, not its disappearance.
 
 Two-way normalization and PCA themselves predate this work. SePreSA used two-directional
 normalization of docking-score matrices, and earlier protein--compound affinity work used
 principal components as multidimensional descriptors.\cite{sepresa2009,fukunishi2006,fukunishi2018}
-Our contribution is the quantitative separation of raw and residual spectral
-estimands on two large dense panels, uncertainty with respect to target and chemical
-composition, and an operational test of whether the richer residual spectrum improves
-target ranking.
+Our contribution is the quantitative separation of surface and residual spectral estimands
+on two large dense panels, uncertainty with respect to target and chemical composition,
+multiple structure-matched nulls, and an operational decomposition of how centering and
+scaling affect target ranking. We consolidate these elements as a reusable spectral-audit
+protocol rather than present centering or PCA as a new algorithm.
 
 The loading analysis explains why the estimands diverge. Almost every target loaded in the
 same direction on PC1, and PC1 scores were nearly identical to the raw per-ligand mean score.
@@ -484,27 +530,36 @@ reproduce experimental geometry. It shows that the raw docking--experiment contr
 support is largely a contrast in shared main effects rather than a resolved difference in
 residual PR dimension.
 
-Operational validation changed the interpretation again. On the expanded 137-ligand,
-38-target observed-pair benchmark, absolute and two-way-residual Vina had nearly identical
-score-based point estimates, and no paired score-transformation contrast was resolved. Both
-exceeded identity- and outcome-permutation nulls on the inclusive support, but the ordering
-reversed toward absolute Vina when ligands with only two observed targets were excluded. The
-deployable external docking and ChEMBL target priors performed below the score-based point
-estimates. A scaffold-held-out prior from the multiply assayed cohort was comparable or
-stronger, although it is not a deployable replacement for docking and became indistinguishable
-from residual Vina in the human binding sensitivity. Precisely because it reflects assay
-selection, this prior demonstrates how a ranking result can depend on which targets were
-measured in a broadly profiled cohort. Higher residual dimension is therefore neither
+Operational validation changed the interpretation again. Unscaled target centering and
+unscaled two-way centering produce exactly the same within-ligand target order; only
+target-specific scaling can break this invariance. On the expanded 137-ligand, 38-target
+observed-pair benchmark, absolute and standardized two-way-residual Vina had nearly identical
+point estimates, and no paired score-transformation contrast was resolved. The uncertainty
+did not establish equivalence even at a post hoc $\pm0.05$ margin for residual versus
+absolute scores. Both exceeded identity- and outcome-permutation nulls on the inclusive
+support, but the ordering shifted toward absolute Vina when ligands with only two observed
+targets were excluded. Fixed-support same-endpoint comparisons and the human binding Ki/Kd
+subset did not resolve a different conclusion. A scaffold-held-out experimental cohort prior
+was comparable or stronger but is a supervised diagnostic, not a deployable docking rule.
+Precisely because it reflects assay selection, it demonstrates how a ranking result can
+depend on which targets were measured. Higher residual dimension is therefore neither
 necessary nor sufficient for a useful reverse-docking score.
 
-Accordingly, a spectral audit should report both the
-column-standardized and two-way-centered spectra, transformation-matched nulls and the
-chemical and target populations represented by its uncertainty. A reverse-docking
-benchmark should additionally include target priors, ligand-identity and within-ligand
-outcome-permutation nulls, and performance stratified by experimental coverage. The
-operational score representation should be selected on held-out experimental target
-preferences. Two-way centering can be retained as a diagnostic even when it is not the
-selected ranking rule.
+Accordingly, we propose a nine-step spectral audit: (1) define the score matrix, sign
+convention, missingness rule and chemical/target support; (2) compute both the
+column-standardized surface and the two-way-centered residual estimands; (3) report PR and
+entropy effective dimensions, PC1 fraction, cumulative-component counts and the algebraic
+maximum; (4) quantify chemical-support uncertainty with a scaffold or chemical-cluster
+bootstrap; (5) examine target composition with leave-one-target-out and family-stratified
+subsampling; (6) compare with transformation-matched parallel-analysis, additive Gaussian
+and empirical residual-permutation nulls; (7) for ranking applications, test invariances and
+separate centering from target-specific scaling; (8) evaluate absolute, transformed and
+target-prior baselines with identity/outcome permutations and assay/coverage sensitivities;
+and (9) report paired uncertainty, any equivalence margin, and the exact scope of
+generalization. Supplementary Table~S9 maps each step to the released implementation, and
+\path{analysis/spectral_audit.py} provides a generic command-line entry point for dense score
+matrices. Two-way centering remains useful diagnostically even when it is not selected as a
+ranking rule.
 
 Both large matrices use Vina-family scores, and the small RF-Score blocks in Supplementary
 Fig.~S3 cannot represent modern learned scoring
@@ -513,25 +568,30 @@ proteins, so jackknife and family-stratified subsampling quantify stability with
 observed panels. The dense docking--experiment spectral control still contains only 74
 ligands and six aminergic targets, with 9.9\% imputed experimental cells. The expanded
 operational benchmark covers 38 targets but is sparse and non-random: pairwise target
-co-observation has a median support of only three ligands, and its primary result includes 44
-ligands observed against exactly two targets. Scaffold resampling, assay restriction,
+co-observation has a median support of only three ligands, and its inclusive result includes
+44 ligands observed against exactly two targets. Fixed-support same-endpoint and human
+binding Ki/Kd analyses reduce endpoint heterogeneity but also reduce information; neither
+produces a precise score-transformation contrast. Scaffold resampling,
 measurement-dispersion filtering and coverage thresholds expose but cannot remove ChEMBL's
-assay-selection and laboratory heterogeneity. The benchmark therefore supports an
-observed-target ordinal claim, not unmeasured-target retrieval. Finally, the public package
+assay-selection and laboratory heterogeneity. The benchmark excludes a large advantage but
+is not precise enough to establish equivalence; it supports an observed-target ordinal claim,
+not unmeasured-target retrieval. Finally, the public package
 reproduces analysis from frozen matrices; it does not rerun upstream receptor preparation,
 docking, pose generation or RF-Score rescoring.
 
 \section{Conclusions}
 
-Two-way centering reveals substantially higher-dimensional residual structure in two
-spectrally concentrated Vina matrices, but the residuals remain far more concentrated than
-an additive independent-noise null. On dense matched ChEMBL data, the transformation narrowed
-the docking--experiment PR contrast. On a broader observed-pair benchmark, it did not show a
-resolved target-ranking advantage over either column standardization or absolute Vina, and
-the score-based ordering changed with experimental coverage. The practical consequence is
-to separate diagnosis from correction: spectral analysis can identify shared ligand and
-target effects, whereas a score transformation for reverse docking must earn its use against
-target-prior, permutation and coverage-stratified baselines on held-out experimental data.
+In the two tested large Vina matrices, two-way centering reveals substantially
+higher-dimensional residual structure, but the residuals remain far more concentrated than
+either Gaussian or empirical target-wise independent nulls. On dense matched ChEMBL data,
+the transformation narrowed the docking--experiment PR contrast. On a broader observed-pair
+benchmark, standardized residual scores showed neither a resolved target-ranking advantage
+nor equivalence to absolute Vina; unscaled row centering was exactly rank invariant and the
+observed changes arose from target-specific scaling. The practical consequence is to
+separate diagnosis from correction: use the released spectral audit to identify shared and
+residual structure, then require any operational score transformation to outperform absolute,
+target-prior, permutation and assay/coverage-stratified baselines on held-out experimental
+data.
 
 \section{Methods}
 
@@ -658,6 +718,16 @@ dimension. The one-sided empirical probability was calculated with the finite-si
 correction $(1+k)/(1+500)$, where $k$ is the number of null PR dimensions no larger than the
 observed value.
 
+We also used a nonparametric residual-permutation null. Starting from the observed
+two-way-centered residual matrix on the same support, each target column was independently
+permuted across ligands, after which two-way centering and column standardization were
+repeated. The permutation step therefore sampled exactly from every target's empirical
+residual values, including skewness and tails, while removing cross-target residual
+correspondence; transformation-matched re-centering can modify the resulting marginals
+slightly. This null does not preserve ligand-specific residual scale. For Docking-44,
+200 additional realizations selected one ligand from each of the 8,150 Butina clusters and
+compared observed and permuted residual PR on the same chemically de-redundant support.
+
 \subsection{Physicochemical-axis analyses}
 
 The full-panel and matched-support residualizations used seven RDKit descriptors: heavy-atom
@@ -737,36 +807,49 @@ weight; a predicted score tie received half credit and pair-weighted accuracy wa
 The Vina energy sign convention---more negative predicts stronger binding---was fixed before
 examining the results.
 
-Six operational representations were compared. Absolute Vina used the original scores. A
-docking target-prior baseline assigned every evaluation ligand the target means estimated
-from the 12,514 Docking-44 ligands outside the evaluation cohort. Column-standardized scores
-used the corresponding external target means and sample standard deviations. Two-way
-residual scores additionally removed each evaluation ligand's row mean over all 44 docking
-targets and the external training grand mean, then divided by external residual target
-standard deviations. Missing evaluation scores were filled by target means from the same
-external fit. Thus, all docking transformation and imputation parameters were fitted without
-any of the 137 evaluation ligands. Relative to column standardization, this operational
-residualization is a constrained target rescaling plus a ligand row effect weighted by the
-inverse residual target scales, not an arbitrary learned reranker. An external experimental
-prior ranked target mean pChEMBL values
-estimated from the 96,744 exact-relation ChEMBL ligands outside the evaluation cohort. A
-second, deliberately stringent diagnostic prior used target mean pChEMBL within the broadly
-profiled evaluation cohort, fitted with the evaluation ligand's entire Bemis--Murcko scaffold
-cluster held out; it measures target and observation-process structure rather than a
-deployable docking rule.
+Nine operational representations decomposed offsets, scales and priors. Absolute Vina used
+the original scores. For docking score $X_{ij}$, the external training fit supplied target
+mean $m_j$, ordinary target standard deviation $s^{X}_j$, residual target standard deviation
+$s^{R}_j$, grand mean $g$ and each evaluation ligand's row mean $r_i$ over all 44 docking
+targets. We evaluated unscaled target-centered $X_{ij}-m_j$, unscaled two-way-centered
+$X_{ij}-m_j-r_i+g$, column-standardized $(X_{ij}-m_j)/s^{X}_j$, target-centered residual-
+scaled $(X_{ij}-m_j)/s^{R}_j$, and fully standardized residual
+$(X_{ij}-m_j-r_i+g)/s^{R}_j$ scores. The first two must give identical within-ligand target
+orders by Eq.~\ref{eq:ranking-invariance}; the middle comparison isolates the residual-scale
+choice, and the last adds the ligand-offset by inverse-scale tilt. Missing evaluation scores
+were filled by target means from the same external fit. Thus, every docking transformation
+and imputation parameter was fitted without any of the 137 evaluation ligands.
 
-Uncertainty was estimated by 5,000 ligand bootstraps and 5,000 Bemis--Murcko scaffold-
-cluster bootstraps over 95 matched clusters. Paired comparisons resampled per-ligand
-accuracy differences. For absolute, column-standardized and residual scores, 5,000
+A docking target-prior baseline assigned every evaluation ligand the target means estimated
+from the 12,514 external Docking-44 ligands. An external experimental prior ranked target
+mean pChEMBL values estimated from the 96,744 exact-relation ChEMBL ligands outside the
+evaluation cohort. A final, deliberately stringent diagnostic prior used target mean pChEMBL
+within the broadly profiled evaluation cohort, fitted with the evaluation ligand's entire
+Bemis--Murcko scaffold cluster held out. This is a supervised observation-process diagnostic,
+not a deployable target-fishing rule.
+
+Uncertainty was estimated by 5,000 ligand bootstraps, 5,000 Bemis--Murcko scaffold-cluster
+bootstraps over 95 matched clusters and 5,000 fingerprint-based Butina-cluster bootstraps
+over 104 matched clusters. Paired comparisons resampled per-ligand accuracy differences.
+Conservative cluster intervals were unions of the Murcko and Butina intervals. A post hoc
+equivalence sensitivity asked whether the conservative 90\% interval lay strictly inside
+symmetric $\pm0.02$ or $\pm0.05$ accuracy margins; neither margin was prospectively
+registered. The normal-approximation minimum detectable difference used two-sided
+$\alpha=0.05$ and 80\% power. For absolute, column-standardized and residual scores, 5,000
 ligand-identity shuffles broke molecule-specific score--experiment correspondence while
 preserving target columns; 5,000 within-ligand outcome permutations supplied a second null.
 One-sided probabilities used the finite-permutation correction. Sensitivities used minimum
 absolute experimental differences of 0.10, 0.50 and 1.00 pChEMBL, minimum coverage of three,
 five or six observed targets, leave-one-target-out deletion, human binding assays, human
 binding Ki/Kd, pair weighting and removal of cells whose repeated measurements spanned more
-than one pChEMBL unit. Coverage-stratum intervals used the same scaffold bootstrap and are
-pointwise; the nested strata are not independent. The separate dense 74-by-6 analysis retained its 100 multiple-
-imputation sensitivity for spectral quantities and is reported in Supplementary Table~S3.
+than one pChEMBL unit. A fixed-support same-endpoint sensitivity kept the 137 ligands, 38
+targets and docking transformations unchanged, computed comparisons separately within Ki,
+Kd, IC50 and EC50, averaged endpoint-specific accuracies equally within ligand, and then
+averaged ligands equally. It therefore avoids comparing unlike endpoint types but can count
+the same target pair in more than one endpoint stratum. Coverage-stratum intervals used the
+same cluster bootstrap and are pointwise; the nested strata are not independent. The
+separate dense 74-by-6 analysis retained its 100 multiple-imputation sensitivity for spectral
+quantities and is reported in Supplementary Table~S3.
 
 \subsection{Software and reproducibility}
 
@@ -777,7 +860,10 @@ experimental sensitivities, the expanded observed-pair benchmark, subsampling re
 DTI associations in
 \path{results/evidence_summary.json}; it also embeds explicitly labelled summaries from the
 frozen upstream docking/rescoring stages. \path{analysis/make_figures.py} regenerates all
-main and supplementary figures. The core release reproduces the reported analysis from
+main and supplementary figures. The generic \path{analysis/spectral_audit.py} command-line
+tool applies the released audit to a user-supplied dense CSV or TSV score matrix. The package
+also exports the operational representations, assay sensitivities and audit protocol as
+machine-readable CSV tables. The core release reproduces the reported analysis from
 frozen matrices and summaries; it does not rerun receptor preparation, docking or RF-Score
 pose rescoring. A checksum manifest, pinned requirements, environment file,
 Dockerfile and Makefile provide input verification and one-command regeneration. Random seed
@@ -812,7 +898,7 @@ ChEMBL are publicly available from their respective source repositories. The der
 matrices, frozen summaries, source manifest and analysis code are available without
 registration under an OSI-approved code license in the versioned GitHub repository and
 Zenodo archive.\cite{softwaregithub,softwarezenodo} The exact submission package corresponds
-to GitHub tag \path{v1.2.0}. Upstream datasets retain their stated licenses and are identified
+to GitHub tag \path{v1.3.0}. Upstream datasets retain their stated licenses and are identified
 by source URL, version and checksum in the manifest.
 
 \subsection*{Competing interests}
@@ -936,8 +1022,22 @@ doi:10.1021/jm070562u.
 \bibitem{bosc2017} Bosc N, Meyer C, Bonnet P (2017) The use of novel selectivity metrics
 in kinase research. BMC Bioinformatics 18:17. doi:10.1186/s12859-016-1413-y.
 
+\bibitem{lapillo2019} Lapillo M, Tuccinardi T, Martinelli A, Macchia M, Giordano A,
+Poli G (2019) Extensive reliability evaluation of docking-based target-fishing strategies.
+Int J Mol Sci 20:1023. doi:10.3390/ijms20051023.
+
+\bibitem{lee2020crds} Lee A, Kim D (2020) CRDS: consensus reverse docking system for target
+fishing. Bioinformatics 36:959--960. doi:10.1093/bioinformatics/btz656.
+
+\bibitem{daina2024} Daina A, Zoete V (2024) Testing the predictive power of reverse
+screening to infer drug targets, with the help of machine learning. Commun Chem 7:105.
+doi:10.1038/s42004-024-01179-2.
+
+\bibitem{autorevdock2025} Luo Q, Mu Y, Zheng L, Guo J (2025) AutoRevDock: an open-source
+toolkit for scalable reverse docking. Protein Sci 34:e70358. doi:10.1002/pro.70358.
+
 \bibitem{softwaregithub} Leleytner A, Safronov V, Fedorov M (2026) Spectral concentration
-in Vina docking-score matrices: analysis code and frozen data, version 1.2.0. GitHub.
+in Vina docking-score matrices: analysis code and frozen data, version 1.3.0. GitHub.
 https://github.com/AdeliyaLeleytner/vina-score-spectral-concentration. Accessed 1 Aug 2026.
 
 \bibitem{softwarezenodo} Leleytner A, Safronov V, Fedorov M (2026) Spectral concentration

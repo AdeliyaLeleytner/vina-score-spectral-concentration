@@ -5,6 +5,7 @@
 \usepackage{charter}
 \usepackage{amsmath}
 \usepackage{booktabs}
+\usepackage{array}
 \usepackage{graphicx}
 \usepackage{longtable}
 \usepackage{pdflscape}
@@ -18,8 +19,9 @@
 
 \doublespacing
 
-\title{Supplementary information\\[4pt]\large Spectral concentration in Vina docking-score
-matrices: what two-way centering reveals and does not correct}
+\title{Supplementary information\\[4pt]\large Spectral concentration in two large Vina
+docking-score matrices: two-way centering reveals structured residual variation without a
+resolved target-ranking gain}
 \author{Adeliya Leleytner, Victor Safronov, Maxim Fedorov}
 \date{}
 
@@ -159,6 +161,18 @@ and 18.16. The observed value was below all 500 realizations for each matrix (fi
 simulation one-sided $p=0.002$). This null shows that the empirical residual concentration is
 not a mechanical consequence of two-way centering.
 
+\paragraph{Empirical residual-permutation null.}
+Independently permuting every observed residual target column sampled exactly from each
+target's non-Gaussian empirical residual values, after which transformation-matched two-way
+centering and standardization were repeated. The latter step can slightly modify the
+marginals. Median residual PR dimensions were 42.40
+for Docking-44 and 56.48 for DOCKSTRING-58; both observed values were below all 500
+realizations ($p=0.002$). Across 200 supports containing one ligand from each of 8,150
+Docking-44 Butina clusters, observed residual PR had median 9.43 and the matched empirical
+null median 42.33. The empirical null does not retain ligand-specific residual scale, but the
+cluster-representative result shows that ordinary chemical redundancy does not explain the
+separation.
+
 \paragraph{DOCKSTRING clipping and chemical support.}
 The complete DOCKSTRING block contained 5,393 positive scores (0.0358\%). Retaining rather
 than clipping them changed the column-standardized PR dimension from 2.266 to 2.275 and the
@@ -175,7 +189,22 @@ Across 38 leave-one-target-out deletions, residual accuracy ranged from 0.535 to
 the scaffold-held-out cohort prior from 0.583 to 0.627. Removing cells whose repeated values
 spanned more than one pChEMBL unit retained 118 ligands and 1,912 pairs, with residual
 accuracy 0.560. Human binding and human binding Ki/Kd restrictions gave 0.581 and 0.579.
-These sensitivities remain observational: target-pair co-observation had median support
-three, and no result establishes retrieval on unmeasured targets.
+Before target-specific scaling, target-centered and two-way-centered scores differed by a
+constant within ligand and consequently produced exactly identical target rankings and
+accuracy 0.556. The fully residual-scaled score reached 0.564, so its operational difference
+is attributable to target-specific scale and its interaction with the ligand offset.
+
+Both Murcko- and Butina-cluster intervals included zero for residual minus absolute and
+residual minus column-standardized scores. Conservative unions of the cluster-bootstrap 90\%
+intervals were $-0.056$--0.051 and $-0.015$--0.049, respectively. Neither comparison met a
+post hoc $\pm0.02$ equivalence margin; residual minus absolute also failed $\pm0.05$.
+Holding the broad docking support fixed but comparing only within identical endpoint type
+retained 132 evaluable ligands and 4,330 endpoint-specific pair instances; absolute,
+column-standardized and residual accuracies were 0.553, 0.538 and 0.555. On human binding
+Ki/Kd measurements, 107 ligands supplied 2,224 pairs and the same accuracies were 0.565,
+0.554 and 0.579. The residual-minus-absolute cluster intervals were $-0.060$--0.064 and
+$-0.052$--0.085. These sensitivities remain observational and precision limited:
+target-pair co-observation had median support three, equivalence is not established, and no
+result demonstrates retrieval on unmeasured targets.
 
 \end{document}

@@ -445,6 +445,7 @@ def fig4(evidence: dict) -> None:
     ]
     dockstring = evidence["ligand_sampling_sensitivity"]["dockstring_scaffold_bootstrap"]
     additive = evidence["additive_main_effect_null"]
+    empirical = evidence["empirical_residual_permutation_null"]
     fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 3.35),
                               gridspec_kw={"width_ratios": [1.05, 0.95]})
     x = np.array([0, 1])
@@ -492,12 +493,18 @@ def fig4(evidence: dict) -> None:
         null = additive[key]["null_residual"]
         null_median = null["median"] / maximum
         null_interval = np.asarray(null["interval_95"]) / maximum
+        empirical_null = empirical[key]["null_residual"]
+        empirical_median = empirical_null["median"] / maximum
+        empirical_interval = np.asarray(empirical_null["interval_95"]) / maximum
         b.plot([observed, null_median], [yi, yi], color=GREY, lw=1.0)
-        b.plot(null_interval, [yi, yi], color=INK, lw=2.2, alpha=0.45)
+        b.plot(null_interval, [yi + 0.08, yi + 0.08], color=INK, lw=2.0, alpha=0.42)
+        b.plot(empirical_interval, [yi - 0.08, yi - 0.08], color=GREY, lw=2.0, alpha=0.60)
         b.scatter(observed, yi, color=color, marker=marker, s=40,
                   edgecolors="white", linewidths=0.55, zorder=3)
-        b.scatter(null_median, yi, facecolors="white", edgecolors=INK,
+        b.scatter(null_median, yi + 0.08, facecolors="white", edgecolors=INK,
                   marker=marker, s=36, linewidths=0.8, zorder=3)
+        b.scatter(empirical_median, yi - 0.08, color=GREY,
+                  marker="x", s=30, linewidths=0.9, zorder=3)
         b.text(observed + 0.025, yi + 0.13,
                f"observed {centers[key]['interaction']['participation_ratio']:.1f}/{maximum}",
                fontsize=6.4, color=color)
@@ -506,7 +513,7 @@ def fig4(evidence: dict) -> None:
     b.set_ylim(-0.55, 1.55)
     b.set_xlabel("residual PR / algebraic maximum")
     b.set_ylabel("matrix")
-    b.text(0.98, 0.96, "filled: observed\nopen: fitted additive null",
+    b.text(0.98, 0.96, "filled: observed\nopen: Gaussian additive null\nx: empirical residual null",
            transform=b.transAxes, ha="right", va="top", fontsize=6.3)
     clean(b)
     panel_label(a, "a"); panel_label(b, "b")

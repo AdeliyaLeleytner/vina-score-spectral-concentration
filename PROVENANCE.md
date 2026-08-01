@@ -71,8 +71,13 @@ than broad evidence about modern neural scoring functions.
   cluster and is explicitly a diagnostic for target and observation-process structure, not a
   deployable docking score. Predicted score ties receive half credit.
 - Operational sensitivities include ligand-identity and within-ligand outcome permutations,
-  scaffold-cluster uncertainty, target deletion, pair weighting, experimental margins,
-  minimum observed-target coverage, human binding, Ki/Kd, and within-cell dispersion.
+  independent Bemis--Murcko and fingerprint-based Butina cluster uncertainty, target deletion,
+  pair weighting, experimental margins, minimum observed-target coverage, human binding,
+  Ki/Kd, fixed-support same-endpoint comparisons, and within-cell dispersion.
+- The operational score ladder separates unscaled target centering, unscaled two-way
+  centering, ordinary column scaling, residual-target scaling and the full standardized
+  residual. The first two are exactly rank-identical within ligand; target-specific scaling
+  is the only component that changes target order.
 
 ## DAVIS, Boltz-2, and exploratory DTI arms
 
