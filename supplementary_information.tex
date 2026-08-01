@@ -9,14 +9,17 @@
 \usepackage{longtable}
 \usepackage{pdflscape}
 \usepackage{microtype}
+\usepackage{setspace}
 \usepackage[a4paper,margin=2.5cm]{geometry}
 \usepackage[font=small,labelfont=bf]{caption}
 \usepackage[hidelinks]{hyperref}
 \renewcommand{\thefigure}{S\arabic{figure}}
 \renewcommand{\thetable}{S\arabic{table}}
 
-\title{Supplementary information\\[4pt]\large Vina docking-score matrices are strongly
-spectrally concentrated before, but not after, two-way centering}
+\doublespacing
+
+\title{Supplementary information\\[4pt]\large Spectral concentration in Vina docking-score
+matrices: what two-way centering reveals and does not correct}
 \author{Adeliya Leleytner, Victor Safronov, Maxim Fedorov}
 \date{}
 
@@ -49,14 +52,49 @@ the two observed target panels and are not confidence intervals for a target sup
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{figures/figS3_dti_all20.pdf}
+\includegraphics{figures/figS3_scoring_controls.pdf}
+\caption{\textbf{Illustrative scoring-function and target-expansion sensitivities.}
+PR effective dimensions and source-analysis bootstrap intervals are shown for the two large
+Vina panels, RF-Score v1 on Vina poses, RF-Score v1 on Vinardo poses and the Docking-47
+expansion. Point labels report ligand and target counts. The 47-target expansion is a
+deterministic sensitivity and is shown without an interval. The RF-Score blocks contain only
+35--41 ligands and are not large independent replications.}
+\label{fig:s3}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/figS4_learned_affinity.pdf}
+\caption{\textbf{Contextual centering ladder across score and affinity surfaces.}
+\textbf{a}, Column-standardized and two-way-centered residual PR effective dimensions for
+the two Vina matrices, two small RF-Score blocks, experimental DAVIS affinity and Boltz-2.
+Lines connect the same matrix under the two transformations. \textbf{b}, Each value divided
+by its algebraic maximum, $P$ before and $P-1$ after centering. The learned-affinity examples
+are contextual sensitivities, not docking replications or accuracy benchmarks.}
+\label{fig:s4}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/figS5_dti_all20.pdf}
 \caption{\textbf{Exploratory DTI association on the complete 20-arm panel.}
 Selectivity precision at five is plotted against the column-standardized PR effective
 dimension (\textbf{a}) and the two-way-centered residual PR effective dimension (\textbf{b}).
-Numbers identify arms in Table~S5; blue denotes arms above the outcome-related chance
+Numbers identify arms in Table~S6; blue denotes arms above the outcome-related chance
 criterion and grey denotes arms at chance. Correlations are descriptive because the arms
 share data, architectures and representations.}
-\label{fig:s3}
+\label{fig:s5}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/figS6_dockstring_supports.pdf}
+\caption{\textbf{DOCKSTRING chemical-support and scaffold sensitivity.}
+Each row is an independently seeded 15,000-molecule support. Points are support-specific PR
+dimensions and horizontal intervals are 95\% Bemis--Murcko scaffold-cluster bootstrap
+intervals from 100 replicates. \textbf{a}, Column-standardized surface; \textbf{b}, two-way-
+centered residual. All estimates are conditional on the same 58 targets.}
+\label{fig:s6}
 \end{figure}
 
 \input{results/supplement_tables.tex}
@@ -83,10 +121,10 @@ scale is sufficient to reproduce the experimental PR effective dimension; it is 
 measurement-error correction of ChEMBL.
 
 \paragraph{DTI model-panel interpretation.}
-All 20 scorer arms are the primary exploratory panel in Table~\ref{tab:s5all20} and
-Fig.~\ref{fig:s3}. The 12 arms in Table~\ref{tab:s6dti} share data, architectures and
+All 20 scorer arms are the primary exploratory panel in Table~\ref{tab:s6all20} and
+Fig.~\ref{fig:s5}. The 12 arms in Table~\ref{tab:s7dti} share data, architectures and
 representations and were retained only as an explicitly outcome-restricted sensitivity.
-Table~\ref{tab:s7selection} compares both panels. The positive column-standardized-PR
+Table~\ref{tab:s8selection} compares both panels. The positive column-standardized-PR
 association in the all-20 panel and its absence in the restricted 12-arm panel show
 that the conclusion is selection- and estimator-dependent. In particular,
 \path{transformer_cnn_kiba2davis} had column-standardized PR dimension 8.21 at chance-level
@@ -106,10 +144,36 @@ targets (median 106), and 61 of 68 had an attainable precision ceiling of one.
 \paragraph{Common-protocol parallel analysis.}
 For each large docking matrix, the column-standardized and residual spectra were computed on
 the same 12,000-row subsample. Five hundred null spectra independently permuted each target
-column and then applied the corresponding transformation. The counts above the
-rank-wise 95th percentile null were 3 versus 7 for Docking-44 and 4 versus 10 for
-DOCKSTRING-58. Each result was unchanged in five independent 100-permutation series. Because
-centering changes the estimand and creates one exact linear
-constraint, each surface is compared with its own transformed null.
+column and then applied the corresponding transformation. The descriptive counts above the
+rank-wise 95th-percentile null were 3 versus 7 for Docking-44 and 4 versus 10 for
+DOCKSTRING-58. A studentized maximum-deviation envelope controlling the family-wise error
+rate over eigenvalue ranks retained the same counts. Each result was unchanged in five
+independent 100-permutation series. Because centering changes the estimand and creates one
+exact linear constraint, each surface is compared with its own transformed null.
+
+\paragraph{Fitted additive null.}
+The null retained the fitted grand, ligand and target effects and the observed target-specific
+residual variances, but independently sampled Gaussian residuals. On common 12,000-row
+supports, median residual PR dimensions were 42.40 and 56.48, compared with observed 9.29
+and 18.16. The observed value was below all 500 realizations for each matrix (finite-
+simulation one-sided $p=0.002$). This null shows that the empirical residual concentration is
+not a mechanical consequence of two-way centering.
+
+\paragraph{DOCKSTRING clipping and chemical support.}
+The complete DOCKSTRING block contained 5,393 positive scores (0.0358\%). Retaining rather
+than clipping them changed the column-standardized PR dimension from 2.266 to 2.275 and the
+residual value from 18.206 to 18.362. Across five independent 15,000-molecule supports, raw
+point estimates ranged from 2.252 to 2.294 and residual estimates from 18.161 to 18.322
+(Fig.~\ref{fig:s6}).
+
+\paragraph{Matched target-preference sensitivities.}
+The primary analysis excluded three exact experimental ties and evaluated 887 observed
+target pairs. With a 0.10-pChEMBL tie tolerance, 824 pairs remained and the qualitative
+ordering of representations was unchanged. Pair-weighted accuracies were 0.637 for absolute
+Vina, 0.639 for the target-only baseline, 0.545 for column-standardized scores and 0.549 for
+two-way residuals. Across 100 posterior multiple imputations, mean per-ligand pairwise
+accuracies averaged 0.641, 0.523 and 0.527 for absolute, column-standardized and residual
+scores, respectively. These sensitivities do not overcome the six-target scope of the
+benchmark.
 
 \end{document}

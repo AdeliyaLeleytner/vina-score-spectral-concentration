@@ -214,7 +214,7 @@ def fig1(evidence: dict) -> None:
     plt.close(fig)
 
 
-def fig2(evidence: dict) -> None:
+def fig_s3_scoring_controls(evidence: dict) -> None:
     dock = load_json(source_path("negative_results_paper/analysis/rank_robustness_summary.json"))
     ds = load_json(source_path("negative_results_paper/analysis/review_dockstring_rmt_summary.json"))["complete_data"]
     rf1 = load_json(source_path("negative_results_paper/analysis/rescore_ml_rfscore_summary.json"))
@@ -245,11 +245,11 @@ def fig2(evidence: dict) -> None:
     clean(ax)
     fig.subplots_adjust(left=0.34, right=0.98, bottom=0.20, top=0.95)
     assert audit_fig(fig)
-    save(fig, str(OUT / "fig2_scoring_controls"))
+    save(fig, str(OUT / "figS3_scoring_controls"))
     plt.close(fig)
 
 
-def fig3() -> None:
+def fig2(evidence: dict) -> None:
     phys = load_json(source_path("negative_results_paper/analysis/physchem_depth_summary.json"))
     robust = load_json(source_path("negative_results_paper/analysis/rank_robustness_summary.json"))
     transforms = [
@@ -266,7 +266,9 @@ def fig3() -> None:
         ("Labute ASA", r2["R2_on_LabuteASA_only"]),
         ("cLogP", r2["R2_on_clogP_only"]),
     ]
-    fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 3.25), gridspec_kw={"width_ratios": [1.1, 0.9]})
+    fig, axes = plt.subplots(2, 2, figsize=(WIDTH, 5.25),
+                             gridspec_kw={"height_ratios": [0.78, 1.22]})
+    (a, b), (c, d) = axes
     ya = np.arange(len(transforms))[::-1]
     for yi, (name, val) in zip(ya, transforms):
         a.plot([1, val], [yi, yi], color=GREY, lw=1.1)
@@ -289,63 +291,107 @@ def fig3() -> None:
     b.set_xlabel("$R^2$ for mean docking score")
     b.set_ylabel("ligand descriptors")
     clean(b)
-    panel_label(a, "a"); panel_label(b, "b")
-    fig.subplots_adjust(left=0.24, right=0.98, bottom=0.18, top=0.94, wspace=0.63)
+    def loading_panel(ax: plt.Axes, key: str, title: str, color: str) -> None:
+        record = evidence["pc1_axis"][key]
+        frame = pd.DataFrame({
+            "target": record["targets"],
+            "family": record["families"],
+            "loading": record["loadings"],
+        })
+        family_order = (
+            frame.groupby("family").loading.median().sort_values().index.tolist()
+        )
+        for position, family in enumerate(family_order):
+            subset = frame[frame.family.eq(family)].sort_values("loading")
+            jitter = np.linspace(-0.18, 0.18, len(subset)) if len(subset) > 1 else np.array([0.0])
+            ax.scatter(subset.loading, position + jitter, color=color, s=17,
+                       edgecolors="white", linewidths=0.35, zorder=3)
+        minimum = frame.loc[frame.loading.idxmin()]
+        minimum_position = family_order.index(minimum.family)
+        ax.annotate(str(minimum.target), (minimum.loading, minimum_position),
+                    xytext=(5, -7), textcoords="offset points", fontsize=6.3,
+                    arrowprops={"arrowstyle": "-", "color": GREY, "lw": 0.4})
+        ax.axvline(0, color=INK, lw=0.7, ls="--")
+        ax.set_yticks(np.arange(len(family_order)), family_order)
+        ax.set_xlim(-0.04, 0.18)
+        ax.set_xlabel("PC1 target loading")
+        ax.set_ylabel("target family")
+        ax.set_title(title, loc="left")
+        ax.text(0.02, 0.97,
+                f"positive: {record['n_positive_loadings']}/{len(frame)}\n"
+                f"corr(PC1, raw row mean)={record['correlation_with_raw_per_ligand_mean']:.3f}",
+                transform=ax.transAxes, ha="left", va="top", fontsize=6.2,
+                bbox={"boxstyle": "round,pad=0.15", "fc": "white", "ec": "none", "alpha": 0.88})
+        clean(ax)
+
+    loading_panel(c, "docking44", "Docking-44 loadings", BLUE)
+    loading_panel(d, "dockstring58", "DOCKSTRING-58 loadings", ORANGE)
+    for ax, label in zip([a, b, c, d], "abcd"):
+        panel_label(ax, label)
+    fig.subplots_adjust(left=0.23, right=0.985, bottom=0.095, top=0.965,
+                        wspace=0.70, hspace=0.42)
     assert audit_fig(fig)
-    save(fig, str(OUT / "fig3_general_axis"))
+    save(fig, str(OUT / "fig2_shared_axis"))
     plt.close(fig)
 
 
-def matched_matrices() -> tuple[pd.DataFrame, pd.DataFrame]:
-    targets = ["5va1", "6cm4", "7wc9", "8pjk", "3rze", "7ym8"]
-    dock = pd.read_csv(source_path("negative_results_paper/analysis/honest_dock_scores.csv"))
-    exp = pd.read_csv(source_path("negative_results_paper/analysis/chembl_affinity_long.csv")).rename(columns={"pdb": "target", "pchembl": "pexp"})
-    dmat = dock[dock.target.isin(targets)].pivot_table(index="inchikey", columns="target", values="dock")
-    emat = exp[exp.target.isin(targets)].pivot_table(index="inchikey", columns="target", values="pexp")
-    dmat = dmat.reindex(columns=targets)
-    emat = emat.reindex(columns=targets)
-    common = dmat.dropna().index.intersection(emat[emat.notna().sum(axis=1) >= 5].index)
-    dmat = dmat.loc[common]
-    emat = emat.loc[common].fillna(emat.loc[common].median())
-    return dmat, emat
-
-
-def fig4(evidence: dict) -> None:
-    controls = evidence["experimental_sensitivity"]["activity_level_curated_matched_blocks"]
-    pairs = [
-        ("exact relation\nmedian", controls["all_exact_median"]),
-        ("human binding\nall endpoints", controls["human_binding_all_endpoints"]),
-        ("human binding\nKi/Kd", controls["human_binding_Ki_Kd"]),
+def fig3(evidence: dict) -> None:
+    paired = evidence["matched_raw_and_interaction_bootstrap"]
+    imputation = evidence["matched_target_preference_benchmark"]["multiple_imputation"][
+        "participation_ratio"
     ]
-    fig, ax = plt.subplots(figsize=(WIDTH, 3.15))
-    y = np.arange(len(pairs))[::-1]
-    for yi, (label, record) in zip(y, pairs):
-        dock = record["matched_docking_participation_ratio"]
-        experiment = record["experimental_participation_ratio"]
-        ax.plot([dock, experiment], [yi, yi], color=GREY, lw=1.3, zorder=1)
-        ax.scatter(dock, yi, s=46, color=BLUE, edgecolors="white", linewidths=0.7, zorder=3)
-        ax.scatter(experiment, yi, s=46, color=ORANGE, edgecolors="white", linewidths=0.7, zorder=3)
-        ax.text(dock - 0.08, yi + 0.16, f"{dock:.2f}", ha="right", fontsize=7)
-        ax.text(experiment + 0.08, yi + 0.16, f"{experiment:.2f}", ha="left", fontsize=7)
-        ax.text(4.35, yi, f"N={record['n_ligands']}, P={record['n_targets']}",
-                va="center", fontsize=7, color=INK)
-    ax.set_yticks(y, [item[0] for item in pairs])
-    ax.set_xlim(1.35, 5.05)
-    ax.set_ylim(-0.55, len(pairs) - 0.45)
-    ax.set_xlabel("column-standardized PR effective dimension")
-    ax.set_ylabel("matched ChEMBL curation")
-    ax.text(0.02, 0.96, "docking", color=BLUE, transform=ax.transAxes,
-            ha="left", va="top", fontsize=7.5)
-    ax.text(0.16, 0.96, "experiment", color=ORANGE, transform=ax.transAxes,
-            ha="left", va="top", fontsize=7.5)
-    clean(ax)
-    fig.subplots_adjust(left=0.27, right=0.98, bottom=0.20, top=0.95)
+    fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 3.25),
+                              gridspec_kw={"width_ratios": [0.9, 1.1]})
+    surfaces = ["raw", "interaction"]
+    labels = ["column-standardized", "residual"]
+    x = np.arange(2)
+    docking = np.asarray([paired[key]["docking_participation_ratio"] for key in surfaces])
+    experiment = np.asarray([paired[key]["experimental_participation_ratio"] for key in surfaces])
+    a.plot(x, docking, "o-", color=BLUE, markerfacecolor="white", markeredgewidth=1.1)
+    a.plot(x, experiment, "s-", color=ORANGE, markerfacecolor="white", markeredgewidth=1.1)
+    for position, value in zip(x, docking):
+        a.text(position - 0.04, value - 0.16, f"{value:.2f}", ha="right", va="top", fontsize=7)
+    for position, value in zip(x, experiment):
+        a.text(position + 0.04, value + 0.13, f"{value:.2f}", ha="left", va="bottom", fontsize=7)
+    a.set_xticks(x, labels, rotation=12)
+    a.set_xlim(-0.35, 1.35)
+    a.set_ylim(1.45, 4.65)
+    a.set_ylabel("PR effective dimension")
+    a.set_xlabel("matched 74 × 6 surface")
+    a.text(0.04, 0.96, "docking", transform=a.transAxes, color=BLUE,
+           va="top", fontsize=7.2)
+    a.text(0.31, 0.96, "experiment", transform=a.transAxes, color=ORANGE,
+           va="top", fontsize=7.2)
+    clean(a)
+
+    y = np.array([1, 0])
+    for yi, key, mi_key in zip(y, surfaces, ["raw_difference", "residual_difference"]):
+        plugin = paired[key]["plugin_difference_experiment_minus_docking"]
+        lo, hi = paired[key]["bootstrap_difference_95_interval"]
+        mi = imputation[mi_key]
+        b.plot(mi["interval_95"], [yi, yi], color=ORANGE, lw=5.5, alpha=0.24,
+               solid_capstyle="butt", zorder=1)
+        b.plot([lo, hi], [yi, yi], color=INK, lw=1.2, zorder=2)
+        b.plot([lo, hi], [yi, yi], marker="|", color=INK, lw=0, ms=7, zorder=2)
+        b.plot(plugin, yi, "o", color=BLUE, ms=5.5, mec="white", mew=0.55, zorder=3)
+        b.text(plugin + 0.06, yi + 0.12, f"Δ={plugin:.2f}", fontsize=7, va="bottom")
+    b.axvline(0, color=GREY, ls="--", lw=0.8)
+    b.set_yticks(y, labels)
+    b.set_ylim(-0.55, 1.55)
+    b.set_xlim(-0.35, 2.85)
+    b.set_xlabel("experiment − docking PR dimension")
+    b.set_ylabel("surface")
+    b.text(0.98, 0.96, "black: paired ligand bootstrap\norange: 95% across 100 imputations",
+           transform=b.transAxes, ha="right", va="top", fontsize=6.4)
+    clean(b)
+    panel_label(a, "a"); panel_label(b, "b")
+    fig.subplots_adjust(left=0.12, right=0.985, bottom=0.22, top=0.94, wspace=0.52)
     assert audit_fig(fig)
-    save(fig, str(OUT / "fig4_matched_experiment"))
+    save(fig, str(OUT / "fig3_matched_experiment"))
     plt.close(fig)
 
 
-def fig5(evidence: dict) -> None:
+def fig_s4_learned_affinity(evidence: dict) -> None:
     centers = evidence["centering_ladder"]
     ladder = [
         ("Docking-44", centers["docking44"]["raw"]["participation_ratio"], centers["docking44"]["interaction"]["participation_ratio"]),
@@ -388,7 +434,144 @@ def fig5(evidence: dict) -> None:
         panel_label(ax, label)
     fig.subplots_adjust(left=0.105, right=0.985, bottom=0.18, top=0.94, wspace=0.67)
     assert audit_fig(fig)
-    save(fig, str(OUT / "fig5_centering_residual"))
+    save(fig, str(OUT / "figS4_learned_affinity"))
+    plt.close(fig)
+
+
+def fig4(evidence: dict) -> None:
+    centers = evidence["centering_ladder"]
+    dock_boot = evidence["ligand_sampling_sensitivity"][
+        "docking44_butina_cluster_surface_bootstrap"
+    ]
+    dockstring = evidence["ligand_sampling_sensitivity"]["dockstring_scaffold_bootstrap"]
+    additive = evidence["additive_main_effect_null"]
+    fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 3.35),
+                              gridspec_kw={"width_ratios": [1.05, 0.95]})
+    x = np.array([0, 1])
+    for key, label, color, marker in [
+        ("docking44", "Docking-44", BLUE, "o"),
+        ("dockstring58", "DOCKSTRING-58", ORANGE, "s"),
+    ]:
+        raw = centers[key]["raw"]["participation_ratio"]
+        residual = centers[key]["interaction"]["participation_ratio"]
+        a.plot(x, [raw, residual], color=color, lw=1.1, alpha=0.85)
+        a.scatter(x, [raw, residual], color=color, marker=marker, s=37,
+                  edgecolors="white", linewidths=0.55, zorder=3)
+        if key == "docking44":
+            raw_interval = dock_boot["bootstrap"]["raw"]["interval_95"]
+            residual_interval = dock_boot["bootstrap"]["residual"]["interval_95"]
+        else:
+            raw_interval = [
+                dockstring["support_point_estimates"]["raw"]["minimum"],
+                dockstring["support_point_estimates"]["raw"]["maximum"],
+            ]
+            residual_interval = [
+                dockstring["support_point_estimates"]["residual"]["minimum"],
+                dockstring["support_point_estimates"]["residual"]["maximum"],
+            ]
+        a.errorbar(x, [raw, residual],
+                   yerr=[[raw - raw_interval[0], residual - residual_interval[0]],
+                         [raw_interval[1] - raw, residual_interval[1] - residual]],
+                   fmt="none", ecolor=color, elinewidth=1.0, capsize=2, zorder=2)
+        a.text(1.04, residual, label, fontsize=6.8, va="center", color=color)
+    a.set_xticks(x, ["column-standardized", "residual"], rotation=12)
+    a.set_xlim(-0.25, 1.62)
+    a.set_ylim(0, 20.2)
+    a.set_ylabel("PR effective dimension")
+    a.set_xlabel("surface transformation")
+    a.text(0.02, 0.96, "Docking-44: Butina bootstrap\nDOCKSTRING: five support estimates",
+           transform=a.transAxes, ha="left", va="top", fontsize=6.2)
+    clean(a)
+
+    y = np.array([1, 0])
+    for yi, key, label, maximum, color, marker in [
+        (1, "docking44", "Docking-44", 43, BLUE, "o"),
+        (0, "dockstring58", "DOCKSTRING-58", 57, ORANGE, "s"),
+    ]:
+        observed = centers[key]["interaction"]["participation_ratio"] / maximum
+        null = additive[key]["null_residual"]
+        null_median = null["median"] / maximum
+        null_interval = np.asarray(null["interval_95"]) / maximum
+        b.plot([observed, null_median], [yi, yi], color=GREY, lw=1.0)
+        b.plot(null_interval, [yi, yi], color=INK, lw=2.2, alpha=0.45)
+        b.scatter(observed, yi, color=color, marker=marker, s=40,
+                  edgecolors="white", linewidths=0.55, zorder=3)
+        b.scatter(null_median, yi, facecolors="white", edgecolors=INK,
+                  marker=marker, s=36, linewidths=0.8, zorder=3)
+        b.text(observed + 0.025, yi + 0.13,
+               f"observed {centers[key]['interaction']['participation_ratio']:.1f}/{maximum}",
+               fontsize=6.4, color=color)
+    b.set_yticks(y, ["Docking-44", "DOCKSTRING-58"])
+    b.set_xlim(0.12, 1.04)
+    b.set_ylim(-0.55, 1.55)
+    b.set_xlabel("residual PR / algebraic maximum")
+    b.set_ylabel("matrix")
+    b.text(0.98, 0.96, "filled: observed\nopen: fitted additive null",
+           transform=b.transAxes, ha="right", va="top", fontsize=6.3)
+    clean(b)
+    panel_label(a, "a"); panel_label(b, "b")
+    fig.subplots_adjust(left=0.12, right=0.985, bottom=0.22, top=0.94, wspace=0.48)
+    assert audit_fig(fig)
+    save(fig, str(OUT / "fig4_centering_null"))
+    plt.close(fig)
+
+
+def fig5(evidence: dict) -> None:
+    benchmark = evidence["matched_target_preference_benchmark"]
+    representations = benchmark["representations"]
+    rows = [
+        ("absolute Vina", "absolute_vina", BLUE, "s"),
+        ("target-offset only", "docking_target_prior", GREY, "D"),
+        ("column-standardized", "column_standardized", ORANGE, "o"),
+        ("two-way residual", "two_way_residual", TEAL, "^"),
+    ]
+    fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 3.45),
+                              gridspec_kw={"width_ratios": [1.15, 0.85]})
+    y = np.arange(len(rows))[::-1]
+    for yi, (label, key, color, marker) in zip(y, rows):
+        record = representations[key]
+        observed = record["mean_per_ligand_pairwise_accuracy"]
+        interval = record["scaffold_cluster_bootstrap"]["interval_95"]
+        a.plot(interval, [yi, yi], color=color, lw=1.25, zorder=2)
+        a.plot(interval, [yi, yi], marker="|", color=color, lw=0, ms=7, zorder=2)
+        a.scatter(observed, yi, color=color, marker=marker, s=43,
+                  edgecolors="white", linewidths=0.55, zorder=4)
+        if "ligand_identity_shuffle_null" in record:
+            null = record["ligand_identity_shuffle_null"]
+            a.plot(null["interval_95"], [yi - 0.17, yi - 0.17], color=GREY,
+                   lw=3.8, alpha=0.33, solid_capstyle="butt", zorder=1)
+            a.plot(null["mean"], yi - 0.17, "x", color=INK, ms=4.5, mew=0.8, zorder=3)
+            a.text(0.700, yi - 0.27,
+                   f"shuffle p={null['one_sided_empirical_p_observed_at_least_as_large']:.3f}",
+                   ha="right", va="center", fontsize=6.0)
+    a.axvline(0.5, color=INK, ls="--", lw=0.75)
+    a.set_yticks(y, [row[0] for row in rows])
+    a.set_xlim(0.43, 0.705)
+    a.set_ylim(-0.55, len(rows) - 0.45)
+    a.set_xlabel("pairwise target-preference accuracy")
+    a.set_ylabel("operational representation")
+    clean(a)
+
+    alignment = benchmark["target_mean_alignment"]
+    xvals = np.asarray(alignment["minus_mean_docking_score"])
+    yvals = np.asarray(alignment["mean_experimental_pchembl"])
+    b.scatter(xvals, yvals, s=39, color=BLUE, edgecolors="white", linewidths=0.55)
+    offsets = [(4, 4), (4, -10), (-24, 5), (5, 5), (-24, -9), (5, -9)]
+    for target, xvalue, yvalue, offset in zip(alignment["targets"], xvals, yvals, offsets):
+        b.annotate(target, (xvalue, yvalue), xytext=offset,
+                   textcoords="offset points", fontsize=6.1,
+                   arrowprops={"arrowstyle": "-", "color": GREY, "lw": 0.35})
+    b.set_xlabel("favorable Vina target mean (−mean score)", fontsize=7.2)
+    b.set_ylabel("mean observed pChEMBL")
+    b.text(0.97, 0.05,
+           f"Spearman r_s={alignment['spearman_rho_minus_docking_mean_vs_experimental_mean']:.2f}\n"
+           f"P={alignment['n_targets']} targets",
+           transform=b.transAxes, ha="right", va="bottom", fontsize=6.5)
+    clean(b)
+    panel_label(a, "a"); panel_label(b, "b")
+    fig.subplots_adjust(left=0.20, right=0.985, bottom=0.21, top=0.94, wspace=0.56)
+    assert audit_fig(fig)
+    save(fig, str(OUT / "fig5_target_preference"))
     plt.close(fig)
 
 
@@ -430,7 +613,7 @@ def fig_s2(evidence: dict) -> None:
     plt.close(fig)
 
 
-def fig_s3(evidence: dict) -> None:
+def fig_s5_dti(evidence: dict) -> None:
     arms = pd.read_csv(
         PACKAGE / "results/dti_all_scorers_sensitivity.csv"
     )
@@ -487,7 +670,7 @@ def fig_s3(evidence: dict) -> None:
         panel_label(ax, label)
     fig.subplots_adjust(left=0.10, right=0.985, bottom=0.18, top=0.94, wspace=0.34)
     assert audit_fig(fig)
-    save(fig, str(OUT / "figS3_dti_all20"))
+    save(fig, str(OUT / "figS5_dti_all20"))
     plt.close(fig)
 
 
@@ -524,18 +707,50 @@ def fig_s1(evidence: dict) -> None:
     plt.close(fig)
 
 
+def fig_s6_dockstring_supports(evidence: dict) -> None:
+    records = evidence["ligand_sampling_sensitivity"]["dockstring_scaffold_bootstrap"][
+        "supports"
+    ]
+    fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 3.25))
+    y = np.arange(len(records))[::-1]
+    for ax, metric, label, color in [
+        (a, "raw", "column-standardized PR", BLUE),
+        (b, "residual", "residual PR", ORANGE),
+    ]:
+        for yi, record in zip(y, records):
+            value = record["point_estimate"][metric]
+            interval = record["scaffold_cluster_bootstrap"]["bootstrap"][metric][
+                "interval_95"
+            ]
+            ax.plot(interval, [yi, yi], color=GREY, lw=1.2)
+            ax.plot(interval, [yi, yi], marker="|", color=GREY, lw=0, ms=7)
+            ax.plot(value, yi, "o", color=color, ms=5.5, mec="white", mew=0.5)
+        ax.set_yticks(y, [f"support {record['support_number']}" for record in records])
+        ax.set_xlabel(label)
+        ax.set_ylabel("independent 15,000-molecule support")
+        clean(ax)
+    panel_label(a, "a"); panel_label(b, "b")
+    fig.subplots_adjust(left=0.21, right=0.985, bottom=0.20, top=0.94, wspace=0.55)
+    assert audit_fig(fig)
+    save(fig, str(OUT / "figS6_dockstring_supports"))
+    plt.close(fig)
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     use_paper_style()
     evidence = load_json(PACKAGE / "results/evidence_summary.json")
     fig1(evidence)
     fig2(evidence)
-    fig3()
+    fig3(evidence)
     fig4(evidence)
     fig5(evidence)
     fig_s1(evidence)
     fig_s2(evidence)
-    fig_s3(evidence)
+    fig_s3_scoring_controls(evidence)
+    fig_s4_learned_affinity(evidence)
+    fig_s5_dti(evidence)
+    fig_s6_dockstring_supports(evidence)
     print(f"Wrote manuscript figures to {OUT}")
 
 

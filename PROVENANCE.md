@@ -35,8 +35,9 @@ by pandas.
 - Analysis support: 260,060 complete molecules and 58 targets.
 - Primary preprocessing: positive scores clipped to zero, complete rows retained, then
   column standardization.
-- Scaffold sensitivity: Bemis–Murcko scaffolds computed by RDKit on one seeded 15,000-row
-  support; acyclic molecules are singleton clusters.
+- Scaffold sensitivity: Bemis–Murcko scaffolds computed by RDKit on five independently
+  seeded 15,000-row supports; acyclic molecules are singleton clusters. Each support has
+  100 molecule and 100 scaffold-cluster bootstrap replicates.
 
 Broad family labels used only for stratified target subsampling are in
 `data/target_families.csv`. They are intentionally coarse curation labels, not an ontology.
@@ -60,6 +61,10 @@ than broad evidence about modern neural scoring functions.
   repeatability-calibrated noise are regenerated or loaded from the checksummed summaries
   listed in the manifest.
 - The historical most-potent aggregation is retained only as a labelled sensitivity.
+- The operational benchmark evaluates observed exact-relation median cells with
+  leave-one-ligand-out transformations. It includes target-offset-only and experimental
+  target-prior controls, ligand-identity permutation nulls, scaffold-cluster uncertainty,
+  pair weighting, tie tolerance, and 100 posterior multiple imputations.
 
 ## DAVIS, Boltz-2, and exploratory DTI arms
 
@@ -71,6 +76,7 @@ The 12 above-chance arms are an explicitly outcome-restricted sensitivity.
 
 ## Randomness and software
 
-All new stochastic analyses use NumPy seed 0. Versions are pinned in `requirements.lock`;
-the reference environment uses Python 3.12.11. The generated
+NumPy seed 0 initializes all new stochastic analyses; support-specific and replicate seeds
+are derived reproducibly and stored in the evidence ledger. Versions are pinned in
+`requirements.lock`; the reference environment uses Python 3.12.11. The generated
 `results/evidence_summary.json` is the numeric authority for the manuscript.

@@ -26,7 +26,9 @@ from rdkit import Chem, RDLogger
 from rdkit.Chem import Crippen, Descriptors, rdMolDescriptors
 from rdkit.Chem.Scaffolds import MurckoScaffold
 from sklearn.ensemble import HistGradientBoostingRegressor
-from sklearn.linear_model import LinearRegression
+from sklearn.experimental import enable_iterative_imputer  # noqa: F401
+from sklearn.impute import IterativeImputer
+from sklearn.linear_model import BayesianRidge, LinearRegression
 from sklearn.model_selection import KFold
 
 RDLogger.DisableLog("rdApp.*")
@@ -46,6 +48,7 @@ DOCK44 = [
     "7xnk", "7ym8", "8e9y", "8ef6", "8fhs", "8pjk", "8st0", "8wty",
     "8xvk", "8yn3", "9eo4", "V1A",
 ]
+MATCHED_TARGETS = ["5va1", "6cm4", "7wc9", "8pjk", "3rze", "7ym8"]
 
 
 def source_path(relative: str | Path) -> Path:
@@ -121,6 +124,36 @@ def centering_ladder(x: np.ndarray) -> dict:
         "raw": rank_summary(x),
         "interaction": rank_summary(interaction),
         "interaction_fraction_of_grand_centered_sum_squares": interaction_ss / total_ss,
+    }
+
+
+def pc1_loading_summary(
+    matrix: np.ndarray, target_names: list[str], families: list[str]
+) -> dict:
+    """Target loadings and score correlations for the leading standardized direction."""
+    matrix = np.asarray(matrix, dtype=np.float64)
+    z = (matrix - matrix.mean(axis=0)) / matrix.std(axis=0, ddof=1)
+    eigenvalues, eigenvectors = np.linalg.eigh((z.T @ z) / (len(z) - 1))
+    loading = eigenvectors[:, -1]
+    if loading.mean() < 0:
+        loading = -loading
+    scores = z @ loading
+    return {
+        "targets": list(target_names),
+        "families": list(families),
+        "loadings": [float(value) for value in loading],
+        "minimum_loading": float(loading.min()),
+        "maximum_loading": float(loading.max()),
+        "n_positive_loadings": int(np.sum(loading > 0)),
+        "n_negative_loadings": int(np.sum(loading < 0)),
+        "pc1_eigenvalue": float(eigenvalues[-1]),
+        "correlation_with_raw_per_ligand_mean": float(
+            stats.pearsonr(scores, matrix.mean(axis=1)).statistic
+        ),
+        "correlation_with_column_standardized_per_ligand_mean": float(
+            stats.pearsonr(scores, z.mean(axis=1)).statistic
+        ),
+        "orientation": "sign chosen so the mean target loading is positive",
     }
 
 
@@ -345,68 +378,125 @@ def scaffold_keys(smiles: pd.Series) -> np.ndarray:
     return np.asarray(keys, dtype=object)
 
 
+def describe_distribution(values: list[float] | np.ndarray) -> dict:
+    array = np.asarray(values, dtype=float)
+    return {
+        "mean": float(array.mean()),
+        "median": float(np.median(array)),
+        "standard_deviation": float(array.std(ddof=1)) if len(array) > 1 else 0.0,
+        "interval_95": [
+            float(np.quantile(array, 0.025)),
+            float(np.quantile(array, 0.975)),
+        ],
+        "minimum": float(array.min()),
+        "maximum": float(array.max()),
+    }
+
+
+def surface_pr_triplet(matrix: np.ndarray) -> tuple[float, float, float, float]:
+    raw = rank_summary(matrix)["participation_ratio"]
+    residual = rank_summary(two_way_center(matrix))["participation_ratio"]
+    return raw, residual, residual - raw, residual / raw
+
+
+def surface_bootstrap(
+    matrix: np.ndarray,
+    repeats: int,
+    seed: int,
+    cluster_labels: np.ndarray | None = None,
+) -> dict:
+    """Paired bootstrap for raw PR, residual PR, and their change."""
+    matrix = np.asarray(matrix, dtype=np.float64)
+    rng = np.random.default_rng(seed)
+    members: list[np.ndarray] | None = None
+    if cluster_labels is not None:
+        _, inverse = np.unique(np.asarray(cluster_labels), return_inverse=True)
+        members = [np.flatnonzero(inverse == value) for value in range(inverse.max() + 1)]
+    values = {"raw": [], "residual": [], "difference": [], "ratio": []}
+    sample_sizes: list[int] = []
+    for _ in range(repeats):
+        if members is None:
+            index = rng.integers(0, len(matrix), len(matrix))
+        else:
+            sampled = rng.integers(0, len(members), len(members))
+            index = np.concatenate([members[value] for value in sampled])
+        sample_sizes.append(int(len(index)))
+        raw, residual, difference, ratio = surface_pr_triplet(matrix[index])
+        values["raw"].append(raw)
+        values["residual"].append(residual)
+        values["difference"].append(difference)
+        values["ratio"].append(ratio)
+    raw, residual, difference, ratio = surface_pr_triplet(matrix)
+    return {
+        "plugin": {
+            "raw": raw,
+            "residual": residual,
+            "difference_residual_minus_raw": difference,
+            "ratio_residual_over_raw": ratio,
+        },
+        "bootstrap": {key: describe_distribution(record) for key, record in values.items()},
+        "repeats": repeats,
+        "n_clusters": int(len(members)) if members is not None else None,
+        "resampled_n": {
+            "minimum": int(np.min(sample_sizes)),
+            "median": float(np.median(sample_sizes)),
+            "maximum": int(np.max(sample_sizes)),
+        },
+    }
+
+
 def dockstring_scaffold_bootstrap(
     x: np.ndarray,
     smiles: pd.Series,
-    repeats: int = 200,
+    repeats: int = 100,
     sample_size: int = 15000,
+    supports: int = 5,
     seed: int = SEED,
 ) -> dict:
-    """Compare molecule and scaffold-cluster bootstrap intervals on fixed support.
-
-    The computationally bounded 15,000-molecule support is selected once. Scaffold
-    clusters are then sampled with replacement and all sampled cluster members are
-    retained. This interval represents chemical-cluster sensitivity, not uncertainty
-    over target selection or the complete DOCKSTRING library.
-    """
+    """Molecule and scaffold bootstrap on several independent chemical supports."""
     x = np.asarray(x, dtype=np.float64)
     rng = np.random.default_rng(seed)
     if len(x) != len(smiles):
         raise ValueError("DOCKSTRING matrix and SMILES support differ")
-    support = rng.choice(len(x), size=min(sample_size, len(x)), replace=False)
-    matrix = x[support]
-    keys = scaffold_keys(smiles.iloc[support].reset_index(drop=True))
-    labels, inverse = np.unique(keys, return_inverse=True)
-    members = [np.flatnonzero(inverse == cluster) for cluster in range(len(labels))]
-    molecule_values: list[float] = []
-    scaffold_values: list[float] = []
-    scaffold_sample_sizes: list[int] = []
-    for _ in range(repeats):
-        molecule_index = rng.integers(0, len(matrix), len(matrix))
-        molecule_values.append(rank_summary(matrix[molecule_index])["participation_ratio"])
-        sampled_clusters = rng.integers(0, len(members), len(members))
-        scaffold_index = np.concatenate([members[item] for item in sampled_clusters])
-        scaffold_sample_sizes.append(int(len(scaffold_index)))
-        scaffold_values.append(
-            rank_summary(matrix[scaffold_index])["participation_ratio"]
+    support_records = []
+    for support_number in range(supports):
+        support_seed = int(rng.integers(0, np.iinfo(np.int32).max))
+        support_rng = np.random.default_rng(support_seed)
+        support = support_rng.choice(len(x), size=min(sample_size, len(x)), replace=False)
+        matrix = x[support]
+        keys = scaffold_keys(smiles.iloc[support].reset_index(drop=True))
+        molecule = surface_bootstrap(
+            matrix, repeats=repeats, seed=support_seed + 1
         )
-
-    def describe(values: list[float]) -> dict:
-        array = np.asarray(values, dtype=float)
-        return {
-            "mean": float(array.mean()),
-            "median": float(np.median(array)),
-            "interval_95": [
-                float(np.quantile(array, 0.025)),
-                float(np.quantile(array, 0.975)),
-            ],
-        }
-
+        scaffold = surface_bootstrap(
+            matrix, repeats=repeats, seed=support_seed + 2, cluster_labels=keys
+        )
+        support_records.append({
+            "support_number": support_number + 1,
+            "seed": support_seed,
+            "n_molecules": int(len(matrix)),
+            "n_scaffold_clusters": int(scaffold["n_clusters"]),
+            "acyclic_singletons": int(
+                np.sum(np.char.startswith(keys.astype(str), "ACYCLIC:"))
+            ),
+            "point_estimate": molecule["plugin"],
+            "molecule_bootstrap": molecule,
+            "scaffold_cluster_bootstrap": scaffold,
+        })
+    aggregate = {}
+    for key in ["raw", "residual", "difference_residual_minus_raw", "ratio_residual_over_raw"]:
+        aggregate[key] = describe_distribution([
+            record["point_estimate"][key] for record in support_records
+        ])
     return {
-        "fixed_support_n": int(len(matrix)),
-        "n_scaffold_clusters_on_fixed_support": int(len(labels)),
-        "acyclic_singletons": int(np.sum(np.char.startswith(keys.astype(str), "ACYCLIC:"))),
-        "repeats": repeats,
-        "molecule_bootstrap": describe(molecule_values),
-        "scaffold_cluster_bootstrap": describe(scaffold_values),
-        "scaffold_bootstrap_sample_size": {
-            "minimum": int(np.min(scaffold_sample_sizes)),
-            "median": float(np.median(scaffold_sample_sizes)),
-            "maximum": int(np.max(scaffold_sample_sizes)),
-        },
+        "supports": support_records,
+        "support_point_estimates": aggregate,
+        "n_supports": supports,
+        "support_n": int(min(sample_size, len(x))),
+        "bootstrap_repeats_per_support": repeats,
         "scope": (
-            "chemical-cluster sensitivity on one seeded 15,000-molecule support; "
-            "conditional on the 58 observed targets"
+            "chemical-support and scaffold-cluster sensitivity across five independently "
+            "seeded 15,000-molecule supports; conditional on the 58 observed targets"
         ),
     }
 
@@ -485,7 +575,7 @@ def parallel_analysis(
     series: int = 5,
     seed: int = SEED,
 ) -> dict:
-    """Rank-wise permutation null with independent-series stability checks."""
+    """Descriptive rank-wise and family-wise permutation envelopes."""
     matrix = np.asarray(matrix, dtype=np.float64)
     rng = np.random.default_rng(seed)
     if len(matrix) > sample_size:
@@ -515,6 +605,14 @@ def parallel_analysis(
     per_series = repeats // series
     for surface in ["raw", "interaction"]:
         null_95 = np.quantile(nulls[surface], 0.95, axis=0)
+        null_mean = nulls[surface].mean(axis=0)
+        null_sd = nulls[surface].std(axis=0, ddof=1)
+        valid = null_sd > 1e-12
+        max_studentized = np.max(
+            (nulls[surface][:, valid] - null_mean[valid]) / null_sd[valid], axis=1
+        )
+        simultaneous_critical = float(np.quantile(max_studentized, 0.95))
+        simultaneous_envelope = null_mean + simultaneous_critical * null_sd
         series_counts = []
         for index in range(series):
             block = nulls[surface][index * per_series:(index + 1) * per_series]
@@ -524,19 +622,89 @@ def parallel_analysis(
             "n_modes_above_rankwise_95pct_null": int(
                 np.sum(observed[surface] > null_95)
             ),
+            "n_modes_above_simultaneous_95pct_envelope": int(
+                np.sum(observed[surface] > simultaneous_envelope)
+            ),
             "independent_series_mode_counts": series_counts,
             "per_series_repeats": per_series,
             "observed_eigenvalues": [float(value) for value in observed[surface]],
             "rankwise_null_95pct": [float(value) for value in null_95],
+            "simultaneous_studentized_95pct_critical_value": simultaneous_critical,
+            "simultaneous_95pct_envelope": [
+                float(value) for value in simultaneous_envelope
+            ],
         }
     reports["sample_n"] = int(len(observed_matrix))
     reports["repeats"] = repeats
     reports["independent_series"] = series
     reports["null"] = (
         "independently permute every target column, then apply the same raw or "
-        "two-way-centered transformation; compare eigenvalues rank-wise"
+        "two-way-centered transformation; rank-wise counts are descriptive, while the "
+        "studentized maximum-deviation envelope controls the family-wise error rate over ranks"
     )
     return reports
+
+
+def additive_main_effect_null(
+    matrix: np.ndarray,
+    sample_size: int = 12000,
+    repeats: int = 500,
+    seed: int = SEED,
+) -> dict:
+    """Fitted additive Gaussian null with target-specific residual variances.
+
+    The fitted grand, ligand, and target effects are retained. Independent Gaussian
+    residuals use the observed residual standard deviation of each target. The same
+    two-way centering and column standardisation are then applied to every simulation.
+    """
+    matrix = np.asarray(matrix, dtype=np.float64)
+    rng = np.random.default_rng(seed)
+    if len(matrix) > sample_size:
+        support = rng.choice(len(matrix), sample_size, replace=False)
+        work = matrix[support]
+    else:
+        work = matrix
+    grand = float(work.mean())
+    ligand_effect = work.mean(axis=1) - grand
+    target_effect = work.mean(axis=0) - grand
+    residual = two_way_center(work)
+    residual_sd = residual.std(axis=0, ddof=1)
+    raw_values: list[float] = []
+    residual_values: list[float] = []
+    for _ in range(repeats):
+        noise = rng.normal(0.0, residual_sd, size=work.shape)
+        simulated = (
+            grand + ligand_effect[:, None] + target_effect[None, :] + noise
+        )
+        raw, centered, _, _ = surface_pr_triplet(simulated)
+        raw_values.append(raw)
+        residual_values.append(centered)
+    observed_raw, observed_residual, observed_difference, observed_ratio = surface_pr_triplet(work)
+    residual_array = np.asarray(residual_values)
+    return {
+        "sample_n": int(len(work)),
+        "n_targets": int(work.shape[1]),
+        "repeats": repeats,
+        "observed": {
+            "raw": observed_raw,
+            "residual": observed_residual,
+            "difference_residual_minus_raw": observed_difference,
+            "ratio_residual_over_raw": observed_ratio,
+        },
+        "null_raw": describe_distribution(raw_values),
+        "null_residual": describe_distribution(residual_values),
+        "empirical_lower_tail_p_for_residual_pr": float(
+            (1 + np.sum(residual_array <= observed_residual)) / (repeats + 1)
+        ),
+        "model": (
+            "X_ij = fitted grand + fitted ligand effect_i + fitted target effect_j + "
+            "independent Gaussian residual with the observed target-specific residual variance"
+        ),
+        "interpretation": (
+            "The null asks whether two-way centering alone creates the observed residual "
+            "concentration. A residual PR below this null indicates correlated residual structure."
+        ),
+    }
 
 
 def residualized_rank_correlation(x: np.ndarray, y: np.ndarray, z: np.ndarray) -> dict:
@@ -610,21 +778,359 @@ def preprocessing_sensitivity(docking_frame: pd.DataFrame) -> dict:
 
 
 def matched_experimental_matrices() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """Rebuild the frozen 74-by-6 docking/ChEMBL comparison."""
-    targets = ["5va1", "6cm4", "7wc9", "8pjk", "3rze", "7ym8"]
+    """Rebuild the primary exact-relation-median 74-by-6 comparison."""
     dock = pd.read_csv(source_path("negative_results_paper/analysis/honest_dock_scores.csv"))
-    exp = pd.read_csv(source_path("negative_results_paper/analysis/chembl_affinity_long.csv"))
-    dmat = dock[dock.target.isin(targets)].pivot_table(
+    dmat = dock[dock.target.isin(MATCHED_TARGETS)].pivot_table(
         index="inchikey", columns="target", values="dock"
-    ).reindex(columns=targets)
-    emat = exp[exp.pdb.isin(targets)].pivot_table(
-        index="inchikey", columns="pdb", values="pchembl"
-    ).reindex(columns=targets)
+    ).reindex(columns=MATCHED_TARGETS)
+    activities = pd.read_csv(
+        source_path("negative_results_paper/analysis/chembl_activities_full.csv")
+    )
+    activities = activities[
+        activities.panel_key.isin(MATCHED_TARGETS)
+        & activities.pchembl_value.notna()
+        & activities.standard_relation.eq("=")
+        & activities.standard_type.isin(["Ki", "Kd", "IC50", "EC50"])
+    ].copy()
+    smiles_to_key = {}
+    for smiles in activities.canonical_smiles.dropna().unique():
+        molecule = Chem.MolFromSmiles(str(smiles))
+        smiles_to_key[smiles] = Chem.MolToInchiKey(molecule) if molecule is not None else None
+    activities["inchikey"] = activities.canonical_smiles.map(smiles_to_key)
+    emat = activities.pivot_table(
+        index="inchikey",
+        columns="panel_key",
+        values="pchembl_value",
+        aggfunc="median",
+    ).reindex(columns=MATCHED_TARGETS)
     common = dmat.dropna().index.intersection(emat[emat.notna().sum(axis=1) >= 5].index)
     dmat = dmat.loc[common]
     emat_observed = emat.loc[common]
     emat_filled = emat_observed.fillna(emat_observed.median())
     return dmat, emat_observed, emat_filled
+
+
+def leave_one_ligand_out_docking_representations(
+    docking: np.ndarray, experiment_observed: np.ndarray
+) -> dict[str, np.ndarray]:
+    """Construct operational score representations without held-out-ligand leakage."""
+    docking = np.asarray(docking, dtype=np.float64)
+    experiment_observed = np.asarray(experiment_observed, dtype=np.float64)
+    n, p = docking.shape
+    outputs = {
+        key: np.empty((n, p), dtype=np.float64)
+        for key in [
+            "absolute_vina",
+            "column_standardized",
+            "two_way_residual",
+            "docking_target_prior",
+            "experimental_target_prior",
+        ]
+    }
+    for held_out in range(n):
+        train = np.arange(n) != held_out
+        train_matrix = docking[train]
+        target_mean = train_matrix.mean(axis=0)
+        target_sd = train_matrix.std(axis=0, ddof=1)
+        grand = float(train_matrix.mean())
+        train_residual = (
+            train_matrix
+            - target_mean[None, :]
+            - train_matrix.mean(axis=1)[:, None]
+            + grand
+        )
+        residual_sd = train_residual.std(axis=0, ddof=1)
+        test = docking[held_out]
+        outputs["absolute_vina"][held_out] = test
+        outputs["column_standardized"][held_out] = (test - target_mean) / target_sd
+        outputs["two_way_residual"][held_out] = (
+            test - target_mean - test.mean() + grand
+        ) / residual_sd
+        outputs["docking_target_prior"][held_out] = target_mean
+        outputs["experimental_target_prior"][held_out] = -np.nanmean(
+            experiment_observed[train], axis=0
+        )
+    return outputs
+
+
+def preference_metrics(
+    scores: np.ndarray,
+    experiment: np.ndarray,
+    tie_tolerance: float = 0.0,
+) -> dict:
+    """Within-ligand target-preference metrics; lower scores predict higher pChEMBL."""
+    scores = np.asarray(scores, dtype=np.float64)
+    experiment = np.asarray(experiment, dtype=np.float64)
+    per_ligand_accuracy = np.full(len(experiment), np.nan)
+    per_ligand_spearman = np.full(len(experiment), np.nan)
+    per_ligand_top1 = np.full(len(experiment), np.nan)
+    total_correct = 0
+    total_pairs = 0
+    excluded_ties = 0
+    for ligand in range(len(experiment)):
+        observed = np.flatnonzero(np.isfinite(experiment[ligand]))
+        correct = 0
+        pairs = 0
+        for first in range(len(observed)):
+            for second in range(first + 1, len(observed)):
+                i, j = observed[first], observed[second]
+                experimental_difference = experiment[ligand, i] - experiment[ligand, j]
+                if abs(experimental_difference) <= tie_tolerance:
+                    excluded_ties += 1
+                    continue
+                score_difference = scores[ligand, i] - scores[ligand, j]
+                correct += int(
+                    np.sign(experimental_difference) == -np.sign(score_difference)
+                )
+                pairs += 1
+        if pairs:
+            per_ligand_accuracy[ligand] = correct / pairs
+        total_correct += correct
+        total_pairs += pairs
+        if len(observed) >= 3:
+            per_ligand_spearman[ligand] = stats.spearmanr(
+                -scores[ligand, observed], experiment[ligand, observed]
+            ).statistic
+        if len(observed):
+            per_ligand_top1[ligand] = float(
+                observed[np.argmin(scores[ligand, observed])]
+                == observed[np.argmax(experiment[ligand, observed])]
+            )
+    return {
+        "per_ligand_pairwise_accuracy": per_ligand_accuracy,
+        "per_ligand_spearman": per_ligand_spearman,
+        "per_ligand_top1": per_ligand_top1,
+        "mean_per_ligand_pairwise_accuracy": float(np.nanmean(per_ligand_accuracy)),
+        "pair_weighted_accuracy": float(total_correct / total_pairs),
+        "mean_per_ligand_spearman": float(np.nanmean(per_ligand_spearman)),
+        "top1_accuracy": float(np.nanmean(per_ligand_top1)),
+        "evaluated_pairs": int(total_pairs),
+        "excluded_ties": int(excluded_ties),
+    }
+
+
+def bootstrap_vector_mean(
+    values: np.ndarray,
+    repeats: int,
+    seed: int,
+    cluster_labels: np.ndarray | None = None,
+) -> dict:
+    values = np.asarray(values, dtype=np.float64)
+    rng = np.random.default_rng(seed)
+    records = []
+    if cluster_labels is None:
+        for _ in range(repeats):
+            index = rng.integers(0, len(values), len(values))
+            records.append(float(np.nanmean(values[index])))
+        n_clusters = None
+    else:
+        _, inverse = np.unique(np.asarray(cluster_labels), return_inverse=True)
+        members = [np.flatnonzero(inverse == value) for value in range(inverse.max() + 1)]
+        for _ in range(repeats):
+            sampled = rng.integers(0, len(members), len(members))
+            index = np.concatenate([members[value] for value in sampled])
+            records.append(float(np.nanmean(values[index])))
+        n_clusters = len(members)
+    report = describe_distribution(records)
+    report["plugin_mean"] = float(np.nanmean(values))
+    report["n_clusters"] = n_clusters
+    return report
+
+
+def target_preference_benchmark(
+    docking: pd.DataFrame,
+    experiment_observed: pd.DataFrame,
+    smiles: pd.Series,
+    bootstrap_repeats: int = 5000,
+    shuffle_repeats: int = 5000,
+    imputations: int = 100,
+    seed: int = SEED,
+) -> dict:
+    """Reverse-docking preference benchmark with target-prior controls."""
+    docking_values = docking.to_numpy(dtype=np.float64)
+    experiment_values = experiment_observed.to_numpy(dtype=np.float64)
+    score_matrices = leave_one_ligand_out_docking_representations(
+        docking_values, experiment_values
+    )
+    keys = scaffold_keys(smiles.reindex(docking.index).reset_index(drop=True))
+    reports = {}
+    metric_cache = {}
+    for offset, (name, scores) in enumerate(score_matrices.items()):
+        metric = preference_metrics(scores, experiment_values)
+        tolerance = preference_metrics(scores, experiment_values, tie_tolerance=0.10)
+        metric_cache[name] = metric
+        reports[name] = {
+            key: value
+            for key, value in metric.items()
+            if not key.startswith("per_ligand_")
+        }
+        reports[name]["ligand_bootstrap"] = bootstrap_vector_mean(
+            metric["per_ligand_pairwise_accuracy"],
+            repeats=bootstrap_repeats,
+            seed=seed + 10 + offset,
+        )
+        reports[name]["scaffold_cluster_bootstrap"] = bootstrap_vector_mean(
+            metric["per_ligand_pairwise_accuracy"],
+            repeats=bootstrap_repeats,
+            seed=seed + 20 + offset,
+            cluster_labels=keys,
+        )
+        reports[name]["tie_tolerance_0.10"] = {
+            "mean_per_ligand_pairwise_accuracy": tolerance[
+                "mean_per_ligand_pairwise_accuracy"
+            ],
+            "pair_weighted_accuracy": tolerance["pair_weighted_accuracy"],
+            "evaluated_pairs": tolerance["evaluated_pairs"],
+            "excluded_ties": tolerance["excluded_ties"],
+        }
+
+    comparisons = {}
+    for first, second in [
+        ("two_way_residual", "column_standardized"),
+        ("two_way_residual", "absolute_vina"),
+        ("column_standardized", "absolute_vina"),
+        ("absolute_vina", "docking_target_prior"),
+    ]:
+        difference = (
+            metric_cache[first]["per_ligand_pairwise_accuracy"]
+            - metric_cache[second]["per_ligand_pairwise_accuracy"]
+        )
+        label = f"{first}_minus_{second}"
+        comparisons[label] = {
+            "plugin_mean_difference": float(np.nanmean(difference)),
+            "ligand_bootstrap": bootstrap_vector_mean(
+                difference, bootstrap_repeats, seed + 100 + len(comparisons)
+            ),
+            "scaffold_cluster_bootstrap": bootstrap_vector_mean(
+                difference,
+                bootstrap_repeats,
+                seed + 200 + len(comparisons),
+                cluster_labels=keys,
+            ),
+        }
+    residual_column_difference = (
+        metric_cache["two_way_residual"]["per_ligand_pairwise_accuracy"]
+        - metric_cache["column_standardized"]["per_ligand_pairwise_accuracy"]
+    )
+    standard_error = float(
+        np.nanstd(residual_column_difference, ddof=1)
+        / np.sqrt(np.isfinite(residual_column_difference).sum())
+    )
+    comparisons["two_way_residual_minus_column_standardized"][
+        "normal_approx_80pct_power_mde_two_sided_alpha_0.05"
+    ] = float((stats.norm.ppf(0.975) + stats.norm.ppf(0.80)) * standard_error)
+
+    rng = np.random.default_rng(seed + 300)
+    for name in ["absolute_vina", "column_standardized", "two_way_residual"]:
+        null_values = []
+        for _ in range(shuffle_repeats):
+            shuffled = score_matrices[name][rng.permutation(len(docking_values))]
+            null_values.append(
+                preference_metrics(shuffled, experiment_values)[
+                    "mean_per_ligand_pairwise_accuracy"
+                ]
+            )
+        null_array = np.asarray(null_values)
+        observed = reports[name]["mean_per_ligand_pairwise_accuracy"]
+        reports[name]["ligand_identity_shuffle_null"] = {
+            **describe_distribution(null_array),
+            "one_sided_empirical_p_observed_at_least_as_large": float(
+                (1 + np.sum(null_array >= observed)) / (shuffle_repeats + 1)
+            ),
+            "repeats": shuffle_repeats,
+        }
+
+    imputation_records = {
+        name: {"pairwise_accuracy": [], "spearman": [], "top1": []}
+        for name in ["absolute_vina", "column_standardized", "two_way_residual"]
+    }
+    imputation_pr = {"raw": [], "residual": [], "raw_difference": [], "residual_difference": []}
+    observed_min = np.nanmin(experiment_values, axis=0)
+    observed_max = np.nanmax(experiment_values, axis=0)
+    for imputation in range(imputations):
+        imputer = IterativeImputer(
+            estimator=BayesianRidge(),
+            sample_posterior=True,
+            max_iter=20,
+            random_state=seed + 400 + imputation,
+            min_value=observed_min,
+            max_value=observed_max,
+        )
+        completed = imputer.fit_transform(experiment_values)
+        exp_raw = rank_summary(completed)["participation_ratio"]
+        exp_residual = rank_summary(two_way_center(completed))["participation_ratio"]
+        dock_raw = rank_summary(docking_values)["participation_ratio"]
+        dock_residual = rank_summary(two_way_center(docking_values))["participation_ratio"]
+        imputation_pr["raw"].append(exp_raw)
+        imputation_pr["residual"].append(exp_residual)
+        imputation_pr["raw_difference"].append(exp_raw - dock_raw)
+        imputation_pr["residual_difference"].append(exp_residual - dock_residual)
+        for name in imputation_records:
+            metric = preference_metrics(score_matrices[name], completed)
+            imputation_records[name]["pairwise_accuracy"].append(
+                metric["mean_per_ligand_pairwise_accuracy"]
+            )
+            imputation_records[name]["spearman"].append(
+                metric["mean_per_ligand_spearman"]
+            )
+            imputation_records[name]["top1"].append(metric["top1_accuracy"])
+
+    target_docking_mean = docking.mean(axis=0).to_numpy(dtype=float)
+    target_experimental_mean = experiment_observed.mean(axis=0).to_numpy(dtype=float)
+    return {
+        "n_ligands": int(len(docking)),
+        "n_targets": int(docking.shape[1]),
+        "observed_experimental_cells": int(np.isfinite(experiment_values).sum()),
+        "missing_experimental_cells": int(np.isnan(experiment_values).sum()),
+        "primary_estimand": (
+            "mean per-ligand pairwise target-preference accuracy over observed exact-relation "
+            "median pChEMBL cells; exact experimental ties excluded"
+        ),
+        "sign_convention": (
+            "fixed a priori from the Vina energy convention: more negative docking scores "
+            "predict higher pChEMBL"
+        ),
+        "cross_fitting": (
+            "leave one ligand out; target means, grand mean, raw target standard deviations, "
+            "and residual target standard deviations estimated only from the other 73 ligands"
+        ),
+        "representations": reports,
+        "paired_comparisons": comparisons,
+        "matched_scaffold_clusters": int(len(np.unique(keys))),
+        "target_mean_alignment": {
+            "targets": [str(value) for value in docking.columns],
+            "minus_mean_docking_score": [float(value) for value in -target_docking_mean],
+            "mean_experimental_pchembl": [float(value) for value in target_experimental_mean],
+            "spearman_rho_minus_docking_mean_vs_experimental_mean": float(
+                stats.spearmanr(-target_docking_mean, target_experimental_mean).statistic
+            ),
+            "two_sided_p_value": float(
+                stats.spearmanr(-target_docking_mean, target_experimental_mean).pvalue
+            ),
+            "n_targets": int(docking.shape[1]),
+        },
+        "multiple_imputation": {
+            "method": (
+                "100 posterior draws from chained Bayesian-ridge regressions; imputed values "
+                "bounded by the observed range of each target"
+            ),
+            "n_imputations": imputations,
+            "participation_ratio": {
+                key: describe_distribution(value) for key, value in imputation_pr.items()
+            },
+            "downstream_metrics": {
+                name: {
+                    metric: describe_distribution(values)
+                    for metric, values in record.items()
+                }
+                for name, record in imputation_records.items()
+            },
+        },
+        "boundary": (
+            "This six-target benchmark tests operational target ranking on one matched ChEMBL "
+            "support; it does not estimate reverse-docking accuracy for other panels."
+        ),
+    }
 
 
 def experimental_sensitivity(dmat: pd.DataFrame, emat_observed: pd.DataFrame) -> dict:
@@ -1104,12 +1610,15 @@ def main() -> None:
 
     dockstring_df = pd.read_csv(source_path("dockstring-dataset.tsv"), sep="\t")
     dockstring_cols = [c for c in dockstring_df.columns if c not in {"inchikey", "smiles"}]
-    dockstring_numeric = (
-        dockstring_df[dockstring_cols].apply(pd.to_numeric, errors="coerce").clip(upper=0)
+    dockstring_unclipped_numeric = dockstring_df[dockstring_cols].apply(
+        pd.to_numeric, errors="coerce"
     )
-    dockstring_complete = ~dockstring_numeric.isna().any(axis=1)
+    dockstring_complete = ~dockstring_unclipped_numeric.isna().any(axis=1)
     dockstring_smiles = dockstring_df.loc[dockstring_complete, "smiles"].reset_index(drop=True)
-    dockstring = dockstring_numeric.loc[dockstring_complete].to_numpy(dtype=np.float64)
+    dockstring_unclipped = dockstring_unclipped_numeric.loc[dockstring_complete].to_numpy(
+        dtype=np.float64
+    )
+    dockstring = np.minimum(dockstring_unclipped, 0.0)
 
     family_manifest = pd.read_csv(PACKAGE / "data/target_families.csv")
     dock44_families = (
@@ -1143,6 +1652,34 @@ def main() -> None:
     exact_matched = experimental_controls["activity_level_curated_matched_blocks"][
         "all_exact_median"
     ]
+    matched_smiles = pd.read_csv(
+        source_path("negative_results_paper/analysis/exp_positive_control_smiles.csv")
+    ).set_index("inchikey")["smiles"]
+    if matched_smiles.reindex(matched_dock.index).isna().any():
+        raise ValueError("Matched ChEMBL benchmark is missing ligand SMILES")
+    docking44_surface_bootstrap = surface_bootstrap(
+        docking,
+        repeats=500,
+        seed=SEED + 50,
+        cluster_labels=canonical["Butina_clusters"].to_numpy(),
+    )
+    dockstring_scaffold_sensitivity = dockstring_scaffold_bootstrap(
+        dockstring,
+        dockstring_smiles,
+        repeats=100,
+        sample_size=15000,
+        supports=5,
+        seed=SEED + 20,
+    )
+    target_preference = target_preference_benchmark(
+        matched_dock,
+        matched_exp_observed,
+        matched_smiles,
+        bootstrap_repeats=5000,
+        shuffle_repeats=5000,
+        imputations=100,
+        seed=SEED,
+    )
 
     dataset_rows = [
         {
@@ -1170,7 +1707,7 @@ def main() -> None:
             "interaction_pr": dockstring_ladder["interaction"]["participation_ratio"],
             "raw_entropy_rank": dockstring_ladder["raw"]["entropy_rank"],
             "uncertainty": (
-                "Bemis-Murcko scaffold-cluster bootstrap on fixed chemical support; "
+                "scaffold-cluster bootstrap on five independent chemical supports; "
                 "target jackknife"
             ),
         },
@@ -1266,6 +1803,12 @@ def main() -> None:
                 "source": "project_clean/results/dti_leaderboard_summary.json",
             },
         },
+        "pc1_axis": {
+            "docking44": pc1_loading_summary(docking, DOCK44, dock44_families),
+            "dockstring58": pc1_loading_summary(
+                dockstring, dockstring_cols, dockstring_families
+            ),
+        },
         "target_panel_uncertainty": {
             "docking44_jackknife": target_jackknife(
                 docking, DOCK44, sample_size=15000, seed=SEED
@@ -1313,13 +1856,8 @@ def main() -> None:
             "dockstring58_ligand_subsamples": subsample_ligands(
                 dockstring, [100, 300, 1000, 3000, 10000, 50000], repeats=50, seed=SEED + 3
             ),
-            "dockstring_scaffold_bootstrap": dockstring_scaffold_bootstrap(
-                dockstring,
-                dockstring_smiles,
-                repeats=200,
-                sample_size=15000,
-                seed=SEED + 20,
-            ),
+            "docking44_butina_cluster_surface_bootstrap": docking44_surface_bootstrap,
+            "dockstring_scaffold_bootstrap": dockstring_scaffold_sensitivity,
         },
         "parallel_analysis_common_protocol": {
             "docking44": parallel_analysis(
@@ -1329,13 +1867,39 @@ def main() -> None:
                 dockstring, sample_size=12000, repeats=500, series=5, seed=SEED + 1
             ),
         },
+        "additive_main_effect_null": {
+            "docking44": additive_main_effect_null(
+                docking, sample_size=12000, repeats=500, seed=SEED + 60
+            ),
+            "dockstring58": additive_main_effect_null(
+                dockstring, sample_size=12000, repeats=500, seed=SEED + 61
+            ),
+        },
         "matched_raw_and_interaction_bootstrap": paired_surface_bootstrap(
             matched_dock.to_numpy(dtype=np.float64),
             matched_exp.to_numpy(dtype=np.float64),
             repeats=2000,
             seed=SEED,
         ),
-        "preprocessing_sensitivity": preprocessing_sensitivity(docking_frame),
+        "matched_target_preference_benchmark": target_preference,
+        "preprocessing_sensitivity": {
+            **preprocessing_sensitivity(docking_frame),
+            "dockstring_clipping": {
+                "complete_rows": int(len(dockstring_unclipped)),
+                "strictly_positive_cells": int(np.sum(dockstring_unclipped > 0)),
+                "strictly_positive_fraction": float(np.mean(dockstring_unclipped > 0)),
+                "clipped": {
+                    "raw_pr": dockstring_ladder["raw"]["participation_ratio"],
+                    "residual_pr": dockstring_ladder["interaction"]["participation_ratio"],
+                },
+                "unclipped": {
+                    "raw_pr": rank_summary(dockstring_unclipped)["participation_ratio"],
+                    "residual_pr": rank_summary(two_way_center(dockstring_unclipped))[
+                        "participation_ratio"
+                    ],
+                },
+            },
+        },
         "experimental_sensitivity": experimental_controls,
         "dti_associations": dti_associations(leaderboard),
         "frozen_source_summaries": {

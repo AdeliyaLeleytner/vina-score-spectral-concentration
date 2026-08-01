@@ -9,7 +9,7 @@
 Matrix & scorer / source & $N$ & $P$ & missing & preprocessing & column-standardized PR & residual PR & entropy rank & uncertainty \\
 \midrule
 Docking-44 & Vina-GPU 2.0 & 12,651 & 44 & 1.466\% & positive/source-censored scores to 0; target-mean imputation; column z-score & 1.834 & 9.303 & 3.897 & Butina-cluster bootstrap; target leave-one-out and subsampling \\
-DOCKSTRING-58 & AutoDock Vina & 260,060 & 58 & 0.002\% & positive scores to 0; complete rows; column z-score & 2.266 & 18.206 & 6.206 & Bemis-Murcko scaffold-cluster bootstrap on fixed chemical support; target jackknife \\
+DOCKSTRING-58 & AutoDock Vina & 260,060 & 58 & 0.002\% & positive scores to 0; complete rows; column z-score & 2.266 & 18.206 & 6.206 & scaffold-cluster bootstrap on five independent chemical supports; target jackknife \\
 RF-Score/Vina-pose sensitivity & RF-Score v1 & 41 & 14 & 0.000\% & complete common block; column z-score & 1.416 & 6.681 & 2.158 & ligand bootstrap; small fixed panel \\
 RF-Score/Vinardo-pose sensitivity & RF-Score v1 & 35 & 20 & 0.000\% & complete common block; column z-score & 1.812 & 9.918 & 3.347 & ligand bootstrap; small fixed panel \\
 Matched docking & AutoDock Vina & 74 & 6 & 0.000\% & complete matched block; column z-score & 1.827 & 3.646 & 2.605 & same ligand-target support as exact-relation median ChEMBL block \\
@@ -60,13 +60,16 @@ ChEMBL all endpoints, frozen refetch B, KNN5 & 212 & 22 & 5.721 & different froz
 212 x 22, MICE & 212 & 22 & 8.592 & mean across imputations \\
 212 x 22, SoftImpute & 212 & 22 & 2.644 & low-rank matrix completion \\
 212 x 22, PPCA-EM & 212 & 22 & 7.283 & probabilistic PCA \\
-matched docking + calibrated noise & 74 & 6 & 2.290 & 95\% simulation interval 2.12--2.50 \\
-matched docking + 2.5x calibrated noise & 74 & 6 & 3.877 & approximately reaches experimental raw PR \\
+matched docking + calibrated noise & 74 & 6 & 2.407 & 95\% simulation interval 2.21--2.64 \\
+matched docking + 2.5x calibrated noise & 74 & 6 & 4.175 & approximately reaches experimental raw PR \\
 matched docking, linear descriptor residual & 74 & 6 & 2.806 & seven RDKit descriptors; same support \\
 matched docking, cross-fitted nonlinear residual & 74 & 6 & 2.680 & five-fold HistGBM; same support \\
 matched docking residual, exact-relation support & 74 & 6 & 3.646 & two-way centered \\
 matched experimental residual, exact relation median & 74 & 6 & 4.128 & two-way centered; primary curation \\
-matched experimental residual, legacy most-potent & 74 & 6 & 4.086 & paired difference interval -0.24--0.93 \\
+matched experimental raw, 100 MICE draws & 74 & 6 & 3.823 & 95\% across imputations 3.57--4.02 \\
+matched experimental residual, 100 MICE draws & 74 & 6 & 4.069 & 95\% across imputations 3.83--4.21 \\
+paired raw experiment-docking contrast & 74 & 6 & 2.006 & ligand-bootstrap interval 1.17--2.67 \\
+paired residual experiment-docking contrast & 74 & 6 & 0.483 & ligand-bootstrap interval -0.07--0.92 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -85,14 +88,32 @@ DOCKSTRING-58 & two-way-centered residual & 18.206 & 17.662 & 17.931 & 20.045 & 
 \bottomrule
 \end{tabular}
 \vspace{5pt}
-\parbox{0.94\textwidth}{\footnotesize Family-stratified target subsampling is shown in Fig.~1c,d. In five independent 100-permutation series, supra-null mode counts were 3 versus 7 in every series for Docking-44 and 4 versus 10 in every series for DOCKSTRING-58. On a seeded 15,000-molecule DOCKSTRING support, the molecule-bootstrap 95\% interval was 2.230--2.296 and the Bemis--Murcko scaffold-cluster interval was 2.148--2.367.}
+\parbox{0.94\textwidth}{\footnotesize Family-stratified target subsampling is shown in Fig.~1c,d. The descriptive rank-wise and family-wise-error-controlled simultaneous mode counts were both 3 versus 7 for Docking-44 and 4 versus 10 for DOCKSTRING-58. Across 5 independent 15,000-molecule DOCKSTRING supports, raw point estimates ranged from 2.252 to 2.294 and residual estimates from 18.161 to 18.322; support-specific scaffold intervals are plotted in Fig.~S6. The fitted additive null gave median residual PR dimensions 42.40 and 56.48, compared with observed values 9.29 and 18.16.}
+\end{table}
+
+\begin{table}[p]
+\centering\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{\textbf{Matched ChEMBL target-preference benchmark.} Accuracy is the mean of per-ligand pairwise target-preference accuracies over observed exact-relation median pChEMBL cells. Confidence intervals resample 61 Bemis--Murcko scaffold clusters; shuffled controls permute ligand identity while preserving target columns.}
+\label{tab:s5preference}
+\begin{tabular}{p{3.7cm}rrrrrr}
+\toprule Representation & accuracy & scaffold 95\% CI & pair-weighted & mean $\rho$ & top-1 & shuffle mean / $p$ \\ \midrule
+absolute Vina & 0.619 & 0.566--0.673 & 0.637 & 0.274 & 0.243 & 0.624 / 0.638 \\
+docking target-offset only & 0.625 & 0.580--0.668 & 0.639 & 0.312 & 0.270 & -- \\
+experimental target prior & 0.643 & 0.592--0.695 & 0.662 & 0.350 & 0.257 & -- \\
+column-standardized Vina & 0.537 & 0.495--0.575 & 0.545 & 0.112 & 0.243 & 0.509 / 0.097 \\
+two-way residual Vina & 0.540 & 0.497--0.584 & 0.549 & 0.118 & 0.257 & 0.507 / 0.061 \\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+\parbox{0.94\textwidth}{\footnotesize The residual-minus-column difference was +0.004 with a scaffold-bootstrap interval -0.019--0.026; the approximate 80\% power minimum detectable difference was 0.030. The residual-minus-absolute difference was -0.079 (-0.119---0.039).}
 \end{table}
 
 \begin{table}[htbp]
 \centering\scriptsize
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{All 20 exploratory DTI scorer arms.} Plot IDs identify points in Fig.~S3. The above-chance flag is outcome-related and is not used to define this complete panel.}
-\label{tab:s5all20}
+\caption{\textbf{All 20 exploratory DTI scorer arms.} Plot IDs identify points in Fig.~S5. The above-chance flag is outcome-related and is not used to define this complete panel.}
+\label{tab:s6all20}
 \begin{tabular}{rllrrrrr}
 \toprule ID & arm & above chance & affinity $r$ & column-standardized PR & residual PR & P@5 & AUPRC \\ \midrule
 1 & boltz\_s3 & yes & 0.483 & 3.26 & 15.48 & 0.468 & 0.424 \\
@@ -122,12 +143,12 @@ DOCKSTRING-58 & two-way-centered residual & 18.206 & 17.662 & 17.931 & 20.045 & 
 \begin{landscape}
 \scriptsize
 \begin{longtable}{rp{4.5cm}p{5.3cm}p{5.4cm}p{5.0cm}}
-\caption{\textbf{Provenance for the outcome-restricted 12-arm DTI sensitivity panel.} DAVIS OOF denotes six-fold GroupKFold by target; KIBA transfer denotes zero-shot evaluation on DAVIS after KIBA training. Metrics are listed for all arms in Table~S5.}\label{tab:s6dti}\\
+\caption{\textbf{Provenance for the outcome-restricted 12-arm DTI sensitivity panel.} DAVIS OOF denotes six-fold GroupKFold by target; KIBA transfer denotes zero-shot evaluation on DAVIS after KIBA training. Metrics are listed for all arms in Table~S6.}\label{tab:s7dti}\\
 \toprule
 ID & arm & representation / head & training and evaluation & caveat \\
 \midrule
 \endfirsthead
-\multicolumn{5}{l}{\textit{Supplementary Table S6 continued}}\\
+\multicolumn{5}{l}{\textit{Supplementary Table S7 continued}}\\
 \toprule
 ID & arm & representation / head & training and evaluation & caveat \\
 \midrule
@@ -155,7 +176,7 @@ ID & arm & representation / head & training and evaluation & caveat \\
 \centering\scriptsize
 \setlength{\tabcolsep}{3pt}
 \caption{\textbf{Selection and estimator sensitivity of rank--selectivity associations.} The 12-arm panel excludes eight chance-level arms on an outcome-related criterion. All coefficients are descriptive across dependent model arms.}
-\label{tab:s7selection}
+\label{tab:s8selection}
 \begin{tabular}{lllrrrrrr}
 \toprule Model panel & PR variable & endpoint & Pearson $r$ & $p$ & Spearman $\rho$ & $p$ & Kendall $\tau$ & $p$ \\ \midrule
 12 above-chance & column-standardized PR & P@5 & 0.467 & 0.1261 & 0.347 & 0.2695 & 0.260 & 0.2426 \\

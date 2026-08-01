@@ -4,8 +4,8 @@
 
 Reproducibility package for the manuscript:
 
-> Vina docking-score matrices are strongly spectrally concentrated before, but not after,
-> two-way centering
+> Spectral concentration in Vina docking-score matrices: what two-way centering reveals and
+> does not correct
 
 The analysis distinguishes the column-standardized ligand-by-target score surface from its
 two-way-centered residual surface. Participation-ratio (PR) effective dimension is used as a
@@ -22,6 +22,13 @@ affinity accuracy or selectivity.
 These claims are limited to the tested Vina systems. Two small RF-Score v1 blocks are
 reported as sensitivities, not large independent replications.
 
+The practical benchmark uses 74 matched ligands and six ChEMBL targets. Absolute Vina scores
+reached pairwise target-preference accuracy 0.619, but a target-offset-only baseline reached
+0.625 and ligand-identity shuffling reproduced the absolute-score result. Column-standardized
+and two-way-residual scores reached 0.537 and 0.540; their paired scaffold-bootstrap
+difference was 0.004 (95% interval -0.019--0.026). The release therefore treats two-way
+centering as a diagnostic transformation, not an automatically beneficial ranking rule.
+
 ## Reproduce
 
 The repository contains all frozen matrices and summaries needed for the reported analysis.
@@ -35,7 +42,9 @@ make PYTHON=.venv/bin/python all
 
 `make all` verifies 26 inputs against byte sizes and SHA-256 digests, rebuilds the evidence
 ledger, regenerates every figure and supplementary table, and compiles both PDFs twice.
-The 500-permutation analysis is the longest step. All stochastic procedures use seed 0.
+The 500-permutation and 5,000-replicate target-preference analyses are the longest steps.
+Seed 0 initializes all stochastic procedures; derived support and replicate seeds are stored
+in the evidence ledger.
 
 Container reproduction is self-contained:
 
@@ -49,7 +58,7 @@ docker run --rm vina-score-spectral-concentration
 - `manuscript.tex` and `manuscript.pdf`: article source and compiled manuscript.
 - `supplementary_information.tex` and `.pdf`: supplementary source and compiled PDF.
 - `analysis/build_evidence.py`: statistical analysis and machine-readable evidence ledger.
-- `analysis/make_figures.py`: five main and three supplementary figures.
+- `analysis/make_figures.py`: five main and six supplementary figures.
 - `analysis/make_supplement_tables.py`: supplementary tables generated from the ledger.
 - `results/evidence_summary.json`: authoritative numeric result ledger.
 - `data/frozen/`: compressed frozen analysis inputs.

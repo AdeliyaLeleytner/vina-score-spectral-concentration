@@ -96,6 +96,8 @@ def main() -> None:
     noise = exp["reproducibility_calibrated_noise_injection_74x6"]
     curated = exp["activity_level_curated_matched_blocks"]
     paired = evidence["matched_raw_and_interaction_bootstrap"]
+    benchmark = evidence["matched_target_preference_benchmark"]
+    primary_mi = benchmark["multiple_imputation"]["participation_ratio"]
     physchem = exp["matched_physicochemical_residualization"]
     exp_rows = [
         ("ChEMBL all endpoints, frozen refetch A", blocks["all_types"]["n_compounds"], blocks["all_types"]["n_targets"], blocks["all_types"]["eff_rank_KNN"], "already human-only; KNN; 52.9% missing"),
@@ -115,7 +117,10 @@ def main() -> None:
         ("matched docking, cross-fitted nonlinear residual", 74, 6, physchem["cross_fitted_histgbm_residual_participation_ratio"], "five-fold HistGBM; same support"),
         ("matched docking residual, exact-relation support", 74, 6, curated["all_exact_median"]["matched_docking_residual_participation_ratio"], "two-way centered"),
         ("matched experimental residual, exact relation median", 74, 6, curated["all_exact_median"]["experimental_residual_participation_ratio"], "two-way centered; primary curation"),
-        ("matched experimental residual, legacy most-potent", 74, 6, paired["interaction"]["experimental_participation_ratio"], f"paired difference interval {paired['interaction']['bootstrap_difference_95_interval'][0]:.2f}--{paired['interaction']['bootstrap_difference_95_interval'][1]:.2f}"),
+        ("matched experimental raw, 100 MICE draws", 74, 6, primary_mi["raw"]["median"], f"95% across imputations {primary_mi['raw']['interval_95'][0]:.2f}--{primary_mi['raw']['interval_95'][1]:.2f}"),
+        ("matched experimental residual, 100 MICE draws", 74, 6, primary_mi["residual"]["median"], f"95% across imputations {primary_mi['residual']['interval_95'][0]:.2f}--{primary_mi['residual']['interval_95'][1]:.2f}"),
+        ("paired raw experiment-docking contrast", 74, 6, paired["raw"]["plugin_difference_experiment_minus_docking"], f"ligand-bootstrap interval {paired['raw']['bootstrap_difference_95_interval'][0]:.2f}--{paired['raw']['bootstrap_difference_95_interval'][1]:.2f}"),
+        ("paired residual experiment-docking contrast", 74, 6, paired["interaction"]["plugin_difference_experiment_minus_docking"], f"ligand-bootstrap interval {paired['interaction']['bootstrap_difference_95_interval'][0]:.2f}--{paired['interaction']['bootstrap_difference_95_interval'][1]:.2f}"),
     ]
     lines.extend([
         r"\begin{table}[p]",
@@ -148,6 +153,7 @@ def main() -> None:
             ))
     parallel = evidence["parallel_analysis_common_protocol"]
     scaffold = evidence["ligand_sampling_sensitivity"]["dockstring_scaffold_bootstrap"]
+    additive = evidence["additive_main_effect_null"]
     lines.extend([
         r"\begin{table}[htbp]",
         r"\centering\small",
@@ -167,15 +173,77 @@ def main() -> None:
         r"\end{tabular}",
         r"\vspace{5pt}",
         (r"\parbox{0.94\textwidth}{\footnotesize Family-stratified target subsampling is shown "
-         r"in Fig.~1c,d. In five independent 100-permutation series, supra-null mode counts were "
-         r"3 versus 7 in every series for Docking-44 and 4 versus 10 in every series for "
-         r"DOCKSTRING-58. "
-         f"On a seeded {scaffold['fixed_support_n']:,}-molecule DOCKSTRING support, the molecule-bootstrap "
-         "95\\% interval was "
-         f"{scaffold['molecule_bootstrap']['interval_95'][0]:.3f}--"
-         f"{scaffold['molecule_bootstrap']['interval_95'][1]:.3f} and the Bemis--Murcko "
-         f"scaffold-cluster interval was {scaffold['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--"
-         f"{scaffold['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}.}}"),
+         r"in Fig.~1c,d. The descriptive rank-wise and family-wise-error-controlled simultaneous mode counts "
+         f"were both {parallel['docking44']['raw']['n_modes_above_simultaneous_95pct_envelope']} versus "
+         f"{parallel['docking44']['interaction']['n_modes_above_simultaneous_95pct_envelope']} for Docking-44 and "
+         f"{parallel['dockstring58']['raw']['n_modes_above_simultaneous_95pct_envelope']} versus "
+         f"{parallel['dockstring58']['interaction']['n_modes_above_simultaneous_95pct_envelope']} for DOCKSTRING-58. "
+         f"Across {scaffold['n_supports']} independent {scaffold['support_n']:,}-molecule DOCKSTRING supports, "
+         f"raw point estimates ranged from {scaffold['support_point_estimates']['raw']['minimum']:.3f} to "
+         f"{scaffold['support_point_estimates']['raw']['maximum']:.3f} and residual estimates from "
+         f"{scaffold['support_point_estimates']['residual']['minimum']:.3f} to "
+         f"{scaffold['support_point_estimates']['residual']['maximum']:.3f}; support-specific scaffold intervals "
+         r"are plotted in Fig.~S6. The fitted additive null gave median residual PR dimensions "
+         f"{additive['docking44']['null_residual']['median']:.2f} and "
+         f"{additive['dockstring58']['null_residual']['median']:.2f}, compared with observed values "
+         f"{additive['docking44']['observed']['residual']:.2f} and "
+         f"{additive['dockstring58']['observed']['residual']:.2f}.}}"),
+        r"\end{table}",
+        "",
+    ])
+
+    preference = evidence["matched_target_preference_benchmark"]
+    pref_rows = [
+        ("absolute Vina", "absolute_vina"),
+        ("docking target-offset only", "docking_target_prior"),
+        ("experimental target prior", "experimental_target_prior"),
+        ("column-standardized Vina", "column_standardized"),
+        ("two-way residual Vina", "two_way_residual"),
+    ]
+    lines.extend([
+        r"\begin{table}[p]",
+        r"\centering\scriptsize",
+        r"\setlength{\tabcolsep}{3pt}",
+        r"\caption{\textbf{Matched ChEMBL target-preference benchmark.} Accuracy is the mean of per-ligand pairwise target-preference accuracies over observed exact-relation median pChEMBL cells. Confidence intervals resample 61 Bemis--Murcko scaffold clusters; shuffled controls permute ligand identity while preserving target columns.}",
+        r"\label{tab:s5preference}",
+        r"\begin{tabular}{p{3.7cm}rrrrrr}",
+        r"\toprule Representation & accuracy & scaffold 95\% CI & pair-weighted & mean $\rho$ & top-1 & shuffle mean / $p$ \\ \midrule",
+    ])
+    for label, key in pref_rows:
+        record = preference["representations"][key]
+        ci = record["scaffold_cluster_bootstrap"]["interval_95"]
+        if "ligand_identity_shuffle_null" in record:
+            shuffled = record["ligand_identity_shuffle_null"]
+            shuffle_text = (
+                f"{shuffled['mean']:.3f} / "
+                f"{shuffled['one_sided_empirical_p_observed_at_least_as_large']:.3f}"
+            )
+        else:
+            shuffle_text = "--"
+        lines.append(
+            f"{tex(label)} & {record['mean_per_ligand_pairwise_accuracy']:.3f} & "
+            f"{ci[0]:.3f}--{ci[1]:.3f} & {record['pair_weighted_accuracy']:.3f} & "
+            f"{record['mean_per_ligand_spearman']:.3f} & {record['top1_accuracy']:.3f} & "
+            f"{shuffle_text} \\\\"
+        )
+    residual_column = preference["paired_comparisons"][
+        "two_way_residual_minus_column_standardized"
+    ]
+    residual_absolute = preference["paired_comparisons"][
+        "two_way_residual_minus_absolute_vina"
+    ]
+    lines.extend([
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\vspace{4pt}",
+        (r"\parbox{0.94\textwidth}{\footnotesize The residual-minus-column difference was "
+         f"{residual_column['plugin_mean_difference']:+.3f} with a scaffold-bootstrap interval "
+         f"{residual_column['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--"
+         f"{residual_column['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}; the approximate "
+         f"80\\% power minimum detectable difference was {residual_column['normal_approx_80pct_power_mde_two_sided_alpha_0.05']:.3f}. "
+         f"The residual-minus-absolute difference was {residual_absolute['plugin_mean_difference']:+.3f} "
+         f"({residual_absolute['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--"
+         f"{residual_absolute['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}).}}"),
         r"\end{table}",
         "",
     ])
@@ -184,8 +252,8 @@ def main() -> None:
         r"\begin{table}[htbp]",
         r"\centering\scriptsize",
         r"\setlength{\tabcolsep}{3pt}",
-        r"\caption{\textbf{All 20 exploratory DTI scorer arms.} Plot IDs identify points in Fig.~S3. The above-chance flag is outcome-related and is not used to define this complete panel.}",
-        r"\label{tab:s5all20}",
+        r"\caption{\textbf{All 20 exploratory DTI scorer arms.} Plot IDs identify points in Fig.~S5. The above-chance flag is outcome-related and is not used to define this complete panel.}",
+        r"\label{tab:s6all20}",
         r"\begin{tabular}{rllrrrrr}",
         r"\toprule ID & arm & above chance & affinity $r$ & column-standardized PR & residual PR & P@5 & AUPRC \\ \midrule",
     ])
@@ -203,12 +271,12 @@ def main() -> None:
         r"\begin{landscape}",
         r"\scriptsize",
         r"\begin{longtable}{rp{4.5cm}p{5.3cm}p{5.4cm}p{5.0cm}}",
-        r"\caption{\textbf{Provenance for the outcome-restricted 12-arm DTI sensitivity panel.} DAVIS OOF denotes six-fold GroupKFold by target; KIBA transfer denotes zero-shot evaluation on DAVIS after KIBA training. Metrics are listed for all arms in Table~S5.}\label{tab:s6dti}\\",
+        r"\caption{\textbf{Provenance for the outcome-restricted 12-arm DTI sensitivity panel.} DAVIS OOF denotes six-fold GroupKFold by target; KIBA transfer denotes zero-shot evaluation on DAVIS after KIBA training. Metrics are listed for all arms in Table~S6.}\label{tab:s7dti}\\",
         r"\toprule",
         r"ID & arm & representation / head & training and evaluation & caveat \\",
         r"\midrule",
         r"\endfirsthead",
-        r"\multicolumn{5}{l}{\textit{Supplementary Table S6 continued}}\\",
+        r"\multicolumn{5}{l}{\textit{Supplementary Table S7 continued}}\\",
         r"\toprule",
         r"ID & arm & representation / head & training and evaluation & caveat \\",
         r"\midrule",
@@ -242,7 +310,7 @@ def main() -> None:
         r"\centering\scriptsize",
         r"\setlength{\tabcolsep}{3pt}",
         r"\caption{\textbf{Selection and estimator sensitivity of rank--selectivity associations.} The 12-arm panel excludes eight chance-level arms on an outcome-related criterion. All coefficients are descriptive across dependent model arms.}",
-        r"\label{tab:s7selection}",
+        r"\label{tab:s8selection}",
         r"\begin{tabular}{lllrrrrrr}",
         r"\toprule Model panel & PR variable & endpoint & Pearson $r$ & $p$ & Spearman $\rho$ & $p$ & Kendall $\tau$ & $p$ \\ \midrule",
     ])
