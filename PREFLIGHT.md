@@ -31,10 +31,10 @@ Audit date: 2026-08-01. Article type: Research article.
 
 ## Blocking before journal submission
 
-1. Replace `[PUBLIC REPOSITORY URL]` with the public release URL after the GitHub push.
-2. Archive the exact `v1.0.0` tag on Zenodo and replace `[ZENODO DOI]`.
-3. Obtain final coauthor confirmation of funding, contribution roles, author order,
+1. Archive the published `v1.0.0` tag on Zenodo and replace `[ZENODO DOI]`.
+2. Obtain final coauthor confirmation of funding, contribution roles, author order,
    affiliations, ORCIDs, and the AI-use disclosure.
 
-The first two items are release-state requirements; the manuscript must not be submitted
-with either placeholder.
+The GitHub repository and `v1.0.0` tag are public at
+<https://github.com/AdeliyaLeleytner/vina-score-spectral-concentration>. The manuscript must
+not be submitted with the remaining Zenodo placeholder.
