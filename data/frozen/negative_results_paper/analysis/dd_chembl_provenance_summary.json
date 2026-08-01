@@ -1,0 +1,74 @@
+{
+  "noise_ladder": {
+    "different documents": {
+      "pairs": 279012,
+      "zero_frac": 0.0889,
+      "median_absdiff": 0.47,
+      "sigma": 0.4927
+    },
+    "same assay": {
+      "pairs": 12819,
+      "zero_frac": 0.2706,
+      "median_absdiff": 0.2,
+      "sigma": 0.2097
+    },
+    "same document": {
+      "pairs": 36896,
+      "zero_frac": 0.0487,
+      "median_absdiff": 0.6,
+      "sigma": 0.629
+    }
+  },
+  "sigma_independent": 0.4927,
+  "sigma_dd_independent": 0.9854,
+  "runs": {
+    "Butina (v2 primary)": {
+      "tetrads": 14393,
+      "dock": {
+        "micro": 0.5081,
+        "per_target_pair": 0.4714,
+        "per_molecule_pair": 0.5352
+      },
+      "readacross": {
+        "micro": 0.6286,
+        "per_target_pair": 0.5845,
+        "per_molecule_pair": 0.644
+      },
+      "maskonly": {
+        "micro": 0.5189,
+        "per_target_pair": 0.4855,
+        "per_molecule_pair": 0.5949
+      },
+      "large_contrasts": {
+        "n": 3504,
+        "dock": 0.5398,
+        "readacross": 0.7586,
+        "maskonly": 0.5184
+      }
+    },
+    "document-grouped": {
+      "tetrads": 14390,
+      "dock": {
+        "micro": 0.5082,
+        "per_target_pair": 0.4733,
+        "per_molecule_pair": 0.5353
+      },
+      "readacross": {
+        "micro": 0.6322,
+        "per_target_pair": 0.5589,
+        "per_molecule_pair": 0.6415
+      },
+      "maskonly": {
+        "micro": 0.5305,
+        "per_target_pair": 0.5112,
+        "per_molecule_pair": 0.588
+      },
+      "large_contrasts": {
+        "n": 3504,
+        "dock": 0.5398,
+        "readacross": 0.7691,
+        "maskonly": 0.5708
+      }
+    }
+  }
+}

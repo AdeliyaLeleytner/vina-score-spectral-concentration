@@ -1,0 +1,103 @@
+dataset,target,family,basis
+Docking-44,1m2z,Nuclear receptor,curated pharmacological class
+Docking-44,1pbq,Ion channel,curated pharmacological class
+Docking-44,1xoq,Enzyme,curated pharmacological class
+Docking-44,2rh1,Adrenergic GPCR,curated pharmacological class
+Docking-44,2vt4,Adrenergic GPCR,curated pharmacological class
+Docking-44,2ydo,Peptide GPCR,curated pharmacological class
+Docking-44,2z5x,Enzyme,curated pharmacological class
+Docking-44,3b66,Nuclear receptor,curated pharmacological class
+Docking-44,3kk6,Enzyme,curated pharmacological class
+Docking-44,3ln1,Enzyme,curated pharmacological class
+Docking-44,3rze,Histamine GPCR,curated pharmacological class
+Docking-44,4djh,Opioid GPCR,curated pharmacological class
+Docking-44,4ey7,Enzyme,curated pharmacological class
+Docking-44,4iar,Serotonin GPCR,curated pharmacological class
+Docking-44,4mqs,Muscarinic GPCR,curated pharmacological class
+Docking-44,4n6h,Opioid GPCR,curated pharmacological class
+Docking-44,5cxv,Muscarinic GPCR,curated pharmacological class
+Docking-44,5i71,Transporter,curated pharmacological class
+Docking-44,5tvn,Serotonin GPCR,curated pharmacological class
+Docking-44,5u09,Cannabinoid GPCR,curated pharmacological class
+Docking-44,5va1,Ion channel,curated pharmacological class
+Docking-44,6cm4,Dopamine GPCR,curated pharmacological class
+Docking-44,6kpf,Cannabinoid GPCR,curated pharmacological class
+Docking-44,6kux,Adrenergic GPCR,curated pharmacological class
+Docking-44,6lqa,Ion channel,curated pharmacological class
+Docking-44,6pdj,Enzyme,curated pharmacological class
+Docking-44,6x3x,Ion channel,curated pharmacological class
+Docking-44,6y1z,Serotonin GPCR,curated pharmacological class
+Docking-44,7f8y,Peptide GPCR,curated pharmacological class
+Docking-44,7kwe,Enzyme,curated pharmacological class
+Docking-44,7ljd,Dopamine GPCR,curated pharmacological class
+Docking-44,7wc9,Serotonin GPCR,curated pharmacological class
+Docking-44,7xnk,Ion channel,curated pharmacological class
+Docking-44,7ym8,Adrenergic GPCR,curated pharmacological class
+Docking-44,8e9y,Muscarinic GPCR,curated pharmacological class
+Docking-44,8ef6,Opioid GPCR,curated pharmacological class
+Docking-44,8fhs,Ion channel,curated pharmacological class
+Docking-44,8pjk,Serotonin GPCR,curated pharmacological class
+Docking-44,8st0,Ion channel,curated pharmacological class
+Docking-44,8wty,Transporter,curated pharmacological class
+Docking-44,8xvk,Peptide GPCR,curated pharmacological class
+Docking-44,8yn3,Histamine GPCR,curated pharmacological class
+Docking-44,9eo4,Transporter,curated pharmacological class
+Docking-44,V1A,Peptide GPCR,curated pharmacological class
+DOCKSTRING-58,PPARD,Nuclear receptor,curated protein class
+DOCKSTRING-58,ABL1,Kinase,curated protein class
+DOCKSTRING-58,ADAM17,Protease,curated protein class
+DOCKSTRING-58,ADRB1,GPCR,curated protein class
+DOCKSTRING-58,ADRB2,GPCR,curated protein class
+DOCKSTRING-58,AKT2,Kinase,curated protein class
+DOCKSTRING-58,MAOB,Other enzyme,curated protein class
+DOCKSTRING-58,CASP3,Protease,curated protein class
+DOCKSTRING-58,DHFR,Other enzyme,curated protein class
+DOCKSTRING-58,ESR2,Nuclear receptor,curated protein class
+DOCKSTRING-58,PTK2,Kinase,curated protein class
+DOCKSTRING-58,FGFR1,Kinase,curated protein class
+DOCKSTRING-58,HMGCR,Other enzyme,curated protein class
+DOCKSTRING-58,HSP90AA1,Chaperone,curated protein class
+DOCKSTRING-58,KIT,Kinase,curated protein class
+DOCKSTRING-58,MAPKAPK2,Kinase,curated protein class
+DOCKSTRING-58,MAP2K1,Kinase,curated protein class
+DOCKSTRING-58,NOS1,Other enzyme,curated protein class
+DOCKSTRING-58,PARP1,Other enzyme,curated protein class
+DOCKSTRING-58,PDE5A,Other enzyme,curated protein class
+DOCKSTRING-58,PGR,Nuclear receptor,curated protein class
+DOCKSTRING-58,PTPN1,Other enzyme,curated protein class
+DOCKSTRING-58,ROCK1,Kinase,curated protein class
+DOCKSTRING-58,AKT1,Kinase,curated protein class
+DOCKSTRING-58,AR,Nuclear receptor,curated protein class
+DOCKSTRING-58,CDK2,Kinase,curated protein class
+DOCKSTRING-58,CSF1R,Kinase,curated protein class
+DOCKSTRING-58,ESR1,Nuclear receptor,curated protein class
+DOCKSTRING-58,NR3C1,Nuclear receptor,curated protein class
+DOCKSTRING-58,IGF1R,Kinase,curated protein class
+DOCKSTRING-58,JAK2,Kinase,curated protein class
+DOCKSTRING-58,LCK,Kinase,curated protein class
+DOCKSTRING-58,MET,Kinase,curated protein class
+DOCKSTRING-58,MMP13,Protease,curated protein class
+DOCKSTRING-58,PTGS2,Other enzyme,curated protein class
+DOCKSTRING-58,PPARA,Nuclear receptor,curated protein class
+DOCKSTRING-58,PPARG,Nuclear receptor,curated protein class
+DOCKSTRING-58,REN,Protease,curated protein class
+DOCKSTRING-58,ADORA2A,GPCR,curated protein class
+DOCKSTRING-58,ACHE,Other enzyme,curated protein class
+DOCKSTRING-58,BACE1,Protease,curated protein class
+DOCKSTRING-58,CA2,Other enzyme,curated protein class
+DOCKSTRING-58,CYP2C9,Other enzyme,curated protein class
+DOCKSTRING-58,CYP3A4,Other enzyme,curated protein class
+DOCKSTRING-58,HSD11B1,Other enzyme,curated protein class
+DOCKSTRING-58,DPP4,Protease,curated protein class
+DOCKSTRING-58,DRD2,GPCR,curated protein class
+DOCKSTRING-58,DRD3,GPCR,curated protein class
+DOCKSTRING-58,EGFR,Kinase,curated protein class
+DOCKSTRING-58,F10,Protease,curated protein class
+DOCKSTRING-58,GBA,Other enzyme,curated protein class
+DOCKSTRING-58,MAPK1,Kinase,curated protein class
+DOCKSTRING-58,MAPK14,Kinase,curated protein class
+DOCKSTRING-58,PLK1,Kinase,curated protein class
+DOCKSTRING-58,SRC,Kinase,curated protein class
+DOCKSTRING-58,THRB,Nuclear receptor,curated protein class
+DOCKSTRING-58,F2,Protease,curated protein class
+DOCKSTRING-58,KDR,Kinase,curated protein class

@@ -1,0 +1,56 @@
+{
+  "n_compounds": 74,
+  "dock_eff_dim": 1.827,
+  "exp_eff_dim": 3.734,
+  "dock_eff_dim_ci95": [
+    1.6,
+    2.14
+  ],
+  "exp_eff_dim_ci95": [
+    2.93,
+    4.37
+  ],
+  "difference_exp_minus_dock": 1.815,
+  "difference_ci95": [
+    1.05,
+    2.61
+  ],
+  "p_difference_le_0": 0.0,
+  "exp_effdim_vs_destructured_null": {
+    "observed": 3.734,
+    "null_mean": 5.62,
+    "null_ci95": [
+      5.34,
+      5.83
+    ]
+  },
+  "leave_one_target_out": {
+    "5va1": {
+      "dock": 1.75,
+      "exp": 3.13
+    },
+    "6cm4": {
+      "dock": 1.89,
+      "exp": 3.7
+    },
+    "7wc9": {
+      "dock": 1.92,
+      "exp": 3.8
+    },
+    "8pjk": {
+      "dock": 1.86,
+      "exp": 3.08
+    },
+    "3rze": {
+      "dock": 1.58,
+      "exp": 3.36
+    },
+    "7ym8": {
+      "dock": 1.66,
+      "exp": 3.25
+    }
+  },
+  "mean_abs_intertarget_r_dock": 0.66,
+  "mean_abs_intertarget_r_exp": 0.31,
+  "interpretation": "Same 74 compounds, 6 co-measured targets, complete data: docking eff-dim 1.827 (95% CI [1.6, 2.14]) vs experimental 3.734 ([2.93, 4.37]); difference 1.815 (95% CI [1.05, 2.61], p<=0: 0.0). The six aminergic targets are highly co-correlated in docking (mean |r|=0.66) but less so in experiment (0.31), which is why docking collapses to ~1.8 even here."
+}

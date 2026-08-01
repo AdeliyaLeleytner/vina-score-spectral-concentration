@@ -1,0 +1,39 @@
+{
+  "N": 12651,
+  "per_molecule": {
+    "R2_PC1_on_physchem7": 0.46542830236476496,
+    "R2_PC1_on_logP_only": 0.11351702045086443,
+    "R2_PC1_on_MW_only": 0.07821881611393589,
+    "R2_PC1_on_logP_MW_volume": 0.18130432638192095,
+    "R2_meanDock_on_physchem7": 0.44567142889864786,
+    "coef_PC1_on_physchem": {
+      "MW, g/mol": 3.3054198449006336,
+      "logP": -2.916002704130957,
+      "tpsa": -1.6016020779866311,
+      "hbd": -0.14069925757762705,
+      "hba": 0.13893704378724822,
+      "rotatable_bonds": 4.312084851238769,
+      "volume": -6.14355773948855
+    }
+  },
+  "per_target_pocket": {
+    "n_targets": 36,
+    "pocket_descriptors": [
+      "volume",
+      "area",
+      "max_depth",
+      "avg_depth",
+      "hydropathy",
+      "R1_count",
+      "R2_count",
+      "R3_count",
+      "R4_count",
+      "R5_count",
+      "RX_count",
+      "total_residues",
+      "unique_residues"
+    ],
+    "R2_absCorrMean_on_pocket": 0.4474282181513224,
+    "corr_pocketvol_vs_absCorrMean": 0.5138387356172838
+  }
+}

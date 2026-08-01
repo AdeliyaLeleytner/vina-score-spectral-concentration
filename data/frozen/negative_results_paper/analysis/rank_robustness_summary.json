@@ -1,0 +1,44 @@
+{
+  "P": 44,
+  "pearson": {
+    "eff_rank": 1.8340455747972344,
+    "pc1_frac": 0.7329495272570137,
+    "eff_rank_per_P": 0.04168285397266442,
+    "entropy_rank": 3.897171454703663,
+    "profile_likelihood_dim": 1
+  },
+  "spearman": {
+    "eff_rank": 1.7095859479180449,
+    "pc1_frac": 0.7605265708827126,
+    "entropy_rank": 3.501532492422207
+  },
+  "cluster_bootstrap_eff_rank": {
+    "median": 1.8335558358330222,
+    "ci95": [
+      1.7846109902602139,
+      1.888554947920942
+    ],
+    "naive_molecule_ci_was": [
+      1.81,
+      1.86
+    ]
+  },
+  "nonlinear_size_removed": {
+    "eff_rank": 3.519549467507295,
+    "pc1_frac": 0.526206424486686,
+    "note": "GBM cross-fitted removal of 7 physchem descriptors; vs linear (2.54)"
+  },
+  "ligand_efficiency": {
+    "eff_rank": 1.1404139366847197,
+    "pc1_frac": 0.9362418725615801
+  },
+  "within_size_band": {
+    "n": 4308,
+    "ha_range": [
+      17.0,
+      22.0
+    ],
+    "eff_rank": 1.6961489991404515,
+    "pc1_frac": 0.7651081488670065
+  }
+}

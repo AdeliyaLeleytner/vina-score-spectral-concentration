@@ -1,0 +1,31 @@
+{
+  "N": 12651,
+  "mean_docking_is_size": {
+    "R2_on_7_size_descriptors": 0.6057543815344142,
+    "R2_on_HeavyAtoms_only": 0.18413862723863628,
+    "R2_on_LabuteASA_only": 0.13745208117193886,
+    "R2_on_clogP_only": 0.10768549200281519,
+    "kcal_per_heavy_atom": -0.058158344592260436,
+    "pearson_meandock_heavyatoms": -0.42911376957473224
+  },
+  "per_target_R2_size": {
+    "median": 0.561194492411238,
+    "min": 0.0873976425398213,
+    "max": 0.8035205531438658
+  },
+  "effective_rank": {
+    "raw_docking": {
+      "eff_rank": 1.834045574853218,
+      "pc1_frac": 0.7329495272447815
+    },
+    "ligand_efficiency_norm": {
+      "eff_rank": 1.1404139368734845,
+      "pc1_frac": 0.9362418724832605
+    },
+    "size_residualized": {
+      "eff_rank": 2.5438676875743886,
+      "pc1_frac": 0.6204238450992038
+    },
+    "interpretation": "if rank stays ~2 after removing size, the collapse is a deeper general binding factor; if it rises, molecular size IS the dominant collapse axis."
+  }
+}

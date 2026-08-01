@@ -1,0 +1,117 @@
+{
+  "exp_block_shape": [
+    212,
+    22
+  ],
+  "exp_targets": [
+    "2rh1",
+    "2vt4",
+    "3rze",
+    "4djh",
+    "4iar",
+    "4mqs",
+    "4n6h",
+    "5cxv",
+    "5i71",
+    "5tvn",
+    "5va1",
+    "6cm4",
+    "6kux",
+    "7ljd",
+    "7wc9",
+    "7ym8",
+    "8e9y",
+    "8ef6",
+    "8pjk",
+    "8wty",
+    "8yn3",
+    "9eo4"
+  ],
+  "exp_missing_fraction": 0.5289451114922813,
+  "experimental_effrank": {
+    "floor_impute_4": {
+      "eff_rank": 10.31460072837147,
+      "pc1": 0.18704130577431566
+    },
+    "knn5_impute": {
+      "eff_rank": 5.7205762861681135,
+      "pc1": 0.37743170978326773
+    },
+    "pairwise_complete": {
+      "eff_rank": 4.535932375728602,
+      "pc1": 0.4280590009593961
+    }
+  },
+  "matched_docking_targets": [
+    "2rh1",
+    "2vt4",
+    "3rze",
+    "4djh",
+    "4iar",
+    "4mqs",
+    "4n6h",
+    "5cxv",
+    "5i71",
+    "5tvn",
+    "5va1",
+    "6cm4",
+    "6kux",
+    "7ljd",
+    "7wc9",
+    "7ym8",
+    "8e9y",
+    "8ef6",
+    "8pjk",
+    "8wty",
+    "8yn3",
+    "9eo4"
+  ],
+  "docking_matched22_fullN": {
+    "eff_rank": 1.7808382272654015,
+    "pc1": 0.7432690892200545,
+    "N": 12651,
+    "n_targets": 22
+  },
+  "docking_matched22_subsampleN212": {
+    "N": 212,
+    "median_eff_rank": 1.7681491379655743,
+    "ci95": [
+      1.59529412876197,
+      1.997015312700326
+    ]
+  },
+  "docking_maskedImputed_floor_likeExp": {
+    "median_eff_rank": 12.351004172761293,
+    "ci95": [
+      11.532132693470778,
+      13.047333321243539
+    ],
+    "note": "experimental mask + FLOOR-impute applied to a genuinely rank-1.8 docking block; the estimate INFLATES far above the true docking rank -- sparse-mask floor-imputation manufactures dimensionality, which is why we do NOT anchor on the floor-imputed experimental value (10.3) and report the imputation-robust KNN estimate instead."
+  },
+  "docking_maskedImputed_KNN_likeExp": {
+    "median_eff_rank": 1.5951612726397875,
+    "ci95": [
+      1.431022590402774,
+      1.796614278042931
+    ],
+    "note": "experimental mask + KNN-impute applied to docking; stays near the true docking rank, so KNN does NOT manufacture dimensionality and the experimental KNN estimate is trustworthy."
+  },
+  "bootstrap_diff_expKNN_minus_dock": {
+    "mean": 4.0663016691404374,
+    "ci95": [
+      2.2466163170535367,
+      5.842275924919556
+    ],
+    "P_diff_le_0": 0.0,
+    "note": "imputation-robust experimental eff-rank minus matched-22-target docking eff-rank"
+  },
+  "docking_random22_subsets": {
+    "mean": 1.8133750899889092,
+    "ci95": [
+      1.5033605675917288,
+      2.1225152265095573
+    ],
+    "min": 1.418474197655295,
+    "max": 2.309883614293159
+  }
+}

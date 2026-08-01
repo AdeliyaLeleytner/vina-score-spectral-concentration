@@ -1,0 +1,1050 @@
+{
+  "dataset": {
+    "n_lig": 72,
+    "n_tgt": 442,
+    "floor": 5.0,
+    "floor_excluded_cells": 9424
+  },
+  "config": {
+    "seed": 0,
+    "morgan_bits": 256,
+    "top_quantile": 0.1,
+    "prec_k": 5,
+    "n_boot": 1000,
+    "n_perm": 50,
+    "n_pairs_geomA": 20000
+  },
+  "arms": {
+    "experiment": {
+      "kind": "experiment",
+      "affinity_pearson": 1.0,
+      "affinity_pearson_ci95": [
+        1.0,
+        1.0
+      ],
+      "affinity_pearson_full": 1.0,
+      "raw_effrank": 7.448,
+      "pc1_frac": 0.329,
+      "interaction_effrank": 13.761,
+      "margin_rho": {
+        "mean_rho": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "n_pairs": 19934
+      },
+      "prec_at_5": {
+        "mean": 0.9529411764705882,
+        "ci95": [
+          0.9205882352941177,
+          0.9824264705882354
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.152,
+      "dimensional_fidelity": 1.0
+    },
+    "boltz_s3": {
+      "kind": "foundation",
+      "affinity_pearson": 0.4826,
+      "affinity_pearson_ci95": [
+        0.3844,
+        0.5655
+      ],
+      "affinity_pearson_full": 0.4923,
+      "raw_effrank": 3.259,
+      "pc1_frac": 0.542,
+      "interaction_effrank": 15.485,
+      "margin_rho": {
+        "mean_rho": 0.4893782113950248,
+        "ci95": [
+          0.486484853791524,
+          0.4920842975043307
+        ],
+        "n_pairs": 19934
+      },
+      "prec_at_5": {
+        "mean": 0.46764705882352936,
+        "ci95": [
+          0.40294117647058825,
+          0.5323529411764705
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.4236119829243698,
+        "ci95": [
+          0.37034674261711614,
+          0.47838774250674027
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.152,
+      "dimensional_fidelity": 0.5866,
+      "clears_chance": true
+    },
+    "s1_readout": {
+      "kind": "readout",
+      "affinity_pearson": 0.5535,
+      "affinity_pearson_ci95": [
+        0.4981,
+        0.598
+      ],
+      "affinity_pearson_full": 0.6682,
+      "raw_effrank": 3.439,
+      "pc1_frac": 0.516,
+      "interaction_effrank": 9.297,
+      "margin_rho": {
+        "mean_rho": 0.5344471535346513,
+        "ci95": [
+          0.5316012875243922,
+          0.5374227591649336
+        ],
+        "n_pairs": 19934
+      },
+      "prec_at_5": {
+        "mean": 0.4264705882352941,
+        "ci95": [
+          0.3588235294117647,
+          0.5
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.4228973393686665,
+        "ci95": [
+          0.3686167495781755,
+          0.48009522119913167
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.151,
+      "dimensional_fidelity": 0.6209,
+      "clears_chance": true
+    },
+    "physchem_null": {
+      "kind": "null",
+      "affinity_pearson": 0.0792,
+      "affinity_pearson_ci95": [
+        -0.008,
+        0.1636
+      ],
+      "affinity_pearson_full": 0.091,
+      "raw_effrank": 1.001,
+      "pc1_frac": 1.0,
+      "interaction_effrank": 61.535,
+      "margin_rho": {
+        "mean_rho": -0.001154419448342052,
+        "ci95": [
+          -0.003629421293672074,
+          0.0014039965819506617
+        ],
+        "n_pairs": 19934
+      },
+      "prec_at_5": {
+        "mean": 0.11764705882352941,
+        "ci95": [
+          0.08529411764705884,
+          0.15
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.1485027427607311,
+        "ci95": [
+          0.13409510294975108,
+          0.16455494916822885
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.151,
+      "dimensional_fidelity": -0.0032
+    },
+    "promiscuity_null": {
+      "kind": "null",
+      "affinity_pearson": 0.3081,
+      "affinity_pearson_ci95": [
+        0.2083,
+        0.3974
+      ],
+      "affinity_pearson_full": 0.4929,
+      "raw_effrank": 1.0,
+      "pc1_frac": 1.0,
+      "interaction_effrank": 0.0,
+      "margin_rho": {
+        "mean_rho": 0.00721191113603265,
+        "ci95": [
+          -0.0018093208348692869,
+          0.015630023877697474
+        ],
+        "n_pairs": 1014
+      },
+      "prec_at_5": {
+        "mean": 0.14411764705882352,
+        "ci95": [
+          0.10588235294117647,
+          0.1852941176470588
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.10706639137402847,
+        "ci95": [
+          0.10496142860792103,
+          0.10923626438128933
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.107,
+      "dimensional_fidelity": NaN
+    },
+    "chembert_davisoof": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.6091,
+      "affinity_pearson_ci95": [
+        0.5635,
+        0.6477
+      ],
+      "affinity_pearson_full": 0.7159,
+      "raw_effrank": 3.09,
+      "pc1_frac": 0.551,
+      "interaction_effrank": 9.261,
+      "margin_rho": {
+        "mean_rho": 0.4417548127617178,
+        "ci95": [
+          0.4371078595228878,
+          0.4462348228540753
+        ],
+        "n_pairs": 19934
+      },
+      "prec_at_5": {
+        "mean": 0.4264705882352941,
+        "ci95": [
+          0.3705882352941176,
+          0.49411764705882355
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.3785542753271354,
+        "ci95": [
+          0.3324938509473408,
+          0.4263037372019361
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.15,
+      "dimensional_fidelity": 0.352,
+      "clears_chance": true
+    },
+    "chembert_kiba2davis": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.1542,
+      "affinity_pearson_ci95": [
+        0.0267,
+        0.2497
+      ],
+      "affinity_pearson_full": 0.1593,
+      "raw_effrank": 2.172,
+      "pc1_frac": 0.672,
+      "interaction_effrank": 10.558,
+      "margin_rho": {
+        "mean_rho": 0.07945641719341796,
+        "ci95": [
+          0.0760073952150857,
+          0.08294566752318625
+        ],
+        "n_pairs": 19933
+      },
+      "prec_at_5": {
+        "mean": 0.16470588235294117,
+        "ci95": [
+          0.11470588235294117,
+          0.2205882352941176
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.2078233654999473,
+        "ci95": [
+          0.171952655092839,
+          0.248228479344199
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.151,
+      "dimensional_fidelity": 0.1613,
+      "clears_chance": true
+    },
+    "conplex_kiba2davis": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.3784,
+      "affinity_pearson_ci95": [
+        0.3203,
+        0.4279
+      ],
+      "affinity_pearson_full": 0.3946,
+      "raw_effrank": 2.379,
+      "pc1_frac": 0.591,
+      "interaction_effrank": 1.955,
+      "margin_rho": {
+        "mean_rho": 0.18158260824059394,
+        "ci95": [
+          0.17771187371174155,
+          0.18535692703182866
+        ],
+        "n_pairs": 19923
+      },
+      "prec_at_5": {
+        "mean": 0.3088235294117647,
+        "ci95": [
+          0.24117647058823527,
+          0.3852941176470588
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.3114860334880185,
+        "ci95": [
+          0.2557820581687067,
+          0.3724303696345455
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.15,
+      "dimensional_fidelity": 0.32,
+      "clears_chance": true
+    },
+    "deepdta_kiba2davis": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.0722,
+      "affinity_pearson_ci95": [
+        -0.0576,
+        0.1939
+      ],
+      "affinity_pearson_full": 0.0711,
+      "raw_effrank": 1.131,
+      "pc1_frac": 0.939,
+      "interaction_effrank": 2.781,
+      "margin_rho": {
+        "mean_rho": 0.00673738178698606,
+        "ci95": [
+          0.004081898639161419,
+          0.009884839047689546
+        ],
+        "n_pairs": 19922
+      },
+      "prec_at_5": {
+        "mean": 0.09999999999999999,
+        "ci95": [
+          0.06757352941176471,
+          0.138235294117647
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.16142640354475646,
+        "ci95": [
+          0.13026062924424422,
+          0.19870495178596978
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.148,
+      "dimensional_fidelity": 0.2306,
+      "clears_chance": false
+    },
+    "dmpnn_kiba2davis": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.2176,
+      "affinity_pearson_ci95": [
+        0.0392,
+        0.329
+      ],
+      "affinity_pearson_full": 0.3161,
+      "raw_effrank": 1.016,
+      "pc1_frac": 0.992,
+      "interaction_effrank": 2.758,
+      "margin_rho": {
+        "mean_rho": 0.06195929992097807,
+        "ci95": [
+          0.05812491893935495,
+          0.065568254379996
+        ],
+        "n_pairs": 19934
+      },
+      "prec_at_5": {
+        "mean": 0.07941176470588236,
+        "ci95": [
+          0.05,
+          0.11764705882352941
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.16222654012753365,
+        "ci95": [
+          0.13926465991263184,
+          0.186762809784788
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.15,
+      "dimensional_fidelity": 0.1484,
+      "clears_chance": false
+    },
+    "esm_target_davisoof": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.7444,
+      "affinity_pearson_ci95": [
+        0.7127,
+        0.772
+      ],
+      "affinity_pearson_full": 0.8299,
+      "raw_effrank": 4.635,
+      "pc1_frac": 0.432,
+      "interaction_effrank": 9.013,
+      "margin_rho": {
+        "mean_rho": 0.6663113148021458,
+        "ci95": [
+          0.6627703792195369,
+          0.6697412249229616
+        ],
+        "n_pairs": 19934
+      },
+      "prec_at_5": {
+        "mean": 0.5941176470588235,
+        "ci95": [
+          0.526470588235294,
+          0.6588970588235294
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.544564263356531,
+        "ci95": [
+          0.49509203080618275,
+          0.591919642219301
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.152,
+      "dimensional_fidelity": 0.6214,
+      "clears_chance": true
+    },
+    "esm_target_kiba2davis": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.3134,
+      "affinity_pearson_ci95": [
+        0.1991,
+        0.412
+      ],
+      "affinity_pearson_full": 0.3737,
+      "raw_effrank": 2.401,
+      "pc1_frac": 0.631,
+      "interaction_effrank": 7.852,
+      "margin_rho": {
+        "mean_rho": 0.21006449242810124,
+        "ci95": [
+          0.2068511691916236,
+          0.21352285661837406
+        ],
+        "n_pairs": 19932
+      },
+      "prec_at_5": {
+        "mean": 0.21764705882352942,
+        "ci95": [
+          0.16463235294117645,
+          0.2794117647058823
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.23997463145234482,
+        "ci95": [
+          0.20255318363398558,
+          0.2869147576825406
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.15,
+      "dimensional_fidelity": 0.3663,
+      "clears_chance": true
+    },
+    "histgbm_davisoof": {
+      "kind": "docking-surrogate",
+      "affinity_pearson": 0.617,
+      "affinity_pearson_ci95": [
+        0.5705,
+        0.6548
+      ],
+      "affinity_pearson_full": 0.7199,
+      "raw_effrank": 1.82,
+      "pc1_frac": 0.734,
+      "interaction_effrank": 7.047,
+      "margin_rho": {
+        "mean_rho": 0.43719911477912227,
+        "ci95": [
+          0.4324545352315036,
+          0.44183528817168083
+        ],
+        "n_pairs": 19934
+      },
+      "prec_at_5": {
+        "mean": 0.4617647058823529,
+        "ci95": [
+          0.39117647058823535,
+          0.5294852941176471
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.4124485215673088,
+        "ci95": [
+          0.35984753911161016,
+          0.4657453582136974
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.152,
+      "dimensional_fidelity": 0.3475,
+      "clears_chance": true
+    },
+    "histgbm_kiba2davis": {
+      "kind": "docking-surrogate",
+      "affinity_pearson": 0.196,
+      "affinity_pearson_ci95": [
+        0.0215,
+        0.3132
+      ],
+      "affinity_pearson_full": 0.2832,
+      "raw_effrank": 1.211,
+      "pc1_frac": 0.908,
+      "interaction_effrank": 8.655,
+      "margin_rho": {
+        "mean_rho": 0.06893528704627275,
+        "ci95": [
+          0.06556097076411502,
+          0.07252237581231621
+        ],
+        "n_pairs": 19933
+      },
+      "prec_at_5": {
+        "mean": 0.11176470588235295,
+        "ci95": [
+          0.0735294117647059,
+          0.15294117647058822
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.1779531346653431,
+        "ci95": [
+          0.15131819846557926,
+          0.20858105804734817
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.15,
+      "dimensional_fidelity": 0.1316,
+      "clears_chance": false
+    },
+    "kronrls_davisoof": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.2786,
+      "affinity_pearson_ci95": [
+        0.1679,
+        0.3683
+      ],
+      "affinity_pearson_full": 0.4812,
+      "raw_effrank": 1.003,
+      "pc1_frac": 0.998,
+      "interaction_effrank": 5.532,
+      "margin_rho": {
+        "mean_rho": 0.04343182600451394,
+        "ci95": [
+          0.03897526022527372,
+          0.047880207525069794
+        ],
+        "n_pairs": 19934
+      },
+      "prec_at_5": {
+        "mean": 0.10588235294117648,
+        "ci95": [
+          0.07941176470588236,
+          0.13529411764705884
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.1429165241795301,
+        "ci95": [
+          0.12716635850693395,
+          0.16071665956112008
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.151,
+      "dimensional_fidelity": 0.0639,
+      "clears_chance": false
+    },
+    "mlp_davisoof": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.6181,
+      "affinity_pearson_ci95": [
+        0.5755,
+        0.6558
+      ],
+      "affinity_pearson_full": 0.7198,
+      "raw_effrank": 3.382,
+      "pc1_frac": 0.526,
+      "interaction_effrank": 9.615,
+      "margin_rho": {
+        "mean_rho": 0.46130680689418524,
+        "ci95": [
+          0.4566527660557248,
+          0.4656460428123349
+        ],
+        "n_pairs": 19934
+      },
+      "prec_at_5": {
+        "mean": 0.45882352941176474,
+        "ci95": [
+          0.3941176470588235,
+          0.5323529411764705
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.3926417922490333,
+        "ci95": [
+          0.3479666554190161,
+          0.44049219841965576
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.151,
+      "dimensional_fidelity": 0.36,
+      "clears_chance": true
+    },
+    "mlp_kiba2davis": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.1524,
+      "affinity_pearson_ci95": [
+        0.0173,
+        0.2505
+      ],
+      "affinity_pearson_full": 0.1827,
+      "raw_effrank": 3.001,
+      "pc1_frac": 0.566,
+      "interaction_effrank": 11.991,
+      "margin_rho": {
+        "mean_rho": 0.08741850741193757,
+        "ci95": [
+          0.08391905931454886,
+          0.09081999918988508
+        ],
+        "n_pairs": 19933
+      },
+      "prec_at_5": {
+        "mean": 0.1411764705882353,
+        "ci95": [
+          0.10588235294117647,
+          0.1764705882352941
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.2029498066027122,
+        "ci95": [
+          0.16836682337779982,
+          0.2409783004390655
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.151,
+      "dimensional_fidelity": 0.1618,
+      "clears_chance": true
+    },
+    "morgan_cnn_kiba2davis": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.2413,
+      "affinity_pearson_ci95": [
+        0.0994,
+        0.3486
+      ],
+      "affinity_pearson_full": 0.3564,
+      "raw_effrank": 1.0,
+      "pc1_frac": 1.0,
+      "interaction_effrank": 31.746,
+      "margin_rho": {
+        "mean_rho": 0.0031603377482939546,
+        "ci95": [
+          0.0005619524630972947,
+          0.00573772231107041
+        ],
+        "n_pairs": 19876
+      },
+      "prec_at_5": {
+        "mean": 0.07941176470588236,
+        "ci95": [
+          0.052941176470588235,
+          0.1088235294117647
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.1526136310004738,
+        "ci95": [
+          0.13641701248720636,
+          0.16904324507092938
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.149,
+      "dimensional_fidelity": 0.0601,
+      "clears_chance": false
+    },
+    "rf_davisoof": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.6378,
+      "affinity_pearson_ci95": [
+        0.5978,
+        0.6721
+      ],
+      "affinity_pearson_full": 0.7407,
+      "raw_effrank": 1.618,
+      "pc1_frac": 0.782,
+      "interaction_effrank": 7.173,
+      "margin_rho": {
+        "mean_rho": 0.5213008543665656,
+        "ci95": [
+          0.5169686411134627,
+          0.5256419525930018
+        ],
+        "n_pairs": 19934
+      },
+      "prec_at_5": {
+        "mean": 0.5499999999999999,
+        "ci95": [
+          0.4764705882352941,
+          0.6235294117647059
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.4600496149004405,
+        "ci95": [
+          0.40307961987564933,
+          0.5164540089952719
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.151,
+      "dimensional_fidelity": 0.372,
+      "clears_chance": true
+    },
+    "rf_kiba2davis": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.2175,
+      "affinity_pearson_ci95": [
+        0.0316,
+        0.3294
+      ],
+      "affinity_pearson_full": 0.3346,
+      "raw_effrank": 1.108,
+      "pc1_frac": 0.95,
+      "interaction_effrank": 9.351,
+      "margin_rho": {
+        "mean_rho": 0.10042161072156854,
+        "ci95": [
+          0.0970866227199566,
+          0.10382067915324382
+        ],
+        "n_pairs": 19933
+      },
+      "prec_at_5": {
+        "mean": 0.14411764705882354,
+        "ci95": [
+          0.10294117647058823,
+          0.19124999999999992
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.18936695932406358,
+        "ci95": [
+          0.16018374172098718,
+          0.22476808648261987
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.15,
+      "dimensional_fidelity": 0.1574,
+      "clears_chance": true
+    },
+    "ridge_davisoof": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.3042,
+      "affinity_pearson_ci95": [
+        0.2164,
+        0.3816
+      ],
+      "affinity_pearson_full": 0.4968,
+      "raw_effrank": 1.002,
+      "pc1_frac": 0.999,
+      "interaction_effrank": 3.344,
+      "margin_rho": {
+        "mean_rho": -0.10068717521511528,
+        "ci95": [
+          -0.10457277549643376,
+          -0.09654009727136217
+        ],
+        "n_pairs": 19698
+      },
+      "prec_at_5": {
+        "mean": 0.04411764705882353,
+        "ci95": [
+          0.026470588235294117,
+          0.06764705882352942
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.11646840823229077,
+        "ci95": [
+          0.10685769158195929,
+          0.12708277449983094
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.15,
+      "dimensional_fidelity": 0.0083,
+      "clears_chance": false
+    },
+    "ridge_kiba2davis": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.1456,
+      "affinity_pearson_ci95": [
+        -0.0312,
+        0.2687
+      ],
+      "affinity_pearson_full": 0.1621,
+      "raw_effrank": 1.0,
+      "pc1_frac": 1.0,
+      "interaction_effrank": 4.565,
+      "margin_rho": {
+        "mean_rho": 0.014514416324168417,
+        "ci95": [
+          0.011942830454844683,
+          0.017077642502095893
+        ],
+        "n_pairs": 18614
+      },
+      "prec_at_5": {
+        "mean": 0.12058823529411763,
+        "ci95": [
+          0.0911764705882353,
+          0.15294117647058825
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.14108302740455833,
+        "ci95": [
+          0.12664245818218578,
+          0.1564228227002158
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.135,
+      "dimensional_fidelity": -0.0003,
+      "clears_chance": false
+    },
+    "transformer_cnn_kiba2davis": {
+      "kind": "ml-model",
+      "affinity_pearson": 0.0828,
+      "affinity_pearson_ci95": [
+        0.0382,
+        0.1291
+      ],
+      "affinity_pearson_full": 0.0991,
+      "raw_effrank": 8.212,
+      "pc1_frac": 0.318,
+      "interaction_effrank": 4.559,
+      "margin_rho": {
+        "mean_rho": -0.0050530526417443215,
+        "ci95": [
+          -0.007993957229743278,
+          -0.002117556742793603
+        ],
+        "n_pairs": 17165
+      },
+      "prec_at_5": {
+        "mean": 0.10882352941176471,
+        "ci95": [
+          0.07647058823529414,
+          0.14124999999999996
+        ],
+        "n_lig": 68
+      },
+      "auprc": {
+        "mean": 0.150786722975866,
+        "ci95": [
+          0.13374902825954527,
+          0.16882909306346958
+        ],
+        "n_lig": 68
+      },
+      "auprc_perm_chance": 0.145,
+      "dimensional_fidelity": 0.0063,
+      "clears_chance": false
+    }
+  },
+  "headline_reorder": {
+    "affinity_ruler": "floor-excluded measured-cell Pearson to pKd",
+    "selectivity_ruler": "Geometry B precision@5 (floor-excluded off-target hotspot retrieval)",
+    "chance_clearing_criterion": "AUPRC ci95_lo > per-arm permuted-label chance AND prec@5 ci95_lo > decile floor",
+    "primary": {
+      "n_arms": 12,
+      "kendall_tau": 0.809,
+      "spearman_rho": 0.914,
+      "kendall_tau_ci95": [
+        0.667,
+        0.939
+      ],
+      "spearman_rho_ci95": [
+        0.839,
+        0.986
+      ],
+      "arms_ranked": [
+        "boltz_s3",
+        "s1_readout",
+        "chembert_davisoof",
+        "chembert_kiba2davis",
+        "conplex_kiba2davis",
+        "esm_target_davisoof",
+        "esm_target_kiba2davis",
+        "histgbm_davisoof",
+        "mlp_davisoof",
+        "mlp_kiba2davis",
+        "rf_davisoof",
+        "rf_kiba2davis"
+      ],
+      "n_arms_clearing_ge5": true,
+      "target_met_tau_le_0.3": false,
+      "decoupled_tau_lt_1": true,
+      "affinity_ranking": [
+        "esm_target_davisoof",
+        "rf_davisoof",
+        "mlp_davisoof",
+        "histgbm_davisoof",
+        "chembert_davisoof",
+        "s1_readout",
+        "boltz_s3",
+        "conplex_kiba2davis",
+        "esm_target_kiba2davis",
+        "rf_kiba2davis",
+        "chembert_kiba2davis",
+        "mlp_kiba2davis"
+      ],
+      "selectivity_ranking": [
+        "esm_target_davisoof",
+        "rf_davisoof",
+        "boltz_s3",
+        "histgbm_davisoof",
+        "mlp_davisoof",
+        "s1_readout",
+        "chembert_davisoof",
+        "conplex_kiba2davis",
+        "esm_target_kiba2davis",
+        "chembert_kiba2davis",
+        "rf_kiba2davis",
+        "mlp_kiba2davis"
+      ],
+      "top_by_affinity_not_top_by_selectivity": [
+        {
+          "arm": "mlp_davisoof",
+          "affinity_rank": 3,
+          "selectivity_rank": 5,
+          "affinity_pearson": 0.6181,
+          "prec_at_5": 0.45882352941176474
+        },
+        {
+          "arm": "boltz_s3",
+          "affinity_rank": 7,
+          "selectivity_rank": 3,
+          "affinity_pearson": 0.4826,
+          "prec_at_5": 0.46764705882352936
+        }
+      ]
+    },
+    "sensitivity_all_scorers": {
+      "n_arms": 20,
+      "kendall_tau": 0.582,
+      "spearman_rho": 0.743,
+      "kendall_tau_ci95": [
+        0.48,
+        0.67
+      ],
+      "spearman_rho_ci95": [
+        0.681,
+        0.814
+      ],
+      "arms_ranked": [
+        "boltz_s3",
+        "s1_readout",
+        "chembert_davisoof",
+        "chembert_kiba2davis",
+        "conplex_kiba2davis",
+        "deepdta_kiba2davis",
+        "dmpnn_kiba2davis",
+        "esm_target_davisoof",
+        "esm_target_kiba2davis",
+        "histgbm_davisoof",
+        "histgbm_kiba2davis",
+        "kronrls_davisoof",
+        "mlp_davisoof",
+        "mlp_kiba2davis",
+        "morgan_cnn_kiba2davis",
+        "rf_davisoof",
+        "rf_kiba2davis",
+        "ridge_davisoof",
+        "ridge_kiba2davis",
+        "transformer_cnn_kiba2davis"
+      ],
+      "at_chance_arms": [
+        "deepdta_kiba2davis",
+        "dmpnn_kiba2davis",
+        "histgbm_kiba2davis",
+        "kronrls_davisoof",
+        "morgan_cnn_kiba2davis",
+        "ridge_davisoof",
+        "ridge_kiba2davis",
+        "transformer_cnn_kiba2davis"
+      ],
+      "note": "includes arms whose selectivity is at chance; ranking those is ordering noise -- NOT the headline"
+    }
+  },
+  "null_validity": {
+    "physchem_null": {
+      "auprc": 0.1485027427607311,
+      "chance": 0.151,
+      "at_chance": true
+    },
+    "promiscuity_null": {
+      "auprc": 0.10706639137402847,
+      "chance": 0.107,
+      "at_chance": true
+    }
+  }
+}

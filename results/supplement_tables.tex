@@ -1,0 +1,173 @@
+\begin{landscape}
+\begin{table}[p]
+\centering\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{\textbf{Dataset and preprocessing summary.} PR denotes participation-ratio effective dimension. Listed procedures quantify sensitivity within the observed chemical and target panels, not superpopulation uncertainty.}
+\label{tab:s1datasets}
+\begin{tabular}{p{2.9cm}p{2.3cm}rrrp{4.4cm}rrrp{3.8cm}}
+\toprule
+Matrix & scorer / source & $N$ & $P$ & missing & preprocessing & column-standardized PR & residual PR & entropy rank & uncertainty \\
+\midrule
+Docking-44 & Vina-GPU 2.0 & 12,651 & 44 & 1.466\% & positive/source-censored scores to 0; target-mean imputation; column z-score & 1.834 & 9.303 & 3.897 & Butina-cluster bootstrap; target leave-one-out and subsampling \\
+DOCKSTRING-58 & AutoDock Vina & 260,060 & 58 & 0.002\% & positive scores to 0; complete rows; column z-score & 2.266 & 18.206 & 6.206 & Bemis-Murcko scaffold-cluster bootstrap on fixed chemical support; target jackknife \\
+RF-Score/Vina-pose sensitivity & RF-Score v1 & 41 & 14 & 0.000\% & complete common block; column z-score & 1.416 & 6.681 & 2.158 & ligand bootstrap; small fixed panel \\
+RF-Score/Vinardo-pose sensitivity & RF-Score v1 & 35 & 20 & 0.000\% & complete common block; column z-score & 1.812 & 9.918 & 3.347 & ligand bootstrap; small fixed panel \\
+Matched docking & AutoDock Vina & 74 & 6 & 0.000\% & complete matched block; column z-score & 1.827 & 3.646 & 2.605 & same ligand-target support as exact-relation median ChEMBL block \\
+Matched ChEMBL affinity & experimental pChEMBL & 74 & 6 & 9.910\% & exact relation; median over repeats; target-median imputation; column z-score & 3.833 & 4.128 & 4.628 & same observed support; assay and imputation sensitivities \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{landscape}
+
+\begin{table}[p]
+\centering\small
+\setlength{\tabcolsep}{3pt}
+\caption{\textbf{Docking-44 preprocessing and censoring sensitivity.} Complete-case and target-exclusion results are not directly comparable because they change chemical or target support.}
+\label{tab:s2preprocessing}
+\begin{tabular}{p{2.8cm}p{5.0cm}rp{5.8cm}}
+\toprule Surface & preprocessing & PR & note \\ \midrule
+Column standardized & target-mean imputation (primary) & 1.834 & same 12,651 ligands \\
+Column standardized & target-median imputation & 1.835 & same support \\
+Column standardized & complete cases & 1.320 & 9,297 ligands; support changes \\
+Column standardized & primary mean-imputed matrix restricted to complete rows & 1.320 & same 9,297-row support; equals complete case \\
+Column standardized & pairwise-complete Pearson correlation & 1.788 & no matrix imputation \\
+Column standardized & pairwise Spearman correlation & 1.686 & rank correlation \\
+Column standardized & censored zeros treated as missing & 1.829 & 111 cells; target-mean imputation \\
+Column standardized & exclude ligands with censored zeros & 1.814 & 12,544 ligands \\
+Column standardized & exclude four most-censored targets & 1.602 & changes the target estimand \\
+Residual & center then standardize (primary) & 9.303 & closed-form two-way centering \\
+Residual & standardize then center & 9.378 & order sensitivity \\
+Residual & robust scale then center & 9.462 & median/IQR scaling \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[p]
+\centering\scriptsize
+\setlength{\tabcolsep}{2pt}
+\caption{\textbf{Experimental-assay, missing-data and repeatability controls.} The noise scale was 0.493 pChEMBL, estimated from different-document repeats.}
+\label{tab:s3experiment}
+\begin{tabular}{p{5.4cm}rrrp{5.4cm}}
+\toprule Analysis block & $N$ & $P$ & PR & note \\ \midrule
+ChEMBL all endpoints, frozen refetch A & 212 & 22 & 6.846 & already human-only; KNN; 52.9\% missing \\
+human binding Ki/Kd & 175 & 19 & 5.248 & assay type B; KNN \\
+IC50/EC50 & 88 & 15 & 3.921 & KNN \\
+fully observed sub-block & 31 & 6 & 3.608 & no imputation \\
+matched exact-relation median & 74 & 6 & 3.833 & same-support docking 1.83 \\
+matched human binding, all endpoints & 47 & 6 & 3.510 & same-support docking 1.87 \\
+matched human binding Ki/Kd & 35 & 6 & 3.072 & same-support docking 1.89 \\
+ChEMBL all endpoints, frozen refetch B, KNN5 & 212 & 22 & 5.721 & different frozen extraction; 52.9\% missing \\
+212 x 22, MICE & 212 & 22 & 8.592 & mean across imputations \\
+212 x 22, SoftImpute & 212 & 22 & 2.644 & low-rank matrix completion \\
+212 x 22, PPCA-EM & 212 & 22 & 7.283 & probabilistic PCA \\
+matched docking + calibrated noise & 74 & 6 & 2.290 & 95\% simulation interval 2.12--2.50 \\
+matched docking + 2.5x calibrated noise & 74 & 6 & 3.877 & approximately reaches experimental raw PR \\
+matched docking, linear descriptor residual & 74 & 6 & 2.806 & seven RDKit descriptors; same support \\
+matched docking, cross-fitted nonlinear residual & 74 & 6 & 2.680 & five-fold HistGBM; same support \\
+matched docking residual, exact-relation support & 74 & 6 & 3.646 & two-way centered \\
+matched experimental residual, exact relation median & 74 & 6 & 4.128 & two-way centered; primary curation \\
+matched experimental residual, legacy most-potent & 74 & 6 & 4.086 & paired difference interval -0.24--0.93 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\setlength{\tabcolsep}{3pt}
+\caption{\textbf{Target-panel and chemical-support sensitivities.} Leave-one-target-out values describe composition sensitivity within each observed panel; they are not superpopulation confidence intervals.}
+\label{tab:s4target}
+\begin{tabular}{llrrrrl}
+\toprule Matrix & surface & full PR & LOTO min & LOTO median & LOTO max & target \\ \midrule
+Docking-44 & column-standardized & 1.834 & 1.756 & 1.846 & 1.853 & 4mqs \\
+Docking-44 & two-way-centered residual & 9.303 & 8.956 & 9.206 & 9.872 & 8e9y \\
+DOCKSTRING-58 & column-standardized & 2.266 & 2.218 & 2.297 & 2.311 & AR \\
+DOCKSTRING-58 & two-way-centered residual & 18.206 & 17.662 & 17.931 & 20.045 & MAOB \\
+\bottomrule
+\end{tabular}
+\vspace{5pt}
+\parbox{0.94\textwidth}{\footnotesize Family-stratified target subsampling is shown in Fig.~1c,d. In five independent 100-permutation series, supra-null mode counts were 3 versus 7 in every series for Docking-44 and 4 versus 10 in every series for DOCKSTRING-58. On a seeded 15,000-molecule DOCKSTRING support, the molecule-bootstrap 95\% interval was 2.230--2.296 and the Bemis--Murcko scaffold-cluster interval was 2.148--2.367.}
+\end{table}
+
+\begin{table}[htbp]
+\centering\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{\textbf{All 20 exploratory DTI scorer arms.} Plot IDs identify points in Fig.~S3. The above-chance flag is outcome-related and is not used to define this complete panel.}
+\label{tab:s5all20}
+\begin{tabular}{rllrrrrr}
+\toprule ID & arm & above chance & affinity $r$ & column-standardized PR & residual PR & P@5 & AUPRC \\ \midrule
+1 & boltz\_s3 & yes & 0.483 & 3.26 & 15.48 & 0.468 & 0.424 \\
+2 & s1\_readout & yes & 0.553 & 3.44 & 9.30 & 0.426 & 0.423 \\
+3 & chembert\_davisoof & yes & 0.609 & 3.09 & 9.26 & 0.426 & 0.379 \\
+4 & chembert\_kiba2davis & yes & 0.154 & 2.17 & 10.56 & 0.165 & 0.208 \\
+5 & conplex\_kiba2davis & yes & 0.378 & 2.38 & 1.96 & 0.309 & 0.311 \\
+6 & deepdta\_kiba2davis & no & 0.072 & 1.13 & 2.78 & 0.100 & 0.161 \\
+7 & dmpnn\_kiba2davis & no & 0.218 & 1.02 & 2.76 & 0.079 & 0.162 \\
+8 & esm\_target\_davisoof & yes & 0.744 & 4.63 & 9.01 & 0.594 & 0.545 \\
+9 & esm\_target\_kiba2davis & yes & 0.313 & 2.40 & 7.85 & 0.218 & 0.240 \\
+10 & histgbm\_davisoof & yes & 0.617 & 1.82 & 7.05 & 0.462 & 0.412 \\
+11 & histgbm\_kiba2davis & no & 0.196 & 1.21 & 8.65 & 0.112 & 0.178 \\
+12 & kronrls\_davisoof & no & 0.279 & 1.00 & 5.53 & 0.106 & 0.143 \\
+13 & mlp\_davisoof & yes & 0.618 & 3.38 & 9.62 & 0.459 & 0.393 \\
+14 & mlp\_kiba2davis & yes & 0.152 & 3.00 & 11.99 & 0.141 & 0.203 \\
+15 & morgan\_cnn\_kiba2davis & no & 0.241 & 1.00 & 31.75 & 0.079 & 0.153 \\
+16 & rf\_davisoof & yes & 0.638 & 1.62 & 7.17 & 0.550 & 0.460 \\
+17 & rf\_kiba2davis & yes & 0.217 & 1.11 & 9.35 & 0.144 & 0.189 \\
+18 & ridge\_davisoof & no & 0.304 & 1.00 & 3.34 & 0.044 & 0.116 \\
+19 & ridge\_kiba2davis & no & 0.146 & 1.00 & 4.57 & 0.121 & 0.141 \\
+20 & transformer\_cnn\_kiba2davis & no & 0.083 & 8.21 & 4.56 & 0.109 & 0.151 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{landscape}
+\scriptsize
+\begin{longtable}{rp{4.5cm}p{5.3cm}p{5.4cm}p{5.0cm}}
+\caption{\textbf{Provenance for the outcome-restricted 12-arm DTI sensitivity panel.} DAVIS OOF denotes six-fold GroupKFold by target; KIBA transfer denotes zero-shot evaluation on DAVIS after KIBA training. Metrics are listed for all arms in Table~S5.}\label{tab:s6dti}\\
+\toprule
+ID & arm & representation / head & training and evaluation & caveat \\
+\midrule
+\endfirsthead
+\multicolumn{5}{l}{\textit{Supplementary Table S6 continued}}\\
+\toprule
+ID & arm & representation / head & training and evaluation & caveat \\
+\midrule
+\endhead
+\midrule \multicolumn{5}{r}{\textit{continued on next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+1 & Boltz-2 deployed affinity head & co-folded complex; deployed affinity score & foundation-model training; no DAVIS fitting in this analysis; external zero-shot DAVIS & foundation-model training corpus may contain related structures or affinities \\
+2 & Boltz-2 frozen representation + ridge & frozen pre-pairformer representation; RidgeCV & DAVIS training folds; six-fold unseen-target GroupKFold & shares Boltz-2 representation with boltz\_s3 \\
+3 & ChemBERTa + AAC, DAVIS OOF & ChemBERTa drug embedding + amino-acid composition; MLP & DAVIS training folds; six-fold unseen-target GroupKFold & paired with chembert\_kiba2davis \\
+4 & ChemBERTa + AAC, KIBA to DAVIS & ChemBERTa drug embedding + amino-acid composition; MLP & KIBA; zero-shot transfer to DAVIS & paired with chembert\_davisoof \\
+5 & ConPLex & protein language model + contrastive DTI score & pretrained on BindingDB; zero-shot DAVIS inference & possible training-data overlap with DAVIS proteins \\
+8 & Morgan + ESM-2, DAVIS OOF & Morgan drug features + ESM-2 target embedding; MLP & DAVIS training folds; six-fold unseen-target GroupKFold & paired with esm\_target\_kiba2davis \\
+9 & Morgan + ESM-2, KIBA to DAVIS & Morgan drug features + ESM-2 target embedding; MLP & KIBA; zero-shot transfer to DAVIS & paired with esm\_target\_davisoof \\
+10 & Morgan + AAC gradient boosting & Morgan + physicochemical drug features and amino-acid composition; HistGBM & DAVIS training folds; six-fold unseen-target GroupKFold & feature family overlaps several comparator arms \\
+13 & Morgan + AAC MLP, DAVIS OOF & Morgan + physicochemical drug features and amino-acid composition; MLP & DAVIS training folds; six-fold unseen-target GroupKFold & paired with mlp\_kiba2davis \\
+14 & Morgan + AAC MLP, KIBA to DAVIS & Morgan + physicochemical drug features and amino-acid composition; MLP & KIBA; zero-shot transfer to DAVIS & paired with mlp\_davisoof \\
+16 & Morgan + AAC random forest, DAVIS OOF & Morgan + physicochemical drug features and amino-acid composition; random forest & DAVIS training folds; six-fold unseen-target GroupKFold & paired with rf\_kiba2davis \\
+17 & Morgan + AAC random forest, KIBA to DAVIS & Morgan + physicochemical drug features and amino-acid composition; random forest & KIBA; zero-shot transfer to DAVIS & paired with rf\_davisoof \\
+\end{longtable}
+\end{landscape}
+
+\begin{table}[p]
+\centering\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{\textbf{Selection and estimator sensitivity of rank--selectivity associations.} The 12-arm panel excludes eight chance-level arms on an outcome-related criterion. All coefficients are descriptive across dependent model arms.}
+\label{tab:s7selection}
+\begin{tabular}{lllrrrrrr}
+\toprule Model panel & PR variable & endpoint & Pearson $r$ & $p$ & Spearman $\rho$ & $p$ & Kendall $\tau$ & $p$ \\ \midrule
+12 above-chance & column-standardized PR & P@5 & 0.467 & 0.1261 & 0.347 & 0.2695 & 0.260 & 0.2426 \\
+12 above-chance & residual PR & P@5 & -0.046 & 0.8877 & -0.291 & 0.3593 & -0.198 & 0.3716 \\
+12 above-chance & column-standardized PR & AUPRC & 0.542 & 0.0685 & 0.462 & 0.1309 & 0.364 & 0.1160 \\
+12 above-chance & residual PR & AUPRC & -0.026 & 0.9354 & -0.245 & 0.4433 & -0.152 & 0.5452 \\
+all 20 scorers & column-standardized PR & P@5 & 0.309 & 0.1854 & 0.645 & 0.0021 & 0.483 & 0.0031 \\
+all 20 scorers & residual PR & P@5 & 0.039 & 0.8697 & 0.338 & 0.1452 & 0.243 & 0.1352 \\
+all 20 scorers & column-standardized PR & AUPRC & 0.313 & 0.1791 & 0.660 & 0.0016 & 0.544 & 0.0008 \\
+all 20 scorers & residual PR & AUPRC & 0.065 & 0.7866 & 0.373 & 0.1053 & 0.221 & 0.1859 \\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+\parbox{0.93\textwidth}{\footnotesize For column-standardized PR versus P@5 in the 12-arm subset, the arm-resampling 95\% interval was -0.39--0.89, leave-one-arm-out values ranged from 0.15 to 0.57, and the approximate two-sided 0.05 detectable absolute correlation was 0.58.}
+\end{table}

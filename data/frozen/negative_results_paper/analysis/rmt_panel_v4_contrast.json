@@ -1,0 +1,57 @@
+{
+  "panel_44_original": {
+    "N": 12651,
+    "P": 44,
+    "q": 0.0034779859299660107,
+    "lambda_plus": 1.1214268889340382,
+    "n_signal": 3,
+    "n_below_minus": 40,
+    "signal_var_frac": 0.8400651440350404,
+    "pc1_frac": 0.7329495272570137,
+    "pc12_frac": 0.8092699803178468,
+    "pc123_frac": 0.8400651440350404,
+    "eff_rank_PR": 1.8340455747972344,
+    "top5_eig": [
+      32.249779199308605,
+      3.35809993467666,
+      1.3549872035565222,
+      0.9301545040647119,
+      0.6029187779581309
+    ]
+  },
+  "panel_47_with_new_hepatic": {
+    "N": 12651,
+    "P": 47,
+    "q": 0.003715121334281875,
+    "lambda_plus": 1.1256187116715952,
+    "n_signal": 3,
+    "n_below_minus": 43,
+    "signal_var_frac": 0.8320803456699906,
+    "pc1_frac": 0.7241757442665487,
+    "pc12_frac": 0.8026103850406295,
+    "pc123_frac": 0.8320803456699906,
+    "eff_rank_PR": 1.8767112586394548,
+    "top5_eig": [
+      34.036259980527795,
+      3.686428116381795,
+      1.3850881495799747,
+      1.0634166434669936,
+      0.6910537532548328
+    ]
+  },
+  "new_protein_correlation_with_general_axis": {
+    "8pm6": {
+      "name": "BSEP (transporter)",
+      "pearson_with_mean44": 0.9163919490713034
+    },
+    "6itm": {
+      "name": "FXR (nuclear receptor)",
+      "pearson_with_mean44": 0.5320027707349368
+    },
+    "9fzj": {
+      "name": "PXR (nuclear receptor)",
+      "pearson_with_mean44": 0.8064440072026035
+    }
+  },
+  "interpretation": "If the 3 purpose-added hepatic targets carried independent mechanism, n_signal and effective rank would rise by up to 3 and each would correlate weakly with the panel mean. Observed below."
+}

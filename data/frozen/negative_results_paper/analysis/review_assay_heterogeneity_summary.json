@@ -1,0 +1,76 @@
+{
+  "noise_injection_on_docking": {
+    "base_eff_rank": 1.7808382272654015,
+    "n_targets": 22,
+    "sweep": {
+      "0.1": {
+        "eff_rank_mean": 1.8136011502735694
+      },
+      "0.25": {
+        "eff_rank_mean": 1.9894919798227486
+      },
+      "0.5": {
+        "eff_rank_mean": 2.6625511583313095
+      },
+      "0.75": {
+        "eff_rank_mean": 3.894555462354384
+      },
+      "1.0": {
+        "eff_rank_mean": 5.739621209802433
+      },
+      "1.5": {
+        "eff_rank_mean": 10.599374334502977
+      },
+      "2.0": {
+        "eff_rank_mean": 15.099787053012827
+      }
+    }
+  },
+  "n_records": 194656,
+  "type_counts": {
+    "Ki": 90003,
+    "IC50": 76741,
+    "EC50": 25386,
+    "Kd": 2526
+  },
+  "organism_top": {
+    "Homo sapiens": 194656
+  },
+  "blocks": {
+    "all_types": {
+      "n_compounds": 212,
+      "n_targets": 22,
+      "eff_rank_KNN": 6.846370373077291,
+      "pc1_frac": 0.32737303238583443,
+      "missing_frac": 0.5289451114922813
+    },
+    "Ki_Kd_binding": {
+      "n_compounds": 175,
+      "n_targets": 19,
+      "eff_rank_KNN": 5.247981774166785,
+      "pc1_frac": 0.3924075920868318,
+      "missing_frac": 0.4649624060150376
+    },
+    "IC50_EC50": {
+      "n_compounds": 88,
+      "n_targets": 15,
+      "eff_rank_KNN": 3.920533909855576,
+      "pc1_frac": 0.4717492690000565,
+      "missing_frac": 0.3916666666666667
+    },
+    "human_only": {
+      "n_compounds": 212,
+      "n_targets": 22,
+      "eff_rank_KNN": 6.846370373077291,
+      "pc1_frac": 0.32737303238583443,
+      "missing_frac": 0.5289451114922813
+    },
+    "Ki_Kd_human_binding": {
+      "n_compounds": 175,
+      "n_targets": 19,
+      "eff_rank_KNN": 5.247981774166785,
+      "pc1_frac": 0.3924075920868318,
+      "missing_frac": 0.4649624060150376
+    }
+  }
+}

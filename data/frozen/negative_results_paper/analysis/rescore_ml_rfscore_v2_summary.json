@@ -1,0 +1,17 @@
+{
+  "n_targets": 20,
+  "n_ligands": 39,
+  "pose_source": "smina vinardo (non-Vina)",
+  "scorer": "RF-Score v1 (ODDT, PDBbind v2016)",
+  "n_common_ligands": 35,
+  "eff_rank_rfscore_vinardoposes": 1.812,
+  "pc1_frac_rfscore": 0.737,
+  "eff_rank_rfscore_boot95": [
+    1.472,
+    2.439
+  ],
+  "eff_rank_orig_vina_sametargets": 1.291,
+  "PC1_rfscore_vs_origvina_abscorr": 0.809,
+  "max_possible_rank": 20,
+  "interpretation": "Across 20 diverse targets, RF-Score (ML) applied to NON-Vina (smina-vinardo) poses gives effective rank 1.81 (of 20; PC1 74%), still strongly low-rank and close to the original Vina panel (1.29); PC1 aligns |r|=0.81. The low-rank collapse survives non-Vina pose generation + ML scoring on a larger panel."
+}

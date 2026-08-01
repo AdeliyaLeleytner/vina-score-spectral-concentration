@@ -1,0 +1,115 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{charter}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage[hidelinks]{hyperref}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
+
+\title{Supplementary information\\[4pt]\large Vina docking-score matrices are strongly
+spectrally concentrated before, but not after, two-way centering}
+\author{Adeliya Leleytner, Victor Safronov, Maxim Fedorov}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Supplementary figures}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/figS1_full_spectra.pdf}
+\caption{\textbf{Full correlation-spectrum scree plots.}
+\textbf{a,b}, Docking-44 column-standardized and two-way-centered residual spectra.
+\textbf{c,d}, DOCKSTRING-58 column-standardized and residual spectra. Eigenvalues are divided by the
+number of targets so that each spectrum sums to one. The ordinate is logarithmic. Double
+centering imposes one exact zero eigenvalue; values at zero fall below the plotting range.}
+\label{fig:s1}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/figS2_target_jackknife.pdf}
+\caption{\textbf{Leave-one-target-out composition sensitivity.}
+Each point is the PR effective dimension after deleting one target; targets are ordered by
+the resulting value within each panel. Dashed lines mark the complete-panel estimate on the
+same ligand support. Labels identify the most influential deletion. These ranges describe
+the two observed target panels and are not confidence intervals for a target superpopulation.}
+\label{fig:s2}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/figS3_dti_all20.pdf}
+\caption{\textbf{Exploratory DTI association on the complete 20-arm panel.}
+Selectivity precision at five is plotted against the column-standardized PR effective
+dimension (\textbf{a}) and the two-way-centered residual PR effective dimension (\textbf{b}).
+Numbers identify arms in Table~S5; blue denotes arms above the outcome-related chance
+criterion and grey denotes arms at chance. Correlations are descriptive because the arms
+share data, architectures and representations.}
+\label{fig:s3}
+\end{figure}
+
+\input{results/supplement_tables.tex}
+
+\clearpage
+\section*{Additional methodological notes}
+
+\paragraph{Interpretation of PR effective dimension.}
+For a $P$-column standardized matrix with target correlation matrix $C$,
+\[
+r_{\mathrm{PR}}=\frac{P^2}{\operatorname{tr}(C^2)}
+=\frac{P}{1+(P-1)\overline{r_{ij}^{\,2}}}.
+\]
+The mean is over unique off-diagonal target correlations. The PR effective dimension therefore
+summarizes mean-squared inter-target correlation, while the plotted spectrum distinguishes a
+single dominant collective direction from several intermediate modes.
+
+\paragraph{Limits of the experimental-noise calibration.}
+The different-document repeatability scale includes technical variation, laboratory
+differences and assay-condition variation. It is deliberately conservative for a technical
+noise control, but it cannot represent target-specific systematic bias or all biological
+heterogeneity. The simulation therefore asks whether noise at the observed repeatability
+scale is sufficient to reproduce the experimental PR effective dimension; it is not a
+measurement-error correction of ChEMBL.
+
+\paragraph{DTI model-panel interpretation.}
+All 20 scorer arms are the primary exploratory panel in Table~\ref{tab:s5all20} and
+Fig.~\ref{fig:s3}. The 12 arms in Table~\ref{tab:s6dti} share data, architectures and
+representations and were retained only as an explicitly outcome-restricted sensitivity.
+Table~\ref{tab:s7selection} compares both panels. The positive column-standardized-PR
+association in the all-20 panel and its absence in the restricted 12-arm panel show
+that the conclusion is selection- and estimator-dependent. In particular,
+\path{transformer_cnn_kiba2davis} had column-standardized PR dimension 8.21 at chance-level
+retrieval, while \path{morgan_cnn_kiba2davis} had residual PR dimension 31.75 at chance.
+High dimension is therefore not sufficient for useful selectivity, just as low dimension is
+not sufficient to diagnose failure. Reported correlations and nominal probabilities describe
+these panels only; they are not estimates of a population-level causal effect of
+dimensionality on selectivity.
+
+For precision at five, we applied 20 iterations of Tukey-style median polish separately to
+predicted and experimental floor-excluded DAVIS matrices. Ligands with fewer than 12
+co-observed targets were omitted. Experimental residuals at or above the within-ligand top
+decile, including ties, were labelled relevant; precision among the five largest predicted
+residuals was averaged over 68 eligible ligands. Eligible ligands had 13--402 measured
+targets (median 106), and 61 of 68 had an attainable precision ceiling of one.
+
+\paragraph{Common-protocol parallel analysis.}
+For each large docking matrix, the column-standardized and residual spectra were computed on
+the same 12,000-row subsample. Five hundred null spectra independently permuted each target
+column and then applied the corresponding transformation. The counts above the
+rank-wise 95th percentile null were 3 versus 7 for Docking-44 and 4 versus 10 for
+DOCKSTRING-58. Each result was unchanged in five independent 100-permutation series. Because
+centering changes the estimand and creates one exact linear
+constraint, each surface is compared with its own transformed null.
+
+\end{document}
