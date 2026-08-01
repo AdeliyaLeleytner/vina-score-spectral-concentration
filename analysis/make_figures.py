@@ -517,16 +517,17 @@ def fig4(evidence: dict) -> None:
 
 
 def fig5(evidence: dict) -> None:
-    benchmark = evidence["matched_target_preference_benchmark"]
+    benchmark = evidence["expanded_target_preference_benchmark"]["primary_all_exact"]
     representations = benchmark["representations"]
     rows = [
-        ("absolute Vina", "absolute_vina", BLUE, "s"),
-        ("target-offset only", "docking_target_prior", GREY, "D"),
-        ("column-standardized", "column_standardized", ORANGE, "o"),
         ("two-way residual", "two_way_residual", TEAL, "^"),
+        ("column-standardized", "column_standardized", ORANGE, "o"),
+        ("absolute Vina", "absolute_vina", BLUE, "s"),
+        ("docking target prior", "docking_target_prior", GREY, "D"),
+        ("cohort experimental prior", "cohort_experimental_target_prior", PLUM, "P"),
     ]
     fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 3.45),
-                              gridspec_kw={"width_ratios": [1.15, 0.85]})
+                              gridspec_kw={"width_ratios": [1.08, 0.92]})
     y = np.arange(len(rows))[::-1]
     for yi, (label, key, color, marker) in zip(y, rows):
         record = representations[key]
@@ -541,35 +542,80 @@ def fig5(evidence: dict) -> None:
             a.plot(null["interval_95"], [yi - 0.17, yi - 0.17], color=GREY,
                    lw=3.8, alpha=0.33, solid_capstyle="butt", zorder=1)
             a.plot(null["mean"], yi - 0.17, "x", color=INK, ms=4.5, mew=0.8, zorder=3)
-            a.text(0.700, yi - 0.27,
-                   f"shuffle p={null['one_sided_empirical_p_observed_at_least_as_large']:.3f}",
+            a.text(0.678, yi - 0.27,
+                   f"perm. p={null['one_sided_empirical_p_observed_at_least_as_large']:.3f}",
                    ha="right", va="center", fontsize=6.0)
     a.axvline(0.5, color=INK, ls="--", lw=0.75)
     a.set_yticks(y, [row[0] for row in rows])
-    a.set_xlim(0.43, 0.705)
+    a.set_xlim(0.43, 0.682)
     a.set_ylim(-0.55, len(rows) - 0.45)
     a.set_xlabel("pairwise target-preference accuracy")
     a.set_ylabel("operational representation")
     clean(a)
 
-    alignment = benchmark["target_mean_alignment"]
-    xvals = np.asarray(alignment["minus_mean_docking_score"])
-    yvals = np.asarray(alignment["mean_experimental_pchembl"])
-    b.scatter(xvals, yvals, s=39, color=BLUE, edgecolors="white", linewidths=0.55)
-    offsets = [(4, 4), (4, -10), (-24, 5), (5, 5), (-24, -9), (5, -9)]
-    for target, xvalue, yvalue, offset in zip(alignment["targets"], xvals, yvals, offsets):
-        b.annotate(target, (xvalue, yvalue), xytext=offset,
-                   textcoords="offset points", fontsize=6.1,
-                   arrowprops={"arrowstyle": "-", "color": GREY, "lw": 0.35})
-    b.set_xlabel("favorable Vina target mean (−mean score)", fontsize=7.2)
-    b.set_ylabel("mean observed pChEMBL")
-    b.text(0.97, 0.05,
-           f"Spearman r_s={alignment['spearman_rho_minus_docking_mean_vs_experimental_mean']:.2f}\n"
-           f"P={alignment['n_targets']} targets",
-           transform=b.transAxes, ha="right", va="bottom", fontsize=6.5)
+    coverage = benchmark["coverage_sensitivity"]
+    minimums = np.asarray(sorted(int(value) for value in coverage), dtype=int)
+    coverage_rows = [
+        ("two-way residual", "two_way_residual", TEAL, "^", "-"),
+        ("column-standardized", "column_standardized", ORANGE, "o", "--"),
+        ("absolute Vina", "absolute_vina", BLUE, "s", (0, (3, 1, 1, 1))),
+        ("docking target prior", "docking_target_prior", GREY, "D", ":"),
+        ("cohort experimental prior", "cohort_experimental_target_prior", PLUM, "P", "-."),
+    ]
+    for label, key, color, marker, linestyle in coverage_rows:
+        values = [
+            coverage[str(minimum)]["representations"][key][
+                "mean_per_ligand_pairwise_accuracy"
+            ]
+            for minimum in minimums
+        ]
+        b.plot(minimums, values, color=color, marker=marker, ls=linestyle,
+               lw=1.0, ms=4.2, label=label)
+        intervals = np.asarray([
+            coverage[str(minimum)]["representations"][key][
+                "scaffold_cluster_bootstrap"
+            ]["interval_95"]
+            for minimum in minimums
+        ])
+        b.vlines(minimums, intervals[:, 0], intervals[:, 1], color=color,
+                 lw=0.55, alpha=0.30, zorder=1)
+    b.axhline(0.5, color=INK, ls="--", lw=0.7)
+    b.text(1.72, 0.474, "n:", ha="left", va="bottom", fontsize=6.0, color=INK)
+    for minimum in minimums:
+        b.text(minimum, 0.474, f"{coverage[str(minimum)]['n_ligands']}",
+               ha="center", va="bottom", fontsize=6.0, color=INK)
+    b.set_xticks(minimums)
+    b.set_xlim(1.7, 7.55)
+    b.set_ylim(0.47, 0.705)
+    b.set_xlabel("minimum observed targets per ligand", fontsize=7.2)
+    b.set_ylabel("pairwise accuracy")
+    last_values = {
+        key: coverage[str(minimums[-1])]["representations"][key][
+            "mean_per_ligand_pairwise_accuracy"
+        ]
+        for _, key, _, _, _ in coverage_rows
+    }
+    direct_labels = {
+        "two_way_residual": "residual",
+        "column_standardized": "standardized",
+        "absolute_vina": "absolute",
+        "docking_target_prior": "docking prior",
+        "cohort_experimental_target_prior": "cohort prior",
+    }
+    direct_offsets = {
+        "two_way_residual": 0.0,
+        "column_standardized": 0.0,
+        "absolute_vina": -0.006,
+        "docking_target_prior": 0.006,
+        "cohort_experimental_target_prior": 0.0,
+    }
+    for label, key, color, _, _ in coverage_rows:
+        b.text(6.16, last_values[key] + direct_offsets[key], direct_labels[key],
+               color=color, fontsize=6.0,
+               ha="left", va="center")
     clean(b)
     panel_label(a, "a"); panel_label(b, "b")
-    fig.subplots_adjust(left=0.20, right=0.985, bottom=0.21, top=0.94, wspace=0.56)
+    fig.subplots_adjust(left=0.22, right=0.985, bottom=0.21, top=0.94, wspace=0.52)
     assert audit_fig(fig)
     save(fig, str(OUT / "fig5_target_preference"))
     plt.close(fig)

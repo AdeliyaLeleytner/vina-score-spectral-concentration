@@ -61,10 +61,18 @@ than broad evidence about modern neural scoring functions.
   repeatability-calibrated noise are regenerated or loaded from the checksummed summaries
   listed in the manifest.
 - The historical most-potent aggregation is retained only as a labelled sensitivity.
-- The operational benchmark evaluates observed exact-relation median cells with
-  leave-one-ligand-out transformations. It includes target-offset-only and experimental
-  target-prior controls, ligand-identity permutation nulls, scaffold-cluster uncertainty,
-  pair weighting, tie tolerance, and 100 posterior multiple imputations.
+- The dense 74 × 6 block is the same-support spectral control. The operational benchmark
+  instead uses 137 ligands with at least two observed targets, spanning 38 targets, 691 cells
+  and 2,522 non-tied target pairs; no experimental activity is imputed. Eighty-nine of 6,028
+  evaluation docking scores are imputed from non-evaluation target means.
+- Docking imputation means, offsets and scales are fitted after excluding all 137 evaluation
+  ligands from the Docking-44 reference. The external ChEMBL target prior also excludes them.
+  A second cohort prior holds out each evaluation ligand's entire Bemis–Murcko scaffold
+  cluster and is explicitly a diagnostic for target and observation-process structure, not a
+  deployable docking score. Predicted score ties receive half credit.
+- Operational sensitivities include ligand-identity and within-ligand outcome permutations,
+  scaffold-cluster uncertainty, target deletion, pair weighting, experimental margins,
+  minimum observed-target coverage, human binding, Ki/Kd, and within-cell dispersion.
 
 ## DAVIS, Boltz-2, and exploratory DTI arms
 

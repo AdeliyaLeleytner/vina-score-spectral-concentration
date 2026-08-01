@@ -192,11 +192,14 @@ def main() -> None:
         "",
     ])
 
-    preference = evidence["matched_target_preference_benchmark"]
+    expanded = evidence["expanded_target_preference_benchmark"]
+    preference = expanded["primary_all_exact"]
+    dense_preference = evidence["matched_target_preference_benchmark"]
     pref_rows = [
         ("absolute Vina", "absolute_vina"),
-        ("docking target-offset only", "docking_target_prior"),
-        ("experimental target prior", "experimental_target_prior"),
+        ("docking target prior", "docking_target_prior"),
+        ("external ChEMBL target prior", "experimental_target_prior"),
+        ("cohort experimental target prior (scaffold held out)", "cohort_experimental_target_prior"),
         ("column-standardized Vina", "column_standardized"),
         ("two-way residual Vina", "two_way_residual"),
     ]
@@ -204,10 +207,10 @@ def main() -> None:
         r"\begin{table}[p]",
         r"\centering\scriptsize",
         r"\setlength{\tabcolsep}{3pt}",
-        r"\caption{\textbf{Matched ChEMBL target-preference benchmark.} Accuracy is the mean of per-ligand pairwise target-preference accuracies over observed exact-relation median pChEMBL cells. Confidence intervals resample 61 Bemis--Murcko scaffold clusters; shuffled controls permute ligand identity while preserving target columns.}",
+        r"\caption{\textbf{Expanded observed-pair ChEMBL target-preference benchmark.} The primary support comprises exact-relation median pChEMBL cells for 137 Docking-44 ligands and 38 targets. Accuracy averages within-ligand pairwise accuracies so that highly profiled ligands do not dominate; predicted score ties receive half credit. Intervals resample Bemis--Murcko scaffold clusters; the cohort experimental prior is fitted with the evaluation ligand's entire scaffold cluster held out. Identity shuffles are reported only for score-based representations.}",
         r"\label{tab:s5preference}",
-        r"\begin{tabular}{p{3.7cm}rrrrrr}",
-        r"\toprule Representation & accuracy & scaffold 95\% CI & pair-weighted & mean $\rho$ & top-1 & shuffle mean / $p$ \\ \midrule",
+        r"\begin{tabular}{p{4.3cm}rrrrr}",
+        r"\toprule Representation & accuracy & scaffold 95\% CI & pair-weighted & pairs & identity-shuffle mean / $p$ \\ \midrule",
     ])
     for label, key in pref_rows:
         record = preference["representations"][key]
@@ -223,7 +226,7 @@ def main() -> None:
         lines.append(
             f"{tex(label)} & {record['mean_per_ligand_pairwise_accuracy']:.3f} & "
             f"{ci[0]:.3f}--{ci[1]:.3f} & {record['pair_weighted_accuracy']:.3f} & "
-            f"{record['mean_per_ligand_spearman']:.3f} & {record['top1_accuracy']:.3f} & "
+            f"{record['evaluated_pairs']:,} & "
             f"{shuffle_text} \\\\"
         )
     residual_column = preference["paired_comparisons"][
@@ -232,6 +235,29 @@ def main() -> None:
     residual_absolute = preference["paired_comparisons"][
         "two_way_residual_minus_absolute_vina"
     ]
+    residual_cohort_prior = preference["paired_comparisons"][
+        "two_way_residual_minus_cohort_experimental_target_prior"
+    ]
+    coverage_three = preference["coverage_sensitivity"]["3"]
+    human_binding = expanded["assay_sensitivities"]["human_binding_all_endpoints"]
+    human_kikd = expanded["assay_sensitivities"]["human_binding_Ki_Kd"]
+    human_binding_residual_column = human_binding["paired_comparisons"][
+        "two_way_residual_minus_column_standardized"
+    ]
+    human_binding_residual_cohort = human_binding["paired_comparisons"][
+        "two_way_residual_minus_cohort_experimental_target_prior"
+    ]
+    human_kikd_residual_column = human_kikd["paired_comparisons"][
+        "two_way_residual_minus_column_standardized"
+    ]
+    human_kikd_residual_cohort = human_kikd["paired_comparisons"][
+        "two_way_residual_minus_cohort_experimental_target_prior"
+    ]
+    dense_absolute = dense_preference["representations"]["absolute_vina"]
+    dense_docking_prior = dense_preference["representations"]["docking_target_prior"]
+    dense_experimental_prior = dense_preference["representations"]["experimental_target_prior"]
+    dense_residual = dense_preference["representations"]["two_way_residual"]
+    dense_standard = dense_preference["representations"]["column_standardized"]
     lines.extend([
         r"\bottomrule",
         r"\end{tabular}",
@@ -240,10 +266,30 @@ def main() -> None:
          f"{residual_column['plugin_mean_difference']:+.3f} with a scaffold-bootstrap interval "
          f"{residual_column['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--"
          f"{residual_column['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}; the approximate "
-         f"80\\% power minimum detectable difference was {residual_column['normal_approx_80pct_power_mde_two_sided_alpha_0.05']:.3f}. "
+         f"ligand-i.i.d. normal-approximation 80\\% power minimum detectable difference was {residual_column['normal_approx_80pct_power_mde_two_sided_alpha_0.05']:.3f}. "
          f"The residual-minus-absolute difference was {residual_absolute['plugin_mean_difference']:+.3f} "
          f"({residual_absolute['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--"
-         f"{residual_absolute['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}).}}"),
+         f"{residual_absolute['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}). "
+         f"Against the scaffold-held-out cohort experimental prior, the residual contrast was "
+         f"{residual_cohort_prior['plugin_mean_difference']:+.3f} "
+         f"({residual_cohort_prior['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--"
+         f"{residual_cohort_prior['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}). "
+         f"When at least three observed targets were required ({coverage_three['n_ligands']} ligands), "
+         f"residual accuracy was {coverage_three['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f}, "
+         f"versus {coverage_three['representations']['docking_target_prior']['mean_per_ligand_pairwise_accuracy']:.3f} for the docking prior and "
+         f"{coverage_three['representations']['cohort_experimental_target_prior']['mean_per_ligand_pairwise_accuracy']:.3f} for the cohort prior. "
+         f"Residual accuracy was {human_binding['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f} on the human binding sensitivity, with residual-minus-column and residual-minus-cohort intervals "
+         f"{human_binding_residual_column['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--{human_binding_residual_column['scaffold_cluster_bootstrap']['interval_95'][1]:.3f} and "
+         f"{human_binding_residual_cohort['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--{human_binding_residual_cohort['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}. "
+         f"On human binding Ki/Kd, residual accuracy was {human_kikd['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f}; the corresponding intervals were "
+         f"{human_kikd_residual_column['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--{human_kikd_residual_column['scaffold_cluster_bootstrap']['interval_95'][1]:.3f} and "
+         f"{human_kikd_residual_cohort['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--{human_kikd_residual_cohort['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}. "
+         f"The separate dense 74-by-6 control gave {dense_absolute['mean_per_ligand_pairwise_accuracy']:.3f} for absolute Vina, "
+         f"{dense_docking_prior['mean_per_ligand_pairwise_accuracy']:.3f} for the docking prior, "
+         f"{dense_experimental_prior['mean_per_ligand_pairwise_accuracy']:.3f} for the experimental prior, "
+         f"{dense_standard['mean_per_ligand_pairwise_accuracy']:.3f} for column-standardized Vina and "
+         f"{dense_residual['mean_per_ligand_pairwise_accuracy']:.3f} for residual Vina; the absolute-score identity-shuffle probability was "
+         f"{dense_absolute['ligand_identity_shuffle_null']['one_sided_empirical_p_observed_at_least_as_large']:.3f}. It is retained as a same-support spectral control, not the primary operational benchmark.}}"),
         r"\end{table}",
         "",
     ])

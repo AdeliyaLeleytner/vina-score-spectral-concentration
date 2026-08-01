@@ -22,12 +22,16 @@ affinity accuracy or selectivity.
 These claims are limited to the tested Vina systems. Two small RF-Score v1 blocks are
 reported as sensitivities, not large independent replications.
 
-The practical benchmark uses 74 matched ligands and six ChEMBL targets. Absolute Vina scores
-reached pairwise target-preference accuracy 0.619, but a target-offset-only baseline reached
-0.625 and ligand-identity shuffling reproduced the absolute-score result. Column-standardized
-and two-way-residual scores reached 0.537 and 0.540; their paired scaffold-bootstrap
-difference was 0.004 (95% interval -0.019--0.026). The release therefore treats two-way
-centering as a diagnostic transformation, not an automatically beneficial ranking rule.
+The dense 74-ligand by six-target ChEMBL block remains a same-support spectral control. The
+operational benchmark now uses every strictly matched ligand with at least two observed
+targets: 137 ligands, 38 targets, 691 observed cells and 2,522 non-tied within-ligand target
+pairs, without experimental activity imputation. Absolute, two-way-residual and
+column-standardized Vina reached pairwise accuracies 0.566, 0.564 and 0.546; no paired
+score-transformation contrast was resolved. An external ChEMBL target prior reached 0.525,
+whereas a non-deployable cohort prior fitted with each scaffold cluster held out reached
+0.592. Among the 93 ligands observed for at least three targets, absolute and residual Vina
+reached 0.587 and 0.530. The release therefore treats two-way centering as a diagnostic
+transformation, not an automatically beneficial ranking rule.
 
 ## Reproduce
 

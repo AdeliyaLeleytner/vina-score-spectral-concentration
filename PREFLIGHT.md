@@ -15,17 +15,21 @@ Audit date: 2026-08-01. Article type: Research article.
 - Exact-relation median ChEMBL aggregation is primary; raw and residual paired contrasts,
   100 multiple imputations, human binding, and Ki/Kd blocks are reported and limited to their
   matched support.
-- The operational target-preference benchmark includes leave-one-ligand-out estimation,
-  target-offset-only and experimental-prior baselines, ligand-identity shuffles, scaffold
-  bootstrap uncertainty, tie sensitivity, and a minimum detectable difference.
+- The operational target-preference benchmark now covers 137 ligands, 38 targets, 691
+  observed cells and 2,522 non-tied target pairs without activity imputation. Evaluation
+  ligands are excluded from docking imputation/transformation references. Predicted ties
+  receive half credit. Controls include external and scaffold-held-out cohort target
+  priors, ligand-identity and within-ligand outcome permutations, scaffold uncertainty,
+  target deletion, experimental margins, assay restrictions, within-cell dispersion and
+  minimum observed-target coverage.
 - The DTI rank–selectivity analysis is entirely Supplementary; all 20 arms are primary and
   the outcome-restricted 12-arm panel is a labelled sensitivity.
 - All 26 frozen inputs are bundled and pass byte-size and SHA-256 verification.
 - `make all` succeeds while forcing bundled inputs; headline PR values are
   `1.834 -> 9.303` and `2.266 -> 18.206`.
-- Abstract: 272 plain-token words; Scientific Contribution: two sentences.
+- Abstract: approximately 289 plain-token words; Scientific Contribution: two sentences.
 - Bibliography: 26 cited entries, with no missing keys after final compilation.
-- Article: 25 A4 pages. Supplement: 11 A4 pages, with no blank or near-empty continuation page.
+- Article: 26 A4 pages. Supplement: 12 A4 pages, with no blank or near-empty continuation page.
 - Five main and six supplementary figures are regenerated as vector PDFs plus PNG previews;
   Fig. S5 point IDs map to Table S6.
 - Two-pass LaTeX builds contain no unresolved references, citation warnings, package warnings,
@@ -37,7 +41,7 @@ Audit date: 2026-08-01. Article type: Research article.
 - AI systems are not authors or evidence sources; the Methods disclosure assigns scientific
   responsibility to the manuscript authors.
 - The public GitHub repository and permanent Zenodo concept DOI `10.5281/zenodo.21733767`
-  are present as numbered references and in citation metadata. The release target is v1.1.0.
+  are present as numbered references and in citation metadata. The release target is v1.2.0.
 
 ## Blocking before journal submission
 

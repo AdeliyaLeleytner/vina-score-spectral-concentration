@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import os
+import warnings
 from pathlib import Path
 
 os.environ.setdefault("LOKY_MAX_CPU_COUNT", "1")
@@ -864,12 +865,15 @@ def preference_metrics(
     per_ligand_accuracy = np.full(len(experiment), np.nan)
     per_ligand_spearman = np.full(len(experiment), np.nan)
     per_ligand_top1 = np.full(len(experiment), np.nan)
-    total_correct = 0
+    total_correct = 0.0
     total_pairs = 0
     excluded_ties = 0
+    predicted_score_ties = 0
     for ligand in range(len(experiment)):
-        observed = np.flatnonzero(np.isfinite(experiment[ligand]))
-        correct = 0
+        observed = np.flatnonzero(
+            np.isfinite(experiment[ligand]) & np.isfinite(scores[ligand])
+        )
+        correct = 0.0
         pairs = 0
         for first in range(len(observed)):
             for second in range(first + 1, len(observed)):
@@ -879,9 +883,13 @@ def preference_metrics(
                     excluded_ties += 1
                     continue
                 score_difference = scores[ligand, i] - scores[ligand, j]
-                correct += int(
-                    np.sign(experimental_difference) == -np.sign(score_difference)
-                )
+                if score_difference == 0:
+                    correct += 0.5
+                    predicted_score_ties += 1
+                else:
+                    correct += int(
+                        np.sign(experimental_difference) == -np.sign(score_difference)
+                    )
                 pairs += 1
         if pairs:
             per_ligand_accuracy[ligand] = correct / pairs
@@ -896,16 +904,30 @@ def preference_metrics(
                 observed[np.argmin(scores[ligand, observed])]
                 == observed[np.argmax(experiment[ligand, observed])]
             )
+    finite_accuracy = np.isfinite(per_ligand_accuracy)
+    finite_spearman = np.isfinite(per_ligand_spearman)
+    finite_top1 = np.isfinite(per_ligand_top1)
     return {
         "per_ligand_pairwise_accuracy": per_ligand_accuracy,
         "per_ligand_spearman": per_ligand_spearman,
         "per_ligand_top1": per_ligand_top1,
-        "mean_per_ligand_pairwise_accuracy": float(np.nanmean(per_ligand_accuracy)),
-        "pair_weighted_accuracy": float(total_correct / total_pairs),
-        "mean_per_ligand_spearman": float(np.nanmean(per_ligand_spearman)),
-        "top1_accuracy": float(np.nanmean(per_ligand_top1)),
+        "mean_per_ligand_pairwise_accuracy": (
+            float(np.nanmean(per_ligand_accuracy)) if finite_accuracy.any() else float("nan")
+        ),
+        "pair_weighted_accuracy": (
+            float(total_correct / total_pairs) if total_pairs else float("nan")
+        ),
+        "mean_per_ligand_spearman": (
+            float(np.nanmean(per_ligand_spearman)) if finite_spearman.any() else float("nan")
+        ),
+        "top1_accuracy": (
+            float(np.nanmean(per_ligand_top1)) if finite_top1.any() else float("nan")
+        ),
+        "evaluated_ligands": int(finite_accuracy.sum()),
+        "spearman_ligands": int(finite_spearman.sum()),
         "evaluated_pairs": int(total_pairs),
         "excluded_ties": int(excluded_ties),
+        "predicted_score_ties_half_credit": int(predicted_score_ties),
     }
 
 
@@ -1129,6 +1151,628 @@ def target_preference_benchmark(
         "boundary": (
             "This six-target benchmark tests operational target ranking on one matched ChEMBL "
             "support; it does not estimate reverse-docking accuracy for other panels."
+        ),
+    }
+
+
+def full_inchikeys(smiles: pd.Series) -> pd.Series:
+    """Generate version-pinned full InChIKeys from a SMILES series."""
+    mapping: dict[str, str | None] = {}
+    for value in smiles.dropna().astype(str).unique():
+        molecule = Chem.MolFromSmiles(value)
+        mapping[value] = Chem.MolToInchiKey(molecule) if molecule is not None else None
+    return smiles.astype("string").map(mapping)
+
+
+def external_reference_score_representations(
+    docking_reference: pd.DataFrame,
+    evaluation_ids: pd.Index,
+    evaluation_targets: list[str],
+    experimental_reference: pd.DataFrame,
+) -> tuple[dict[str, np.ndarray], dict]:
+    """Fit score transformations outside the evaluated ligand set.
+
+    Docking offsets and scales are estimated from the complete Docking-44 reference after
+    removing every evaluated ligand.  The experimental target prior is estimated from the
+    exact-relation ChEMBL matrix after the same batch holdout.  No experimental values from
+    evaluated ligands enter any score representation.
+    """
+    evaluation_ids = pd.Index(evaluation_ids)
+    docking_train_raw = docking_reference.drop(index=evaluation_ids, errors="ignore")
+    target_imputation_mean = docking_train_raw.mean(axis=0)
+    docking_train = docking_train_raw.fillna(target_imputation_mean)
+    docking_test_raw = docking_reference.loc[evaluation_ids]
+    docking_test = docking_test_raw.fillna(target_imputation_mean)
+    target_mean = docking_train.mean(axis=0)
+    target_sd = docking_train.std(axis=0, ddof=1)
+    grand_mean = float(docking_train.to_numpy(dtype=float).mean())
+    train_residual = (
+        docking_train
+        - target_mean
+        - docking_train.mean(axis=1).to_numpy()[:, None]
+        + grand_mean
+    )
+    residual_sd = train_residual.std(axis=0, ddof=1)
+    test_residual = (
+        docking_test
+        - target_mean
+        - docking_test.mean(axis=1).to_numpy()[:, None]
+        + grand_mean
+    )
+    experimental_train = experimental_reference.drop(index=evaluation_ids, errors="ignore")
+    experimental_target_mean = experimental_train.mean(axis=0)
+    selected = list(evaluation_targets)
+    n = len(docking_test)
+    score_matrices = {
+        "absolute_vina": docking_test[selected].to_numpy(dtype=float),
+        "column_standardized": (
+            (docking_test[selected] - target_mean[selected]) / target_sd[selected]
+        ).to_numpy(dtype=float),
+        "two_way_residual": (
+            test_residual[selected] / residual_sd[selected]
+        ).to_numpy(dtype=float),
+        "docking_target_prior": np.tile(target_mean[selected].to_numpy(dtype=float), (n, 1)),
+        "experimental_target_prior": np.tile(
+            -experimental_target_mean[selected].to_numpy(dtype=float), (n, 1)
+        ),
+    }
+    nonfinite = {
+        name: int((~np.isfinite(values)).sum())
+        for name, values in score_matrices.items()
+        if not np.isfinite(values).all()
+    }
+    if nonfinite:
+        raise ValueError(
+            f"Expanded preference benchmark contains non-finite score values: {nonfinite}"
+        )
+    return score_matrices, {
+        "docking_training_ligands": int(len(docking_train)),
+        "experimental_prior_training_ligands": int(len(experimental_train)),
+        "evaluation_ligands_excluded_from_both_references": int(len(evaluation_ids)),
+        "docking_training_cells_imputed_from_external_target_means": int(
+            docking_train_raw.isna().sum().sum()
+        ),
+        "docking_evaluation_cells_imputed_from_external_target_means": int(
+            docking_test_raw.isna().sum().sum()
+        ),
+        "row_effect_for_evaluated_ligand": "mean over all 44 Docking-44 target scores",
+    }
+
+
+def mean_pairwise_preference_accuracy(
+    scores: np.ndarray,
+    experiment: np.ndarray,
+    tie_tolerance: float = 0.0,
+) -> float:
+    """Fast equal-ligand accuracy used inside permutation loops."""
+    ligand_values: list[float] = []
+    for ligand in range(len(experiment)):
+        observed = np.flatnonzero(
+            np.isfinite(experiment[ligand]) & np.isfinite(scores[ligand])
+        )
+        correct = 0.0
+        pairs = 0
+        for first in range(len(observed)):
+            for second in range(first + 1, len(observed)):
+                i, j = observed[first], observed[second]
+                experimental_difference = experiment[ligand, i] - experiment[ligand, j]
+                if abs(experimental_difference) <= tie_tolerance:
+                    continue
+                score_difference = scores[ligand, i] - scores[ligand, j]
+                correct += (
+                    0.5
+                    if score_difference == 0
+                    else int(
+                        np.sign(experimental_difference)
+                        == -np.sign(score_difference)
+                    )
+                )
+                pairs += 1
+        if pairs:
+            ligand_values.append(correct / pairs)
+    return float(np.mean(ligand_values)) if ligand_values else float("nan")
+
+
+def preference_pair_arrays(experiment: np.ndarray) -> tuple[np.ndarray, ...]:
+    """Flatten within-ligand target pairs for fast permutation evaluation."""
+    ligands: list[int] = []
+    first_targets: list[int] = []
+    second_targets: list[int] = []
+    for ligand in range(len(experiment)):
+        observed = np.flatnonzero(np.isfinite(experiment[ligand]))
+        for first in range(len(observed)):
+            for second in range(first + 1, len(observed)):
+                ligands.append(ligand)
+                first_targets.append(int(observed[first]))
+                second_targets.append(int(observed[second]))
+    ligand_array = np.asarray(ligands, dtype=int)
+    first_array = np.asarray(first_targets, dtype=int)
+    second_array = np.asarray(second_targets, dtype=int)
+    truth = np.sign(
+        experiment[ligand_array, first_array]
+        - experiment[ligand_array, second_array]
+    )
+    return ligand_array, first_array, second_array, truth
+
+
+def accuracy_from_pair_arrays(
+    scores: np.ndarray,
+    pair_arrays: tuple[np.ndarray, ...],
+    truth: np.ndarray | None = None,
+) -> float:
+    """Equal-ligand accuracy from flattened target-pair arrays."""
+    ligand, first, second, original_truth = pair_arrays
+    comparison = original_truth if truth is None else np.asarray(truth)
+    valid = comparison != 0
+    if not valid.any():
+        return float("nan")
+    score_difference = (
+        scores[ligand[valid], first[valid]]
+        - scores[ligand[valid], second[valid]]
+    )
+    predicted = -np.sign(score_difference)
+    correct = np.where(
+        score_difference == 0,
+        0.5,
+        (predicted == comparison[valid]).astype(float),
+    )
+    correct_by_ligand = np.bincount(
+        ligand[valid], weights=correct, minlength=len(scores)
+    )
+    pairs_by_ligand = np.bincount(ligand[valid], minlength=len(scores))
+    keep = pairs_by_ligand > 0
+    return float(np.mean(correct_by_ligand[keep] / pairs_by_ligand[keep]))
+
+
+def paired_preference_comparison(
+    first: np.ndarray,
+    second: np.ndarray,
+    bootstrap_repeats: int,
+    seed: int,
+    scaffold_labels: np.ndarray,
+) -> dict:
+    """Paired ligand- and scaffold-cluster uncertainty for an accuracy contrast."""
+    difference = np.asarray(first, float) - np.asarray(second, float)
+    report = {
+        "plugin_mean_difference": float(np.nanmean(difference)),
+        "ligand_bootstrap": bootstrap_vector_mean(
+            difference, bootstrap_repeats, seed
+        ),
+        "scaffold_cluster_bootstrap": bootstrap_vector_mean(
+            difference,
+            bootstrap_repeats,
+            seed + 1,
+            cluster_labels=scaffold_labels,
+        ),
+    }
+    finite = difference[np.isfinite(difference)]
+    if len(finite) > 1:
+        standard_error = float(finite.std(ddof=1) / np.sqrt(len(finite)))
+        report["normal_approx_80pct_power_mde_two_sided_alpha_0.05"] = float(
+            (stats.norm.ppf(0.975) + stats.norm.ppf(0.80)) * standard_error
+        )
+    return report
+
+
+def expanded_preference_metrics(
+    score_matrices: dict[str, np.ndarray],
+    experiment_observed: pd.DataFrame,
+    smiles: pd.Series,
+    bootstrap_repeats: int,
+    permutation_repeats: int,
+    seed: int,
+    full_sensitivities: bool,
+) -> dict:
+    """Observed-cell target-preference benchmark on a sparse multi-target overlap."""
+    experiment = experiment_observed.to_numpy(dtype=float)
+    scaffold_labels = scaffold_keys(smiles.reindex(experiment_observed.index))
+    reports: dict[str, dict] = {}
+    metric_cache: dict[str, dict] = {}
+    margins = [0.0, 0.10, 0.50, 1.00]
+    for offset, (name, scores) in enumerate(score_matrices.items()):
+        metric = preference_metrics(scores, experiment)
+        metric_cache[name] = metric
+        reports[name] = {
+            key: value
+            for key, value in metric.items()
+            if not key.startswith("per_ligand_")
+        }
+        reports[name]["ligand_bootstrap"] = bootstrap_vector_mean(
+            metric["per_ligand_pairwise_accuracy"],
+            bootstrap_repeats,
+            seed + 10 + offset,
+        )
+        reports[name]["scaffold_cluster_bootstrap"] = bootstrap_vector_mean(
+            metric["per_ligand_pairwise_accuracy"],
+            bootstrap_repeats,
+            seed + 20 + offset,
+            cluster_labels=scaffold_labels,
+        )
+        reports[name]["experimental_margin_sensitivity"] = {
+            f"{margin:.2f}": {
+                key: value
+                for key, value in preference_metrics(
+                    scores, experiment, tie_tolerance=margin
+                ).items()
+                if key
+                in {
+                    "mean_per_ligand_pairwise_accuracy",
+                    "pair_weighted_accuracy",
+                    "evaluated_ligands",
+                    "evaluated_pairs",
+                    "excluded_ties",
+                }
+            }
+            for margin in margins
+        }
+
+    comparisons = {}
+    for offset, (first, second) in enumerate([
+        ("two_way_residual", "column_standardized"),
+        ("two_way_residual", "absolute_vina"),
+        ("two_way_residual", "docking_target_prior"),
+        ("two_way_residual", "experimental_target_prior"),
+        ("two_way_residual", "cohort_experimental_target_prior"),
+        ("absolute_vina", "docking_target_prior"),
+    ]):
+        comparisons[f"{first}_minus_{second}"] = paired_preference_comparison(
+            metric_cache[first]["per_ligand_pairwise_accuracy"],
+            metric_cache[second]["per_ligand_pairwise_accuracy"],
+            bootstrap_repeats,
+            seed + 100 + 4 * offset,
+            scaffold_labels,
+        )
+
+    rng = np.random.default_rng(seed + 300)
+    pair_arrays = preference_pair_arrays(experiment)
+    pair_ligand, pair_first, pair_second, _ = pair_arrays
+    null_names = ["absolute_vina", "column_standardized", "two_way_residual"]
+    for name in null_names:
+        scores = score_matrices[name]
+        identity_null = []
+        outcome_null = []
+        for _ in range(permutation_repeats):
+            identity_null.append(
+                accuracy_from_pair_arrays(
+                    scores[rng.permutation(len(scores))], pair_arrays
+                )
+            )
+            permuted = experiment.copy()
+            for ligand in range(len(permuted)):
+                observed = np.flatnonzero(np.isfinite(permuted[ligand]))
+                permuted[ligand, observed] = rng.permutation(permuted[ligand, observed])
+            permuted_truth = np.sign(
+                permuted[pair_ligand, pair_first]
+                - permuted[pair_ligand, pair_second]
+            )
+            outcome_null.append(
+                accuracy_from_pair_arrays(scores, pair_arrays, truth=permuted_truth)
+            )
+        observed = reports[name]["mean_per_ligand_pairwise_accuracy"]
+        identity_array = np.asarray(identity_null, dtype=float)
+        outcome_array = np.asarray(outcome_null, dtype=float)
+        reports[name]["ligand_identity_shuffle_null"] = {
+            **describe_distribution(identity_array),
+            "one_sided_empirical_p_observed_at_least_as_large": float(
+                (1 + np.sum(identity_array >= observed)) / (permutation_repeats + 1)
+            ),
+            "repeats": permutation_repeats,
+        }
+        reports[name]["within_ligand_outcome_permutation_null"] = {
+            **describe_distribution(outcome_array),
+            "one_sided_empirical_p_observed_at_least_as_large": float(
+                (1 + np.sum(outcome_array >= observed)) / (permutation_repeats + 1)
+            ),
+            "repeats": permutation_repeats,
+        }
+
+    coverage = experiment_observed.notna().sum(axis=1).to_numpy()
+    coverage_sensitivity = {}
+    for minimum in [2, 3, 5, 6]:
+        keep = coverage >= minimum
+        if not keep.any():
+            continue
+        coverage_reports = {}
+        for offset, (name, scores) in enumerate(score_matrices.items()):
+            metric = preference_metrics(scores[keep], experiment[keep])
+            report = {
+                key: value
+                for key, value in metric.items()
+                if key
+                in {
+                    "mean_per_ligand_pairwise_accuracy",
+                    "pair_weighted_accuracy",
+                    "evaluated_ligands",
+                    "evaluated_pairs",
+                    "predicted_score_ties_half_credit",
+                }
+            }
+            if full_sensitivities:
+                report["scaffold_cluster_bootstrap"] = bootstrap_vector_mean(
+                    metric["per_ligand_pairwise_accuracy"],
+                    bootstrap_repeats,
+                    seed + 500 + 30 * minimum + offset,
+                    cluster_labels=scaffold_labels[keep],
+                )
+            coverage_reports[name] = report
+        coverage_sensitivity[str(minimum)] = {
+            "n_ligands": int(keep.sum()),
+            "observed_cells": int(np.isfinite(experiment[keep]).sum()),
+            "representations": coverage_reports,
+        }
+
+    target_jackknife = {}
+    if full_sensitivities:
+        for name, scores in score_matrices.items():
+            leave_one_out = {}
+            for column, target in enumerate(experiment_observed.columns):
+                masked = experiment.copy()
+                masked[:, column] = np.nan
+                leave_one_out[str(target)] = mean_pairwise_preference_accuracy(
+                    scores, masked
+                )
+            values = np.asarray(list(leave_one_out.values()), dtype=float)
+            target_jackknife[name] = {
+                "full_panel": reports[name]["mean_per_ligand_pairwise_accuracy"],
+                "leave_one_target_out": leave_one_out,
+                "minimum": float(np.nanmin(values)),
+                "median": float(np.nanmedian(values)),
+                "maximum": float(np.nanmax(values)),
+                "most_influential_target": list(leave_one_out)[
+                    int(
+                        np.nanargmax(
+                            np.abs(
+                                values
+                                - reports[name]["mean_per_ligand_pairwise_accuracy"]
+                            )
+                        )
+                    )
+                ],
+            }
+
+    observation_mask = experiment_observed.notna().to_numpy(dtype=int)
+    pair_support_matrix = observation_mask.T @ observation_mask
+    pair_support = pair_support_matrix[np.triu_indices(pair_support_matrix.shape[0], 1)]
+    nonzero_pair_support = pair_support[pair_support > 0]
+    return {
+        "n_ligands": int(len(experiment_observed)),
+        "n_targets": int(experiment_observed.shape[1]),
+        "observed_experimental_cells": int(np.isfinite(experiment).sum()),
+        "observed_fraction": float(np.isfinite(experiment).mean()),
+        "evaluated_target_pairs_with_any_ligand": int(len(nonzero_pair_support)),
+        "target_pair_coobservations": {
+            "minimum_nonzero": int(nonzero_pair_support.min()),
+            "median_nonzero": float(np.median(nonzero_pair_support)),
+            "maximum": int(nonzero_pair_support.max()),
+            "pairs_with_at_least_5_ligands": int(np.sum(pair_support >= 5)),
+            "pairs_with_at_least_10_ligands": int(np.sum(pair_support >= 10)),
+            "pairs_with_at_least_20_ligands": int(np.sum(pair_support >= 20)),
+        },
+        "primary_estimand": (
+            "mean per-ligand pairwise target-preference accuracy over observed exact-relation "
+            "median pChEMBL cells; exact experimental ties excluded"
+        ),
+        "primary_representation": "two_way_residual",
+        "multiplicity_note": (
+            "Two-way residual Vina is the prespecified operational representation motivated "
+            "by the spectral analysis; other score representations are baselines or sensitivities."
+        ),
+        "representations": reports,
+        "paired_comparisons": comparisons,
+        "coverage_sensitivity": coverage_sensitivity,
+        "target_jackknife": target_jackknife,
+        "scaffold_clusters": int(len(np.unique(scaffold_labels))),
+        "uncertainty_unit": (
+            "ligand and Bemis-Murcko scaffold-cluster bootstrap; target deletion is a "
+            "composition sensitivity rather than a confidence interval"
+        ),
+    }
+
+
+def expanded_target_preference_benchmark(
+    canonical: pd.DataFrame,
+    docking_reference: pd.DataFrame,
+    bootstrap_repeats: int = 5000,
+    permutation_repeats: int = 5000,
+    seed: int = SEED,
+) -> dict:
+    """Build the strict Docking-44 x ChEMBL observed-pair operational benchmark."""
+    analysis = Path("negative_results_paper/analysis")
+    required = [
+        "canonical_smiles",
+        "pchembl_value",
+        "standard_relation",
+        "standard_type",
+        "panel_key",
+        "target_organism",
+        "assay_type",
+    ]
+    activities = pd.read_csv(source_path(analysis / "chembl_activities_full.csv"), usecols=required)
+    activities = activities[
+        activities.panel_key.isin(DOCK44)
+        & activities.pchembl_value.notna()
+        & activities.standard_relation.eq("=")
+        & activities.standard_type.isin(["Ki", "Kd", "IC50", "EC50"])
+    ].copy()
+    activities["inchikey"] = full_inchikeys(activities.canonical_smiles)
+    activities = activities[activities.inchikey.notna()].copy()
+
+    docking_smiles = canonical.set_index("inchikey")["analysis_smiles"]
+    if not docking_smiles.index.is_unique or not docking_reference.index.is_unique:
+        raise ValueError("Docking-44 full InChIKeys are not unique")
+
+    def prepare_variant(
+        frame: pd.DataFrame,
+        variant_seed: int,
+        full_sensitivities: bool,
+    ) -> tuple[dict, pd.DataFrame, dict[str, np.ndarray]]:
+        experimental_reference = frame.pivot_table(
+            index="inchikey",
+            columns="panel_key",
+            values="pchembl_value",
+            aggfunc="median",
+        ).reindex(columns=DOCK44)
+        matched_any = experimental_reference.index.intersection(docking_reference.index)
+        matched = experimental_reference.loc[matched_any]
+        matched_coverage = matched.notna().sum(axis=1)
+        evaluation_ids = matched.index[matched_coverage >= 2]
+        experiment = matched.loc[evaluation_ids]
+        evaluation_targets = experiment.columns[experiment.notna().any(axis=0)].tolist()
+        experiment = experiment[evaluation_targets]
+        score_matrices, fit_support = external_reference_score_representations(
+            docking_reference,
+            evaluation_ids,
+            evaluation_targets,
+            experimental_reference,
+        )
+        experiment_values = experiment.to_numpy(dtype=float)
+        cohort_scaffolds = scaffold_keys(docking_smiles.reindex(experiment.index))
+        global_prior = score_matrices["experimental_target_prior"][0]
+        cohort_prior = np.empty_like(experiment_values)
+        for held_out in range(len(experiment_values)):
+            training = cohort_scaffolds != cohort_scaffolds[held_out]
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", category=RuntimeWarning)
+                mean = np.nanmean(experiment_values[training], axis=0)
+            cohort_prior[held_out] = np.where(
+                np.isfinite(mean), -mean, global_prior
+            )
+        score_matrices["cohort_experimental_target_prior"] = cohort_prior
+        benchmark = expanded_preference_metrics(
+            score_matrices,
+            experiment,
+            docking_smiles,
+            bootstrap_repeats=(bootstrap_repeats if full_sensitivities else 2000),
+            permutation_repeats=(permutation_repeats if full_sensitivities else 1000),
+            seed=variant_seed,
+            full_sensitivities=full_sensitivities,
+        )
+        benchmark["fit_support"] = fit_support
+        benchmark["fit_support"]["cohort_experimental_target_prior"] = (
+            "leave-one-Bemis-Murcko-scaffold-cluster-out target mean within the broadly "
+            "profiled cohort; targets with no remaining value fall back to the external "
+            "ChEMBL prior"
+        )
+        benchmark["matched_support_before_minimum_two_target_filter"] = {
+            "n_ligands": int(len(matched)),
+            "n_targets_with_any_observation": int(matched.notna().any(axis=0).sum()),
+            "observed_cells": int(matched.notna().sum().sum()),
+            "observed_fraction_over_nonempty_targets": float(
+                matched.notna().sum().sum()
+                / (len(matched) * matched.notna().any(axis=0).sum())
+            ),
+            "ligands_by_minimum_observed_targets": {
+                str(minimum): int((matched_coverage >= minimum).sum())
+                for minimum in [1, 2, 3, 4, 5, 6, 8, 10]
+            },
+        }
+        return benchmark, experiment, score_matrices
+
+    primary, primary_experiment, primary_scores = prepare_variant(
+        activities, seed, True
+    )
+    human_binding_frame = activities[
+        activities.target_organism.eq("Homo sapiens")
+        & activities.assay_type.eq("B")
+    ]
+    human_binding, _, _ = prepare_variant(
+        human_binding_frame, seed + 1000, False
+    )
+    human_kikd_frame = human_binding_frame[
+        human_binding_frame.standard_type.isin(["Ki", "Kd"])
+    ]
+    human_binding_kikd, _, _ = prepare_variant(
+        human_kikd_frame, seed + 2000, False
+    )
+
+    primary_ids = primary_experiment.index
+    cell_groups = activities[
+        activities.inchikey.isin(primary_ids)
+        & activities.panel_key.isin(primary_experiment.columns)
+    ].groupby(["inchikey", "panel_key"])["pchembl_value"]
+    cell_range = (cell_groups.max() - cell_groups.min()).unstack("panel_key").reindex(
+        index=primary_ids, columns=primary_experiment.columns
+    )
+    cell_count = cell_groups.size().unstack("panel_key").reindex(
+        index=primary_ids, columns=primary_experiment.columns
+    )
+    low_dispersion_experiment = primary_experiment.mask(cell_range > 1.0)
+    low_dispersion_keep = low_dispersion_experiment.notna().sum(axis=1) >= 2
+    dispersion_metrics = {
+        name: {
+            key: value
+            for key, value in preference_metrics(
+                scores[low_dispersion_keep.to_numpy()],
+                low_dispersion_experiment.loc[low_dispersion_keep].to_numpy(dtype=float),
+            ).items()
+            if key
+            in {
+                "mean_per_ligand_pairwise_accuracy",
+                "pair_weighted_accuracy",
+                "evaluated_ligands",
+                "evaluated_pairs",
+            }
+        }
+        for name, scores in primary_scores.items()
+    }
+
+    experimental_all = activities.pivot_table(
+        index="inchikey",
+        columns="panel_key",
+        values="pchembl_value",
+        aggfunc="median",
+    ).reindex(columns=DOCK44)
+    experimental_coverage = experimental_all.notna().sum(axis=1)
+    connectivity_experiment = experimental_all.copy()
+    connectivity_experiment.index = connectivity_experiment.index.str.split("-").str[0]
+    connectivity_experiment = connectivity_experiment.groupby(level=0).median()
+    connectivity_docking = docking_reference.copy()
+    connectivity_docking.index = connectivity_docking.index.str.split("-").str[0]
+    connectivity_docking = connectivity_docking.groupby(level=0).median()
+    connectivity_common = connectivity_experiment.index.intersection(
+        connectivity_docking.index
+    )
+    connectivity_coverage = connectivity_experiment.loc[connectivity_common].notna().sum(axis=1)
+
+    return {
+        "matching_rule": (
+            "RDKit full InChIKey from Docking-44 analysis SMILES and ChEMBL canonical "
+            "SMILES; exact standard relation; Ki, Kd, IC50 or EC50; median per cell"
+        ),
+        "all_exact_activity_support": {
+            "source_records": int(len(activities)),
+            "unique_ligands": int(len(experimental_all)),
+            "observed_cells": int(experimental_all.notna().sum().sum()),
+            "targets_with_data": int(experimental_all.notna().any(axis=0).sum()),
+            "ligands_by_minimum_observed_targets": {
+                str(minimum): int((experimental_coverage >= minimum).sum())
+                for minimum in [1, 2, 3, 4, 5, 6, 8, 10]
+            },
+        },
+        "connectivity_key_sensitivity": {
+            "matched_ligands_with_any_activity": int(len(connectivity_common)),
+            "matched_ligands_with_at_least_two_targets": int(
+                (connectivity_coverage >= 2).sum()
+            ),
+            "not_primary_because": (
+                "the connectivity block ignores stereochemical and protonation layers of "
+                "the full InChIKey"
+            ),
+        },
+        "primary_all_exact": primary,
+        "assay_sensitivities": {
+            "human_binding_all_endpoints": human_binding,
+            "human_binding_Ki_Kd": human_binding_kikd,
+        },
+        "within_cell_dispersion_sensitivity": {
+            "cells_with_multiple_source_records": int((cell_count > 1).sum().sum()),
+            "cells_with_range_above_1_pchembl": int((cell_range > 1.0).sum().sum()),
+            "ligands_retained_with_at_least_two_cells": int(low_dispersion_keep.sum()),
+            "representations": dispersion_metrics,
+        },
+        "boundary": (
+            "The sparse observed-pair benchmark tests ordinal target preferences but does "
+            "not support a second experimental eigenspectrum or unmeasured-target retrieval claim."
         ),
     }
 
@@ -1603,10 +2247,25 @@ def dti_associations(leaderboard: dict) -> dict:
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
 
-    canonical = pd.read_csv(source_path("df_final_v4.csv"), usecols=DOCK44 + ["Butina_clusters"])
+    canonical = pd.read_csv(
+        source_path("df_final_v4.csv"),
+        usecols=DOCK44
+        + ["Butina_clusters", "Canonical SMILES", "Cleaned SMILES"],
+    )
+    canonical["analysis_smiles"] = canonical["Cleaned SMILES"].fillna(
+        canonical["Canonical SMILES"]
+    )
+    canonical["inchikey"] = full_inchikeys(canonical["analysis_smiles"])
+    if canonical.inchikey.isna().any() or not canonical.inchikey.is_unique:
+        raise ValueError("Docking-44 analysis SMILES do not produce unique full InChIKeys")
     docking_frame = canonical[DOCK44].apply(pd.to_numeric, errors="coerce")
     docking = docking_frame.clip(upper=0)
     docking = docking.fillna(docking.mean()).to_numpy(dtype=np.float64)
+    docking_reference = pd.DataFrame(
+        docking_frame.clip(upper=0).to_numpy(dtype=float),
+        index=pd.Index(canonical.inchikey, name="inchikey"),
+        columns=DOCK44,
+    )
 
     dockstring_df = pd.read_csv(source_path("dockstring-dataset.tsv"), sep="\t")
     dockstring_cols = [c for c in dockstring_df.columns if c not in {"inchikey", "smiles"}]
@@ -1679,6 +2338,13 @@ def main() -> None:
         shuffle_repeats=5000,
         imputations=100,
         seed=SEED,
+    )
+    expanded_preference = expanded_target_preference_benchmark(
+        canonical,
+        docking_reference,
+        bootstrap_repeats=5000,
+        permutation_repeats=5000,
+        seed=SEED + 5000,
     )
 
     dataset_rows = [
@@ -1882,6 +2548,7 @@ def main() -> None:
             seed=SEED,
         ),
         "matched_target_preference_benchmark": target_preference,
+        "expanded_target_preference_benchmark": expanded_preference,
         "preprocessing_sensitivity": {
             **preprocessing_sensitivity(docking_frame),
             "dockstring_clipping": {

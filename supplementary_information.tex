@@ -167,13 +167,15 @@ point estimates ranged from 2.252 to 2.294 and residual estimates from 18.161 to
 (Fig.~\ref{fig:s6}).
 
 \paragraph{Matched target-preference sensitivities.}
-The primary analysis excluded three exact experimental ties and evaluated 887 observed
-target pairs. With a 0.10-pChEMBL tie tolerance, 824 pairs remained and the qualitative
-ordering of representations was unchanged. Pair-weighted accuracies were 0.637 for absolute
-Vina, 0.639 for the target-only baseline, 0.545 for column-standardized scores and 0.549 for
-two-way residuals. Across 100 posterior multiple imputations, mean per-ligand pairwise
-accuracies averaged 0.641, 0.523 and 0.527 for absolute, column-standardized and residual
-scores, respectively. These sensitivities do not overcome the six-target scope of the
-benchmark.
+The expanded primary analysis evaluated 2,522 non-tied observed target pairs from 137
+ligands and 38 targets without imputing unobserved activities. At experimental margins of
+0.10, 0.50 and 1.00 pChEMBL, 2,348, 1,779 and 1,178 pairs remained; residual Vina accuracies
+were 0.570, 0.569 and 0.586. Fifty-four absolute-Vina score ties received half credit.
+Across 38 leave-one-target-out deletions, residual accuracy ranged from 0.535 to 0.584 and
+the scaffold-held-out cohort prior from 0.583 to 0.627. Removing cells whose repeated values
+spanned more than one pChEMBL unit retained 118 ligands and 1,912 pairs, with residual
+accuracy 0.560. Human binding and human binding Ki/Kd restrictions gave 0.581 and 0.579.
+These sensitivities remain observational: target-pair co-observation had median support
+three, and no result establishes retrieval on unmeasured targets.
 
 \end{document}
