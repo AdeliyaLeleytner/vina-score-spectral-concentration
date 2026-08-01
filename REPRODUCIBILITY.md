@@ -56,6 +56,13 @@ Figure metadata and LaTeX builds use a fixed release timestamp (`SOURCE_DATE_EPO
 consecutive rebuilds in the same pinned environment produce byte-identical figure and PDF
 artifacts.
 
+A clean clone rebuilt with the reference macOS environment produces byte-identical JSON,
+CSV, figure and PDF artifacts. The Docker image uses Debian's numerical and TeX libraries:
+its machine-readable tables are byte-identical, while unrounded JSON values can differ at the
+last floating-point bits (maximum absolute difference observed in the v1.3.0 preflight:
+`1.6e-14`). Container PDFs have the same content, page count and page size but are not
+expected to be byte-identical to PDFs produced by a different TeX distribution.
+
 ## Focused checks
 
 ```bash

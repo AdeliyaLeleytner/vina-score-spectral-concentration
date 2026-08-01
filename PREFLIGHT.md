@@ -35,6 +35,9 @@ Audit date: 2026-08-01. Article type: Research article.
 - All 26 frozen inputs are bundled and pass byte-size and SHA-256 verification.
 - `make all` succeeds while forcing bundled inputs; headline PR values are
   `1.834 -> 9.303` and `2.266 -> 18.206`.
+- A fresh local clone reproduces the evidence JSON, machine-readable tables, figures and PDFs
+  byte for byte. A fresh Docker build/run completes `make all`; all table CSVs are identical
+  and the largest unrounded cross-platform JSON difference is `1.6e-14`.
 - Abstract: approximately 257 plain words; Scientific Contribution: two sentences.
 - Bibliography: 30 cited entries, with exactly 30 defined keys and no missing keys.
 - Article: 28 A4 pages. Supplement: 14 A4 pages, with no blank or near-empty continuation page.
