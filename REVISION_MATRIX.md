@@ -15,7 +15,8 @@ Status date: 2026-08-01.
 
 ## Remaining submission handoff
 
-- Insert the public GitHub URL after the repository exists.
-- Archive the exact `v1.0.0` tag on Zenodo and insert its DOI.
 - Obtain final coauthor confirmation of author order, contribution statement, funding,
   affiliation, and AI-use disclosure.
+
+The public GitHub repository and Zenodo concept DOI `10.5281/zenodo.21733767` are now
+included in the manuscript and release metadata.

@@ -35,12 +35,11 @@ artifacts.
 ```bash
 make PYTHON=.venv/bin/python verify
 .venv/bin/python -m py_compile analysis/*.py
-pdftotext manuscript.pdf - | grep -F '[PUBLIC REPOSITORY URL]'
+pdftotext manuscript.pdf - | grep -E '\[(PUBLIC REPOSITORY URL|ZENODO DOI)\]'
 ```
 
-The last command must return no line in a submission or archived release. The Zenodo DOI is
-added only after the exact Git tag is archived; it must likewise not remain a placeholder in
-the submitted manuscript.
+The last command must return no line in a submission or archived release. Versioned archives
+are indexed under the stable Zenodo concept DOI `10.5281/zenodo.21733767`.
 
 ## Clean-clone guarantee
 

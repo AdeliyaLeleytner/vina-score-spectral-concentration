@@ -28,13 +28,14 @@ Audit date: 2026-08-01. Article type: Research article.
   Dockerfile, and clean-clone instructions are present.
 - AI systems are not authors or evidence sources; the Methods disclosure assigns scientific
   responsibility to the manuscript authors.
+- The public GitHub repository, tagged release, and permanent Zenodo concept DOI
+  `10.5281/zenodo.21733767` are present in the manuscript and citation metadata.
 
 ## Blocking before journal submission
 
-1. Archive the published `v1.0.0` tag on Zenodo and replace `[ZENODO DOI]`.
-2. Obtain final coauthor confirmation of funding, contribution roles, author order,
+1. Obtain final coauthor confirmation of funding, contribution roles, author order,
    affiliations, ORCIDs, and the AI-use disclosure.
 
-The GitHub repository and `v1.0.0` tag are public at
-<https://github.com/AdeliyaLeleytner/vina-score-spectral-concentration>. The manuscript must
-not be submitted with the remaining Zenodo placeholder.
+The GitHub repository is public at
+<https://github.com/AdeliyaLeleytner/vina-score-spectral-concentration>; versioned archives
+are indexed at <https://doi.org/10.5281/zenodo.21733767>.

@@ -1,5 +1,7 @@
 # Vina score spectral concentration
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21733767.svg)](https://doi.org/10.5281/zenodo.21733767)
+
 Reproducibility package for the manuscript:
 
 > Vina docking-score matrices are strongly spectrally concentrated before, but not after,
@@ -69,3 +71,5 @@ Analysis code is MIT licensed. Data products have file-specific licenses in
 `data_manifest.csv` and `DATA_LICENSES.md`; in particular, ChEMBL-derived files remain under
 CC BY-SA 3.0 and DOCKSTRING remains under Apache-2.0. Cite the manuscript and the upstream
 datasets when reusing the package. Citation metadata are provided in `CITATION.cff`.
+Versioned archives are indexed under the Zenodo concept DOI
+[`10.5281/zenodo.21733767`](https://doi.org/10.5281/zenodo.21733767).
