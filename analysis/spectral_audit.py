@@ -21,9 +21,12 @@ from build_evidence import (
     centering_ladder,
     empirical_residual_permutation_null,
     parallel_analysis,
+    row_norm_preserving_residual_null,
     scaffold_keys,
     surface_bootstrap,
+    target_correlation_matrix,
     target_jackknife,
+    two_way_center,
 )
 
 
@@ -36,6 +39,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("input", type=Path, help="CSV or TSV score table")
     parser.add_argument("--output", type=Path, required=True, help="JSON report path")
+    parser.add_argument(
+        "--plot-prefix",
+        type=Path,
+        help="optional prefix for publication-size PDF and PNG diagnostic plots",
+    )
     parser.add_argument("--delimiter", choices=["csv", "tsv"], help="infer from suffix by default")
     parser.add_argument("--id-column", help="non-score identifier column")
     parser.add_argument("--smiles-column", help="SMILES column for Murcko-cluster bootstrap")
@@ -93,6 +101,63 @@ def load_matrix(args: argparse.Namespace) -> tuple[pd.DataFrame, np.ndarray | No
     return scores, clusters
 
 
+def make_diagnostic_plot(
+    matrix: np.ndarray,
+    target_names: list[str],
+    prefix: Path,
+) -> None:
+    """Write a compact spectrum, correlation-distribution and heatmap audit."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    raw_corr = target_correlation_matrix(matrix)
+    residual_corr = target_correlation_matrix(two_way_center(matrix))
+    raw_values = raw_corr[np.triu_indices(len(raw_corr), 1)]
+    residual_values = residual_corr[np.triu_indices(len(residual_corr), 1)]
+    raw_eigenvalues = np.linalg.eigvalsh(raw_corr)[::-1] / len(raw_corr)
+    residual_eigenvalues = np.linalg.eigvalsh(residual_corr)[::-1] / len(residual_corr)
+    fig, axes = plt.subplots(2, 2, figsize=(7.2, 6.2), constrained_layout=True)
+    for values, label, color in [
+        (raw_eigenvalues, "column-standardized", "#2C6FAD"),
+        (residual_eigenvalues, "residual", "#E07A3E"),
+    ]:
+        axes[0, 0].plot(np.arange(1, len(values) + 1), np.clip(values, 1e-8, None),
+                        marker="o", ms=2.5, lw=1, label=label, color=color)
+    axes[0, 0].set_yscale("log")
+    axes[0, 0].set_xlabel("eigenvalue rank")
+    axes[0, 0].set_ylabel("variance fraction (log scale)")
+    axes[0, 0].legend(frameon=False)
+
+    bins = np.linspace(-1, 1, 42)
+    axes[0, 1].hist(raw_values, bins=bins, density=True, histtype="step",
+                    color="#2C6FAD", label="column-standardized")
+    axes[0, 1].hist(residual_values, bins=bins, density=True, histtype="stepfilled",
+                    alpha=0.25, color="#3E8E8A", label="residual")
+    axes[0, 1].set_xlabel("off-diagonal target correlation")
+    axes[0, 1].set_ylabel("density")
+    axes[0, 1].legend(frameon=False)
+
+    for ax, corr, title in [
+        (axes[1, 0], raw_corr, "column-standardized correlations"),
+        (axes[1, 1], residual_corr, "residual correlations"),
+    ]:
+        artist = ax.imshow(corr, vmin=-1, vmax=1, cmap="RdBu_r", interpolation="nearest")
+        tick_count = min(8, len(target_names))
+        ticks = np.unique(np.linspace(0, len(target_names) - 1, tick_count).round().astype(int))
+        ax.set_xticks(ticks, np.asarray(target_names)[ticks], rotation=90, fontsize=6)
+        ax.set_yticks(ticks, np.asarray(target_names)[ticks], fontsize=6)
+        ax.set_title(title)
+        fig.colorbar(artist, ax=ax, fraction=0.046, pad=0.03)
+    for label, ax in zip("abcd", axes.flat):
+        ax.text(-0.12, 1.04, label, transform=ax.transAxes, fontweight="bold")
+    prefix.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(prefix.with_suffix(".pdf"))
+    fig.savefig(prefix.with_suffix(".png"), dpi=300)
+    plt.close(fig)
+
+
 def main() -> None:
     args = parse_args()
     scores, clusters = load_matrix(args)
@@ -138,6 +203,9 @@ def main() -> None:
         "empirical_residual_permutation_null": empirical_residual_permutation_null(
             matrix, **{**common, "seed": args.seed + 40}
         ),
+        "row_norm_preserving_residual_null": row_norm_preserving_residual_null(
+            matrix, **{**common, "seed": args.seed + 50}
+        ),
         "interpretation_boundary": (
             "effective dimension diagnoses variance concentration; it does not validate "
             "affinity, selectivity, or within-ligand target ranking"
@@ -145,6 +213,12 @@ def main() -> None:
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+    if args.plot_prefix:
+        make_diagnostic_plot(matrix, list(scores.columns), args.plot_prefix)
+        print(
+            f"Wrote {args.plot_prefix.with_suffix('.pdf')} and "
+            f"{args.plot_prefix.with_suffix('.png')}"
+        )
     print(f"Wrote {args.output}")
 
 

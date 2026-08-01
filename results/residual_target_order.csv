@@ -1,0 +1,103 @@
+dataset,cluster_order,target,family
+Docking-44,1,3kk6,Enzyme
+Docking-44,2,4ey7,Enzyme
+Docking-44,3,5tvn,Serotonin GPCR
+Docking-44,4,6pdj,Enzyme
+Docking-44,5,4n6h,Opioid GPCR
+Docking-44,6,7xnk,Ion channel
+Docking-44,7,V1A,Peptide GPCR
+Docking-44,8,4djh,Opioid GPCR
+Docking-44,9,1pbq,Ion channel
+Docking-44,10,5i71,Transporter
+Docking-44,11,6lqa,Ion channel
+Docking-44,12,8ef6,Opioid GPCR
+Docking-44,13,8fhs,Ion channel
+Docking-44,14,1xoq,Enzyme
+Docking-44,15,7kwe,Enzyme
+Docking-44,16,8wty,Transporter
+Docking-44,17,2rh1,Adrenergic GPCR
+Docking-44,18,2vt4,Adrenergic GPCR
+Docking-44,19,8pjk,Serotonin GPCR
+Docking-44,20,4iar,Serotonin GPCR
+Docking-44,21,7f8y,Peptide GPCR
+Docking-44,22,6cm4,Dopamine GPCR
+Docking-44,23,6kux,Adrenergic GPCR
+Docking-44,24,5cxv,Muscarinic GPCR
+Docking-44,25,6y1z,Serotonin GPCR
+Docking-44,26,2ydo,Peptide GPCR
+Docking-44,27,6x3x,Ion channel
+Docking-44,28,7wc9,Serotonin GPCR
+Docking-44,29,7ljd,Dopamine GPCR
+Docking-44,30,9eo4,Transporter
+Docking-44,31,5u09,Cannabinoid GPCR
+Docking-44,32,6kpf,Cannabinoid GPCR
+Docking-44,33,5va1,Ion channel
+Docking-44,34,8xvk,Peptide GPCR
+Docking-44,35,4mqs,Muscarinic GPCR
+Docking-44,36,8st0,Ion channel
+Docking-44,37,7ym8,Adrenergic GPCR
+Docking-44,38,1m2z,Nuclear receptor
+Docking-44,39,2z5x,Enzyme
+Docking-44,40,3rze,Histamine GPCR
+Docking-44,41,8yn3,Histamine GPCR
+Docking-44,42,3b66,Nuclear receptor
+Docking-44,43,3ln1,Enzyme
+Docking-44,44,8e9y,Muscarinic GPCR
+DOCKSTRING-58,1,HSD11B1,Other enzyme
+DOCKSTRING-58,2,NR3C1,Nuclear receptor
+DOCKSTRING-58,3,MAOB,Other enzyme
+DOCKSTRING-58,4,THRB,Nuclear receptor
+DOCKSTRING-58,5,PTGS2,Other enzyme
+DOCKSTRING-58,6,PGR,Nuclear receptor
+DOCKSTRING-58,7,AR,Nuclear receptor
+DOCKSTRING-58,8,ESR2,Nuclear receptor
+DOCKSTRING-58,9,ESR1,Nuclear receptor
+DOCKSTRING-58,10,CSF1R,Kinase
+DOCKSTRING-58,11,MAPK14,Kinase
+DOCKSTRING-58,12,NOS1,Other enzyme
+DOCKSTRING-58,13,PTPN1,Other enzyme
+DOCKSTRING-58,14,PPARA,Nuclear receptor
+DOCKSTRING-58,15,ADAM17,Protease
+DOCKSTRING-58,16,MET,Kinase
+DOCKSTRING-58,17,KDR,Kinase
+DOCKSTRING-58,18,ABL1,Kinase
+DOCKSTRING-58,19,FGFR1,Kinase
+DOCKSTRING-58,20,KIT,Kinase
+DOCKSTRING-58,21,MMP13,Protease
+DOCKSTRING-58,22,EGFR,Kinase
+DOCKSTRING-58,23,DRD3,GPCR
+DOCKSTRING-58,24,DRD2,GPCR
+DOCKSTRING-58,25,ADRB1,GPCR
+DOCKSTRING-58,26,ADRB2,GPCR
+DOCKSTRING-58,27,PPARD,Nuclear receptor
+DOCKSTRING-58,28,PPARG,Nuclear receptor
+DOCKSTRING-58,29,HSP90AA1,Chaperone
+DOCKSTRING-58,30,DHFR,Other enzyme
+DOCKSTRING-58,31,ACHE,Other enzyme
+DOCKSTRING-58,32,CA2,Other enzyme
+DOCKSTRING-58,33,AKT2,Kinase
+DOCKSTRING-58,34,LCK,Kinase
+DOCKSTRING-58,35,SRC,Kinase
+DOCKSTRING-58,36,HMGCR,Other enzyme
+DOCKSTRING-58,37,CASP3,Protease
+DOCKSTRING-58,38,BACE1,Protease
+DOCKSTRING-58,39,F10,Protease
+DOCKSTRING-58,40,F2,Protease
+DOCKSTRING-58,41,DPP4,Protease
+DOCKSTRING-58,42,CYP2C9,Other enzyme
+DOCKSTRING-58,43,GBA,Other enzyme
+DOCKSTRING-58,44,MAP2K1,Kinase
+DOCKSTRING-58,45,REN,Protease
+DOCKSTRING-58,46,AKT1,Kinase
+DOCKSTRING-58,47,ROCK1,Kinase
+DOCKSTRING-58,48,PARP1,Other enzyme
+DOCKSTRING-58,49,CYP3A4,Other enzyme
+DOCKSTRING-58,50,IGF1R,Kinase
+DOCKSTRING-58,51,PTK2,Kinase
+DOCKSTRING-58,52,MAPKAPK2,Kinase
+DOCKSTRING-58,53,MAPK1,Kinase
+DOCKSTRING-58,54,PLK1,Kinase
+DOCKSTRING-58,55,CDK2,Kinase
+DOCKSTRING-58,56,JAK2,Kinase
+DOCKSTRING-58,57,PDE5A,Other enzyme
+DOCKSTRING-58,58,ADORA2A,GPCR

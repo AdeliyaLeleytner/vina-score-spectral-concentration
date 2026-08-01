@@ -5,7 +5,7 @@
 Reproducibility package for the manuscript:
 
 > Spectral concentration in two large Vina docking-score matrices: two-way centering reveals
-> structured residual variation without a resolved target-ranking gain
+> correlated residual variation without a resolved target-ranking gain
 
 The analysis distinguishes the column-standardized ligand-by-target score surface from its
 two-way-centered residual surface. Participation-ratio (PR) effective dimension is used as a
@@ -22,9 +22,12 @@ affinity accuracy or selectivity.
 These claims are limited to the tested Vina systems. Two small RF-Score v1 blocks are
 reported as sensitivities, not large independent replications.
 
-Gaussian additive and empirical residual-permutation nulls put target-wise independent
-residual PR near 42 and 56, far above the observed 9.30 and 18.21. The centered surfaces are
-therefore structured, not independent noise, but remain spectrally concentrated.
+Gaussian additive, empirical residual-permutation and row-norm-preserving nulls put target-
+wise independent residual PR near 43 and 57, far above the observed 9.30 and 18.21. The
+centered surfaces therefore retain correlated variation but remain spectrally concentrated.
+PR is reported alongside mean squared correlation, mean absolute correlation, PC1 fraction,
+full spectra and clustered residual heatmaps; PR is exactly a monotone re-expression of mean
+squared off-diagonal correlation.
 
 The dense 74-ligand by six-target ChEMBL block remains a same-support spectral control. The
 operational benchmark now uses every strictly matched ligand with at least two observed
@@ -33,6 +36,9 @@ pairs, without experimental activity imputation. Absolute, two-way-residual and
 column-standardized Vina reached pairwise accuracies 0.566, 0.564 and 0.546; the paired
 intervals establish neither superiority nor equivalence. A fixed-support analysis comparing
 only identical ChEMBL endpoint types gave 0.553, 0.555 and 0.538, respectively.
+Human binding Ki/Kd is reported as a complementary assay-restricted estimand. Separate Ki,
+Kd, IC50 and EC50 results, paired target jackknives, one-ligand-per-scaffold permutations and
+a duplicate-collapsed target-pair estimator make the benchmark's precision limits explicit.
 
 The operational decomposition is the main practical result. Subtracting a ligand row effect
 is a constant shift within that ligand, so unscaled target-centered and unscaled two-way-
@@ -54,7 +60,9 @@ make PYTHON=.venv/bin/python all
 ```
 
 `make all` verifies 26 inputs against byte sizes and SHA-256 digests, rebuilds the evidence
-ledger, regenerates every figure and supplementary table, and compiles both PDFs twice.
+ledger, validates mathematical and cross-analysis invariants, generates and checks a
+registered TeX number source, regenerates every figure and supplementary table, and compiles
+both PDFs twice.
 The 500-permutation and 5,000-replicate target-preference analyses are the longest steps.
 Seed 0 initializes all stochastic procedures; derived support and replicate seeds are stored
 in the evidence ledger.
@@ -71,10 +79,16 @@ docker run --rm vina-score-spectral-concentration
 - `manuscript.tex` and `manuscript.pdf`: article source and compiled manuscript.
 - `supplementary_information.tex` and `.pdf`: supplementary source and compiled PDF.
 - `analysis/build_evidence.py`: statistical analysis and machine-readable evidence ledger.
+- `analysis/validate_evidence.py`: PR/correlation, centering, null and ranking invariants.
 - `analysis/spectral_audit.py`: reusable CLI for applying the audit to a dense score matrix.
-- `analysis/make_figures.py`: five main and six supplementary figures.
+- `analysis/make_figures.py`: five main and seven supplementary figures.
 - `analysis/make_supplement_tables.py`: supplementary tables generated from the ledger.
+- `analysis/make_reported_results.py` and `verify_reported_results.py`: generated TeX
+  numbers/table and build-time drift detection.
 - `results/evidence_summary.json`: authoritative numeric result ledger.
+- `results/spectral_metric_comparison.csv`: PR, correlation and PC1 summaries.
+- `results/residual_target_order.csv`: target/family mapping for clustered residual heatmaps.
+- `results/complete_case_chemical_support.csv`: descriptor audit of complete-case selection.
 - `results/operational_benchmark_representations.csv`: operational score summary and cluster intervals.
 - `results/operational_benchmark_contrasts.csv`: paired contrasts, equivalence sensitivities and detectable differences.
 - `results/operational_assay_sensitivities.csv`: endpoint-aligned benchmark results.
@@ -109,9 +123,12 @@ For a dense CSV or TSV with one ligand per row and target-score columns:
 .venv/bin/python analysis/spectral_audit.py scores.csv \
   --score-columns target_A,target_B,target_C \
   --id-column ligand_id \
-  --output audit.json
+  --output audit.json \
+  --plot-prefix audit_diagnostics
 ```
 
 The output contains both spectral estimands, paired chemical-support uncertainty,
 leave-one-target-out sensitivities, transformation-matched parallel analysis, and Gaussian
-and empirical residual nulls. Task-level ranking validation remains dataset-specific.
+additive, empirical residual and row-norm-preserving nulls. The optional plot contains
+spectra, correlation distributions and raw/residual heatmaps. Task-level ranking validation
+remains dataset-specific.

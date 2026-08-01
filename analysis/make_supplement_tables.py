@@ -122,18 +122,26 @@ def main() -> None:
         ("paired raw experiment-docking contrast", 74, 6, paired["raw"]["plugin_difference_experiment_minus_docking"], f"ligand-bootstrap interval {paired['raw']['bootstrap_difference_95_interval'][0]:.2f}--{paired['raw']['bootstrap_difference_95_interval'][1]:.2f}"),
         ("paired residual experiment-docking contrast", 74, 6, paired["interaction"]["plugin_difference_experiment_minus_docking"], f"ligand-bootstrap interval {paired['interaction']['bootstrap_difference_95_interval'][0]:.2f}--{paired['interaction']['bootstrap_difference_95_interval'][1]:.2f}"),
     ]
-    lines.extend([
-        r"\begin{table}[p]",
-        r"\centering\scriptsize",
-        r"\setlength{\tabcolsep}{2pt}",
-        r"\caption{\textbf{Experimental-assay, missing-data and repeatability controls.} The noise scale was 0.493 pChEMBL, estimated from different-document repeats.}",
-        r"\label{tab:s3experiment}",
-        r"\begin{tabular}{p{5.4cm}rrrp{5.4cm}}",
-        r"\toprule Analysis block & $N$ & $P$ & PR & note \\ \midrule",
-    ])
-    for name, n, p, rank, note in exp_rows:
-        lines.append(f"{tex(name)} & {n} & {p} & {rank:.3f} & {tex(note)} \\\\")
-    lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}", ""])
+    exp_groups = [
+        ("assay and complete-support blocks", exp_rows[:7]),
+        ("missing-data and paired-contrast controls", exp_rows[7:11] + exp_rows[17:]),
+        ("noise, descriptor and residual controls", exp_rows[11:17]),
+    ]
+    for group_index, (group_label, group_rows) in enumerate(exp_groups):
+        lines.extend([
+            r"\begin{table}[p]",
+            *([r"\ContinuedFloat"] if group_index else []),
+            r"\centering\small",
+            r"\setlength{\tabcolsep}{3pt}",
+            r"\caption{\textbf{Experimental controls: " + group_label
+            + r".} The noise scale was 0.493 pChEMBL, estimated from different-document repeats.}",
+            *([r"\label{tab:s3experiment}"] if group_index == 0 else []),
+            r"\begin{tabular}{p{5.1cm}rrrp{5.7cm}}",
+            r"\toprule Analysis block & $N$ & $P$ & PR & note \\ \midrule",
+        ])
+        for name, n, p, rank, note in group_rows:
+            lines.append(f"{tex(name)} & {n} & {p} & {rank:.3f} & {tex(note)} \\\\")
+        lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}", ""])
 
     target_uncertainty = evidence["target_panel_uncertainty"]
     target_rows = []
@@ -155,6 +163,7 @@ def main() -> None:
     scaffold = evidence["ligand_sampling_sensitivity"]["dockstring_scaffold_bootstrap"]
     additive = evidence["additive_main_effect_null"]
     empirical = evidence["empirical_residual_permutation_null"]
+    row_norm = evidence["row_norm_preserving_residual_null"]
     lines.extend([
         r"\begin{table}[htbp]",
         r"\centering\small",
@@ -193,7 +202,9 @@ def main() -> None:
          f"{empirical['dockstring58']['null_residual']['median']:.2f}. Across 200 matched one-ligand-per-Butina-cluster "
          f"Docking-44 supports, the observed median was "
          f"{empirical['docking44']['one_ligand_per_cluster_sensitivity']['observed_residual']['median']:.2f} versus "
-         f"{empirical['docking44']['one_ligand_per_cluster_sensitivity']['matched_empirical_null_residual']['median']:.2f} under permutation.}}"),
+         f"{empirical['docking44']['one_ligand_per_cluster_sensitivity']['matched_empirical_null_residual']['median']:.2f} under permutation. "
+         f"The row-norm-preserving null medians were {row_norm['docking44']['null_residual']['median']:.2f} and "
+         f"{row_norm['dockstring58']['null_residual']['median']:.2f}.}}"),
         r"\end{table}",
         "",
     ])
@@ -212,11 +223,11 @@ def main() -> None:
     lines.extend([
         r"\begin{table}[p]",
         r"\centering\scriptsize",
-        r"\setlength{\tabcolsep}{3pt}",
-        r"\caption{\textbf{Expanded observed-pair ChEMBL target-preference benchmark.} The primary support comprises exact-relation median pChEMBL cells for 137 Docking-44 ligands and 38 targets. Accuracy averages within-ligand pairwise accuracies so that highly profiled ligands do not dominate; predicted score ties receive half credit. Intervals resample Bemis--Murcko scaffold clusters; the cohort experimental prior is fitted with the evaluation ligand's entire scaffold cluster held out. Identity shuffles are reported only for score-based representations.}",
+        r"\setlength{\tabcolsep}{2pt}",
+        r"\caption{\textbf{Broad-coverage observed-pair ChEMBL target-preference benchmark.} This is reported with the human binding Ki/Kd assay-restricted estimand; both were designated during revision rather than preregistered. Accuracy averages within-ligand pairwise accuracies so that highly profiled ligands do not dominate; predicted score ties receive half credit. Intervals resample Bemis--Murcko scaffold clusters; the cohort experimental prior is fitted with the evaluation ligand's entire scaffold cluster held out. Identity shuffles are reported only for score-based representations.}",
         r"\label{tab:s5preference}",
-        r"\begin{tabular}{p{4.3cm}rrrrr}",
-        r"\toprule Representation & accuracy & scaffold 95\% CI & pair-weighted & pairs & identity-shuffle mean / $p$ \\ \midrule",
+        r"\begin{tabular}{p{3.7cm}>{\centering\arraybackslash}p{1.1cm}>{\centering\arraybackslash}p{1.8cm}>{\centering\arraybackslash}p{1.5cm}>{\centering\arraybackslash}p{1.0cm}>{\centering\arraybackslash}p{3.5cm}}",
+        r"\toprule Representation & accuracy & scaffold 95\% CI & \shortstack{pair-\\weighted} & pairs & identity shuffle: mean / $p$ / cluster median $p$ \\ \midrule",
     ])
     for label, key in pref_rows:
         record = preference["representations"][key]
@@ -225,7 +236,8 @@ def main() -> None:
             shuffled = record["ligand_identity_shuffle_null"]
             shuffle_text = (
                 f"{shuffled['mean']:.3f} / "
-                f"{shuffled['one_sided_empirical_p_observed_at_least_as_large']:.3f}"
+                f"{shuffled['one_sided_empirical_p_observed_at_least_as_large']:.3f} / "
+                f"{record['one_ligand_per_murcko_cluster_identity_permutation']['one_sided_p_value_across_supports']['median']:.3f}"
             )
         else:
             shuffle_text = "--"
@@ -280,6 +292,15 @@ def main() -> None:
     human_kikd_residual_absolute_union = union_cluster_interval(
         human_kikd_residual_absolute
     )
+    residual_column_union = union_cluster_interval(residual_column)
+    residual_absolute_union = union_cluster_interval(residual_absolute)
+    duplicate_collapsed = same_endpoint["duplicate_collapsed_unique_target_pairs"]
+    broad_target_jackknife = preference["target_jackknife_paired_contrasts"][
+        "two_way_residual_minus_absolute_vina"
+    ]
+    kikd_target_jackknife = human_kikd["target_jackknife_paired_contrasts"][
+        "two_way_residual_minus_absolute_vina"
+    ]
     dense_absolute = dense_preference["representations"]["absolute_vina"]
     dense_docking_prior = dense_preference["representations"]["docking_target_prior"]
     dense_experimental_prior = dense_preference["representations"]["experimental_target_prior"]
@@ -290,14 +311,14 @@ def main() -> None:
         r"\end{tabular}",
         r"\vspace{4pt}",
         (r"\parbox{0.94\textwidth}{\footnotesize The residual-minus-column difference was "
-         f"{residual_column['plugin_mean_difference']:+.3f} with a scaffold-bootstrap interval "
-         f"{residual_column['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--"
-         f"{residual_column['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}; its conservative Murcko/Butina "
+         f"{residual_column['plugin_mean_difference']:+.3f} with a union of cluster-bootstrap intervals "
+         f"{residual_column_union[0]:.3f}--"
+         f"{residual_column_union[1]:.3f}; its conservative Murcko/Butina "
          f"90\\% interval was {residual_column['post_hoc_equivalence_sensitivity']['conservative_cluster_bootstrap_interval_90'][0]:.3f}--"
          f"{residual_column['post_hoc_equivalence_sensitivity']['conservative_cluster_bootstrap_interval_90'][1]:.3f}. "
          f"The residual-minus-absolute difference was {residual_absolute['plugin_mean_difference']:+.3f} "
-         f"({residual_absolute['scaffold_cluster_bootstrap']['interval_95'][0]:.3f}--"
-         f"{residual_absolute['scaffold_cluster_bootstrap']['interval_95'][1]:.3f}); its conservative 90\\% interval was "
+         f"({residual_absolute_union[0]:.3f}--"
+         f"{residual_absolute_union[1]:.3f}); its conservative 90\\% interval was "
          f"{residual_absolute['post_hoc_equivalence_sensitivity']['conservative_cluster_bootstrap_interval_90'][0]:.3f}--"
          f"{residual_absolute['post_hoc_equivalence_sensitivity']['conservative_cluster_bootstrap_interval_90'][1]:.3f}. "
          f"Post hoc equivalence was not established at $\\pm0.02$ for either contrast or at $\\pm0.05$ for residual versus absolute; "
@@ -311,10 +332,60 @@ def main() -> None:
          f"{same_endpoint['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f}; the residual-minus-absolute "
          f"cluster-interval union was {same_endpoint_residual_absolute_union[0]:.3f}--{same_endpoint_residual_absolute_union[1]:.3f}. "
          f"On human binding Ki/Kd, residual accuracy was {human_kikd['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f} "
-         f"and residual minus absolute was {human_kikd_residual_absolute_union[0]:.3f}--{human_kikd_residual_absolute_union[1]:.3f}.}}"),
+         f"and residual minus absolute was {human_kikd_residual_absolute_union[0]:.3f}--{human_kikd_residual_absolute_union[1]:.3f}. "
+         f"Leave-one-target-out residual-minus-absolute differences ranged from {broad_target_jackknife['minimum']:.3f} to "
+         f"{broad_target_jackknife['maximum']:.3f} on broad support and {kikd_target_jackknife['minimum']:.3f} to "
+         f"{kikd_target_jackknife['maximum']:.3f} on Ki/Kd support. Duplicate-collapsed same-endpoint accuracies were "
+         f"{duplicate_collapsed['representations']['absolute_vina']['mean_per_ligand_pairwise_accuracy']:.3f}, "
+         f"{duplicate_collapsed['representations']['column_standardized']['mean_per_ligand_pairwise_accuracy']:.3f} and "
+         f"{duplicate_collapsed['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f}.}}"),
         r"\end{table}",
         "",
     ])
+
+    assay_table_rows = [
+        (
+            "human binding Ki/Kd",
+            human_kikd["representations"]["absolute_vina"]["evaluated_ligands"],
+            human_kikd["representations"]["absolute_vina"]["evaluated_pairs"],
+            human_kikd["representations"],
+        ),
+        (
+            "same endpoint, equal endpoint weight",
+            same_endpoint["representations"]["absolute_vina"]["evaluated_ligands"],
+            same_endpoint["fixed_support"]["endpoint_specific_pair_instances"],
+            same_endpoint["representations"],
+        ),
+    ]
+    for endpoint, endpoint_block in same_endpoint["by_endpoint"].items():
+        assay_table_rows.append((
+            f"{endpoint} only",
+            endpoint_block["representations"]["absolute_vina"]["evaluated_ligands"],
+            endpoint_block["representations"]["absolute_vina"]["evaluated_pairs"],
+            endpoint_block["representations"],
+        ))
+    assay_table_rows.append((
+        "same endpoint, duplicate-collapsed pairs",
+        duplicate_collapsed["evaluated_ligands"],
+        duplicate_collapsed["unique_ligand_target_pair_instances"],
+        duplicate_collapsed["representations"],
+    ))
+    lines.extend([
+        r"\begin{table}[p]",
+        r"\ContinuedFloat",
+        r"\centering\small",
+        r"\caption{\textbf{Assay-restricted and endpoint-specific operational estimands.} Endpoint-only rows can be very small and are descriptive. The duplicate-collapsed row gives every unique ligand--target-pair one contribution after averaging eligible endpoint strata.}",
+        r"\begin{tabular}{p{5.2cm}rrrrr}",
+        r"\toprule Analysis & ligands & pairs & absolute & column-standardized & residual \\ \midrule",
+    ])
+    for label, n_ligands, n_pairs, representations in assay_table_rows:
+        lines.append(
+            f"{tex(label)} & {n_ligands:,} & {n_pairs:,} & "
+            f"{representations['absolute_vina']['mean_per_ligand_pairwise_accuracy']:.3f} & "
+            f"{representations['column_standardized']['mean_per_ligand_pairwise_accuracy']:.3f} & "
+            f"{representations['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f} \\\\"
+        )
+    lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}", ""])
 
     lines.extend([
         r"\begin{table}[htbp]",
@@ -483,6 +554,40 @@ def main() -> None:
             "n_targets": same_endpoint["fixed_support"]["targets"],
             "evaluated_pairs": same_endpoint["fixed_support"]["endpoint_specific_pair_instances"],
             "mean_per_ligand_pairwise_accuracy": record["mean_per_ligand_pairwise_accuracy"],
+            "murcko_ci95_low": murcko["interval_95"][0],
+            "murcko_ci95_high": murcko["interval_95"][1],
+            "butina_ci95_low": butina["interval_95"][0],
+            "butina_ci95_high": butina["interval_95"][1],
+        })
+    for endpoint, endpoint_block in same_endpoint["by_endpoint"].items():
+        for key, record in endpoint_block["representations"].items():
+            assay_rows.append({
+                "analysis": f"endpoint-specific {endpoint}",
+                "representation": key,
+                "n_ligands": record["evaluated_ligands"],
+                "n_targets": endpoint_block["targets_with_any_observation"],
+                "evaluated_pairs": record["evaluated_pairs"],
+                "mean_per_ligand_pairwise_accuracy": record[
+                    "mean_per_ligand_pairwise_accuracy"
+                ],
+                "murcko_ci95_low": None,
+                "murcko_ci95_high": None,
+                "butina_ci95_low": None,
+                "butina_ci95_high": None,
+            })
+    duplicate = same_endpoint["duplicate_collapsed_unique_target_pairs"]
+    for key, record in duplicate["representations"].items():
+        murcko = record["murcko_scaffold_cluster_bootstrap"]
+        butina = record["butina_cluster_bootstrap"]
+        assay_rows.append({
+            "analysis": "same-endpoint duplicate-collapsed unique target pairs",
+            "representation": key,
+            "n_ligands": duplicate["evaluated_ligands"],
+            "n_targets": same_endpoint["fixed_support"]["targets"],
+            "evaluated_pairs": duplicate["unique_ligand_target_pair_instances"],
+            "mean_per_ligand_pairwise_accuracy": record[
+                "mean_per_ligand_pairwise_accuracy"
+            ],
             "murcko_ci95_low": murcko["interval_95"][0],
             "murcko_ci95_high": murcko["interval_95"][1],
             "butina_ci95_low": butina["interval_95"][0],

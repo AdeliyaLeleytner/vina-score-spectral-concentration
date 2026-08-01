@@ -23,6 +23,8 @@ os.environ.setdefault("LOKY_MAX_CPU_COUNT", "1")
 import numpy as np
 import pandas as pd
 from scipy import stats
+from scipy.cluster import hierarchy
+from scipy.spatial.distance import squareform
 from rdkit import Chem, RDLogger
 from rdkit.Chem import Crippen, Descriptors, rdMolDescriptors
 from rdkit.Chem.Scaffolds import MurckoScaffold
@@ -74,9 +76,9 @@ def two_way_center(x: np.ndarray) -> np.ndarray:
     return x - x.mean(axis=0, keepdims=True) - x.mean(axis=1, keepdims=True) + x.mean()
 
 
-def spectrum(x: np.ndarray) -> np.ndarray:
-    """Eigenvalues of the target correlation matrix after column standardisation."""
-    x = np.asarray(x, dtype=np.float64)
+def target_correlation_matrix(x: np.ndarray) -> np.ndarray:
+    """Target correlation matrix after finite-value mean imputation and z-scoring."""
+    x = np.asarray(x, dtype=np.float64).copy()
     keep = np.nanstd(x, axis=0, ddof=1) > 1e-12
     x = x[:, keep]
     if np.isnan(x).any():
@@ -84,13 +86,33 @@ def spectrum(x: np.ndarray) -> np.ndarray:
         rows, cols = np.where(np.isnan(x))
         x[rows, cols] = means[cols]
     z = (x - x.mean(axis=0)) / x.std(axis=0, ddof=1)
-    eig = np.linalg.eigvalsh((z.T @ z) / (len(z) - 1))[::-1]
+    corr = (z.T @ z) / (len(z) - 1)
+    np.fill_diagonal(corr, 1.0)
+    return np.clip(corr, -1.0, 1.0)
+
+
+def spectrum(x: np.ndarray) -> np.ndarray:
+    """Eigenvalues of the target correlation matrix after column standardisation."""
+    eig = np.linalg.eigvalsh(target_correlation_matrix(x))[::-1]
     return np.clip(eig, 0.0, None)
 
 
 def rank_summary(x: np.ndarray) -> dict:
-    eig = spectrum(x)
-    return rank_summary_from_eigenvalues(eig, np.asarray(x).shape)
+    corr = target_correlation_matrix(x)
+    eig = np.clip(np.linalg.eigvalsh(corr)[::-1], 0.0, None)
+    report = rank_summary_from_eigenvalues(eig, np.asarray(x).shape)
+    upper = corr[np.triu_indices(len(corr), 1)]
+    report.update({
+        "mean_absolute_offdiagonal_correlation": float(np.mean(np.abs(upper))),
+        "median_absolute_offdiagonal_correlation": float(np.median(np.abs(upper))),
+        "mean_offdiagonal_correlation": float(np.mean(upper)),
+        "offdiagonal_correlation_interval_90": [
+            float(np.quantile(upper, 0.05)),
+            float(np.quantile(upper, 0.95)),
+        ],
+        "fraction_positive_offdiagonal_correlations": float(np.mean(upper > 0)),
+    })
+    return report
 
 
 def rank_summary_from_eigenvalues(eig: np.ndarray, shape: tuple[int, int]) -> dict:
@@ -155,6 +177,161 @@ def pc1_loading_summary(
             stats.pearsonr(scores, z.mean(axis=1)).statistic
         ),
         "orientation": "sign chosen so the mean target loading is positive",
+    }
+
+
+def molecular_descriptor_frame(smiles: pd.Series) -> pd.DataFrame:
+    """Compact, interpretable RDKit descriptor panel for support comparisons."""
+    rows: list[dict[str, float]] = []
+    for value in smiles.astype(str):
+        molecule = Chem.MolFromSmiles(value)
+        if molecule is None:
+            rows.append({
+                "molecular_weight": np.nan,
+                "heavy_atoms": np.nan,
+                "clogp": np.nan,
+                "tpsa": np.nan,
+                "rotatable_bonds": np.nan,
+                "ring_count": np.nan,
+            })
+            continue
+        rows.append({
+            "molecular_weight": float(Descriptors.MolWt(molecule)),
+            "heavy_atoms": float(molecule.GetNumHeavyAtoms()),
+            "clogp": float(Crippen.MolLogP(molecule)),
+            "tpsa": float(Descriptors.TPSA(molecule)),
+            "rotatable_bonds": float(Descriptors.NumRotatableBonds(molecule)),
+            "ring_count": float(rdMolDescriptors.CalcNumRings(molecule)),
+        })
+    return pd.DataFrame(rows, index=smiles.index)
+
+
+def residual_structure_characterization(
+    matrix: np.ndarray,
+    target_names: list[str],
+    families: list[str],
+    smiles: pd.Series,
+    sample_size: int = 15000,
+    family_permutations: int = 5000,
+    seed: int = SEED,
+) -> dict:
+    """Describe residual target correlations, family grouping and ligand PC chemistry."""
+    matrix = np.asarray(matrix, dtype=np.float64)
+    if matrix.shape[1] != len(target_names) or len(target_names) != len(families):
+        raise ValueError("target metadata does not match residual matrix")
+    if len(smiles) != len(matrix):
+        raise ValueError("SMILES do not match residual matrix rows")
+    rng = np.random.default_rng(seed)
+    if len(matrix) > sample_size:
+        support = np.sort(rng.choice(len(matrix), sample_size, replace=False))
+    else:
+        support = np.arange(len(matrix))
+    work = matrix[support]
+    residual = two_way_center(work)
+    raw_corr = target_correlation_matrix(work)
+    residual_corr = target_correlation_matrix(residual)
+
+    def correlation_record(corr: np.ndarray) -> dict:
+        values = corr[np.triu_indices(len(corr), 1)]
+        return {
+            "mean": float(values.mean()),
+            "mean_absolute": float(np.abs(values).mean()),
+            "mean_squared": float(np.square(values).mean()),
+            "median": float(np.median(values)),
+            "median_absolute": float(np.median(np.abs(values))),
+            "interval_90": [
+                float(np.quantile(values, 0.05)),
+                float(np.quantile(values, 0.95)),
+            ],
+            "fraction_positive": float(np.mean(values > 0)),
+            "values": [float(value) for value in values],
+        }
+
+    distance = np.clip(1.0 - residual_corr, 0.0, 2.0)
+    np.fill_diagonal(distance, 0.0)
+    linkage = hierarchy.linkage(squareform(distance, checks=False), method="average")
+    order = hierarchy.leaves_list(linkage)
+
+    family_array = np.asarray(families, dtype=object)
+    first, second = np.triu_indices(len(family_array), 1)
+    same_family = family_array[first] == family_array[second]
+    pair_abs = np.abs(residual_corr[first, second])
+    observed_family_difference = float(
+        pair_abs[same_family].mean() - pair_abs[~same_family].mean()
+    )
+    permuted_family_differences = np.empty(family_permutations, dtype=float)
+    for repetition in range(family_permutations):
+        permuted = rng.permutation(family_array)
+        same = permuted[first] == permuted[second]
+        permuted_family_differences[repetition] = (
+            pair_abs[same].mean() - pair_abs[~same].mean()
+        )
+
+    z_residual = (
+        residual - residual.mean(axis=0)
+    ) / residual.std(axis=0, ddof=1)
+    eigenvalues, eigenvectors = np.linalg.eigh(residual_corr)
+    order_eigen = np.argsort(eigenvalues)[::-1]
+    eigenvalues = eigenvalues[order_eigen]
+    eigenvectors = eigenvectors[:, order_eigen]
+    descriptor_frame = molecular_descriptor_frame(smiles.iloc[support].reset_index(drop=True))
+    mode_records: list[dict] = []
+    for mode in range(min(3, len(target_names))):
+        loadings = eigenvectors[:, mode]
+        scores = z_residual @ loadings
+        descriptor_correlations = {}
+        for descriptor in descriptor_frame:
+            rho = stats.spearmanr(scores, descriptor_frame[descriptor], nan_policy="omit")
+            descriptor_correlations[descriptor] = {
+                "spearman_rho": float(rho.statistic),
+                "p_value": float(rho.pvalue),
+            }
+        top = np.argsort(np.abs(loadings))[::-1][:10]
+        mode_records.append({
+            "mode": mode + 1,
+            "eigenvalue": float(eigenvalues[mode]),
+            "variance_fraction": float(eigenvalues[mode] / len(target_names)),
+            "largest_absolute_target_loadings": [
+                {
+                    "target": target_names[index],
+                    "family": families[index],
+                    "loading": float(loadings[index]),
+                }
+                for index in top
+            ],
+            "ligand_descriptor_correlations": descriptor_correlations,
+        })
+
+    return {
+        "sample_n": int(len(work)),
+        "n_targets": int(len(target_names)),
+        "target_names": list(target_names),
+        "families": list(families),
+        "raw_target_correlation": [[float(value) for value in row] for row in raw_corr],
+        "residual_target_correlation": [
+            [float(value) for value in row] for row in residual_corr
+        ],
+        "residual_cluster_order": [target_names[index] for index in order],
+        "raw_correlation_distribution": correlation_record(raw_corr),
+        "residual_correlation_distribution": correlation_record(residual_corr),
+        "family_association": {
+            "within_family_pairs": int(same_family.sum()),
+            "between_family_pairs": int((~same_family).sum()),
+            "mean_absolute_within_family": float(pair_abs[same_family].mean()),
+            "mean_absolute_between_family": float(pair_abs[~same_family].mean()),
+            "difference_within_minus_between": observed_family_difference,
+            "label_permutations": int(family_permutations),
+            "one_sided_p_for_positive_difference": float(
+                (1 + np.sum(permuted_family_differences >= observed_family_difference))
+                / (family_permutations + 1)
+            ),
+            "permutation_interval_95": [
+                float(np.quantile(permuted_family_differences, 0.025)),
+                float(np.quantile(permuted_family_differences, 0.975)),
+            ],
+            "scope": "curated broad family labels on the fixed target panel",
+        },
+        "leading_residual_modes": mode_records,
     }
 
 
@@ -816,6 +993,67 @@ def empirical_residual_permutation_null(
     return report
 
 
+def row_norm_preserving_residual_null(
+    matrix: np.ndarray,
+    sample_size: int = 12000,
+    repeats: int = 500,
+    seed: int = SEED,
+) -> dict:
+    """Random-direction null preserving each observed centered residual row norm.
+
+    Every simulated row is a random Gaussian direction projected into the target-zero-sum
+    subspace and then rescaled to the corresponding observed residual Euclidean norm. This
+    retains ligand-specific residual scale exactly while destroying target alignment.
+    """
+    matrix = np.asarray(matrix, dtype=np.float64)
+    rng = np.random.default_rng(seed)
+    if len(matrix) > sample_size:
+        support = rng.choice(len(matrix), sample_size, replace=False)
+        work = matrix[support]
+    else:
+        work = matrix
+    residual = two_way_center(work)
+    row_norms = np.linalg.norm(residual, axis=1)
+    observed_residual = rank_summary(residual)["participation_ratio"]
+    null_values = np.empty(repeats, dtype=float)
+    for repetition in range(repeats):
+        direction = rng.normal(size=residual.shape)
+        direction -= direction.mean(axis=1, keepdims=True)
+        norms = np.linalg.norm(direction, axis=1)
+        simulated = direction * np.divide(
+            row_norms,
+            norms,
+            out=np.zeros_like(row_norms),
+            where=norms > 0,
+        )[:, None]
+        null_values[repetition] = rank_summary(simulated)["participation_ratio"]
+    return {
+        "sample_n": int(len(work)),
+        "n_targets": int(work.shape[1]),
+        "repeats": int(repeats),
+        "observed_residual": float(observed_residual),
+        "null_residual": describe_distribution(null_values),
+        "empirical_lower_tail_p_for_residual_pr": float(
+            (1 + np.sum(null_values <= observed_residual)) / (repeats + 1)
+        ),
+        "model": (
+            "independent random directions in the target-zero-sum subspace, with every "
+            "simulated residual row rescaled to its observed Euclidean norm"
+        ),
+        "preserves_exactly": (
+            "fixed ligand support, target count, zero sum within every row, and every "
+            "ligand-specific residual row norm before column standardization"
+        ),
+        "does_not_preserve": (
+            "target-specific marginal distributions, residual variances, or cross-target alignment"
+        ),
+        "interpretation": (
+            "A residual PR below this null cannot be explained solely by heterogeneous "
+            "ligand-specific residual magnitude plus the zero-row-sum constraint."
+        ),
+    }
+
+
 def residualized_rank_correlation(x: np.ndarray, y: np.ndarray, z: np.ndarray) -> dict:
     """Partial Spearman correlation of x and y after linear removal of ranked z."""
     rx, ry, rz = (stats.rankdata(v) for v in (x, y, z))
@@ -832,7 +1070,11 @@ def participation_ratio_from_correlation(corr: np.ndarray) -> float:
     return float(np.trace(corr) ** 2 / np.square(corr).sum())
 
 
-def preprocessing_sensitivity(docking_frame: pd.DataFrame) -> dict:
+def preprocessing_sensitivity(
+    docking_frame: pd.DataFrame,
+    smiles: pd.Series | None = None,
+    butina_labels: pd.Series | np.ndarray | None = None,
+) -> dict:
     """Quantify the preprocessing alternatives requested during internal review."""
     numeric = docking_frame.apply(pd.to_numeric, errors="coerce")
     mean_filled = numeric.fillna(numeric.mean())
@@ -850,7 +1092,7 @@ def preprocessing_sensitivity(docking_frame: pd.DataFrame) -> dict:
     pairwise_corr = numeric.corr(min_periods=100).to_numpy(dtype=np.float64)
     spearman_corr = ranked.corr(min_periods=100).to_numpy(dtype=np.float64)
 
-    return {
+    report = {
         "input_characterization": {
             "n_ligands": int(len(numeric)),
             "n_targets": int(numeric.shape[1]),
@@ -884,6 +1126,59 @@ def preprocessing_sensitivity(docking_frame: pd.DataFrame) -> dict:
             "performed before row-effect removal."
         ),
     }
+    if smiles is not None:
+        descriptor_frame = molecular_descriptor_frame(pd.Series(smiles).reset_index(drop=True))
+        complete_mask = ~numeric.isna().any(axis=1).to_numpy()
+        descriptor_comparison = {}
+        for descriptor in descriptor_frame:
+            complete_values = descriptor_frame.loc[complete_mask, descriptor].dropna().to_numpy()
+            incomplete_values = descriptor_frame.loc[~complete_mask, descriptor].dropna().to_numpy()
+            pooled_sd = np.sqrt(
+                ((len(complete_values) - 1) * complete_values.var(ddof=1)
+                 + (len(incomplete_values) - 1) * incomplete_values.var(ddof=1))
+                / (len(complete_values) + len(incomplete_values) - 2)
+            )
+            descriptor_comparison[descriptor] = {
+                "complete_median": float(np.median(complete_values)),
+                "complete_iqr": [
+                    float(np.quantile(complete_values, 0.25)),
+                    float(np.quantile(complete_values, 0.75)),
+                ],
+                "incomplete_median": float(np.median(incomplete_values)),
+                "incomplete_iqr": [
+                    float(np.quantile(incomplete_values, 0.25)),
+                    float(np.quantile(incomplete_values, 0.75)),
+                ],
+                "standardized_mean_difference_incomplete_minus_complete": float(
+                    (incomplete_values.mean() - complete_values.mean()) / pooled_sd
+                ),
+            }
+        missing_per_row = numeric.isna().sum(axis=1).to_numpy()
+        target_missing = numeric.isna().sum(axis=0).sort_values(ascending=False)
+        chemistry = {
+            "complete_rows": int(complete_mask.sum()),
+            "incomplete_rows": int((~complete_mask).sum()),
+            "missing_cells_per_incomplete_row": describe_distribution(
+                missing_per_row[~complete_mask]
+            ),
+            "descriptor_comparison": descriptor_comparison,
+            "targets_with_most_missing_cells": {
+                str(target): int(value) for target, value in target_missing.head(10).items()
+            },
+            "interpretation_boundary": (
+                "complete-case deletion changes chemical support; descriptor differences "
+                "describe selection but do not identify the missingness mechanism"
+            ),
+        }
+        if butina_labels is not None:
+            labels = np.asarray(butina_labels)
+            chemistry["butina_cluster_support"] = {
+                "clusters_total": int(len(np.unique(labels))),
+                "clusters_among_complete_rows": int(len(np.unique(labels[complete_mask]))),
+                "clusters_among_incomplete_rows": int(len(np.unique(labels[~complete_mask]))),
+            }
+        report["complete_case_chemical_support"] = chemistry
+    return report
 
 
 def matched_experimental_matrices() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
@@ -1649,6 +1944,49 @@ def expanded_preference_metrics(
             "repeats": permutation_repeats,
         }
 
+    if full_sensitivities:
+        _, scaffold_inverse = np.unique(scaffold_labels, return_inverse=True)
+        scaffold_members = [
+            np.flatnonzero(scaffold_inverse == cluster)
+            for cluster in range(int(scaffold_inverse.max()) + 1)
+        ]
+        support_repeats = 25
+        permutations_per_support = max(200, permutation_repeats // support_repeats)
+        for name in null_names:
+            support_observed: list[float] = []
+            support_p_values: list[float] = []
+            for _ in range(support_repeats):
+                index = np.asarray([
+                    member[rng.integers(0, len(member))]
+                    for member in scaffold_members
+                ])
+                support_scores = score_matrices[name][index]
+                support_experiment = experiment[index]
+                support_pairs = preference_pair_arrays(support_experiment)
+                observed = accuracy_from_pair_arrays(support_scores, support_pairs)
+                null = np.asarray([
+                    accuracy_from_pair_arrays(
+                        support_scores[rng.permutation(len(support_scores))],
+                        support_pairs,
+                    )
+                    for _ in range(permutations_per_support)
+                ])
+                support_observed.append(observed)
+                support_p_values.append(
+                    float((1 + np.sum(null >= observed)) / (len(null) + 1))
+                )
+            reports[name]["one_ligand_per_murcko_cluster_identity_permutation"] = {
+                "clusters": int(len(scaffold_members)),
+                "support_repeats": int(support_repeats),
+                "permutations_per_support": int(permutations_per_support),
+                "observed_accuracy": describe_distribution(support_observed),
+                "one_sided_p_value_across_supports": describe_distribution(support_p_values),
+                "scope": (
+                    "one randomly selected ligand per Bemis-Murcko cluster on each support; "
+                    "ligand identities are then permuted within that de-redundant support"
+                ),
+            }
+
     coverage = experiment_observed.notna().sum(axis=1).to_numpy()
     coverage_sensitivity = {}
     for minimum in [2, 3, 5, 6]:
@@ -1685,15 +2023,23 @@ def expanded_preference_metrics(
         }
 
     target_jackknife = {}
+    target_jackknife_contrasts = {}
     if full_sensitivities:
-        for name, scores in score_matrices.items():
-            leave_one_out = {}
-            for column, target in enumerate(experiment_observed.columns):
-                masked = experiment.copy()
-                masked[:, column] = np.nan
-                leave_one_out[str(target)] = mean_pairwise_preference_accuracy(
-                    scores, masked
-                )
+        per_target_metrics: dict[str, dict[str, np.ndarray]] = {}
+        for column, target in enumerate(experiment_observed.columns):
+            masked = experiment.copy()
+            masked[:, column] = np.nan
+            per_target_metrics[str(target)] = {
+                name: preference_metrics(scores, masked)[
+                    "per_ligand_pairwise_accuracy"
+                ]
+                for name, scores in score_matrices.items()
+            }
+        for name in score_matrices:
+            leave_one_out = {
+                target: float(np.nanmean(metrics[name]))
+                for target, metrics in per_target_metrics.items()
+            }
             values = np.asarray(list(leave_one_out.values()), dtype=float)
             target_jackknife[name] = {
                 "full_panel": reports[name]["mean_per_ligand_pairwise_accuracy"],
@@ -1711,6 +2057,43 @@ def expanded_preference_metrics(
                         )
                     )
                 ],
+            }
+        for first, second in [
+            ("two_way_residual", "absolute_vina"),
+            ("two_way_residual", "column_standardized"),
+        ]:
+            key = f"{first}_minus_{second}"
+            leave_one_out = {}
+            for target, metrics in per_target_metrics.items():
+                difference = metrics[first] - metrics[second]
+                leave_one_out[target] = float(np.nanmean(difference))
+            values = np.asarray(list(leave_one_out.values()), dtype=float)
+            full = comparisons[key]["plugin_mean_difference"]
+            mean_loo = float(values.mean())
+            jackknife_estimate = float(len(values) * full - (len(values) - 1) * mean_loo)
+            standard_error = float(
+                np.sqrt((len(values) - 1) / len(values) * np.square(values - mean_loo).sum())
+            )
+            target_jackknife_contrasts[key] = {
+                "full_panel_paired_difference": float(full),
+                "leave_one_target_out": leave_one_out,
+                "minimum": float(values.min()),
+                "median": float(np.median(values)),
+                "maximum": float(values.max()),
+                "jackknife_bias_corrected_estimate": jackknife_estimate,
+                "jackknife_standard_error": standard_error,
+                "jackknife_normal_95_interval": [
+                    jackknife_estimate - 1.96 * standard_error,
+                    jackknife_estimate + 1.96 * standard_error,
+                ],
+                "most_influential_target": list(leave_one_out)[
+                    int(np.argmax(np.abs(values - full)))
+                ],
+                "scope": (
+                    "delete-one-target composition sensitivity over the fixed observed panel; "
+                    "the normal interval is a jackknife approximation, not design-based "
+                    "inference to a random target superpopulation"
+                ),
             }
 
     observation_mask = experiment_observed.notna().to_numpy(dtype=int)
@@ -1745,6 +2128,7 @@ def expanded_preference_metrics(
         "paired_comparisons": comparisons,
         "coverage_sensitivity": coverage_sensitivity,
         "target_jackknife": target_jackknife,
+        "target_jackknife_paired_contrasts": target_jackknife_contrasts,
         "scaffold_clusters": int(len(np.unique(scaffold_labels))),
         "uncertainty_unit": (
             "ligand and Bemis-Murcko scaffold-cluster bootstrap; target deletion is a "
@@ -1861,6 +2245,85 @@ def same_endpoint_pair_sensitivity(
         report["representations"]["absolute_vina"]["evaluated_pairs"]
         for report in endpoint_reports.values()
     )
+    duplicate_collapsed_vectors: dict[str, np.ndarray] = {}
+    unique_pair_counts = np.zeros(len(smiles), dtype=int)
+    for name in representation_names:
+        scores = score_matrices[name]
+        per_ligand = np.full(len(smiles), np.nan)
+        for ligand in range(len(smiles)):
+            pair_values: dict[tuple[int, int], list[float]] = {}
+            for frame in endpoint_experiments.values():
+                values = frame.iloc[ligand].to_numpy(dtype=float)
+                observed = np.flatnonzero(np.isfinite(values))
+                for first_position in range(len(observed)):
+                    for second_position in range(first_position + 1, len(observed)):
+                        first = int(observed[first_position])
+                        second = int(observed[second_position])
+                        truth = np.sign(values[first] - values[second])
+                        if truth == 0:
+                            continue
+                        score_difference = scores[ligand, first] - scores[ligand, second]
+                        correct = (
+                            0.5
+                            if score_difference == 0
+                            else float(-np.sign(score_difference) == truth)
+                        )
+                        pair_values.setdefault((first, second), []).append(correct)
+            if pair_values:
+                per_ligand[ligand] = float(
+                    np.mean([np.mean(values) for values in pair_values.values()])
+                )
+                if name == representation_names[0]:
+                    unique_pair_counts[ligand] = len(pair_values)
+        duplicate_collapsed_vectors[name] = per_ligand
+
+    duplicate_collapsed = {
+        "estimand": (
+            "for each ligand and unordered target pair, correctness is averaged across "
+            "eligible identical-endpoint strata before equal-pair and equal-ligand averaging"
+        ),
+        "evaluated_ligands": int(np.sum(unique_pair_counts > 0)),
+        "unique_ligand_target_pair_instances": int(unique_pair_counts.sum()),
+        "representations": {},
+    }
+    for offset, name in enumerate(representation_names):
+        vector = duplicate_collapsed_vectors[name]
+        duplicate_collapsed["representations"][name] = {
+            "mean_per_ligand_pairwise_accuracy": float(np.nanmean(vector)),
+            "ligand_bootstrap": bootstrap_vector_mean(
+                vector, bootstrap_repeats, seed + 210 + offset
+            ),
+            "murcko_scaffold_cluster_bootstrap": bootstrap_vector_mean(
+                vector,
+                bootstrap_repeats,
+                seed + 220 + offset,
+                cluster_labels=scaffold_labels,
+            ),
+            "butina_cluster_bootstrap": bootstrap_vector_mean(
+                vector,
+                bootstrap_repeats,
+                seed + 230 + offset,
+                cluster_labels=butina_labels,
+            ),
+        }
+    duplicate_collapsed["paired_comparisons"] = {
+        "two_way_residual_minus_absolute_vina": paired_preference_comparison(
+            duplicate_collapsed_vectors["two_way_residual"],
+            duplicate_collapsed_vectors["absolute_vina"],
+            bootstrap_repeats,
+            seed + 240,
+            scaffold_labels,
+            butina_labels=butina_labels,
+        ),
+        "two_way_residual_minus_column_standardized": paired_preference_comparison(
+            duplicate_collapsed_vectors["two_way_residual"],
+            duplicate_collapsed_vectors["column_standardized"],
+            bootstrap_repeats,
+            seed + 250,
+            scaffold_labels,
+            butina_labels=butina_labels,
+        ),
+    }
     return {
         "estimand": (
             "equal-endpoint mean within ligand followed by equal-ligand mean; every target "
@@ -1875,6 +2338,7 @@ def same_endpoint_pair_sensitivity(
         "representations": representations,
         "paired_comparisons": paired,
         "by_endpoint": endpoint_reports,
+        "duplicate_collapsed_unique_target_pairs": duplicate_collapsed,
         "boundary": (
             "the analysis avoids cross-endpoint target comparisons but remains observational "
             "and can count the same target pair once in more than one endpoint type"
@@ -1998,7 +2462,7 @@ def expanded_target_preference_benchmark(
         human_binding_frame.standard_type.isin(["Ki", "Kd"])
     ]
     human_binding_kikd, _, _ = prepare_variant(
-        human_kikd_frame, seed + 2000, False
+        human_kikd_frame, seed + 2000, True
     )
 
     endpoint_experiments = {
@@ -2096,6 +2560,14 @@ def expanded_target_preference_benchmark(
             ),
         },
         "primary_all_exact": primary,
+        "co_primary_operational_estimands": {
+            "status": (
+                "declared during revision rather than prospectively registered; both are "
+                "reported without selecting between them by outcome"
+            ),
+            "broad_coverage": "primary_all_exact",
+            "assay_restricted": "assay_sensitivities/human_binding_Ki_Kd",
+        },
         "assay_sensitivities": {
             "human_binding_all_endpoints": human_binding,
             "human_binding_Ki_Kd": human_binding_kikd,
@@ -2683,6 +3155,26 @@ def main() -> None:
         permutation_repeats=5000,
         seed=SEED + 5000,
     )
+    residual_characterization = {
+        "docking44": residual_structure_characterization(
+            docking,
+            DOCK44,
+            dock44_families,
+            canonical["analysis_smiles"],
+            sample_size=12000,
+            family_permutations=5000,
+            seed=SEED + 70,
+        ),
+        "dockstring58": residual_structure_characterization(
+            dockstring,
+            dockstring_cols,
+            dockstring_families,
+            dockstring_smiles,
+            sample_size=15000,
+            family_permutations=5000,
+            seed=SEED + 71,
+        ),
+    }
 
     dataset_rows = [
         {
@@ -2894,6 +3386,15 @@ def main() -> None:
                 seed=SEED + 61,
             ),
         },
+        "row_norm_preserving_residual_null": {
+            "docking44": row_norm_preserving_residual_null(
+                docking, sample_size=12000, repeats=500, seed=SEED + 62
+            ),
+            "dockstring58": row_norm_preserving_residual_null(
+                dockstring, sample_size=12000, repeats=500, seed=SEED + 63
+            ),
+        },
+        "residual_structure_characterization": residual_characterization,
         "matched_raw_and_interaction_bootstrap": paired_surface_bootstrap(
             matched_dock.to_numpy(dtype=np.float64),
             matched_exp.to_numpy(dtype=np.float64),
@@ -2903,7 +3404,11 @@ def main() -> None:
         "matched_target_preference_benchmark": target_preference,
         "expanded_target_preference_benchmark": expanded_preference,
         "preprocessing_sensitivity": {
-            **preprocessing_sensitivity(docking_frame),
+            **preprocessing_sensitivity(
+                docking_frame,
+                smiles=canonical["analysis_smiles"],
+                butina_labels=canonical["Butina_clusters"],
+            ),
             "dockstring_clipping": {
                 "complete_rows": int(len(dockstring_unclipped)),
                 "strictly_positive_cells": int(np.sum(dockstring_unclipped > 0)),
@@ -2955,6 +3460,48 @@ def main() -> None:
             ),
         },
     }
+
+    metric_rows = []
+    for dataset, key in [("Docking-44", "docking44"), ("DOCKSTRING-58", "dockstring58")]:
+        for surface, label in [("raw", "column-standardized"), ("interaction", "residual")]:
+            record = out["centering_ladder"][key][surface]
+            metric_rows.append({
+                "dataset": dataset,
+                "surface": label,
+                "n_targets": record["n_targets"],
+                "participation_ratio": record["participation_ratio"],
+                "mean_squared_offdiagonal_correlation": record[
+                    "mean_squared_offdiagonal_correlation"
+                ],
+                "mean_absolute_offdiagonal_correlation": record[
+                    "mean_absolute_offdiagonal_correlation"
+                ],
+                "pc1_fraction": record["pc1_fraction"],
+                "entropy_rank": record["entropy_rank"],
+            })
+    pd.DataFrame(metric_rows).to_csv(OUT / "spectral_metric_comparison.csv", index=False)
+
+    target_order_rows = []
+    for dataset, key in [("Docking-44", "docking44"), ("DOCKSTRING-58", "dockstring58")]:
+        record = out["residual_structure_characterization"][key]
+        family_by_target = dict(zip(record["target_names"], record["families"]))
+        for position, target in enumerate(record["residual_cluster_order"], start=1):
+            target_order_rows.append({
+                "dataset": dataset,
+                "cluster_order": position,
+                "target": target,
+                "family": family_by_target[target],
+            })
+    pd.DataFrame(target_order_rows).to_csv(OUT / "residual_target_order.csv", index=False)
+
+    chemistry_rows = []
+    for descriptor, record in out["preprocessing_sensitivity"][
+        "complete_case_chemical_support"
+    ]["descriptor_comparison"].items():
+        chemistry_rows.append({"descriptor": descriptor, **record})
+    pd.DataFrame(chemistry_rows).to_csv(
+        OUT / "complete_case_chemical_support.csv", index=False
+    )
 
     (OUT / "evidence_summary.json").write_text(json.dumps(out, indent=2) + "\n")
     print(f"Wrote {OUT / 'evidence_summary.json'}")

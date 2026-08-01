@@ -446,6 +446,7 @@ def fig4(evidence: dict) -> None:
     dockstring = evidence["ligand_sampling_sensitivity"]["dockstring_scaffold_bootstrap"]
     additive = evidence["additive_main_effect_null"]
     empirical = evidence["empirical_residual_permutation_null"]
+    row_norm = evidence["row_norm_preserving_residual_null"]
     fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 3.35),
                               gridspec_kw={"width_ratios": [1.05, 0.95]})
     x = np.array([0, 1])
@@ -496,15 +497,21 @@ def fig4(evidence: dict) -> None:
         empirical_null = empirical[key]["null_residual"]
         empirical_median = empirical_null["median"] / maximum
         empirical_interval = np.asarray(empirical_null["interval_95"]) / maximum
+        row_norm_null = row_norm[key]["null_residual"]
+        row_norm_median = row_norm_null["median"] / maximum
+        row_norm_interval = np.asarray(row_norm_null["interval_95"]) / maximum
         b.plot([observed, null_median], [yi, yi], color=GREY, lw=1.0)
-        b.plot(null_interval, [yi + 0.08, yi + 0.08], color=INK, lw=2.0, alpha=0.42)
-        b.plot(empirical_interval, [yi - 0.08, yi - 0.08], color=GREY, lw=2.0, alpha=0.60)
+        b.plot(null_interval, [yi + 0.15, yi + 0.15], color=INK, lw=2.0, alpha=0.42)
+        b.plot(empirical_interval, [yi, yi], color=GREY, lw=2.0, alpha=0.60)
+        b.plot(row_norm_interval, [yi - 0.15, yi - 0.15], color=PLUM, lw=2.0, alpha=0.60)
         b.scatter(observed, yi, color=color, marker=marker, s=40,
                   edgecolors="white", linewidths=0.55, zorder=3)
-        b.scatter(null_median, yi + 0.08, facecolors="white", edgecolors=INK,
+        b.scatter(null_median, yi + 0.15, facecolors="white", edgecolors=INK,
                   marker=marker, s=36, linewidths=0.8, zorder=3)
-        b.scatter(empirical_median, yi - 0.08, color=GREY,
+        b.scatter(empirical_median, yi, color=GREY,
                   marker="x", s=30, linewidths=0.9, zorder=3)
+        b.scatter(row_norm_median, yi - 0.15, facecolors="white", edgecolors=PLUM,
+                  marker="^", s=34, linewidths=0.8, zorder=3)
         b.text(observed + 0.025, yi + 0.13,
                f"observed {centers[key]['interaction']['participation_ratio']:.1f}/{maximum}",
                fontsize=6.4, color=color)
@@ -513,13 +520,72 @@ def fig4(evidence: dict) -> None:
     b.set_ylim(-0.55, 1.55)
     b.set_xlabel("residual PR / algebraic maximum")
     b.set_ylabel("matrix")
-    b.text(0.98, 0.96, "filled: observed\nopen: Gaussian additive null\nx: empirical residual null",
-           transform=b.transAxes, ha="right", va="top", fontsize=6.3)
+    b.text(0.54, 0.96, "filled: observed\nopen: Gaussian additive null\n"
+           "x: empirical residual null\ntriangle: row-norm null",
+           transform=b.transAxes, ha="center", va="top", fontsize=6.3)
     clean(b)
     panel_label(a, "a"); panel_label(b, "b")
     fig.subplots_adjust(left=0.12, right=0.985, bottom=0.22, top=0.94, wspace=0.48)
     assert audit_fig(fig)
     save(fig, str(OUT / "fig4_centering_null"))
+    plt.close(fig)
+
+
+def fig_s7_residual_correlations(evidence: dict) -> None:
+    characterization = evidence["residual_structure_characterization"]
+    fig, axes = plt.subplots(2, 2, figsize=(WIDTH, 5.75),
+                             gridspec_kw={"height_ratios": [1.22, 0.78]})
+    for column, (key, title, color) in enumerate([
+        ("docking44", "Docking-44", BLUE),
+        ("dockstring58", "DOCKSTRING-58", ORANGE),
+    ]):
+        record = characterization[key]
+        names = record["target_names"]
+        name_to_index = {name: index for index, name in enumerate(names)}
+        order = np.asarray([name_to_index[name] for name in record["residual_cluster_order"]])
+        corr = np.asarray(record["residual_target_correlation"], dtype=float)
+        corr = corr[np.ix_(order, order)]
+        ax = axes[0, column]
+        image_artist = ax.imshow(corr, cmap="RdBu_r", vmin=-0.6, vmax=0.6,
+                                 interpolation="nearest", rasterized=True)
+        tick_count = min(9, len(order))
+        ticks = np.unique(np.linspace(0, len(order) - 1, tick_count).round().astype(int))
+        labels = np.asarray(names)[order][ticks]
+        ax.set_xticks(ticks, labels, rotation=90)
+        ax.set_yticks(ticks, labels)
+        ax.tick_params(length=0, labelsize=6)
+        ax.set_title(f"{title}: clustered residual correlations", loc="left")
+        ax.set_xlabel("target (clustered order)")
+        ax.set_ylabel("target (clustered order)")
+        colorbar = fig.colorbar(image_artist, ax=ax, fraction=0.046, pad=0.03)
+        colorbar.set_label("Pearson correlation", fontsize=7)
+        colorbar.ax.tick_params(labelsize=6)
+
+        ax = axes[1, column]
+        raw = np.asarray(record["raw_correlation_distribution"]["values"])
+        residual = np.asarray(record["residual_correlation_distribution"]["values"])
+        bins = np.linspace(-1, 1, 42)
+        ax.hist(raw, bins=bins, density=True, histtype="step", lw=1.2,
+                color=color, label="column-standardized")
+        ax.hist(residual, bins=bins, density=True, histtype="stepfilled", alpha=0.22,
+                color=TEAL, edgecolor=TEAL, lw=1.0, label="residual")
+        family = record["family_association"]
+        ax.text(0.02, 0.96,
+                f"mean |r|: {np.mean(np.abs(raw)):.3f} to {np.mean(np.abs(residual)):.3f}\n"
+                f"family Δ|r| = {family['difference_within_minus_between']:.3f}; "
+                f"p = {family['one_sided_p_for_positive_difference']:.3f}",
+                transform=ax.transAxes, ha="left", va="top", fontsize=6.4)
+        ax.set_xlim(-1, 1)
+        ax.set_xlabel("off-diagonal target correlation")
+        ax.set_ylabel("density")
+        ax.legend(frameon=False, fontsize=6.3, loc="upper right")
+        clean(ax)
+    for ax, label in zip(axes.flat, "abcd"):
+        panel_label(ax, label)
+    fig.subplots_adjust(left=0.11, right=0.985, bottom=0.10, top=0.96,
+                        wspace=0.37, hspace=0.43)
+    assert audit_fig(fig)
+    save(fig, str(OUT / "figS7_residual_correlations"))
     plt.close(fig)
 
 
@@ -549,8 +615,12 @@ def fig5(evidence: dict) -> None:
             a.plot(null["interval_95"], [yi - 0.17, yi - 0.17], color=GREY,
                    lw=3.8, alpha=0.33, solid_capstyle="butt", zorder=1)
             a.plot(null["mean"], yi - 0.17, "x", color=INK, ms=4.5, mew=0.8, zorder=3)
+            cluster_p = record[
+                "one_ligand_per_murcko_cluster_identity_permutation"
+            ]["one_sided_p_value_across_supports"]["median"]
             a.text(0.678, yi - 0.27,
-                   f"perm. p={null['one_sided_empirical_p_observed_at_least_as_large']:.3f}",
+                   f"p={null['one_sided_empirical_p_observed_at_least_as_large']:.3f}; "
+                   f"cluster med.={cluster_p:.3f}",
                    ha="right", va="center", fontsize=6.0)
     a.axvline(0.5, color=INK, ls="--", lw=0.75)
     a.set_yticks(y, [row[0] for row in rows])
@@ -804,6 +874,7 @@ def main() -> None:
     fig_s4_learned_affinity(evidence)
     fig_s5_dti(evidence)
     fig_s6_dockstring_supports(evidence)
+    fig_s7_residual_correlations(evidence)
     print(f"Wrote manuscript figures to {OUT}")
 
 

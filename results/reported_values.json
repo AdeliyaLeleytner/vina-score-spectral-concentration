@@ -1,0 +1,24 @@
+{
+  "source": "results/evidence_summary.json",
+  "macros": {
+    "NoisePRMedian": "2.407",
+    "NoisePRLow": "2.21",
+    "NoisePRHigh": "2.64",
+    "ResidualAbsoluteLow": "-0.065",
+    "ResidualAbsoluteHigh": "0.063",
+    "ResidualColumnLow": "-0.022",
+    "ResidualColumnHigh": "0.055",
+    "CohortPriorLow": "0.531",
+    "CohortPriorHigh": "0.654",
+    "BroadAbsoluteAccuracy": "0.566",
+    "BroadColumnAccuracy": "0.546",
+    "BroadResidualAccuracy": "0.564",
+    "KiKdAbsoluteAccuracy": "0.565",
+    "KiKdColumnAccuracy": "0.554",
+    "KiKdResidualAccuracy": "0.579",
+    "DuplicateCollapsedAbsoluteAccuracy": "0.567",
+    "DuplicateCollapsedColumnAccuracy": "0.541",
+    "DuplicateCollapsedResidualAccuracy": "0.562"
+  },
+  "rounding": "round-half-even through Python fixed-point formatting"
+}

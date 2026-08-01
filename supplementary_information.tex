@@ -20,7 +20,7 @@
 \doublespacing
 
 \title{Supplementary information\\[4pt]\large Spectral concentration in two large Vina
-docking-score matrices: two-way centering reveals structured residual variation without a
+docking-score matrices: two-way centering reveals correlated residual variation without a
 resolved target-ranking gain}
 \author{Adeliya Leleytner, Victor Safronov, Maxim Fedorov}
 \date{}
@@ -99,20 +99,49 @@ centered residual. All estimates are conditional on the same 58 targets.}
 \label{fig:s6}
 \end{figure}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/figS7_residual_correlations.pdf}
+\caption{\textbf{Residual target-correlation structure.}
+\textbf{a,b}, Two-way-centered residual target correlations ordered by average-linkage
+clustering of $1-r$. A subset of target labels is printed for legibility; the complete order
+and family mapping are supplied in \texttt{results/residual\_target\_order.csv}.
+\textbf{c,d}, Distributions of all off-diagonal correlations before and after centering.
+Annotations give mean absolute correlation and the within-family minus between-family mean
+absolute-correlation difference with a one-sided 5,000-label-permutation probability. The
+broad-family associations are weak and do not establish biological specificity.}
+\label{fig:s7}
+\end{figure}
+
 \input{results/supplement_tables.tex}
 
 \clearpage
 \section*{Additional methodological notes}
 
-\paragraph{Interpretation of PR effective dimension.}
+\begingroup
+\hfuzz=13pt
+\subsubsection*{Interpreting PR}
 For a $P$-column standardized matrix with target correlation matrix $C$,
 \[
-r_{\mathrm{PR}}=\frac{P^2}{\operatorname{tr}(C^2)}
-=\frac{P}{1+(P-1)\overline{r_{ij}^{\,2}}}.
+\begin{aligned}
+r_{\mathrm{PR}}&=\frac{P^2}{\operatorname{tr}(C^2)}\\
+&=\frac{P}{1+(P-1)\overline{r_{ij}^{\,2}}}.
+\end{aligned}
 \]
 The mean is over unique off-diagonal target correlations. The PR effective dimension therefore
-summarizes mean-squared inter-target correlation, while the plotted spectrum distinguishes a
-single dominant collective direction from several intermediate modes.
+is a one-to-one re-expression of mean-squared inter-target correlation and adds no
+independent statistical information to it. Its scale is interpretable as effective
+components; mean absolute correlation, signed distributions, heatmaps and the full spectrum
+retain information that PR discards.
+\endgroup
+
+\paragraph{Complete-case chemical support.}
+Only 1.466\% of Docking-44 cells were missing, but they occurred in 3,354 ligands. Target
+4mqs accounted for 3,352 missing cells, and the median incomplete row lacked one target.
+Incomplete ligands had median molecular weight 399 Da and 28 heavy atoms, compared with 249
+Da and 17 heavy atoms among complete cases. Standardized mean differences were 1.86 and
+2.03. Thus the complete-case PR of 1.320 describes a chemically shifted support; full
+descriptor results are in \path{results/complete_case_chemical_support.csv}.
 
 \paragraph{Limits of the experimental-noise calibration.}
 The different-document repeatability scale includes technical variation, laboratory
@@ -173,6 +202,24 @@ null median 42.33. The empirical null does not retain ligand-specific residual s
 cluster-representative result shows that ordinary chemical redundancy does not explain the
 separation.
 
+\paragraph{Row-norm-preserving residual null.}
+Independent Gaussian directions were projected into the target-zero-sum subspace and then
+rescaled so that each simulated row had exactly the observed residual Euclidean norm. Median
+PR dimensions were 42.63 and 56.62; the observed 9.27 and 18.19 on the matched supports fell
+below all 500 realizations ($p=0.002$). The null retains ligand-specific residual scale but
+not target-specific marginals, complementing rather than replacing the empirical column-
+permutation null.
+
+\paragraph{Residual modes and target families.}
+Mean absolute target correlation fell from 0.694 to 0.245 in Docking-44 and from 0.624 to
+0.157 in DOCKSTRING on the fixed characterization supports. Within-family values exceeded
+between-family values by 0.030 and 0.017, but neither broad-family label permutation was
+resolved at 0.05 ($p=0.073$ and 0.067). Residual PC1 retained strong correlations with ligand
+size (absolute Spearman $|\rho|=0.72$ with molecular weight in Docking-44 and 0.77 with
+heavy-atom count in DOCKSTRING; component signs are arbitrary). The residual covariance
+therefore has interpretable target-specific physicochemical structure without establishing
+a protein-family or specificity mechanism.
+
 \paragraph{DOCKSTRING clipping and chemical support.}
 The complete DOCKSTRING block contained 5,393 positive scores (0.0358\%). Retaining rather
 than clipping them changed the column-standardized PR dimension from 2.266 to 2.275 and the
@@ -203,8 +250,17 @@ retained 132 evaluable ligands and 4,330 endpoint-specific pair instances; absol
 column-standardized and residual accuracies were 0.553, 0.538 and 0.555. On human binding
 Ki/Kd measurements, 107 ligands supplied 2,224 pairs and the same accuracies were 0.565,
 0.554 and 0.579. The residual-minus-absolute cluster intervals were $-0.060$--0.064 and
-$-0.052$--0.085. These sensitivities remain observational and precision limited:
+$-0.051$--0.085. These sensitivities remain observational and precision limited:
 target-pair co-observation had median support three, equivalence is not established, and no
 result demonstrates retrieval on unmeasured targets.
+
+Ordinary identity-shuffle probabilities for absolute and residual Vina were 0.014 and 0.024,
+but median probabilities across 25 one-ligand-per-Murcko-cluster supports were 0.134 and
+0.284. Leave-one-target-out residual-minus-absolute differences ranged from $-0.030$ to
+0.010 in the broad benchmark and from $-0.027$ to 0.031 in human binding Ki/Kd. Finally,
+collapsing repeated endpoint strata to 2,460 unique ligand--target-pair instances gave
+absolute, column-standardized and residual accuracies 0.567, 0.541 and 0.562. These controls
+reinforce the conclusion that neither score association nor representation differences are
+precisely determined on the available support.
 
 \end{document}

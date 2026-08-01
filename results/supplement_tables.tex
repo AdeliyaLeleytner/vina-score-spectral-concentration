@@ -43,11 +43,11 @@ Residual & robust scale then center & 9.462 & median/IQR scaling \\
 \end{table}
 
 \begin{table}[p]
-\centering\scriptsize
-\setlength{\tabcolsep}{2pt}
-\caption{\textbf{Experimental-assay, missing-data and repeatability controls.} The noise scale was 0.493 pChEMBL, estimated from different-document repeats.}
+\centering\small
+\setlength{\tabcolsep}{3pt}
+\caption{\textbf{Experimental controls: assay and complete-support blocks.} The noise scale was 0.493 pChEMBL, estimated from different-document repeats.}
 \label{tab:s3experiment}
-\begin{tabular}{p{5.4cm}rrrp{5.4cm}}
+\begin{tabular}{p{5.1cm}rrrp{5.7cm}}
 \toprule Analysis block & $N$ & $P$ & PR & note \\ \midrule
 ChEMBL all endpoints, frozen refetch A & 212 & 22 & 6.846 & already human-only; KNN; 52.9\% missing \\
 human binding Ki/Kd & 175 & 19 & 5.248 & assay type B; KNN \\
@@ -56,20 +56,42 @@ fully observed sub-block & 31 & 6 & 3.608 & no imputation \\
 matched exact-relation median & 74 & 6 & 3.833 & same-support docking 1.83 \\
 matched human binding, all endpoints & 47 & 6 & 3.510 & same-support docking 1.87 \\
 matched human binding Ki/Kd & 35 & 6 & 3.072 & same-support docking 1.89 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[p]
+\ContinuedFloat
+\centering\small
+\setlength{\tabcolsep}{3pt}
+\caption{\textbf{Experimental controls: missing-data and paired-contrast controls.} The noise scale was 0.493 pChEMBL, estimated from different-document repeats.}
+\begin{tabular}{p{5.1cm}rrrp{5.7cm}}
+\toprule Analysis block & $N$ & $P$ & PR & note \\ \midrule
 ChEMBL all endpoints, frozen refetch B, KNN5 & 212 & 22 & 5.721 & different frozen extraction; 52.9\% missing \\
 212 x 22, MICE & 212 & 22 & 8.592 & mean across imputations \\
 212 x 22, SoftImpute & 212 & 22 & 2.644 & low-rank matrix completion \\
 212 x 22, PPCA-EM & 212 & 22 & 7.283 & probabilistic PCA \\
+matched experimental raw, 100 MICE draws & 74 & 6 & 3.823 & 95\% across imputations 3.57--4.02 \\
+matched experimental residual, 100 MICE draws & 74 & 6 & 4.069 & 95\% across imputations 3.83--4.21 \\
+paired raw experiment-docking contrast & 74 & 6 & 2.006 & ligand-bootstrap interval 1.17--2.67 \\
+paired residual experiment-docking contrast & 74 & 6 & 0.483 & ligand-bootstrap interval -0.07--0.92 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[p]
+\ContinuedFloat
+\centering\small
+\setlength{\tabcolsep}{3pt}
+\caption{\textbf{Experimental controls: noise, descriptor and residual controls.} The noise scale was 0.493 pChEMBL, estimated from different-document repeats.}
+\begin{tabular}{p{5.1cm}rrrp{5.7cm}}
+\toprule Analysis block & $N$ & $P$ & PR & note \\ \midrule
 matched docking + calibrated noise & 74 & 6 & 2.407 & 95\% simulation interval 2.21--2.64 \\
 matched docking + 2.5x calibrated noise & 74 & 6 & 4.175 & approximately reaches experimental raw PR \\
 matched docking, linear descriptor residual & 74 & 6 & 2.806 & seven RDKit descriptors; same support \\
 matched docking, cross-fitted nonlinear residual & 74 & 6 & 2.680 & five-fold HistGBM; same support \\
 matched docking residual, exact-relation support & 74 & 6 & 3.646 & two-way centered \\
 matched experimental residual, exact relation median & 74 & 6 & 4.128 & two-way centered; primary curation \\
-matched experimental raw, 100 MICE draws & 74 & 6 & 3.823 & 95\% across imputations 3.57--4.02 \\
-matched experimental residual, 100 MICE draws & 74 & 6 & 4.069 & 95\% across imputations 3.83--4.21 \\
-paired raw experiment-docking contrast & 74 & 6 & 2.006 & ligand-bootstrap interval 1.17--2.67 \\
-paired residual experiment-docking contrast & 74 & 6 & 0.483 & ligand-bootstrap interval -0.07--0.92 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -88,26 +110,43 @@ DOCKSTRING-58 & two-way-centered residual & 18.206 & 17.662 & 17.931 & 20.045 & 
 \bottomrule
 \end{tabular}
 \vspace{5pt}
-\parbox{0.94\textwidth}{\footnotesize Family-stratified target subsampling is shown in Fig.~1c,d. The descriptive rank-wise and family-wise-error-controlled simultaneous mode counts were both 3 versus 7 for Docking-44 and 4 versus 10 for DOCKSTRING-58. Across 5 independent 15,000-molecule DOCKSTRING supports, raw point estimates ranged from 2.252 to 2.294 and residual estimates from 18.161 to 18.322; support-specific scaffold intervals are plotted in Fig.~S6. The fitted additive null gave median residual PR dimensions 42.40 and 56.48, compared with observed values 9.29 and 18.16. The empirical residual-permutation null gave medians 42.40 and 56.48. Across 200 matched one-ligand-per-Butina-cluster Docking-44 supports, the observed median was 9.43 versus 42.33 under permutation.}
+\parbox{0.94\textwidth}{\footnotesize Family-stratified target subsampling is shown in Fig.~1c,d. The descriptive rank-wise and family-wise-error-controlled simultaneous mode counts were both 3 versus 7 for Docking-44 and 4 versus 10 for DOCKSTRING-58. Across 5 independent 15,000-molecule DOCKSTRING supports, raw point estimates ranged from 2.252 to 2.294 and residual estimates from 18.161 to 18.322; support-specific scaffold intervals are plotted in Fig.~S6. The fitted additive null gave median residual PR dimensions 42.40 and 56.48, compared with observed values 9.29 and 18.16. The empirical residual-permutation null gave medians 42.40 and 56.48. Across 200 matched one-ligand-per-Butina-cluster Docking-44 supports, the observed median was 9.43 versus 42.33 under permutation. The row-norm-preserving null medians were 42.63 and 56.62.}
 \end{table}
 
 \begin{table}[p]
 \centering\scriptsize
-\setlength{\tabcolsep}{3pt}
-\caption{\textbf{Expanded observed-pair ChEMBL target-preference benchmark.} The primary support comprises exact-relation median pChEMBL cells for 137 Docking-44 ligands and 38 targets. Accuracy averages within-ligand pairwise accuracies so that highly profiled ligands do not dominate; predicted score ties receive half credit. Intervals resample Bemis--Murcko scaffold clusters; the cohort experimental prior is fitted with the evaluation ligand's entire scaffold cluster held out. Identity shuffles are reported only for score-based representations.}
+\setlength{\tabcolsep}{2pt}
+\caption{\textbf{Broad-coverage observed-pair ChEMBL target-preference benchmark.} This is reported with the human binding Ki/Kd assay-restricted estimand; both were designated during revision rather than preregistered. Accuracy averages within-ligand pairwise accuracies so that highly profiled ligands do not dominate; predicted score ties receive half credit. Intervals resample Bemis--Murcko scaffold clusters; the cohort experimental prior is fitted with the evaluation ligand's entire scaffold cluster held out. Identity shuffles are reported only for score-based representations.}
 \label{tab:s5preference}
-\begin{tabular}{p{4.3cm}rrrrr}
-\toprule Representation & accuracy & scaffold 95\% CI & pair-weighted & pairs & identity-shuffle mean / $p$ \\ \midrule
-absolute Vina & 0.566 & 0.502--0.623 & 0.584 & 2,522 & 0.519 / 0.014 \\
+\begin{tabular}{p{3.7cm}>{\centering\arraybackslash}p{1.1cm}>{\centering\arraybackslash}p{1.8cm}>{\centering\arraybackslash}p{1.5cm}>{\centering\arraybackslash}p{1.0cm}>{\centering\arraybackslash}p{3.5cm}}
+\toprule Representation & accuracy & scaffold 95\% CI & \shortstack{pair-\\weighted} & pairs & identity shuffle: mean / $p$ / cluster median $p$ \\ \midrule
+absolute Vina & 0.566 & 0.502--0.623 & 0.584 & 2,522 & 0.519 / 0.014 / 0.134 \\
 docking target prior & 0.525 & 0.456--0.591 & 0.585 & 2,522 & -- \\
 external ChEMBL target prior & 0.525 & 0.472--0.579 & 0.565 & 2,522 & -- \\
 cohort experimental target prior (scaffold held out) & 0.592 & 0.531--0.654 & 0.644 & 2,522 & -- \\
-column-standardized Vina & 0.546 & 0.485--0.604 & 0.513 & 2,522 & 0.499 / 0.048 \\
-two-way residual Vina & 0.564 & 0.501--0.626 & 0.532 & 2,522 & 0.508 / 0.024 \\
+column-standardized Vina & 0.546 & 0.485--0.604 & 0.513 & 2,522 & 0.499 / 0.048 / 0.204 \\
+two-way residual Vina & 0.564 & 0.501--0.626 & 0.532 & 2,522 & 0.508 / 0.024 / 0.284 \\
 \bottomrule
 \end{tabular}
 \vspace{4pt}
-\parbox{0.94\textwidth}{\footnotesize The residual-minus-column difference was +0.017 with a scaffold-bootstrap interval -0.022--0.054; its conservative Murcko/Butina 90\% interval was -0.015--0.049. The residual-minus-absolute difference was -0.002 (-0.065--0.062); its conservative 90\% interval was -0.056--0.051. Post hoc equivalence was not established at $\pm0.02$ for either contrast or at $\pm0.05$ for residual versus absolute; residual versus column-standardized met only the liberal $\pm0.05$ criterion. Unscaled target-centered and two-way-centered representations were rank-identical at accuracy 0.556 (difference +0.000); residual-target scaling alone gave 0.549. On fixed support and same-endpoint pairs, absolute, column-standardized and residual accuracies were 0.553, 0.538 and 0.555; the residual-minus-absolute cluster-interval union was -0.060--0.064. On human binding Ki/Kd, residual accuracy was 0.579 and residual minus absolute was -0.052--0.085.}
+\parbox{0.94\textwidth}{\footnotesize The residual-minus-column difference was +0.017 with a union of cluster-bootstrap intervals -0.022--0.055; its conservative Murcko/Butina 90\% interval was -0.015--0.049. The residual-minus-absolute difference was -0.002 (-0.065--0.063); its conservative 90\% interval was -0.056--0.051. Post hoc equivalence was not established at $\pm0.02$ for either contrast or at $\pm0.05$ for residual versus absolute; residual versus column-standardized met only the liberal $\pm0.05$ criterion. Unscaled target-centered and two-way-centered representations were rank-identical at accuracy 0.556 (difference +0.000); residual-target scaling alone gave 0.549. On fixed support and same-endpoint pairs, absolute, column-standardized and residual accuracies were 0.553, 0.538 and 0.555; the residual-minus-absolute cluster-interval union was -0.060--0.064. On human binding Ki/Kd, residual accuracy was 0.579 and residual minus absolute was -0.051--0.085. Leave-one-target-out residual-minus-absolute differences ranged from -0.030 to 0.010 on broad support and -0.027 to 0.031 on Ki/Kd support. Duplicate-collapsed same-endpoint accuracies were 0.567, 0.541 and 0.562.}
+\end{table}
+
+\begin{table}[p]
+\ContinuedFloat
+\centering\small
+\caption{\textbf{Assay-restricted and endpoint-specific operational estimands.} Endpoint-only rows can be very small and are descriptive. The duplicate-collapsed row gives every unique ligand--target-pair one contribution after averaging eligible endpoint strata.}
+\begin{tabular}{p{5.2cm}rrrrr}
+\toprule Analysis & ligands & pairs & absolute & column-standardized & residual \\ \midrule
+human binding Ki/Kd & 107 & 2,224 & 0.565 & 0.554 & 0.579 \\
+same endpoint, equal endpoint weight & 132 & 4,330 & 0.553 & 0.538 & 0.555 \\
+Ki only & 109 & 2,233 & 0.558 & 0.538 & 0.563 \\
+Kd only & 7 & 12 & 0.500 & 0.667 & 0.524 \\
+IC50 only & 90 & 2,047 & 0.555 & 0.498 & 0.516 \\
+EC50 only & 18 & 38 & 0.407 & 0.443 & 0.398 \\
+same endpoint, duplicate-collapsed pairs & 132 & 2,460 & 0.567 & 0.541 & 0.562 \\
+\bottomrule
+\end{tabular}
 \end{table}
 
 \begin{table}[htbp]
