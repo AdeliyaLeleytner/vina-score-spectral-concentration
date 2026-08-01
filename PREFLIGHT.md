@@ -22,6 +22,8 @@ Audit date: 2026-08-01. Article type: Research article.
   Fig. S3 point IDs map to Table S5.
 - Two-pass LaTeX builds contain no unresolved references, citation warnings, package warnings,
   or overfull boxes. Greek rho survives PDF text extraction.
+- Consecutive pinned-environment rebuilds produce byte-identical figure and compiled PDF
+  artifacts through fixed release metadata and `SOURCE_DATE_EPOCH`.
 - MIT code license, file-specific data licenses, provenance, pinned environment, Makefile,
   Dockerfile, and clean-clone instructions are present.
 - AI systems are not authors or evidence sources; the Methods disclosure assigns scientific

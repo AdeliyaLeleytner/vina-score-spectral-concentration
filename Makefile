@@ -1,5 +1,6 @@
 PYTHON ?= python3
 PDFLATEX ?= pdflatex
+SOURCE_DATE_EPOCH ?= 1785542400
 
 .PHONY: all verify evidence tables figures manuscript supplement clean
 
@@ -18,12 +19,12 @@ figures: evidence
 	JCHEMINF_REQUIRE_BUNDLED=1 MPLCONFIGDIR=.matplotlib-cache $(PYTHON) analysis/make_figures.py
 
 manuscript: figures
-	$(PDFLATEX) -interaction=nonstopmode -halt-on-error manuscript.tex
-	$(PDFLATEX) -interaction=nonstopmode -halt-on-error manuscript.tex
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(PDFLATEX) -interaction=nonstopmode -halt-on-error manuscript.tex
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(PDFLATEX) -interaction=nonstopmode -halt-on-error manuscript.tex
 
 supplement: tables figures
-	$(PDFLATEX) -interaction=nonstopmode -halt-on-error supplementary_information.tex
-	$(PDFLATEX) -interaction=nonstopmode -halt-on-error supplementary_information.tex
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(PDFLATEX) -interaction=nonstopmode -halt-on-error supplementary_information.tex
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(PDFLATEX) -interaction=nonstopmode -halt-on-error supplementary_information.tex
 
 clean:
 	$(RM) *.aux *.log *.out

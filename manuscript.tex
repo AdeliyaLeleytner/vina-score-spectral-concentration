@@ -97,7 +97,7 @@ estimands, and uncertainty analyses for chemical and target-panel composition.
 
 The distinction matters because docking has several separable tasks. A method may reproduce
 a crystallographic pose yet rank affinities poorly, and no single program performs uniformly
-across targets and evaluation objectives.\cite{warren2006} Likewise, the raw variance of a
+across targets and evaluation objectives.\cite{warren2006} Likewise, the aggregate variance of a
 score matrix and the correctness of within-ligand target contrasts are different objects.
 Writing
 \begin{equation}
@@ -108,7 +108,7 @@ separates the grand mean $\mu$, the ligand tendency $a_i$ to score well across t
 target tendency $b_j$ to score ligands favorably, and the interaction $\gamma_{ij}$. The
 column-standardized spectrum is allowed to be dominated by $a_i$. Selectivity, however, depends on
 differences within rows and ultimately on $\gamma_{ij}$; the additive terms cancel from a
-double difference. A rank estimate on $X$ and the same estimate on $\gamma$ therefore answer
+double difference. A PR estimate on $X$ and the same estimate on $\gamma$ therefore answer
 different questions. Established panel selectivity summaries such as Gini, entropy and
 window scores also answer different questions and can reorder the same compounds, making the
 metric definition part of the estimand rather than a cosmetic choice.\cite{graczyk2007,bosc2017}
@@ -606,13 +606,13 @@ pocket model was evaluated by leave-one-target-out prediction.
 
 \subsection{Preprocessing and experimental-noise sensitivities}
 
-For the antitarget panel we repeated the raw analysis with target-median imputation
+For the antitarget panel we repeated the column-standardized analysis with target-median imputation
 ($r_{\mathrm{PR}}=1.835$), complete cases (9,297 ligands; 1.320), pairwise-complete Pearson
 correlations (1.788) and pairwise Spearman correlations (1.686). The complete-case estimate
 changes the chemical support and is not a like-for-like imputation test. Censoring
 sensitivities treated source-clipped zero cells as missing, removed every affected ligand or
 removed the most affected target decile. For interaction spectra we compared
-raw-scale centering followed by standardization (9.303), standardization followed by
+score-scale centering followed by standardization (9.303), standardization followed by
 centering (9.378), and robust median/interquartile-range scaling followed by centering
 (9.462). These analyses test analysis-pipeline sensitivity rather than define alternative
 primary endpoints.

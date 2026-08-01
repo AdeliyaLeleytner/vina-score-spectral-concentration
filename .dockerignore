@@ -1,0 +1,12 @@
+.git
+.venv
+.matplotlib-cache
+.DS_Store
+*.aux
+*.log
+*.out
+__pycache__
+CLAIM.md
+FIGURE-PLAN.md
+LITERATURE.md
+OUTLINE.md

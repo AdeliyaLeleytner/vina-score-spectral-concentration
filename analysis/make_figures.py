@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 
 import matplotlib
@@ -43,6 +44,7 @@ PLUM = PALETTE["plum"]
 GREY = PALETTE["grey"]
 INK = PALETTE["ink"]
 PALE = PALETTE["pale"]
+RELEASE_TIMESTAMP = datetime(2026, 8, 1, tzinfo=timezone.utc)
 
 
 def use_paper_style() -> None:
@@ -102,7 +104,16 @@ def save(fig: plt.Figure, path: str, dpi: int = 400) -> None:
     """Write an exact-size vector PDF and a same-size PNG preview."""
     base = Path(path)
     base.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(base.with_suffix(".pdf"))
+    fig.savefig(
+        base.with_suffix(".pdf"),
+        metadata={
+            "Title": base.stem,
+            "Author": "Adeliya Leleytner; Victor Safronov; Maxim Fedorov",
+            "Creator": "make_figures.py",
+            "CreationDate": RELEASE_TIMESTAMP,
+            "ModDate": RELEASE_TIMESTAMP,
+        },
+    )
     fig.savefig(base.with_suffix(".png"), dpi=dpi)
     width, height = fig.get_size_inches()
     print(f"wrote {base.with_suffix('.pdf')} ({width:.3f} × {height:.3f} in)")
@@ -425,6 +436,22 @@ def fig_s3(evidence: dict) -> None:
     )
     assoc = evidence["dti_associations"]["all_20_scorers_sensitivity"]
     fig, (a, b) = plt.subplots(1, 2, figsize=(WIDTH, 3.55))
+    offset_maps = {
+        "raw_effective_rank": {
+            1: (10, -12), 2: (12, 1), 3: (-14, -12), 4: (11, 10),
+            5: (10, 12), 6: (-12, 15), 7: (-12, -16), 8: (10, -14),
+            9: (10, 12), 10: (-12, 14), 11: (14, 7), 12: (-16, 15),
+            13: (12, 11), 14: (14, 10), 15: (12, -20), 16: (-10, -14),
+            17: (-14, 18), 18: (10, -22), 19: (14, 21), 20: (12, 10),
+        },
+        "interaction_effective_rank": {
+            1: (10, -13), 2: (12, 4), 3: (-15, -12), 4: (-14, -13),
+            5: (10, 10), 6: (-12, 15), 7: (-12, -17), 8: (10, -14),
+            9: (10, 10), 10: (-12, 15), 11: (12, 8), 12: (-12, 15),
+            13: (12, -12), 14: (12, 10), 15: (10, -15), 16: (-12, 15),
+            17: (-10, 19), 18: (-12, -18), 19: (11, 19), 20: (-13, -6),
+        },
+    }
     for ax, rank_col, stats_key, xlab in [
         (a, "raw_effective_rank", "raw_rank_vs_selectivity_p_at_5",
          "column-standardized PR dimension"),
@@ -434,26 +461,22 @@ def fig_s3(evidence: dict) -> None:
         colors = np.where(arms.clears_chance, BLUE, GREY)
         ax.scatter(arms[rank_col], arms.selectivity_p_at_5, c=colors, s=56,
                    edgecolors="white", linewidths=0.45)
-        label_offsets = {
-            1: (7, -8), 2: (8, 10), 3: (-9, -8), 4: (-8, -8),
-            5: (7, 8),
-            6: (-9, 8), 7: (-8, -10), 11: (8, 8), 12: (-11, 15),
-            8: (8, 10), 9: (7, 8), 10: (-8, 10), 13: (8, -8),
-            14: (8, 8), 15: (8, -11), 16: (-8, 10), 17: (-8, 8),
-            18: (9, -16), 19: (10, 16), 20: (8, 8),
-        }
         for plot_id, row in enumerate(arms.itertuples(index=False), start=1):
-            offset = label_offsets.get(plot_id, (4, 4))
+            offset = offset_maps[rank_col][plot_id]
             ax.annotate(str(plot_id),
                         (getattr(row, rank_col), row.selectivity_p_at_5),
                         xytext=offset, textcoords="offset points", fontsize=6.0,
                         ha="center", va="center", color=INK,
+                        bbox={"boxstyle": "round,pad=0.08", "fc": "white",
+                              "ec": "none", "alpha": 0.82},
                         arrowprops={"arrowstyle": "-", "color": GREY, "lw": 0.35},
                         zorder=4)
         rec = assoc[stats_key]
-        ax.text(0.03, 0.97,
+        ax.text(0.98, 0.97,
                 f"all 20 arms: Spearman r_s={rec['spearman_rho']:.2f}, p={rec['spearman_p']:.3f}",
-                transform=ax.transAxes, ha="left", va="top", fontsize=6.5)
+                transform=ax.transAxes, ha="right", va="top", fontsize=6.5,
+                bbox={"boxstyle": "round,pad=0.15", "fc": "white",
+                      "ec": "none", "alpha": 0.90})
         ax.set_xlabel(xlab)
         ax.set_ylabel("selectivity precision at 5")
         clean(ax)

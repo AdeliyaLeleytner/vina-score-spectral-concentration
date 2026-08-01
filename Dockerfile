@@ -6,7 +6,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /work
-COPY . /work
+COPY requirements.lock /work/requirements.lock
 RUN pip install --no-cache-dir -r requirements.lock
+COPY . /work
 
 CMD ["make", "all"]

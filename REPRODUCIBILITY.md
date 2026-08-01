@@ -26,6 +26,10 @@ The 500-permutation common-protocol analysis should report 3 versus 7 supra-null
 Docking-44 and 4 versus 10 for DOCKSTRING-58. Five independent 100-permutation series should
 repeat those counts.
 
+Figure metadata and LaTeX builds use a fixed release timestamp (`SOURCE_DATE_EPOCH`), so
+consecutive rebuilds in the same pinned environment produce byte-identical figure and PDF
+artifacts.
+
 ## Focused checks
 
 ```bash
