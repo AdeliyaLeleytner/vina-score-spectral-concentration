@@ -79,8 +79,8 @@ domains, and not a compound-level ranking rule.
 Residual dimension is not a stand-alone docking-quality criterion.
 
 \medskip\noindent\textbf{Scientific Contribution.}
-We quantify molecular-size-domain non-transport and support-specific recovery of docking target-
-correlation maps, and identify a scale-free nuisance-projection failure in validating fitted
+We quantify molecular-size-domain non-transport and support-specific recovery of docking
+target-correlation maps, and identify a scale-free nuisance-projection failure in validating fitted
 component maps. We also make explicit that within-ligand centring cannot alter target order and
 identify unequal target scaling as the operation that breaks this invariance.
 \end{abstract}
@@ -871,7 +871,7 @@ protein identities, of which \SharedReceptorStructures{} used the same receptor 
 The replicated spectral pattern should therefore be read as agreement across two different
 data-generation pipelines with quantified overlap.
 
-\begin{figure}[t]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/fig1_spectral_geometry.pdf}
 \caption{\textbf{A shared ligand axis concentrates both Vina score matrices.}
@@ -974,7 +974,7 @@ ligands recover individual target profiles, or that the estimate transfers to a 
 chemical library. Nor does it establish 200 ligands or any observed agreement value as a
 universal accuracy threshold for a different library, receptor panel or scorer.
 
-\begin{figure}[t]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/fig4_support_recovery.pdf}
 \caption{\textbf{Exploratory molecular-size-domain shifts alter target maps; within-library
@@ -1156,7 +1156,7 @@ closely reproduced the full-reference values. KiRHub reports names but not molec
 structures, so an equivalent identity- or scaffold-based exclusion was unavailable for
 that panel (Supplementary Information).
 
-\begin{figure}[t]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/fig3_external_boundary.pdf}
 \caption{\textbf{Experimental agreement is bounded by endpoint transformation, protein
@@ -1233,7 +1233,7 @@ an out-of-fold predictive-performance metric and a nuisance-basis control. We co
 the full docking--experiment concordance to the descriptor component, its correlated
 remainder, or a mediated fraction.
 
-\begin{figure}[t]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/fig4_feature_controls.pdf}
 \caption{\textbf{Held-out predictive performance and fitted-component map orientation are
@@ -1431,7 +1431,7 @@ uniform, reinforcing the restricted interpretation: the broad result is an obser
 stress test under a sparse, non-random measurement process, not a reverse-docking retrieval
 benchmark or a general statement about selectivity.
 
-\begin{figure}[t]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/fig5_ranking_boundary.pdf}
 \caption{\textbf{Within-ligand centring does not imply a target-ranking gain.}
@@ -1447,8 +1447,6 @@ PKIS2 checks; blue and orange distinguish the two datasets and both show chemica
 95\% intervals.}
 \label{fig:ranking}
 \end{figure}
-
-\clearpage
 
 \section{Discussion}
 
@@ -1690,6 +1688,12 @@ correlation coefficient computed across compounds, not a compound-level value or
 No conclusion in this article rests on data that a reader cannot obtain: the
 license-restricted KiRHub and PKIS1 sources are retrieved by checksum-verified scripts from
 their publishers, and every other input is redistributed with the package.
+
+\subsection*{Additional file}
+
+Additional file 1: \path{supplementary_information.pdf} (PDF). \textit{Supplementary
+Information}. Supplementary methods, sensitivity analyses, figures S1--S6 and complete
+machine-generated result tables supporting the main article.
 
 \subsection*{Competing interests}
 
@@ -1936,7 +1940,7 @@ evidence. GitHub.
 \bibitem{softwarezenodo} Leleytner A, Safronov V, Fedorov M (2026) Target-correlation maps
 are library-conditional but recoverable from a few hundred ligands in two large Vina panels:
 reproducibility archive.
-Zenodo, version 3.0.1. doi:10.5281/zenodo.21874032.
+Zenodo, version 3.0.2. doi:10.5281/zenodo.21874252.
 
 \end{thebibliography}
 

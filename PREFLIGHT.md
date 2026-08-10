@@ -62,8 +62,8 @@ Article type: **Research article**.
 - All special symbols are embedded correctly in the compiled PDFs.
 - Data/software availability, author contributions, competing interests, funding and
   AI-use disclosure are present.
-- Repository and Zenodo URLs appear as numbered references; the version-specific archive DOI
-  must be inserted when the submission release is minted.
+- Repository and Zenodo URLs appear as numbered references, including the version-specific
+  submission-archive DOI.
 
 ## Reproducibility checks
 
@@ -80,18 +80,25 @@ Article type: **Research article**.
 ## Required immediately before submission
 
 1. Build from a clean archived checkout or `git archive`, not the development worktree.
-   Include only the five `fig[1-5]_*` files and six `figS*` files referenced by the current
-   TeX sources; exclude legacy figure stems retained in the development worktree.
+   Include only the figure files referenced by the current TeX sources:
+   `fig1_spectral_geometry.pdf`, `fig4_support_recovery.pdf`,
+   `fig3_external_boundary.pdf`, `fig4_feature_controls.pdf`,
+   `fig5_ranking_boundary.pdf`, `figS1_full_spectra.pdf`,
+   `figS2_target_jackknife.pdf`, `figS7_residual_correlations.pdf`,
+   `figS8_spectral_estimand_sensitivities.pdf`,
+   `figS9_physicochemical_target_slopes.pdf` and
+   `figS6_dockstring_supports.pdf`; exclude legacy figure stems retained in the
+   development worktree.
 2. Run the pinned local and Docker builds and record their logs.
 3. Inspect every PDF page at final size and resolve remaining overfull boxes.
 4. Obtain coauthor confirmation of author order, affiliations, contributions, funding,
    competing interests and AI-use wording.
-5. Mint the versioned Zenodo archive, insert its DOI, and synchronize README,
-   `CITATION.cff`, GitHub release metadata and manuscript availability statement.
+5. Confirm that the versioned Zenodo DOI resolves and that README, `CITATION.cff`, GitHub
+   release metadata and the manuscript availability statement remain synchronized.
 
 Repository: <https://github.com/AdeliyaLeleytner/vina-score-spectral-concentration>
 
 Zenodo concept DOI: <https://doi.org/10.5281/zenodo.21733767>
 
-Submission release: `v3.0.1`; version-specific Zenodo DOI:
-<https://doi.org/10.5281/zenodo.21874032>.
+Submission release: `v3.0.2`; version-specific Zenodo DOI:
+<https://doi.org/10.5281/zenodo.21874252>.

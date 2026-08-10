@@ -85,6 +85,11 @@ def begin_table(
     resize: bool = False,
     size: str = r"\small",
 ) -> None:
+    title, separator, legend = caption.partition(". ")
+    if separator:
+        caption_tex = rf"\caption{{\textbf{{{title}.}} {legend}}}"
+    else:
+        caption_tex = rf"\caption{{\textbf{{{caption}}}}}"
     if landscape:
         lines.append(r"\begin{landscape}")
     lines.extend(
@@ -93,7 +98,7 @@ def begin_table(
             r"\centering" + size,
             r"\singlespacing",
             r"\setlength{\tabcolsep}{3pt}",
-            rf"\caption{{\textbf{{{caption}}}}}",
+            caption_tex,
             rf"\label{{{label}}}",
         ]
     )
@@ -470,7 +475,7 @@ def main() -> None:
     assert len(locked_pairs) == 15
     begin_table(
         lines,
-        "Fixed 15-of-190 experimental target-pair endpoint, defined from DAVIS, PKIS2 and PKIS1 before KiRHub inspection; the ordering was not preregistered.",
+        "Fixed experimental target-pair endpoint was selected before KiRHub inspection but not preregistered.",
         "tab:s9lockedPairs",
         r"p{1.7cm}p{2.0cm}p{2.5cm}p{1.8cm}p{1.8cm}p{1.8cm}p{1.8cm}",
         r"Target A & Target B & panels in top decile & DAVIS percentile & PKIS2 percentile & PKIS1 percentile & mean percentile",

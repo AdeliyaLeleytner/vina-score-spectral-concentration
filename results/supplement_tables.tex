@@ -5,7 +5,7 @@
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Large-matrix source support, analysis support and spectral summaries. Source missingness is reported before the stated handling; the analyzed matrices are complete after Docking-44 imputation or DOCKSTRING row exclusion.}}
+\caption{\textbf{Large-matrix source support, analysis support and spectral summaries.} Source missingness is reported before the stated handling; the analyzed matrices are complete after Docking-44 imputation or DOCKSTRING row exclusion.}
 \label{tab:s1spectral}
 \begin{tabular}{lrrrrrrrrrr}
 \toprule
@@ -63,7 +63,7 @@ DOCKSTRING-58 & covariance & 2.474 & 8.235 & 62.4 & 31.9 & 20 & 37 \\
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Residual null models on fixed 12,000-ligand supports. Within each matrix, all three nulls use the identical deterministic ligand support; its SHA-256 row-index fingerprint is stored in the machine-readable evidence ledger.}}
+\caption{\textbf{Residual null models on fixed 12,000-ligand supports.} Within each matrix, all three nulls use the identical deterministic ligand support; its SHA-256 row-index fingerprint is stored in the machine-readable evidence ledger.}
 \label{tab:s4nulls}
 \begin{tabular}{llrrrr}
 \toprule
@@ -143,7 +143,7 @@ DOCKSTRING-58 & family-stratified & 58 & 2.266 & 2.266 & 2.266 & 18.206 & 18.206
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Complete docking-by-experimental estimand decomposition on the common 20 kinases. Each $\Delta_D^{F/M}$ cell gives the full-reference increment followed by the increment on the fixed 15,000-ligand support; $p_L$ denotes the paired target-label QAP for the first and $p_M$ the transformation-matched independent-column null for the second. Differences were calculated from unrounded correlations and can therefore differ slightly from subtraction of the displayed entries.}}
+\caption{\textbf{Complete docking-by-experimental estimand decomposition on the common 20 kinases.} Each $\Delta_D^{F/M}$ cell gives the full-reference increment followed by the increment on the fixed 15,000-ligand support; $p_L$ denotes the paired target-label QAP for the first and $p_M$ the transformation-matched independent-column null for the second. Differences were calculated from unrounded correlations and can therefore differ slightly from subtraction of the displayed entries.}
 \label{tab:s6factorial}
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{lrrrrrrrrrrrr}
@@ -217,7 +217,7 @@ KiRHub versus mean of DAVIS/PKIS2/PKIS1 & -- & 0.834 & 0.817 after removing 11 e
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Censoring-aware DAVIS sensitivity on the fixed kinase panel. Each row compares centred DOCKSTRING target-pair geometry with the stated DAVIS geometry; probabilities use complete target-label permutations. The binary endpoint records whether Kd was measured below the released 10,000-nM limit, not quantitative affinity.}}
+\caption{\textbf{Censoring-aware DAVIS sensitivity on the fixed kinase panel.} Each row compares centred DOCKSTRING target-pair geometry with the stated DAVIS geometry; probabilities use complete target-label permutations. The binary endpoint records whether Kd was measured below the released 10,000-nM limit, not quantitative affinity.}
 \label{tab:davisCensoring}
 \begin{tabular}{p{6.1cm}rrr}
 \toprule
@@ -236,7 +236,7 @@ continuous pKd; at least 15 values above floor per target & 12 & 0.229 & 0.049 \
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Fixed 15-of-190 experimental target-pair endpoint, defined from DAVIS, PKIS2 and PKIS1 before KiRHub inspection; the ordering was not preregistered.}}
+\caption{\textbf{Fixed experimental target-pair endpoint was selected before KiRHub inspection but not preregistered.}}
 \label{tab:s9lockedPairs}
 \begin{tabular}{p{1.7cm}p{2.0cm}p{2.5cm}p{1.8cm}p{1.8cm}p{1.8cm}p{1.8cm}}
 \toprule
@@ -265,7 +265,7 @@ MAPK1 & MAPKAPK2 & 3 & 0.987 & 0.976 & 0.966 & 0.976 \\
 \centering\small
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{KiRHub evaluation and structural controls for the fixed 15-of-190 target-pair endpoint. The endpoint was defined before KiRHub inspection but not preregistered. Absolute-predictor rows use target-label QAP. The contrast rows show how the same centred-minus-raw increment is assessed under target-label and transformation-matched nulls; the absolute centred KiRHub predictor also exceeded the transformation-matched null ($p=0.00050$ for both metrics).}}
+\caption{\textbf{KiRHub evaluation and structural controls for the fixed 15-of-190 target-pair endpoint.} The endpoint was defined before KiRHub inspection but not preregistered. Absolute-predictor rows use target-label QAP. The contrast rows show how the same centred-minus-raw increment is assessed under target-label and transformation-matched nulls; the absolute centred KiRHub predictor also exceeded the transformation-matched null ($p=0.00050$ for both metrics).}
 \label{tab:s10structure}
 \begin{tabular}{p{5.3cm}rrrr}
 \toprule
@@ -290,7 +290,7 @@ centred Vina geometry & 0.710 & 0.007 & 0.301 & 0.001 \\
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Chemical-group-held-out predictive decomposition of the residual docking surfaces. Every target offset, residual target scale, descriptor scale and regression coefficient was fitted within the training fold. The seven descriptors were heavy-atom count, molecular weight, Labute ASA, TPSA, cLogP, rotatable-bond count and ring count. The change in mean squared target correlation is predictive, not causal attribution.}}
+\caption{\textbf{Chemical-group-held-out predictive decomposition of the residual docking surfaces.} Every target offset, residual target scale, descriptor scale and regression coefficient was fitted within the training fold. The seven descriptors were heavy-atom count, molecular weight, Labute ASA, TPSA, cLogP, rotatable-bond count and ring count. The change in mean squared target correlation is predictive, not causal attribution.}
 \label{tab:descriptorDecomposition}
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{lrrrrrr}
@@ -308,7 +308,7 @@ DOCKSTRING-58 & 15,000 & 11,905 & 17.923 & 28.466 & 53.6\% & 0.687 \\
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Spectral concentration under six non-Vina scoring functions on identical fixed DOCKSTRING poses. Every scorer sees the same 2,000-ligand by 9-target pose block; only the scoring function changes. The four prediction criteria were fixed before the non-Vina scores were inspected: raw PC1 fraction at least 0.50, cosine to the uniform target direction at least 0.95 with no negative loading, raw participation ratio no greater than half the target count, and a centring-induced participation-ratio increase whose 95\% cluster-bootstrap interval excludes zero. These criteria are a weak bar: a one-factor surface with no target identity satisfies all four, so meeting them evidences a shared positive ligand axis and nothing finer. Two margins sit inside bootstrap noise: released Vina passes the cosine criterion at 0.9501, and PLECscore exceeds the participation-ratio threshold at the point estimate with an interval that spans it, whereas its PC1 failure holds in every replicate. Scores are not clipped, because clipping only the Vina-family columns would be asymmetric. On a separate 512-ligand fixed-pose within-Vina attribution, gauss2 supplied 0.715 of the shared-axis covariance and 0.525 of the residual Frobenius inner product. These are signed arithmetic attributions without resampling uncertainty; term deletion on Vina-selected poses is not an independent redocking ablation.}}
+\caption{\textbf{Spectral concentration under six non-Vina scoring functions on identical fixed DOCKSTRING poses.} Every scorer sees the same 2,000-ligand by 9-target pose block; only the scoring function changes. The four prediction criteria were fixed before the non-Vina scores were inspected: raw PC1 fraction at least 0.50, cosine to the uniform target direction at least 0.95 with no negative loading, raw participation ratio no greater than half the target count, and a centring-induced participation-ratio increase whose 95\% cluster-bootstrap interval excludes zero. These criteria are a weak bar: a one-factor surface with no target identity satisfies all four, so meeting them evidences a shared positive ligand axis and nothing finer. Two margins sit inside bootstrap noise: released Vina passes the cosine criterion at 0.9501, and PLECscore exceeds the participation-ratio threshold at the point estimate with an interval that spans it, whereas its PC1 failure holds in every replicate. Scores are not clipped, because clipping only the Vina-family columns would be asymmetric. On a separate 512-ligand fixed-pose within-Vina attribution, gauss2 supplied 0.715 of the shared-axis covariance and 0.525 of the residual Frobenius inner product. These are signed arithmetic attributions without resampling uncertainty; term deletion on Vina-selected poses is not an independent redocking ablation.}
 \label{tab:scorerTransport}
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{llrrrrrl}
@@ -332,7 +332,7 @@ plecscore linear & machine learned & 41.4\% & 4.59 & 7.47 & 2.87 & 0.9858 & PC1 
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Rank-matched ligand-feature controls on the fixed common-20 kinase support. Each seven-dimensional basis receives separate target-specific coefficients in five chemical-group-held-out folds. Mean out-of-fold target $R^2$ measures held-out predictive performance. Operational reduction is $1-\overline{r^2}_{\rm error}/\overline{r^2}_{\rm observed}$; it is non-additive and is not a share of correlation, covariance or variance explained. The four final columns are scale-free Spearman agreements between the fitted-component target-correlation map and each experimental map over the same 190 edges. The hash arm has negligible held-out predictive performance but appreciable map agreement, so component-map agreement alone cannot identify a feature-specific mechanism or mediation path.}}
+\caption{\textbf{Rank-matched ligand-feature controls on the fixed common-20 kinase support.} Each seven-dimensional basis receives separate target-specific coefficients in five chemical-group-held-out folds. Mean out-of-fold target $R^2$ measures held-out predictive performance. Operational reduction is $1-\overline{r^2}_{\rm error}/\overline{r^2}_{\rm observed}$; it is non-additive and is not a share of correlation, covariance or variance explained. The four final columns are scale-free Spearman agreements between the fitted-component target-correlation map and each experimental map over the same 190 edges. The hash arm has negligible held-out predictive performance but appreciable map agreement, so component-map agreement alone cannot identify a feature-specific mechanism or mediation path.}
 \label{tab:descriptorRankMatched}
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{p{4.1cm}rrrrrr}
@@ -351,7 +351,7 @@ stable ligand-identity hash nuisance & $-3.63\times10^{-5}$ & 0.002\% & 0.248 & 
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Algorithmic basis sensitivity for the rank-matched controls. The count-Morgan column spans 20 deterministic unnormalised count-fingerprint projections; the row-permuted column spans 20 deterministic permutations of the same standardised physicochemical feature cloud, which destroy the ligand--feature assignment. Ranges are across fixed seeds, not confidence intervals or chemical-space uncertainty. A scale-free component map can remain concordant when held-out predictive performance is effectively null because every nuisance basis is projected separately onto each target and correlation discards component scale. These rows therefore cannot be read as mediation or feature-specific biological attribution.}}
+\caption{\textbf{Algorithmic basis sensitivity for the rank-matched controls.} The count-Morgan column spans 20 deterministic unnormalised count-fingerprint projections; the row-permuted column spans 20 deterministic permutations of the same standardised physicochemical feature cloud, which destroy the ligand--feature assignment. Ranges are across fixed seeds, not confidence intervals or chemical-space uncertainty. A scale-free component map can remain concordant when held-out predictive performance is effectively null because every nuisance basis is projected separately onto each target and correlation discards component scale. These rows therefore cannot be read as mediation or feature-specific biological attribution.}
 \label{tab:descriptorAlgorithmicControls}
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{p{5.1cm}rrr}
@@ -374,7 +374,7 @@ component-map agreement: KiRHub & 0.288 & 0.299~--~0.404 & 0.030~--~0.564 \\
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Exploratory low- versus high-molecular-weight transfer of the docking target-pair maps. Parenthesized intervals for the cross-band and descriptor-adjusted contrasts are paired chemical-group bootstrap central 95\% intervals. Within-band controls split the low- and high-MW restrictions separately, keep whole chemical groups disjoint, and report raw/residual means over 200 MW-stratified repeated splits; their full 2.5--97.5\% composition-sensitivity ranges are in the accompanying machine-readable CSV and are not population confidence intervals. The size-matched control uses random disjoint supports matching the observed low/high row counts; the MW-matched control uses chemically disjoint supports with closely matched molecular-weight distributions. Descriptor adjustment is five-fold group-held-out and fold-local. The final column gives the residual cross-band range over six independently seeded fixed DOCKSTRING supports and is an algorithmic support sensitivity, not an interval.}}
+\caption{\textbf{Exploratory low- versus high-molecular-weight transfer of the docking target-pair maps.} Parenthesized intervals for the cross-band and descriptor-adjusted contrasts are paired chemical-group bootstrap central 95\% intervals. Within-band controls split the low- and high-MW restrictions separately, keep whole chemical groups disjoint, and report raw/residual means over 200 MW-stratified repeated splits; their full 2.5--97.5\% composition-sensitivity ranges are in the accompanying machine-readable CSV and are not population confidence intervals. The size-matched control uses random disjoint supports matching the observed low/high row counts; the MW-matched control uses chemically disjoint supports with closely matched molecular-weight distributions. Descriptor adjustment is five-fold group-held-out and fold-local. The final column gives the residual cross-band range over six independently seeded fixed DOCKSTRING supports and is an algorithmic support sensitivity, not an interval.}
 \label{tab:dockingChemicalDomain}
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{lrrrrrrrr}
@@ -394,7 +394,7 @@ DOCKSTRING-58 & 0.409 (0.384--0.432) & 0.351 (0.326--0.363) & 0.991/0.978 & 0.97
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Post-hoc descriptor-family sensitivity of residual-map transport. Each row compares groups at the inclusive 25th- and 75th-percentile thresholds of one of the seven already inspected descriptors on the row-centred residual surface; all boundary ties are retained. The common within-dataset MW-matched reference is the mean agreement between chemically disjoint supports with closely matched molecular-weight distributions; it is not separately descriptor-matched. All 14 observed agreements are below that dataset-level reference. The molecular-size family supplies the three lowest agreements in both panels, but this descriptive ordering neither identifies a unique descriptor mechanism nor constitutes multiplicity-adjusted inference.}}
+\caption{\textbf{Post-hoc descriptor-family sensitivity of residual-map transport.} Each row compares groups at the inclusive 25th- and 75th-percentile thresholds of one of the seven already inspected descriptors on the row-centred residual surface; all boundary ties are retained. The common within-dataset MW-matched reference is the mean agreement between chemically disjoint supports with closely matched molecular-weight distributions; it is not separately descriptor-matched. All 14 observed agreements are below that dataset-level reference. The molecular-size family supplies the three lowest agreements in both panels, but this descriptive ordering neither identifies a unique descriptor mechanism nor constitutes multiplicity-adjusted inference.}
 \label{tab:descriptorFamilyStratification}
 \begin{tabular}{lllrrrrrr}
 \toprule
@@ -504,7 +504,7 @@ same receptor structures & 3 & exact structure and chain used in both panels \\
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Chemical overlap among the three experimental panels with released structures. Full keys are recomputed Standard InChIKeys; connectivity is the 14-character block; Murcko intersections exclude empty scaffolds.}}
+\caption{\textbf{Chemical overlap among the three experimental panels with released structures.} Full keys are recomputed Standard InChIKeys; connectivity is the 14-character block; Murcko intersections exclude empty scaffolds.}
 \label{tab:experimentalPanelOverlap}
 \begin{tabular}{lrrrrr}
 \toprule
@@ -539,7 +539,7 @@ two-way residual & 3.646 & 4.128 & +0.483 & -0.071~--~0.921 \\
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Broad DOCKSTRING--ChEMBL observed-pair benchmark. The 6,557 retained ligands provide at least two observed targets; 6,480 have a non-tied pair and enter the mean per-ligand endpoint. The docking and external experimental priors are ligand-invariant target means fitted after excluding all evaluation ligands. The cohort outcome prior is refitted after excluding each evaluated ligand's complete Bemis--Murcko scaffold cluster and is a benchmark-fitted, non-deployable reference. Chemical intervals are the conservative union of Murcko- and Butina-cluster 95\% intervals. Target-centred and two-way-centred unscaled scores are exactly rank-identical because they differ only by a ligand-wise constant. The final row is the paired absolute-Vina-minus-docking-prior contrast on the same evaluated ligands, not an additional representation.}}
+\caption{\textbf{Broad DOCKSTRING--ChEMBL observed-pair benchmark.} The 6,557 retained ligands provide at least two observed targets; 6,480 have a non-tied pair and enter the mean per-ligand endpoint. The docking and external experimental priors are ligand-invariant target means fitted after excluding all evaluation ligands. The cohort outcome prior is refitted after excluding each evaluated ligand's complete Bemis--Murcko scaffold cluster and is a benchmark-fitted, non-deployable reference. Chemical intervals are the conservative union of Murcko- and Butina-cluster 95\% intervals. Target-centred and two-way-centred unscaled scores are exactly rank-identical because they differ only by a ligand-wise constant. The final row is the paired absolute-Vina-minus-docking-prior contrast on the same evaluated ligands, not an additional representation.}
 \label{tab:broadRanking}
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{p{4.4cm}rrrrrr}
@@ -614,7 +614,7 @@ involves a cell pooled across Ki and Kd records & 312 & 7.9\% & -- \\
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Post-hoc equivalence-margin decision curves for the residual-minus-absolute contrast. No margin was preregistered. The rule declares equivalence only when the conservative union of the two chemical-cluster 90\% intervals lies strictly inside $(-\delta,+\delta)$. Because the decision curve is monotone in $\delta$, its first passing grid value summarises the full 0.010--0.060 grid in 0.005 increments. These rows are sensitivity analyses only: passing a chosen margin does not show identical rules or transport beyond the observed within-ligand target comparisons.}}
+\caption{\textbf{Post-hoc equivalence-margin decision curves for the residual-minus-absolute contrast.} No margin was preregistered. The rule declares equivalence only when the conservative union of the two chemical-cluster 90\% intervals lies strictly inside $(-\delta,+\delta)$. Because the decision curve is monotone in $\delta$, its first passing grid value summarises the full 0.010--0.060 grid in 0.005 increments. These rows are sensitivity analyses only: passing a chosen margin does not show identical rules or transport beyond the observed within-ligand target comparisons.}
 \label{tab:postHocEquivalenceMargins}
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{lrrrrp{3.0cm}}
@@ -636,7 +636,7 @@ PKIS2 both active & +0.052 & 0.010~--~0.098 & 0.098 & >0.060 & outcome-condition
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Legacy sparse Docking-44--ChEMBL sensitivity (137 ligands, 38 targets, 691 observed cells and 2,522 non-tied pairs). This is retained only to show the effect of changing the docking matrix and matched chemical support; it is not the primary operational benchmark. The docking and external experimental priors are ligand-invariant target means fitted after excluding all evaluation ligands. The cohort outcome prior is scaffold-cross-fitted but benchmark-fitted and non-deployable. Target-centred and two-way-centred unscaled scores are exactly rank-identical because they differ only by a ligand-wise constant.}}
+\caption{\textbf{Legacy sparse Docking-44--ChEMBL sensitivity (137 ligands, 38 targets, 691 observed cells and 2,522 non-tied pairs).} This is retained only to show the effect of changing the docking matrix and matched chemical support; it is not the primary operational benchmark. The docking and external experimental priors are ligand-invariant target means fitted after excluding all evaluation ligands. The cohort outcome prior is scaffold-cross-fitted but benchmark-fitted and non-deployable. Target-centred and two-way-centred unscaled scores are exactly rank-identical because they differ only by a ligand-wise constant.}
 \label{tab:legacySparseRanking}
 \begin{tabular}{p{4.0cm}p{2.0cm}p{1.6cm}p{1.3cm}p{1.7cm}p{3.2cm}}
 \toprule
@@ -687,7 +687,7 @@ PKIS2 & +0.021 (-0.006~--~0.048) & -0.001 (-0.016~--~0.015) & -0.017 (-0.028~--~
 \centering\scriptsize
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Exploratory outcome-conditioned strata in the dense target-preference benchmarks. DAVIS both-uncensored pairs compare two above-floor measurements, whereas floor-versus-uncensored pairs primarily test detection against the released pKd-5 floor. The primary PKIS2 both-active stratum requires both activities to be at least 65\% and preserves the aggregate margin of more than 10 percentage points; the secondary row relaxes only that margin to exact non-ties. Stratum membership uses the experimental outcome, and all intervals are unadjusted for multiplicity; these rows generate hypotheses rather than replace the aggregate estimands.}}
+\caption{\textbf{Exploratory outcome-conditioned strata in the dense target-preference benchmarks.} DAVIS both-uncensored pairs compare two above-floor measurements, whereas floor-versus-uncensored pairs primarily test detection against the released pKd-5 floor. The primary PKIS2 both-active stratum requires both activities to be at least 65\% and preserves the aggregate margin of more than 10 percentage points; the secondary row relaxes only that margin to exact non-ties. Stratum membership uses the experimental outcome, and all intervals are unadjusted for multiplicity; these rows generate hypotheses rather than replace the aggregate estimands.}
 \label{tab:denseRankingStrata}
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{p{4.1cm}rrrrrr}
@@ -725,7 +725,7 @@ local-38 minus absolute Vina & +0.0006 & -0.0625--0.0658 & -0.0606--0.0631 & sam
 \centering\small
 \singlespacing
 \setlength{\tabcolsep}{3pt}
-\caption{\textbf{Assay and coverage sensitivities for the legacy sparse Docking-44--ChEMBL benchmark. These rows do not replace the broad DOCKSTRING--ChEMBL primary benchmark. For the coverage rows, the scaffold-cross-fitted cohort outcome prior is fitted once on the full legacy cohort and the same predictions are evaluated on each nested stratum; it is a benchmark reference rather than a deployable rule.}}
+\caption{\textbf{Assay and coverage sensitivities for the legacy sparse Docking-44--ChEMBL benchmark.} These rows do not replace the broad DOCKSTRING--ChEMBL primary benchmark. For the coverage rows, the scaffold-cross-fitted cohort outcome prior is fitted once on the full legacy cohort and the same predictions are evaluated on each nested stratum; it is a benchmark reference rather than a deployable rule.}
 \label{tab:legacySparseRankingSensitivity}
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{p{5.0cm}rrrrrrr}

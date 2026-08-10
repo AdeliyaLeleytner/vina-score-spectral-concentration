@@ -1,6 +1,6 @@
 # Pre-submission release checklist
 
-The submission artifact is version `3.0.1` and is titled *Target-correlation maps are
+The submission artifact is version `3.0.2` and is titled *Target-correlation maps are
 library-conditional but recoverable from a few hundred ligands in two large Vina panels*.
 It includes the broad 6,480-ligand/31-target DOCKSTRING--ChEMBL benchmark, its endpoint-
 restricted human binding Ki/Kd arm,
@@ -14,17 +14,18 @@ author action; this checklist records the required synchronization.
 
 ## Do this before the cover letter claims a reproducibility package
 
-1. **Push.** `git push origin main`. Confirm afterwards that `git log origin/main -1` matches
-   the local HEAD and that the rendered README on GitHub shows the current title.
-2. **Tag an immutable release** matching the submitted manuscript, e.g. `v3.0.1`, and confirm
+1. **Commit and push.** Commit the synchronized submission artifact, then run
+   `git push origin HEAD:main`. Confirm afterwards that `git log origin/main -1` matches the
+   local HEAD and that the rendered README on GitHub shows the current title.
+2. **Tag an immutable release** matching the submitted manuscript, e.g. `v3.0.2`, and confirm
    `CITATION.cff` (`version`, `date-released`) agrees with the tag.
 3. **Mint a version-specific Zenodo DOI** for that tag. The manuscript's Availability section
    now tells readers to cite the version-specific archive rather than the concept record
    `10.5281/zenodo.21733767`. The version-specific DOI is
-   `10.5281/zenodo.21874032`; confirm that the completed archive resolves publicly.
+   `10.5281/zenodo.21874252`; confirm that the completed archive resolves publicly.
 4. **Clean-room reproduce.** From a fresh clone of the tag, in the container:
    ```bash
-   git clone --branch v3.0.1 <url> && cd vina-score-spectral-concentration
+   git clone --branch v3.0.2 <url> && cd vina-score-spectral-concentration
    docker build -t jcheminf-repro . && docker run --rm jcheminf-repro
    ```
    The build must reach `manuscript.pdf` and `supplementary_information.pdf` without
@@ -50,7 +51,7 @@ author action; this checklist records the required synchronization.
   fetched by checksum-verified scripts from their publishers, and the report-layer build does
   not download them. The 190-edge target-pair ledger is released so that every fixed-panel
   number is recomputable, but a reader cannot rebuild the experimental geometry from
-  compound-by-target measurements without obtaining those two sources themselves. The
+  compound-by-target measurements without obtaining those two sources themselves.
   Before submission, the authors should verify that this boundary satisfies the journal's
   data policy and, if needed, ask the editor about the KiRHub and PKIS1 licence terms.
 - **The ODDT rescoring stage** runs under a separate Python 3.9 interpreter (conda) rather
@@ -63,4 +64,4 @@ author action; this checklist records the required synchronization.
 
 Run fresh independent reviews only after the final PDFs and evidence ledger are rebuilt.
 Record the reviewed commit and tag in the review notes; a review of an earlier title,
-benchmark contract or descriptor interpretation does not validate version `3.0.1`.
+benchmark contract or descriptor interpretation does not validate version `3.0.2`.
