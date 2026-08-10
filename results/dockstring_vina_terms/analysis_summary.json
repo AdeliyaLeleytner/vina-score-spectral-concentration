@@ -1,0 +1,1188 @@
+{
+  "claim_boundary": "The five-term decomposition is an exact linear attribution of Vina 1.1.2 scores reconstructed on 512 ligands and nine targets after SDF-to-PDBQT pose roundtripping. Term shares may be negative and are not independent variance fractions. Every removal keeps the Vina-selected pose fixed; no result estimates which pose would be selected if a term were removed during search, and no result establishes docking accuracy or biological mechanism.",
+  "cluster_bootstrap": {
+    "metrics": {
+      "gauss1_residual_ss_share": {
+        "ci95": [
+          0.26291189183595814,
+          0.3017025284717514
+        ],
+        "median": 0.2829687638381352
+      },
+      "gauss1_shared_row_axis_share": {
+        "ci95": [
+          0.2558983052096845,
+          0.2906384162076788
+        ],
+        "median": 0.27380812164884394
+      },
+      "gauss2_residual_ss_share": {
+        "ci95": [
+          0.4887655220214381,
+          0.5614352700843143
+        ],
+        "median": 0.5274253697884937
+      },
+      "gauss2_shared_row_axis_share": {
+        "ci95": [
+          0.6717127521294417,
+          0.7598474430130021
+        ],
+        "median": 0.716729640151395
+      },
+      "hydrogen_residual_ss_share": {
+        "ci95": [
+          0.01486123048509063,
+          0.04552111032111634
+        ],
+        "median": 0.030036091283498996
+      },
+      "hydrogen_shared_row_axis_share": {
+        "ci95": [
+          -0.04551405766100911,
+          0.04251356873273561
+        ],
+        "median": 0.0013647554064165545
+      },
+      "hydrophobic_residual_ss_share": {
+        "ci95": [
+          0.21353540615124147,
+          0.24154781957452778
+        ],
+        "median": 0.2285514327778761
+      },
+      "hydrophobic_shared_row_axis_share": {
+        "ci95": [
+          0.2665888346311814,
+          0.3285321226332551
+        ],
+        "median": 0.2975650202450004
+      },
+      "post_pr_increase": {
+        "ci95": [
+          1.8623776502302312,
+          2.620853524651893
+        ],
+        "median": 2.223642855818328
+      },
+      "post_raw_pr": {
+        "ci95": [
+          2.416283440906293,
+          2.899736549277086
+        ],
+        "median": 2.646216712099987
+      },
+      "post_residual_pr": {
+        "ci95": [
+          4.592752773035949,
+          5.222974984174056
+        ],
+        "median": 4.871210561170006
+      },
+      "pre_raw_pr": {
+        "ci95": [
+          1.6060974139175819,
+          1.836314306334146
+        ],
+        "median": 1.711063660419987
+      },
+      "pre_residual_pr": {
+        "ci95": [
+          4.379318223908475,
+          5.040704683096494
+        ],
+        "median": 4.687943197496121
+      },
+      "repulsion_residual_ss_share": {
+        "ci95": [
+          -0.13085681042249736,
+          0.001633467443362667
+        ],
+        "median": -0.06957716420215762
+      },
+      "repulsion_shared_row_axis_share": {
+        "ci95": [
+          -0.3296895347761442,
+          -0.24003741012415342
+        ],
+        "median": -0.2887716330336824
+      }
+    },
+    "n_clusters": 497,
+    "replicates": 1000,
+    "resampling_unit": "RDKit Bemis-Murcko scaffold; each acyclic ligand is a singleton",
+    "seed": 20260803
+  },
+  "cross_panel_term_fingerprint": {
+    "claim_boundary": "Localises a previously observed target-response fingerprint; fixed-pose term attribution is not binding validation or a redocking ablation",
+    "descriptor_names": [
+      "heavy_atoms",
+      "molecular_weight",
+      "labute_asa",
+      "tpsa",
+      "clogp",
+      "rotatable_bonds",
+      "ring_count"
+    ],
+    "disjoint_ligand_support_sensitivity": {
+      "seeded_random_first_256": {
+        "claim_boundary": "Localises a previously observed target-response fingerprint; fixed-pose term attribution is not binding validation or a redocking ablation",
+        "descriptor_names": [
+          "heavy_atoms",
+          "molecular_weight",
+          "labute_asa",
+          "tpsa",
+          "clogp",
+          "rotatable_bonds",
+          "ring_count"
+        ],
+        "ligand_support": "seeded_random_first_256",
+        "multiplicity_control": "exact target-label max-absolute-statistic adjustment across the five post-normalisation Vina terms within each target support",
+        "reference_path": "results/residual_mechanism/cross_panel_descriptor_fingerprint.csv",
+        "reference_sha256": "031c1fb442e81c60e30a42f88668370cece3ddc2cf66de191085766e54223d53",
+        "status": "exploratory_cross_panel_term_localisation_complete",
+        "supports": {
+          "all_9_mapped_targets": {
+            "components": {
+              "post_gauss1": {
+                "exact_two_sided_p": 0.04108520723104057,
+                "max_abs_fwer_p_across_five_terms": 0.08530643738977073,
+                "mean_descriptor_spearman_rho": 0.6238095238095237
+              },
+              "post_gauss2": {
+                "exact_two_sided_p": 0.011414241622574955,
+                "max_abs_fwer_p_across_five_terms": 0.025206679894179893,
+                "mean_descriptor_spearman_rho": 0.7119047619047619
+              },
+              "post_hydrogen": {
+                "exact_two_sided_p": 0.00734402557319224,
+                "max_abs_fwer_p_across_five_terms": 0.1127121913580247,
+                "mean_descriptor_spearman_rho": -0.5976190476190475
+              },
+              "post_hydrophobic": {
+                "exact_two_sided_p": 0.0005842151675485009,
+                "max_abs_fwer_p_across_five_terms": 0.006531084656084656,
+                "mean_descriptor_spearman_rho": 0.7833333333333331
+              },
+              "post_repulsion": {
+                "exact_two_sided_p": 0.22115850970017636,
+                "max_abs_fwer_p_across_five_terms": 0.506360229276896,
+                "mean_descriptor_spearman_rho": -0.36904761904761907
+              },
+              "rescored_post_total": {
+                "exact_two_sided_p": 0.0013089726631393297,
+                "max_abs_fwer_p_across_five_terms": null,
+                "mean_descriptor_spearman_rho": 0.8476190476190474
+              }
+            },
+            "exact_target_label_permutations": 362880,
+            "targets": [
+              "NR3C1",
+              "ADRB2",
+              "ADRB1",
+              "ADORA2A",
+              "AR",
+              "PTGS2",
+              "ACHE",
+              "DRD2",
+              "LCK"
+            ]
+          },
+          "different_receptor_structure_only_6": {
+            "components": {
+              "post_gauss1": {
+                "exact_two_sided_p": 0.28194444444444444,
+                "max_abs_fwer_p_across_five_terms": 0.5597222222222222,
+                "mean_descriptor_spearman_rho": 0.4693877551020407
+              },
+              "post_gauss2": {
+                "exact_two_sided_p": 0.16805555555555557,
+                "max_abs_fwer_p_across_five_terms": 0.38333333333333336,
+                "mean_descriptor_spearman_rho": 0.5591836734693876
+              },
+              "post_hydrogen": {
+                "exact_two_sided_p": 0.019444444444444445,
+                "max_abs_fwer_p_across_five_terms": 0.4444444444444444,
+                "mean_descriptor_spearman_rho": -0.5265306122448978
+              },
+              "post_hydrophobic": {
+                "exact_two_sided_p": 0.020833333333333332,
+                "max_abs_fwer_p_across_five_terms": 0.125,
+                "mean_descriptor_spearman_rho": 0.7306122448979592
+              },
+              "post_repulsion": {
+                "exact_two_sided_p": 0.6972222222222222,
+                "max_abs_fwer_p_across_five_terms": 0.9916666666666667,
+                "mean_descriptor_spearman_rho": -0.17551020408163262
+              },
+              "rescored_post_total": {
+                "exact_two_sided_p": 0.015277777777777777,
+                "max_abs_fwer_p_across_five_terms": null,
+                "mean_descriptor_spearman_rho": 0.8693877551020407
+              }
+            },
+            "exact_target_label_permutations": 720,
+            "targets": [
+              "NR3C1",
+              "ADRB2",
+              "ADORA2A",
+              "AR",
+              "ACHE",
+              "LCK"
+            ]
+          }
+        }
+      },
+      "seeded_random_second_256": {
+        "claim_boundary": "Localises a previously observed target-response fingerprint; fixed-pose term attribution is not binding validation or a redocking ablation",
+        "descriptor_names": [
+          "heavy_atoms",
+          "molecular_weight",
+          "labute_asa",
+          "tpsa",
+          "clogp",
+          "rotatable_bonds",
+          "ring_count"
+        ],
+        "ligand_support": "seeded_random_second_256",
+        "multiplicity_control": "exact target-label max-absolute-statistic adjustment across the five post-normalisation Vina terms within each target support",
+        "reference_path": "results/residual_mechanism/cross_panel_descriptor_fingerprint.csv",
+        "reference_sha256": "031c1fb442e81c60e30a42f88668370cece3ddc2cf66de191085766e54223d53",
+        "status": "exploratory_cross_panel_term_localisation_complete",
+        "supports": {
+          "all_9_mapped_targets": {
+            "components": {
+              "post_gauss1": {
+                "exact_two_sided_p": 0.13065751763668432,
+                "max_abs_fwer_p_across_five_terms": 0.2848985890652557,
+                "mean_descriptor_spearman_rho": 0.5047619047619046
+              },
+              "post_gauss2": {
+                "exact_two_sided_p": 0.05877149470899471,
+                "max_abs_fwer_p_across_five_terms": 0.12463624338624339,
+                "mean_descriptor_spearman_rho": 0.6119047619047618
+              },
+              "post_hydrogen": {
+                "exact_two_sided_p": 0.012624007936507937,
+                "max_abs_fwer_p_across_five_terms": 0.14861386684303352,
+                "mean_descriptor_spearman_rho": -0.5928571428571427
+              },
+              "post_hydrophobic": {
+                "exact_two_sided_p": 0.013172398589065255,
+                "max_abs_fwer_p_across_five_terms": 0.04605103615520282,
+                "mean_descriptor_spearman_rho": 0.6999999999999998
+              },
+              "post_repulsion": {
+                "exact_two_sided_p": 0.3748649691358025,
+                "max_abs_fwer_p_across_five_terms": 0.8003499779541446,
+                "mean_descriptor_spearman_rho": -0.2738095238095238
+              },
+              "rescored_post_total": {
+                "exact_two_sided_p": 0.00466820987654321,
+                "max_abs_fwer_p_across_five_terms": null,
+                "mean_descriptor_spearman_rho": 0.7857142857142856
+              }
+            },
+            "exact_target_label_permutations": 362880,
+            "targets": [
+              "NR3C1",
+              "ADRB2",
+              "ADRB1",
+              "ADORA2A",
+              "AR",
+              "PTGS2",
+              "ACHE",
+              "DRD2",
+              "LCK"
+            ]
+          },
+          "different_receptor_structure_only_6": {
+            "components": {
+              "post_gauss1": {
+                "exact_two_sided_p": 0.5777777777777777,
+                "max_abs_fwer_p_across_five_terms": 0.9638888888888889,
+                "mean_descriptor_spearman_rho": 0.2571428571428571
+              },
+              "post_gauss2": {
+                "exact_two_sided_p": 0.22916666666666666,
+                "max_abs_fwer_p_across_five_terms": 0.5430555555555555,
+                "mean_descriptor_spearman_rho": 0.5428571428571427
+              },
+              "post_hydrogen": {
+                "exact_two_sided_p": 0.125,
+                "max_abs_fwer_p_across_five_terms": 0.5722222222222222,
+                "mean_descriptor_spearman_rho": -0.5265306122448979
+              },
+              "post_hydrophobic": {
+                "exact_two_sided_p": 0.15,
+                "max_abs_fwer_p_across_five_terms": 0.5125,
+                "mean_descriptor_spearman_rho": 0.5591836734693876
+              },
+              "post_repulsion": {
+                "exact_two_sided_p": 0.7361111111111112,
+                "max_abs_fwer_p_across_five_terms": 0.9944444444444445,
+                "mean_descriptor_spearman_rho": -0.14285714285714285
+              },
+              "rescored_post_total": {
+                "exact_two_sided_p": 0.013888888888888888,
+                "max_abs_fwer_p_across_five_terms": null,
+                "mean_descriptor_spearman_rho": 0.836734693877551
+              }
+            },
+            "exact_target_label_permutations": 720,
+            "targets": [
+              "NR3C1",
+              "ADRB2",
+              "ADORA2A",
+              "AR",
+              "ACHE",
+              "LCK"
+            ]
+          }
+        }
+      }
+    },
+    "ligand_support": "all_selected_ligands",
+    "multiplicity_control": "exact target-label max-absolute-statistic adjustment across the five post-normalisation Vina terms within each target support",
+    "reference_path": "results/residual_mechanism/cross_panel_descriptor_fingerprint.csv",
+    "reference_sha256": "031c1fb442e81c60e30a42f88668370cece3ddc2cf66de191085766e54223d53",
+    "score_roundtrip_quality_sensitivity": {
+      "claim_boundary": "Localises a previously observed target-response fingerprint; fixed-pose term attribution is not binding validation or a redocking ablation",
+      "descriptor_names": [
+        "heavy_atoms",
+        "molecular_weight",
+        "labute_asa",
+        "tpsa",
+        "clogp",
+        "rotatable_bonds",
+        "ring_count"
+      ],
+      "ligand_support": "released_scores_reproduced_within_0.10_kcal_mol",
+      "multiplicity_control": "exact target-label max-absolute-statistic adjustment across the five post-normalisation Vina terms within each target support",
+      "reference_path": "results/residual_mechanism/cross_panel_descriptor_fingerprint.csv",
+      "reference_sha256": "031c1fb442e81c60e30a42f88668370cece3ddc2cf66de191085766e54223d53",
+      "status": "exploratory_cross_panel_term_localisation_complete",
+      "supports": {
+        "all_9_mapped_targets": {
+          "components": {
+            "post_gauss1": {
+              "exact_two_sided_p": 0.09720017636684303,
+              "max_abs_fwer_p_across_five_terms": 0.20379464285714285,
+              "mean_descriptor_spearman_rho": 0.5428571428571427
+            },
+            "post_gauss2": {
+              "exact_two_sided_p": 0.029210758377425042,
+              "max_abs_fwer_p_across_five_terms": 0.06644896384479718,
+              "mean_descriptor_spearman_rho": 0.6619047619047619
+            },
+            "post_hydrogen": {
+              "exact_two_sided_p": 0.0005759479717813051,
+              "max_abs_fwer_p_across_five_terms": 0.04585813492063492,
+              "mean_descriptor_spearman_rho": -0.6904761904761905
+            },
+            "post_hydrophobic": {
+              "exact_two_sided_p": 0.005550044091710758,
+              "max_abs_fwer_p_across_five_terms": 0.02679673721340388,
+              "mean_descriptor_spearman_rho": 0.726190476190476
+            },
+            "post_repulsion": {
+              "exact_two_sided_p": 0.26012180335097,
+              "max_abs_fwer_p_across_five_terms": 0.5903962742504409,
+              "mean_descriptor_spearman_rho": -0.3499999999999999
+            },
+            "rescored_post_total": {
+              "exact_two_sided_p": 0.002703373015873016,
+              "max_abs_fwer_p_across_five_terms": null,
+              "mean_descriptor_spearman_rho": 0.8166666666666665
+            }
+          },
+          "exact_target_label_permutations": 362880,
+          "targets": [
+            "NR3C1",
+            "ADRB2",
+            "ADRB1",
+            "ADORA2A",
+            "AR",
+            "PTGS2",
+            "ACHE",
+            "DRD2",
+            "LCK"
+          ]
+        },
+        "different_receptor_structure_only_6": {
+          "components": {
+            "post_gauss1": {
+              "exact_two_sided_p": 0.4722222222222222,
+              "max_abs_fwer_p_across_five_terms": 0.8819444444444444,
+              "mean_descriptor_spearman_rho": 0.33061224489795915
+            },
+            "post_gauss2": {
+              "exact_two_sided_p": 0.22777777777777777,
+              "max_abs_fwer_p_across_five_terms": 0.5555555555555556,
+              "mean_descriptor_spearman_rho": 0.5102040816326531
+            },
+            "post_hydrogen": {
+              "exact_two_sided_p": 0.005555555555555556,
+              "max_abs_fwer_p_across_five_terms": 0.15555555555555556,
+              "mean_descriptor_spearman_rho": -0.7142857142857141
+            },
+            "post_hydrophobic": {
+              "exact_two_sided_p": 0.08194444444444444,
+              "max_abs_fwer_p_across_five_terms": 0.2763888888888889,
+              "mean_descriptor_spearman_rho": 0.6408163265306122
+            },
+            "post_repulsion": {
+              "exact_two_sided_p": 0.6361111111111111,
+              "max_abs_fwer_p_across_five_terms": 0.9680555555555556,
+              "mean_descriptor_spearman_rho": -0.20816326530612245
+            },
+            "rescored_post_total": {
+              "exact_two_sided_p": 0.0125,
+              "max_abs_fwer_p_across_five_terms": null,
+              "mean_descriptor_spearman_rho": 0.8530612244897958
+            }
+          },
+          "exact_target_label_permutations": 720,
+          "targets": [
+            "NR3C1",
+            "ADRB2",
+            "ADORA2A",
+            "AR",
+            "ACHE",
+            "LCK"
+          ]
+        }
+      }
+    },
+    "status": "exploratory_cross_panel_term_localisation_complete",
+    "supports": {
+      "all_9_mapped_targets": {
+        "components": {
+          "post_gauss1": {
+            "exact_two_sided_p": 0.09473655202821869,
+            "max_abs_fwer_p_across_five_terms": 0.1935543430335097,
+            "mean_descriptor_spearman_rho": 0.5452380952380952
+          },
+          "post_gauss2": {
+            "exact_two_sided_p": 0.030561067019400354,
+            "max_abs_fwer_p_across_five_terms": 0.06629464285714286,
+            "mean_descriptor_spearman_rho": 0.6595238095238095
+          },
+          "post_hydrogen": {
+            "exact_two_sided_p": 0.0008101851851851852,
+            "max_abs_fwer_p_across_five_terms": 0.055712632275132276,
+            "mean_descriptor_spearman_rho": -0.6738095238095239
+          },
+          "post_hydrophobic": {
+            "exact_two_sided_p": 0.006004739858906525,
+            "max_abs_fwer_p_across_five_terms": 0.026140873015873017,
+            "mean_descriptor_spearman_rho": 0.726190476190476
+          },
+          "post_repulsion": {
+            "exact_two_sided_p": 0.224211860670194,
+            "max_abs_fwer_p_across_five_terms": 0.5162037037037037,
+            "mean_descriptor_spearman_rho": -0.3738095238095238
+          },
+          "rescored_post_total": {
+            "exact_two_sided_p": 0.0031911375661375662,
+            "max_abs_fwer_p_across_five_terms": null,
+            "mean_descriptor_spearman_rho": 0.807142857142857
+          }
+        },
+        "exact_target_label_permutations": 362880,
+        "targets": [
+          "NR3C1",
+          "ADRB2",
+          "ADRB1",
+          "ADORA2A",
+          "AR",
+          "PTGS2",
+          "ACHE",
+          "DRD2",
+          "LCK"
+        ]
+      },
+      "different_receptor_structure_only_6": {
+        "components": {
+          "post_gauss1": {
+            "exact_two_sided_p": 0.45694444444444443,
+            "max_abs_fwer_p_across_five_terms": 0.8666666666666667,
+            "mean_descriptor_spearman_rho": 0.33877551020408164
+          },
+          "post_gauss2": {
+            "exact_two_sided_p": 0.22777777777777777,
+            "max_abs_fwer_p_across_five_terms": 0.5458333333333333,
+            "mean_descriptor_spearman_rho": 0.5102040816326531
+          },
+          "post_hydrogen": {
+            "exact_two_sided_p": 0.005555555555555556,
+            "max_abs_fwer_p_across_five_terms": 0.15694444444444444,
+            "mean_descriptor_spearman_rho": -0.7142857142857141
+          },
+          "post_hydrophobic": {
+            "exact_two_sided_p": 0.08888888888888889,
+            "max_abs_fwer_p_across_five_terms": 0.3055555555555556,
+            "mean_descriptor_spearman_rho": 0.6244897959183672
+          },
+          "post_repulsion": {
+            "exact_two_sided_p": 0.6361111111111111,
+            "max_abs_fwer_p_across_five_terms": 0.9694444444444444,
+            "mean_descriptor_spearman_rho": -0.20816326530612245
+          },
+          "rescored_post_total": {
+            "exact_two_sided_p": 0.013888888888888888,
+            "max_abs_fwer_p_across_five_terms": null,
+            "mean_descriptor_spearman_rho": 0.836734693877551
+          }
+        },
+        "exact_target_label_permutations": 720,
+        "targets": [
+          "NR3C1",
+          "ADRB2",
+          "ADORA2A",
+          "AR",
+          "ACHE",
+          "LCK"
+        ]
+      }
+    }
+  },
+  "fixed_pose_ablations": {
+    "gauss1": {
+      "pr_increase": 2.3843009300116798,
+      "raw_mean_correlation": 0.4152894294369497,
+      "raw_pc1_fraction": 0.5418625870237272,
+      "raw_pr": 3.001530703241512,
+      "residual_fraction_grand_centered_ss": 0.3449956582053121,
+      "residual_mean_absolute_correlation": 0.2476806495249107,
+      "residual_pc1_fraction": 0.333285876799358,
+      "residual_pr": 5.385831633253192,
+      "z_then_row_center_pr": 5.3515235487538995
+    },
+    "gauss2": {
+      "pr_increase": 1.619760838657129,
+      "raw_mean_correlation": 0.28304745517627217,
+      "raw_pc1_fraction": 0.40617574217884816,
+      "raw_pr": 4.53879678724258,
+      "residual_fraction_grand_centered_ss": 0.4289188366809318,
+      "residual_mean_absolute_correlation": 0.20788904912624984,
+      "residual_pc1_fraction": 0.2843819763636024,
+      "residual_pr": 6.158557625899709,
+      "z_then_row_center_pr": 6.4249175528007
+    },
+    "hydrogen": {
+      "pr_increase": 2.3323508619491453,
+      "raw_mean_correlation": 0.4761466530288867,
+      "raw_pc1_fraction": 0.5769607230618843,
+      "raw_pr": 2.7046191751675557,
+      "residual_fraction_grand_centered_ss": 0.32812838847772996,
+      "residual_mean_absolute_correlation": 0.2741948275978665,
+      "residual_pc1_fraction": 0.3641312575419321,
+      "residual_pr": 5.036970037116701,
+      "z_then_row_center_pr": 4.911447751065761
+    },
+    "hydrophobic": {
+      "pr_increase": 2.6304361813776205,
+      "raw_mean_correlation": 0.44886807635377174,
+      "raw_pc1_fraction": 0.5520282109695974,
+      "raw_pr": 2.9248630223859267,
+      "residual_fraction_grand_centered_ss": 0.3580336818012174,
+      "residual_mean_absolute_correlation": 0.23847709210157442,
+      "residual_pc1_fraction": 0.32333673163281396,
+      "residual_pr": 5.555299203763547,
+      "z_then_row_center_pr": 5.4881159037509395
+    },
+    "repulsion": {
+      "pr_increase": 2.9004899274727336,
+      "raw_mean_correlation": 0.42295014388386637,
+      "raw_pc1_fraction": 0.5416182003061636,
+      "raw_pr": 3.0222569376147757,
+      "residual_fraction_grand_centered_ss": 0.46127010026259607,
+      "residual_mean_absolute_correlation": 0.21319255582865382,
+      "residual_pc1_fraction": 0.3033940665592817,
+      "residual_pr": 5.922746865087509,
+      "z_then_row_center_pr": 6.002657400337913
+    }
+  },
+  "frozen_output_contract": {
+    "algorithm": "sha256",
+    "files_excluding_summary_and_checksum_manifest": {
+      "cell_terms.csv.gz": "fe8d7a839906ebfd02a45e24d845dbeb1ed92f6facb5b7f4ac192892722a1cb9",
+      "cross_panel_term_fingerprint.csv": "219f42f1d76c2411965ada9a1792ffd538046c2c95e62b30526c881641af2795",
+      "cross_panel_term_fingerprint_by_descriptor.csv": "5d00fa64d58cf45bd922d4a1b3537bb57560d31b8a5fc784752476b6c696c454",
+      "descriptor_correlations.csv": "333fbc9ab48279ba1ed97d3153f3926f6bd1a7b05bedb1bf9cdefd09395c1ca5",
+      "fixed_pose_term_ablations.csv": "03407639b33516d7e53ad355768a774c83cb70fc5e79872eab68bfb57e54ff45",
+      "heavy_atom_slope_decomposition.csv": "f43cf2b83a4fa5925acc09fc25b028136aff51a821f7ada5b6afbd09b946f740",
+      "nested_support_metrics.csv": "1e5b823439e6ba02e41b01f01a882eb43734b4423c6de7248bab24aa6c260ac5",
+      "quality_support_spectral_sensitivity.csv": "da108b396173e3fc02d6146ea96b7b174e5330f997516d1df4eb26395afd9adf",
+      "quality_support_term_attribution.csv": "86f2fecfa99e47c1ee9c262fc0966a8d84e7c9ea8c192908dd21a22f25439d41",
+      "residual_mode_term_attribution.csv": "af7a73c54a62efb37f720dc5d1b557c37347b9203dd9d675a5a93579f79e8786",
+      "selected_ligands.csv": "8ba546fc345d6a79611a7b974967f34d08ed88e777aed2457e6ace50cbd1e707",
+      "si_vina_term_summary.csv": "498a06c34cd42e18b8949ae2a370df8ce2275102cf42f271cb8ac4c5dcab3310",
+      "target_heavy_atom_slopes.csv": "dd4eb09aee9ae0b20e78320d08e8faf283e1650ef8221dd7b7682824cc23213b",
+      "term_attribution.csv": "43dc39f483519e5a1c9e60fe162bde11b3770846eeaa8640297f53378754dab6",
+      "term_spectral_metrics.csv": "aa98f35f474f0ef4ad20c71a35d5db047a671e3a4d99bd65fe8f1ada0f7eec56"
+    }
+  },
+  "heavy_atom_slope_decomposition": {
+    "post_gauss1": {
+      "analysis_role": "descriptive_linear_projection",
+      "descriptor": "heavy_atoms",
+      "maximum_target_slope_per_heavy_atom": 0.01095257486177556,
+      "mean_target_slope_per_heavy_atom": -0.021823641093221356,
+      "minimum_target_slope_per_heavy_atom": -0.050004429633119934,
+      "negative_target_slopes": 7,
+      "positive_target_slopes": 2,
+      "raw_column_centered_r2": 0.17057465257655424,
+      "residual_pc1_score_r2": 0.2797331591257336,
+      "sd_target_slope_per_heavy_atom": 0.021170742125112534,
+      "two_way_residual_r2": 0.10998566361460005
+    },
+    "post_gauss2": {
+      "analysis_role": "descriptive_linear_projection",
+      "descriptor": "heavy_atoms",
+      "maximum_target_slope_per_heavy_atom": 0.030490586126588094,
+      "mean_target_slope_per_heavy_atom": -0.06408117712041306,
+      "minimum_target_slope_per_heavy_atom": -0.09829204349239662,
+      "negative_target_slopes": 8,
+      "positive_target_slopes": 1,
+      "raw_column_centered_r2": 0.2809512439206039,
+      "residual_pc1_score_r2": 0.3077262415929175,
+      "sd_target_slope_per_heavy_atom": 0.04060787037066862,
+      "two_way_residual_r2": 0.15168061466411065
+    },
+    "post_hydrogen": {
+      "analysis_role": "descriptive_linear_projection",
+      "descriptor": "heavy_atoms",
+      "maximum_target_slope_per_heavy_atom": 0.002724853207221114,
+      "mean_target_slope_per_heavy_atom": -0.005580670734868726,
+      "minimum_target_slope_per_heavy_atom": -0.01736814484667972,
+      "negative_target_slopes": 7,
+      "positive_target_slopes": 2,
+      "raw_column_centered_r2": 0.01581456431711803,
+      "residual_pc1_score_r2": 0.05528351704633605,
+      "sd_target_slope_per_heavy_atom": 0.006156601968311684,
+      "two_way_residual_r2": 0.01443379946551726
+    },
+    "post_hydrophobic": {
+      "analysis_role": "descriptive_linear_projection",
+      "descriptor": "heavy_atoms",
+      "maximum_target_slope_per_heavy_atom": 0.02545272109637336,
+      "mean_target_slope_per_heavy_atom": -0.0061816351804700135,
+      "minimum_target_slope_per_heavy_atom": -0.022495969053210805,
+      "negative_target_slopes": 7,
+      "positive_target_slopes": 2,
+      "raw_column_centered_r2": 0.050646913946834515,
+      "residual_pc1_score_r2": 0.30492786479767175,
+      "sd_target_slope_per_heavy_atom": 0.01630652927937413,
+      "two_way_residual_r2": 0.1065069185359655
+    },
+    "post_repulsion": {
+      "analysis_role": "descriptive_linear_projection",
+      "descriptor": "heavy_atoms",
+      "maximum_target_slope_per_heavy_atom": 0.15964306772860332,
+      "mean_target_slope_per_heavy_atom": 0.0412123124801983,
+      "minimum_target_slope_per_heavy_atom": 0.0005834902901885369,
+      "negative_target_slopes": 0,
+      "positive_target_slopes": 9,
+      "raw_column_centered_r2": 0.1336313832302657,
+      "residual_pc1_score_r2": 0.0017012996042515827,
+      "sd_target_slope_per_heavy_atom": 0.047650907451712576,
+      "two_way_residual_r2": 0.08735932408398794
+    },
+    "pre_gauss1": {
+      "analysis_role": "descriptive_linear_projection",
+      "descriptor": "heavy_atoms",
+      "maximum_target_slope_per_heavy_atom": -0.025968702840095267,
+      "mean_target_slope_per_heavy_atom": -0.06935554910069473,
+      "minimum_target_slope_per_heavy_atom": -0.10978219829509521,
+      "negative_target_slopes": 9,
+      "positive_target_slopes": 0,
+      "raw_column_centered_r2": 0.38565643267678007,
+      "residual_pc1_score_r2": 0.2695564637289276,
+      "sd_target_slope_per_heavy_atom": 0.030475557098031982,
+      "two_way_residual_r2": 0.11900270391145928
+    },
+    "pre_gauss2": {
+      "analysis_role": "descriptive_linear_projection",
+      "descriptor": "heavy_atoms",
+      "maximum_target_slope_per_heavy_atom": -0.03613010227070268,
+      "mean_target_slope_per_heavy_atom": -0.17866375295365822,
+      "minimum_target_slope_per_heavy_atom": -0.23026792735558826,
+      "negative_target_slopes": 9,
+      "positive_target_slopes": 0,
+      "raw_column_centered_r2": 0.6120475419821081,
+      "residual_pc1_score_r2": 0.3300815654781073,
+      "sd_target_slope_per_heavy_atom": 0.06067005597564655,
+      "two_way_residual_r2": 0.17522483765526398
+    },
+    "pre_hydrogen": {
+      "analysis_role": "descriptive_linear_projection",
+      "descriptor": "heavy_atoms",
+      "maximum_target_slope_per_heavy_atom": -0.009576949952634934,
+      "mean_target_slope_per_heavy_atom": -0.017971478712052527,
+      "minimum_target_slope_per_heavy_atom": -0.03603169140947661,
+      "negative_target_slopes": 9,
+      "positive_target_slopes": 0,
+      "raw_column_centered_r2": 0.045888240121430446,
+      "residual_pc1_score_r2": 0.02671529678473583,
+      "sd_target_slope_per_heavy_atom": 0.008082848441271199,
+      "two_way_residual_r2": 0.013596199144402799
+    },
+    "pre_hydrophobic": {
+      "analysis_role": "descriptive_linear_projection",
+      "descriptor": "heavy_atoms",
+      "maximum_target_slope_per_heavy_atom": 0.01621607313244979,
+      "mean_target_slope_per_heavy_atom": -0.030499280988748347,
+      "minimum_target_slope_per_heavy_atom": -0.056487413528906925,
+      "negative_target_slopes": 7,
+      "positive_target_slopes": 2,
+      "raw_column_centered_r2": 0.14918685248800867,
+      "residual_pc1_score_r2": 0.4122200789972664,
+      "sd_target_slope_per_heavy_atom": 0.025887127888613064,
+      "two_way_residual_r2": 0.14340025368922704
+    },
+    "pre_repulsion": {
+      "analysis_role": "descriptive_linear_projection",
+      "descriptor": "heavy_atoms",
+      "maximum_target_slope_per_heavy_atom": 0.25499017802524593,
+      "mean_target_slope_per_heavy_atom": 0.08158293030002345,
+      "minimum_target_slope_per_heavy_atom": 0.025891292833167608,
+      "negative_target_slopes": 0,
+      "positive_target_slopes": 9,
+      "raw_column_centered_r2": 0.1930266842742746,
+      "residual_pc1_score_r2": 0.02537528674121159,
+      "sd_target_slope_per_heavy_atom": 0.06973905068186197,
+      "two_way_residual_r2": 0.09660417929695797
+    },
+    "released_score": {
+      "analysis_role": "descriptive_linear_projection",
+      "descriptor": "heavy_atoms",
+      "maximum_target_slope_per_heavy_atom": 0.04302899866392684,
+      "mean_target_slope_per_heavy_atom": -0.056224548959898556,
+      "minimum_target_slope_per_heavy_atom": -0.1136880827727665,
+      "negative_target_slopes": 7,
+      "positive_target_slopes": 2,
+      "raw_column_centered_r2": 0.2239587475400998,
+      "residual_pc1_score_r2": 0.584055756962082,
+      "sd_target_slope_per_heavy_atom": 0.056882164516546506,
+      "two_way_residual_r2": 0.23868189642378745
+    },
+    "rescored_post_total": {
+      "analysis_role": "descriptive_linear_projection",
+      "descriptor": "heavy_atoms",
+      "maximum_target_slope_per_heavy_atom": 0.04261823394312858,
+      "mean_target_slope_per_heavy_atom": -0.05645481164877485,
+      "minimum_target_slope_per_heavy_atom": -0.11360806753391482,
+      "negative_target_slopes": 7,
+      "positive_target_slopes": 2,
+      "raw_column_centered_r2": 0.22488395398026384,
+      "residual_pc1_score_r2": 0.5841231111857642,
+      "sd_target_slope_per_heavy_atom": 0.05673058583106867,
+      "two_way_residual_r2": 0.23851367856777228
+    },
+    "zero_rot_pre_total": {
+      "analysis_role": "descriptive_linear_projection",
+      "descriptor": "heavy_atoms",
+      "maximum_target_slope_per_heavy_atom": -0.05044118596829754,
+      "mean_target_slope_per_heavy_atom": -0.2149071314551304,
+      "minimum_target_slope_per_heavy_atom": -0.3059724373320618,
+      "negative_target_slopes": 9,
+      "positive_target_slopes": 0,
+      "raw_column_centered_r2": 0.5661555669674656,
+      "residual_pc1_score_r2": 0.6952097841400708,
+      "sd_target_slope_per_heavy_atom": 0.09016414524952615,
+      "two_way_residual_r2": 0.30202212630805814
+    }
+  },
+  "quality_support_sensitivity": {
+    "effective_torsion_rule": "within-ligand max minus min effective Vina torsion count across targets must be <=0.01",
+    "score_roundtrip_rule": "maximum absolute rescored-minus-released score across targets must be <=0.10 kcal/mol; released scores are displayed to 0.1 kcal/mol",
+    "supports": {
+      "all_selected_ligands": {
+        "excluded_ligands": 0,
+        "n_ligands": 512
+      },
+      "both_quality_rules": {
+        "excluded_ligands": 15,
+        "n_ligands": 497
+      },
+      "released_scores_reproduced_within_0.10_kcal_mol": {
+        "excluded_ligands": 15,
+        "n_ligands": 497
+      },
+      "target_invariant_effective_torsions": {
+        "excluded_ligands": 1,
+        "n_ligands": 511
+      }
+    }
+  },
+  "reproducibility_boundary": {
+    "analysis_from_frozen_terms": "The SI table and all downstream attribution summaries are reproducible from results/dockstring_vina_terms/cell_terms.csv.gz and selected_ligands.csv in the release environment.",
+    "independent_redocking_performed": false,
+    "pose_selection": "top poses selected by Vina and held fixed",
+    "si_ready_table": "results/dockstring_vina_terms/si_vina_term_summary.csv",
+    "source_restricted_upstream": "Recreating cell_terms.csv.gz additionally requires the external Figshare DOCKSTRING top-pose archives, Dockstring receptor resources, the exact Vina 1.1.2 and Open Babel executables identified by hashes, and the documented SDF-to-PDBQT roundtrip. It is outside the standard build."
+  },
+  "scope": {
+    "figshare_doi": "10.6084/m9.figshare.16511577.v1",
+    "interpretation": "Attribution of retained-pose Vina scores; not a causal re-docking ablation",
+    "ligand_conversion": "Published top-pose SDF converted to PDBQT with Open Babel 3.1.0, Gasteiger charges, and explicit hydrogens added to the archived prepared graph, without a second pH-dependent protonation step",
+    "n_cells": 4608,
+    "n_ligands": 512,
+    "n_targets": 9,
+    "pose_roundtrip_limit": "The original docked ligand PDBQT torsion trees were not published; the archived SDF-to-PDBQT roundtrip is audited against released scores, and conclusions are repeated on a <=0.10 kcal/mol reproduction support",
+    "sample_rule": "simple random subset (seed 20260802) of the frozen 15,000-ligand DOCKSTRING support selected with NumPy seed 71",
+    "targets": [
+      "NR3C1",
+      "ADRB2",
+      "ADRB1",
+      "ADORA2A",
+      "AR",
+      "PTGS2",
+      "ACHE",
+      "DRD2",
+      "LCK"
+    ]
+  },
+  "score_reproduction": {
+    "cells_reproduced_within_0.10_kcal_mol": 4590,
+    "display_rounding_correction_max_abs_deviation_from_one": 0.009385888718911106,
+    "fraction_cells_reproduced_within_0.10_kcal_mol": 0.99609375,
+    "ligands_reproduced_within_0.10_kcal_mol_on_all_targets": 497,
+    "maximum_repeated_unweighted_term_error": 0.0,
+    "rescored_minus_released_mae": 0.025932714843749982,
+    "rescored_minus_released_max_abs": 1.0589499999999994,
+    "rescored_minus_released_mean": -0.0007248068576388969,
+    "rescored_vs_released_cell_pearson": 0.999572091791779,
+    "term_rounding_method": "The five direct Vina 1.1.2 terms are printed to finite precision; a common per-cell multiplicative correction makes their weighted sum equal the zero-rot affinity before torsional normalisation",
+    "term_sum_max_abs_reconstruction_error": 5.329070518200751e-15,
+    "weighted_display_sum_minus_zero_rot_max_abs": 0.0323407951800014
+  },
+  "si_ready_term_table": {
+    "gauss1": {
+      "analysis_boundary": "linear score attribution and term removal on fixed Vina-selected poses; not an independent re-docking ablation",
+      "fixed_pose_term_removal_raw_pr": 3.001530703241512,
+      "fixed_pose_term_removal_raw_pr_minus_full": 0.35200270156077407,
+      "fixed_pose_term_removal_residual_pr": 5.385831633253192,
+      "fixed_pose_term_removal_residual_pr_minus_full": 0.4739555603401655,
+      "full_score_raw_pr": 2.649528001680738,
+      "full_score_residual_pr": 4.911876072913026,
+      "raw_pc1_bilinear_share": 0.2585688181450693,
+      "residual_frobenius_inner_product_share": 0.2818139162277749,
+      "residual_pc1_bilinear_share": 0.2747463258419287,
+      "shared_row_axis_covariance_share": 0.2733346569510844,
+      "vina_1_1_2_weight": -0.035579
+    },
+    "gauss2": {
+      "analysis_boundary": "linear score attribution and term removal on fixed Vina-selected poses; not an independent re-docking ablation",
+      "fixed_pose_term_removal_raw_pr": 4.53879678724258,
+      "fixed_pose_term_removal_raw_pr_minus_full": 1.8892687855618422,
+      "fixed_pose_term_removal_residual_pr": 6.158557625899709,
+      "fixed_pose_term_removal_residual_pr_minus_full": 1.2466815529866828,
+      "full_score_raw_pr": 2.649528001680738,
+      "full_score_residual_pr": 4.911876072913026,
+      "raw_pc1_bilinear_share": 0.7127815116829779,
+      "residual_frobenius_inner_product_share": 0.5252048479896845,
+      "residual_pc1_bilinear_share": 0.5545663104542826,
+      "shared_row_axis_covariance_share": 0.7153277445056864,
+      "vina_1_1_2_weight": -0.005156
+    },
+    "hydrogen": {
+      "analysis_boundary": "linear score attribution and term removal on fixed Vina-selected poses; not an independent re-docking ablation",
+      "fixed_pose_term_removal_raw_pr": 2.7046191751675557,
+      "fixed_pose_term_removal_raw_pr_minus_full": 0.0550911734868178,
+      "fixed_pose_term_removal_residual_pr": 5.036970037116701,
+      "fixed_pose_term_removal_residual_pr_minus_full": 0.1250939642036748,
+      "full_score_raw_pr": 2.649528001680738,
+      "full_score_residual_pr": 4.911876072913026,
+      "raw_pc1_bilinear_share": -0.0139910607692268,
+      "residual_frobenius_inner_product_share": 0.0296931107905352,
+      "residual_pc1_bilinear_share": -0.0473304604960447,
+      "shared_row_axis_covariance_share": -0.0006037516461258,
+      "vina_1_1_2_weight": -0.587439
+    },
+    "hydrophobic": {
+      "analysis_boundary": "linear score attribution and term removal on fixed Vina-selected poses; not an independent re-docking ablation",
+      "fixed_pose_term_removal_raw_pr": 2.9248630223859267,
+      "fixed_pose_term_removal_raw_pr_minus_full": 0.2753350207051888,
+      "fixed_pose_term_removal_residual_pr": 5.555299203763547,
+      "fixed_pose_term_removal_residual_pr_minus_full": 0.6434231308505209,
+      "full_score_raw_pr": 2.649528001680738,
+      "full_score_residual_pr": 4.911876072913026,
+      "raw_pc1_bilinear_share": 0.2869650276127051,
+      "residual_frobenius_inner_product_share": 0.2279609235005212,
+      "residual_pc1_bilinear_share": 0.2553955289506435,
+      "shared_row_axis_covariance_share": 0.2977095069041844,
+      "vina_1_1_2_weight": -0.035069
+    },
+    "repulsion": {
+      "analysis_boundary": "linear score attribution and term removal on fixed Vina-selected poses; not an independent re-docking ablation",
+      "fixed_pose_term_removal_raw_pr": 3.0222569376147757,
+      "fixed_pose_term_removal_raw_pr_minus_full": 0.3727289359340378,
+      "fixed_pose_term_removal_residual_pr": 5.922746865087509,
+      "fixed_pose_term_removal_residual_pr_minus_full": 1.010870792174483,
+      "full_score_raw_pr": 2.649528001680738,
+      "full_score_residual_pr": 4.911876072913026,
+      "raw_pc1_bilinear_share": -0.2443242966715254,
+      "residual_frobenius_inner_product_share": -0.0646727985085158,
+      "residual_pc1_bilinear_share": -0.0373777047508096,
+      "shared_row_axis_covariance_share": -0.2857681567148293,
+      "vina_1_1_2_weight": 0.840245
+    }
+  },
+  "spectral_metrics": {
+    "post_gauss1": {
+      "pr_increase": 1.3996347622114476,
+      "raw_mean_correlation": 0.24891443014907397,
+      "raw_pc1_fraction": 0.37587256914716954,
+      "raw_pr": 4.980576712554207,
+      "residual_fraction_grand_centered_ss": 0.5300450551644819,
+      "residual_mean_absolute_correlation": 0.1893303117575764,
+      "residual_pc1_fraction": 0.2765263469287495,
+      "residual_pr": 6.380211474765654,
+      "z_then_row_center_pr": 6.5348576570300905
+    },
+    "post_gauss2": {
+      "pr_increase": 3.4906027289686503,
+      "raw_mean_correlation": 0.5055315650279643,
+      "raw_pc1_fraction": 0.6203949570760481,
+      "raw_pr": 2.4235127794431626,
+      "residual_fraction_grand_centered_ss": 0.43061607358386333,
+      "residual_mean_absolute_correlation": 0.20496346269561885,
+      "residual_pc1_fraction": 0.29589763970863536,
+      "residual_pr": 5.914115508411813,
+      "z_then_row_center_pr": 5.885842615693733
+    },
+    "post_hydrogen": {
+      "pr_increase": 3.375030605634808,
+      "raw_mean_correlation": 0.3670837005810317,
+      "raw_pc1_fraction": 0.43862729213936613,
+      "raw_pr": 4.2818433589897635,
+      "residual_fraction_grand_centered_ss": 0.5315782889156301,
+      "residual_mean_absolute_correlation": 0.12758734266027466,
+      "residual_pc1_fraction": 0.16830787246042345,
+      "residual_pr": 7.656873964624571,
+      "z_then_row_center_pr": 7.697316277021678
+    },
+    "post_hydrophobic": {
+      "pr_increase": 4.193727514468258,
+      "raw_mean_correlation": 0.5777515932086716,
+      "raw_pc1_fraction": 0.6456493575136398,
+      "raw_pr": 2.274752419844371,
+      "residual_fraction_grand_centered_ss": 0.32308171967515925,
+      "residual_mean_absolute_correlation": 0.17561630390349137,
+      "residual_pc1_fraction": 0.26890094021805644,
+      "residual_pr": 6.468479934312629,
+      "z_then_row_center_pr": 6.60490443099687
+    },
+    "post_repulsion": {
+      "pr_increase": -0.5457960687520504,
+      "raw_mean_correlation": 0.12414072779179114,
+      "raw_pc1_fraction": 0.2706579749423024,
+      "raw_pr": 6.900465980411691,
+      "residual_fraction_grand_centered_ss": 0.7274028364231327,
+      "residual_mean_absolute_correlation": 0.1964777445135964,
+      "residual_pc1_fraction": 0.2667822198649641,
+      "residual_pr": 6.354669911659641,
+      "z_then_row_center_pr": 7.287747025734471
+    },
+    "pre_gauss1": {
+      "pr_increase": 3.6819016985948645,
+      "raw_mean_correlation": 0.505211298544878,
+      "raw_pc1_fraction": 0.5801439093795958,
+      "raw_pr": 2.723811629392448,
+      "residual_fraction_grand_centered_ss": 0.3922203791534797,
+      "residual_mean_absolute_correlation": 0.18736682234918323,
+      "residual_pc1_fraction": 0.27067746110306373,
+      "residual_pr": 6.405713327987312,
+      "z_then_row_center_pr": 6.369595136255385
+    },
+    "pre_gauss2": {
+      "pr_increase": 4.081712929794271,
+      "raw_mean_correlation": 0.6591641591383312,
+      "raw_pc1_fraction": 0.7314684632475538,
+      "raw_pr": 1.8109095640968138,
+      "residual_fraction_grand_centered_ss": 0.29896360489389473,
+      "residual_mean_absolute_correlation": 0.20673543308005426,
+      "residual_pc1_fraction": 0.29576665562357435,
+      "residual_pr": 5.892622493891085,
+      "z_then_row_center_pr": 5.579251791103727
+    },
+    "pre_hydrogen": {
+      "pr_increase": 4.060949401797442,
+      "raw_mean_correlation": 0.42998949417710725,
+      "raw_pc1_fraction": 0.4944824392261978,
+      "raw_pr": 3.5983789917173943,
+      "residual_fraction_grand_centered_ss": 0.48330467095062946,
+      "residual_mean_absolute_correlation": 0.12609233278866158,
+      "residual_pc1_fraction": 0.16875769778295185,
+      "residual_pr": 7.659328393514837,
+      "z_then_row_center_pr": 7.706958788944889
+    },
+    "pre_hydrophobic": {
+      "pr_increase": 4.024885526411939,
+      "raw_mean_correlation": 0.5777340402699941,
+      "raw_pc1_fraction": 0.6500268912208808,
+      "raw_pr": 2.243717281565796,
+      "residual_fraction_grand_centered_ss": 0.3229107930964404,
+      "residual_mean_absolute_correlation": 0.18487640736158617,
+      "residual_pc1_fraction": 0.28159283085149006,
+      "residual_pr": 6.268602807977736,
+      "z_then_row_center_pr": 6.384155522114983
+    },
+    "pre_repulsion": {
+      "pr_increase": 0.10747677650326182,
+      "raw_mean_correlation": 0.1903478988295665,
+      "raw_pc1_fraction": 0.31887625920650287,
+      "raw_pr": 6.037960019821791,
+      "residual_fraction_grand_centered_ss": 0.695773196224583,
+      "residual_mean_absolute_correlation": 0.20611411189918713,
+      "residual_pc1_fraction": 0.2754298867885097,
+      "residual_pr": 6.145436796325053,
+      "z_then_row_center_pr": 7.255894277872008
+    },
+    "released_score": {
+      "pr_increase": 2.2575000122115334,
+      "raw_mean_correlation": 0.48504557957696914,
+      "raw_pc1_fraction": 0.5833274056006245,
+      "raw_pr": 2.6544188032771032,
+      "residual_fraction_grand_centered_ss": 0.3001808304343005,
+      "residual_mean_absolute_correlation": 0.2821880177527786,
+      "residual_pc1_fraction": 0.3694471436891063,
+      "residual_pr": 4.911918815488637,
+      "z_then_row_center_pr": 4.777223155051752
+    },
+    "rescored_post_total": {
+      "pr_increase": 2.2623480712322883,
+      "raw_mean_correlation": 0.486053549899879,
+      "raw_pc1_fraction": 0.5840426349700731,
+      "raw_pr": 2.649528001680738,
+      "residual_fraction_grand_centered_ss": 0.2991421154117253,
+      "residual_mean_absolute_correlation": 0.28251800555727774,
+      "residual_pc1_fraction": 0.3695179041185967,
+      "residual_pr": 4.911876072913026,
+      "z_then_row_center_pr": 4.778861125680864
+    },
+    "zero_rot_pre_total": {
+      "pr_increase": 3.0149883806952693,
+      "raw_mean_correlation": 0.7088314732390849,
+      "raw_pc1_fraction": 0.7538235844870557,
+      "raw_pr": 1.7166996796360583,
+      "residual_fraction_grand_centered_ss": 0.20089405603888577,
+      "residual_mean_absolute_correlation": 0.2831986669948235,
+      "residual_pc1_fraction": 0.3796577827280093,
+      "residual_pr": 4.731688060331328,
+      "z_then_row_center_pr": 4.7330939103867715
+    }
+  },
+  "status": "exploratory_fixed_pose_attribution_complete",
+  "term_attribution": {
+    "gauss1": {
+      "raw_pc1_bilinear_share": 0.2585688181450693,
+      "residual_frobenius_inner_product_share": 0.28181391622777496,
+      "residual_pc1_bilinear_share": 0.2747463258419287,
+      "shared_row_axis_covariance_share": 0.2733346569510844
+    },
+    "gauss2": {
+      "raw_pc1_bilinear_share": 0.7127815116829779,
+      "residual_frobenius_inner_product_share": 0.5252048479896845,
+      "residual_pc1_bilinear_share": 0.5545663104542826,
+      "shared_row_axis_covariance_share": 0.7153277445056864
+    },
+    "hydrogen": {
+      "raw_pc1_bilinear_share": -0.013991060769226892,
+      "residual_frobenius_inner_product_share": 0.029693110790535247,
+      "residual_pc1_bilinear_share": -0.04733046049604475,
+      "shared_row_axis_covariance_share": -0.0006037516461258981
+    },
+    "hydrophobic": {
+      "raw_pc1_bilinear_share": 0.2869650276127051,
+      "residual_frobenius_inner_product_share": 0.22796092350052122,
+      "residual_pc1_bilinear_share": 0.25539552895064355,
+      "shared_row_axis_covariance_share": 0.29770950690418446
+    },
+    "repulsion": {
+      "raw_pc1_bilinear_share": -0.2443242966715254,
+      "residual_frobenius_inner_product_share": -0.06467279850851583,
+      "residual_pc1_bilinear_share": -0.037377704750809676,
+      "shared_row_axis_covariance_share": -0.28576815671482936
+    }
+  },
+  "toolchain": {
+    "dataset_sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64",
+    "obabel_path": "downloads/vina_qc_toolchain/openbabel-env/bin/obabel",
+    "obabel_sha256": "6fd89cc4499c4f016ca8ec64b3a14637a5b044701d8aaf18a663ba13ccf6b5d9",
+    "obabel_version": "Open Babel 3.1.0 -- Nov 30 2023 -- 21:06:35",
+    "pose_archive_md5": {
+      "ACHE": "edc3b91759d2bfffb81960b157c3dac2",
+      "ADORA2A": "2f24eed4245e23b415a6acea757138f6",
+      "ADRB1": "914ac7c3b100e731f04746476a6bf4ec",
+      "ADRB2": "d93ab68c4bfd32c5c3c9359e7e96f239",
+      "AR": "6c782e184a2de5a762fa7385452d0c2c",
+      "DRD2": "96712bd62173e274367b2bb150b670ac",
+      "LCK": "49229ce457f578763dfe7c9b58b6462b",
+      "NR3C1": "d5dfaa591ded3a5cf66c87fb9996ef81",
+      "PTGS2": "c774ede532ce42643a2b65c39d456500"
+    },
+    "receptor_sha256": {
+      "ACHE": "57a1b1e352f82f11f94030979b85e66435c60c7e374b911dfecc5063f61d575a",
+      "ADORA2A": "e5ec8b58335119bde92035913961430c076d7879dbc09cfef332620bc68bc36e",
+      "ADRB1": "43b3c96f0c4680f112097b1de459fe0894e58cee47367ef6abe8349fd3d320ce",
+      "ADRB2": "6be07396930aac871d6d93a16623bc8d6cb4c61312735db2c33f912c90b68989",
+      "AR": "bec8384e9af82860a8e757f4d3e928fcd075754fa36c3f4cb5ba8b9dcc1670f8",
+      "DRD2": "47b7489c01a0c6b189c4952c7be671b2c54a03263251abb5542445d3bc97576a",
+      "LCK": "365c5594742e5691dff7ea1ea9aa5b0fb3d25c5011fe5b0044865573b97cb4d0",
+      "NR3C1": "ef285d1dcfe0bdce4f745f07b89f164c2f720fefa72135e8005b008b8c2875d0",
+      "PTGS2": "b95b049130dea2c32f27cbee4d9d971afb9717d2db0de7a70038b0a3e07ed346"
+    },
+    "vina_path": ".venv/lib/python3.12/site-packages/dockstring/resources/bin/vina_mac_catalina",
+    "vina_sha256": "7b75677976f337d6375f3d5e1c0d17b95feae9480b37937086bca2bdeeb7cbbc",
+    "vina_version": "AutoDock Vina 1.1.2 (May 11, 2011)"
+  },
+  "torsional_normalisation": {
+    "effective_num_tors_range": [
+      0.0,
+      25.000024584508513
+    ],
+    "effective_num_tors_targetwise_max_sd_within_ligand": 0.471400275144121,
+    "factor_permutation_null": {
+      "observed": {
+        "pr_increase": 2.2609644014708894,
+        "raw_mean_correlation": 0.4860288961179827,
+        "raw_pc1_fraction": 0.5840084162864573,
+        "raw_pr": 2.6497029162234775,
+        "residual_fraction_grand_centered_ss": 0.2991488519983549,
+        "residual_mean_absolute_correlation": 0.28260240141181536,
+        "residual_pc1_fraction": 0.3695994190235463,
+        "residual_pr": 4.910667317694367,
+        "z_then_row_center_pr": 4.777673230686258
+      },
+      "permutations": 1000,
+      "permuted_factor_raw_pr": {
+        "interval95": [
+          1.407625523992258,
+          1.489738245997673
+        ],
+        "median": 1.4471556432615176
+      },
+      "permuted_factor_residual_pr": {
+        "interval95": [
+          4.621766528636612,
+          4.814641303708753
+        ],
+        "median": 4.716197575509513
+      },
+      "seed": 20260804
+    },
+    "factor_range": [
+      1.0,
+      2.4614995919904588
+    ],
+    "factor_targetwise_max_sd_within_ligand": 0.027558060084925316,
+    "pdbqt_torsdof_range": [
+      0.0,
+      27.0
+    ]
+  }
+}

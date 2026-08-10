@@ -1,0 +1,138 @@
+{
+  "alternative_endpoint": {
+    "KiRHub_centered_geometry_validation": {
+      "average_precision": 0.6734100125332875,
+      "average_precision_target_label_qap_p_positive": 2e-05,
+      "permutations": 49999,
+      "positive_pairs": 16,
+      "roc_auc": 0.9561781609195402,
+      "roc_auc_target_label_qap_p_positive": 2e-05,
+      "seed": 20261011,
+      "total_pairs": 190
+    },
+    "definition": "top-decile centred co-response in at least two of binary DAVIS above-floor status, PKIS2 and PKIS1",
+    "positive_pairs": 16,
+    "primary_pairs_retained_fraction": 0.8666666666666667,
+    "primary_positive_pairs": 15,
+    "shared_positive_pairs": 13
+  },
+  "analysis": "fixed-20 DAVIS censoring sensitivity",
+  "centered_docking_vs_above_floor_status_davis": {
+    "one_sided_target_label_qap_p_positive": 0.00426,
+    "permutations": 49999,
+    "seed": 20260910,
+    "spearman": 0.2923757911357801
+  },
+  "centered_docking_vs_continuous_davis": {
+    "minimum_values_above_pkd_floor_per_target": 0,
+    "one_sided_target_label_qap_p_positive": 0.00548,
+    "permutations": 49999,
+    "seed": 20260809,
+    "spearman": 0.27979984866179414,
+    "target_names": "ABL1;AKT1;AKT2;CDK2;CSF1R;EGFR;FGFR1;IGF1R;JAK2;KDR;KIT;LCK;MAP2K1;MAPK1;MAPK14;MAPKAPK2;MET;PLK1;ROCK1;SRC",
+    "targets_retained": 20
+  },
+  "continuous_vs_above_floor_status_geometry_spearman": 0.8849637181960138,
+  "exclude_targets_over_90_percent_floor_sensitivity": {
+    "centered_docking_vs_above_floor_status_davis": {
+      "one_sided_target_label_qap_p_positive": 0.03652,
+      "permutations": 49999,
+      "seed": 20261213,
+      "spearman": 0.19689561775123268
+    },
+    "centered_docking_vs_continuous_davis": {
+      "one_sided_target_label_qap_p_positive": 0.0303,
+      "permutations": 49999,
+      "seed": 20260819,
+      "spearman": 0.20960483366900476
+    },
+    "continuous_vs_above_floor_status_geometry_spearman": 0.8107576915063546,
+    "inference_boundary": "Target-label QAP is conditional on this fixed retained 16-target panel. The binary endpoint tests co-response in exceeding the reporting floor, not quantitative affinity, and the exclusion rule is a sensitivity analysis rather than a missing-data correction.",
+    "maximum_retained_fraction_at_floor": 0.9,
+    "removed_target_names": [
+      "AKT1",
+      "AKT2",
+      "MAPK1",
+      "MAPKAPK2"
+    ],
+    "retained_target_names": [
+      "ABL1",
+      "CDK2",
+      "CSF1R",
+      "EGFR",
+      "FGFR1",
+      "IGF1R",
+      "JAK2",
+      "KDR",
+      "KIT",
+      "LCK",
+      "MAP2K1",
+      "MAPK14",
+      "MET",
+      "PLK1",
+      "ROCK1",
+      "SRC"
+    ],
+    "rule": "exclude targets with more than 90% of the 72 released DAVIS values at the pKd=5 reporting floor",
+    "targets_removed": 4,
+    "targets_retained": 16,
+    "threshold_is_strict": true
+  },
+  "interpretation": "DAVIS supports a repeatable coarse co-response or measurement-limit-status geometry, but its fixed-20 values should not be read as a finely resolved quantitative-affinity surface.",
+  "measurement_boundary": {
+    "cells": 1440,
+    "cells_at_pkd_5_floor": 965,
+    "fraction_at_pkd_5_floor": 0.6701388888888888,
+    "ligands": 72,
+    "targets": 20,
+    "targets_above_90_percent_at_floor": 4,
+    "targets_above_90_percent_at_floor_names": [
+      "AKT1",
+      "AKT2",
+      "MAPK1",
+      "MAPKAPK2"
+    ],
+    "targetwise_floor_fraction_range": [
+      0.3333333333333333,
+      0.9722222222222222
+    ]
+  },
+  "minimum_above_floor_target_sensitivities": [
+    {
+      "minimum_values_above_pkd_floor_per_target": 5,
+      "one_sided_target_label_qap_p_positive": 0.01036,
+      "permutations": 49999,
+      "seed": 20260814,
+      "spearman": 0.2548248964657633,
+      "target_names": "ABL1;AKT1;AKT2;CDK2;CSF1R;EGFR;FGFR1;IGF1R;JAK2;KDR;KIT;LCK;MAP2K1;MAPK14;MET;PLK1;ROCK1;SRC",
+      "targets_retained": 18
+    },
+    {
+      "minimum_values_above_pkd_floor_per_target": 10,
+      "one_sided_target_label_qap_p_positive": 0.0303,
+      "permutations": 49999,
+      "seed": 20260819,
+      "spearman": 0.20960483366900476,
+      "target_names": "ABL1;CDK2;CSF1R;EGFR;FGFR1;IGF1R;JAK2;KDR;KIT;LCK;MAP2K1;MAPK14;MET;PLK1;ROCK1;SRC",
+      "targets_retained": 16
+    },
+    {
+      "minimum_values_above_pkd_floor_per_target": 15,
+      "one_sided_target_label_qap_p_positive": 0.04896,
+      "permutations": 49999,
+      "seed": 20260824,
+      "spearman": 0.2285147688132763,
+      "target_names": "ABL1;CSF1R;EGFR;FGFR1;JAK2;KDR;KIT;LCK;MAP2K1;MET;ROCK1;SRC",
+      "targets_retained": 12
+    }
+  ],
+  "provenance": {
+    "davis_path": "data/frozen/davis_complete.tab.gz",
+    "davis_sha256": "e5614549ec970bf24bd58d04d8a74feb8f8a53806410eaa8d84d24e96a4ff827",
+    "kirhub_workbook_redistributed": false,
+    "kirhub_workbook_sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03",
+    "target_pairs_path": "results/klifs_pocket_control/target_pairs.csv",
+    "target_pairs_sha256": "08238b207ac4f9f991193db0d0e03063403727f98aa1230cbfe636eeb6501a23"
+  },
+  "status": "exploratory sensitivity; not preregistered"
+}

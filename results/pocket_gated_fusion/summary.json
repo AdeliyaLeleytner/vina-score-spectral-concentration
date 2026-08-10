@@ -1,0 +1,93 @@
+{
+  "analysis": "pocket-gated sequence plus raw and residual Vina target geometry",
+  "analysis_status": "post_hoc_exploratory_science_only",
+  "claim_boundary": "The result concerns target-pair co-selectivity on a fixed 20-kinase panel. The threshold is post-hoc and selected on PKIS1; the other panels are locked/no-retuning evaluations, not prospective tests. It does not establish ligand-level target retrieval or affinity accuracy.",
+  "discovery_panel": "PKIS1",
+  "gating_rule": "below threshold: equal mean of pairwise sequence, raw-Vina, and centered-Vina ranks; at or above threshold: sequence rank only",
+  "inputs": {
+    "kirhub_workbook": {
+      "redistributed": false,
+      "sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03"
+    },
+    "target_pair_artifact": {
+      "path": "results/klifs_pocket_control/target_pairs.csv",
+      "sha256": "08238b207ac4f9f991193db0d0e03063403727f98aa1230cbfe636eeb6501a23"
+    }
+  },
+  "locked_no_retuning_panels": [
+    "DAVIS",
+    "PKIS2",
+    "KiRHub"
+  ],
+  "locked_omnibus_gated_minus_sequence": {
+    "average_precision": {
+      "locked_panels": "DAVIS;PKIS2;KiRHub",
+      "maximum_panel_delta": 0.11681741966822706,
+      "mean_gated_minus_sequence": 0.0817915265930807,
+      "minimum_panel_delta": 0.011907081009605525,
+      "null_mean": -0.0015511711604763734,
+      "null_q025": -0.0372603458622044,
+      "null_q975": 0.0523938028303054,
+      "permutations": 50000,
+      "qap_p_positive": 0.003259934801303974,
+      "qap_p_positive_holm_three_metrics": 0.009779804403911923
+    },
+    "continuous_spearman": {
+      "locked_panels": "DAVIS;PKIS2;KiRHub",
+      "maximum_panel_delta": 0.1257870622393376,
+      "mean_gated_minus_sequence": 0.11019089361783352,
+      "minimum_panel_delta": 0.09281335991009887,
+      "null_mean": -0.09919320906665931,
+      "null_q025": -0.187045911496698,
+      "null_q975": 0.05461088281071987,
+      "permutations": 50000,
+      "qap_p_positive": 0.008479830403391932,
+      "qap_p_positive_holm_three_metrics": 0.012999740005199895
+    },
+    "roc_auc": {
+      "locked_panels": "DAVIS;PKIS2;KiRHub",
+      "maximum_panel_delta": 0.1571252693136349,
+      "mean_gated_minus_sequence": 0.12870626859546527,
+      "minimum_panel_delta": 0.07494613727300714,
+      "null_mean": -0.013298528778085567,
+      "null_q025": -0.0983892479737355,
+      "null_q975": 0.09864573714989226,
+      "permutations": 50000,
+      "qap_p_positive": 0.006499870002599948,
+      "qap_p_positive_holm_three_metrics": 0.012999740005199895
+    }
+  },
+  "selected_klifs_pocket_identity_threshold": 0.55,
+  "target_jackknife": {
+    "average_precision": {
+      "maximum_delta": 0.1346624545954232,
+      "minimum_delta": -0.031866983686742345,
+      "positive_deletions": 56,
+      "total_panel_target_deletions": 60
+    },
+    "continuous_spearman": {
+      "maximum_delta": 0.23751361354999284,
+      "minimum_delta": 0.02079169437328371,
+      "positive_deletions": 60,
+      "total_panel_target_deletions": 60
+    },
+    "roc_auc": {
+      "maximum_delta": 0.20515613652868558,
+      "minimum_delta": 0.03794480755265062,
+      "positive_deletions": 60,
+      "total_panel_target_deletions": 60
+    }
+  },
+  "threshold_grid": [
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7
+  ],
+  "threshold_selection_metric": "PKIS1 top-10-percent average precision"
+}

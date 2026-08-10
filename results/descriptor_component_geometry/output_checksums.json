@@ -1,0 +1,19 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "panel_concordance.csv": {
+      "bytes": 693,
+      "sha256": "6b0c028c2e8c1e836638e2e5f11afc0e3c3ecacb3b11c7697501c5a899c027b4"
+    },
+    "summary.json": {
+      "bytes": 7721,
+      "sha256": "ec23b74f898fbde35ddcf8d5f27512e43286af5926d0de1ef4fe6a84727accab"
+    },
+    "target_pair_geometry.csv": {
+      "bytes": 28670,
+      "sha256": "48063b64a9bc08b57a2663764d0e7765e0c156e7ad64e7a4aa3240870f391b0e"
+    }
+  },
+  "schema_version": "1.0.0",
+  "scope": "all regular files in this result directory except this manifest"
+}

@@ -1,0 +1,228 @@
+{
+  "analysis": "repeated chemical-group partitions and multiple score-blind DOCKSTRING supports for the descriptor-removal mean-squared-correlation contrast",
+  "claim_boundary": "The empirical intervals quantify sensitivity to fold assignment and to a small set of score-blind 15,000-ligand supports. They are not calibrated confidence intervals for all chemical space, do not resample targets, and do not turn the non-additive mean-squared-correlation contrast into an explained fraction. The DOCKSTRING supports overlap at the rate expected for random samples from a 260,060-row pool and are sensitivity replicates rather than independent experiments.",
+  "conditional_paired_chemical_group_block_bootstrap": {
+    "coarsening_limitation": "individual chemical groups are packed into balanced blocks for tractable moment reweighting, so unrelated groups in one block share a weight; these are conditional coarsened sensitivity intervals, not chemical-space or target-population confidence intervals",
+    "conditioning": "the deterministic group-held-out OOF prediction surface and target panel are fixed; predictions are not refitted inside bootstrap draws",
+    "estimand": "1 - weighted mean squared off-diagonal error correlation / weighted mean squared off-diagonal observed correlation",
+    "method": "paired Bayesian bootstrap with iid Exp(1) weights over balanced blocks of intact chemical groups; the same draw weights the observed and error surfaces",
+    "per_dataset_support": {
+      "DOCKSTRING-58_seed_1701": {
+        "block_assignment_seed": 22260901,
+        "blocks": 512,
+        "bootstrap_mean": 0.5350932057506986,
+        "bootstrap_median": 0.5350950368608456,
+        "chemical_groups": 11844,
+        "conditional_coarsened_sensitivity_interval_95": [
+          0.5210064334322153,
+          0.5494242120217777
+        ],
+        "draw_seed": 22360901,
+        "maximum": 0.5653329414072463,
+        "maximum_block_ligands": 286,
+        "median_block_ligands": 29.0,
+        "minimum": 0.5073349056208809,
+        "minimum_block_ligands": 28,
+        "point": 0.5366251307193709,
+        "repeats": 5000
+      },
+      "DOCKSTRING-58_seed_2701": {
+        "block_assignment_seed": 23260901,
+        "blocks": 512,
+        "bootstrap_mean": 0.5424456709854782,
+        "bootstrap_median": 0.5425473122520872,
+        "chemical_groups": 11846,
+        "conditional_coarsened_sensitivity_interval_95": [
+          0.5279497274900858,
+          0.5569657901804754
+        ],
+        "draw_seed": 23360901,
+        "maximum": 0.5690710778130379,
+        "maximum_block_ligands": 285,
+        "median_block_ligands": 29.0,
+        "minimum": 0.5144183203681834,
+        "minimum_block_ligands": 28,
+        "point": 0.5439426527547542,
+        "repeats": 5000
+      },
+      "DOCKSTRING-58_seed_3701": {
+        "block_assignment_seed": 24260901,
+        "blocks": 512,
+        "bootstrap_mean": 0.5436600642365466,
+        "bootstrap_median": 0.5436174686794625,
+        "chemical_groups": 11849,
+        "conditional_coarsened_sensitivity_interval_95": [
+          0.5286715454032542,
+          0.5586812992623849
+        ],
+        "draw_seed": 24360901,
+        "maximum": 0.5682094741530422,
+        "maximum_block_ligands": 274,
+        "median_block_ligands": 29.0,
+        "minimum": 0.5089195008376659,
+        "minimum_block_ligands": 28,
+        "point": 0.5453334858119964,
+        "repeats": 5000
+      },
+      "DOCKSTRING-58_seed_4701": {
+        "block_assignment_seed": 25260901,
+        "blocks": 512,
+        "bootstrap_mean": 0.5259946573879364,
+        "bootstrap_median": 0.5261170130318682,
+        "chemical_groups": 11848,
+        "conditional_coarsened_sensitivity_interval_95": [
+          0.5102762138391318,
+          0.5412318057901458
+        ],
+        "draw_seed": 25360901,
+        "maximum": 0.5570036463719477,
+        "maximum_block_ligands": 269,
+        "median_block_ligands": 29.0,
+        "minimum": 0.4947687334252593,
+        "minimum_block_ligands": 28,
+        "point": 0.5276163068412694,
+        "repeats": 5000
+      },
+      "DOCKSTRING-58_seed_71": {
+        "block_assignment_seed": 21260901,
+        "blocks": 512,
+        "bootstrap_mean": 0.5345392707777092,
+        "bootstrap_median": 0.5345149351840737,
+        "chemical_groups": 11905,
+        "conditional_coarsened_sensitivity_interval_95": [
+          0.5191886133048915,
+          0.5499581863878595
+        ],
+        "draw_seed": 21360901,
+        "maximum": 0.5646960854975548,
+        "maximum_block_ligands": 257,
+        "median_block_ligands": 29.0,
+        "minimum": 0.5056669336029167,
+        "minimum_block_ligands": 28,
+        "point": 0.5360024559043216,
+        "repeats": 5000
+      },
+      "Docking-44": {
+        "block_assignment_seed": 20260901,
+        "blocks": 512,
+        "bootstrap_mean": 0.46647468921169183,
+        "bootstrap_median": 0.46832909310973764,
+        "chemical_groups": 8150,
+        "conditional_coarsened_sensitivity_interval_95": [
+          0.4241243333350197,
+          0.4999786347502759
+        ],
+        "draw_seed": 20360901,
+        "maximum": 0.5166298177531847,
+        "maximum_block_ligands": 42,
+        "median_block_ligands": 25.0,
+        "minimum": 0.3589300493918355,
+        "minimum_block_ligands": 24,
+        "point": 0.4687472762980258,
+        "repeats": 5000
+      }
+    }
+  },
+  "configuration": {
+    "base_partition_seed": 20260831,
+    "conditional_block_bootstrap_repeats": 5000,
+    "conditional_block_bootstrap_requested_blocks": 512,
+    "conditional_block_bootstrap_seed": 20260901,
+    "every_learned_quantity_refit_inside_training_fold": true,
+    "folds": 5,
+    "group_definitions": {
+      "DOCKSTRING-58": "RDKit Bemis-Murcko scaffolds; every acyclic molecule is a singleton",
+      "Docking-44": "frozen source Butina clusters"
+    },
+    "repeated_partitions_per_support": 12
+  },
+  "dockstring_pool": {
+    "complete_rows": 260060,
+    "missing_cells": 339,
+    "positive_cells_clipped": 5393,
+    "score_blind_support_seeds": [
+      71,
+      1701,
+      2701,
+      3701,
+      4701
+    ],
+    "selection_rule": "sorted simple random sample without replacement from complete row indices; scores are not inspected during support selection",
+    "source_rows": 260155,
+    "support_size": 15000,
+    "targets": 58
+  },
+  "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting group-held-out, fold-locally fitted descriptor predictions",
+  "headline_reference_reproduction": {
+    "DOCKSTRING-58_seed_71": 0.5360024559043216,
+    "Docking-44": 0.4687472762980258
+  },
+  "not_an_explained_fraction": "this is a ratio of two non-additive correlation summaries after residualizing a score surface; it is not a fraction of correlation, covariance or variance explained",
+  "sensitivity": {
+    "DOCKSTRING-58": {
+      "all_repeated_group_partitions": {
+        "empirical_interval_95": [
+          0.5270554637701454,
+          0.5456274426090736
+        ],
+        "maximum": 0.5460205271719859,
+        "mean": 0.5376981844780139,
+        "median": 0.5366032335047737,
+        "minimum": 0.5267543966829004,
+        "n": 60,
+        "standard_deviation": 0.006538071593258846
+      },
+      "between_score_blind_support_means": {
+        "empirical_interval_95": [
+          0.5280374200386954,
+          0.5451257821167381
+        ],
+        "maximum": 0.5452793661936806,
+        "mean": 0.5376981844780139,
+        "median": 0.536646203349759,
+        "minimum": 0.5271940466205726,
+        "n": 5,
+        "standard_deviation": 0.007241384728888001
+      },
+      "deterministic_groupkfold": {
+        "empirical_interval_95": [
+          0.5284549217475746,
+          0.5451944025062722
+        ],
+        "maximum": 0.5453334858119964,
+        "mean": 0.5379040064063425,
+        "median": 0.5366251307193709,
+        "minimum": 0.5276163068412694,
+        "n": 5,
+        "standard_deviation": 0.0071195258556291776
+      }
+    },
+    "Docking-44": {
+      "all_repeated_group_partitions": {
+        "empirical_interval_95": [
+          0.46224648664536927,
+          0.46985992518917274
+        ],
+        "maximum": 0.46989472173557145,
+        "mean": 0.4669788701180982,
+        "median": 0.46697026440047823,
+        "minimum": 0.4620514335356343,
+        "n": 12,
+        "standard_deviation": 0.0025740378192229975
+      },
+      "deterministic_groupkfold": {
+        "empirical_interval_95": [
+          0.4687472762980258,
+          0.4687472762980258
+        ],
+        "maximum": 0.4687472762980258,
+        "mean": 0.4687472762980258,
+        "median": 0.4687472762980258,
+        "minimum": 0.4687472762980258,
+        "n": 1,
+        "standard_deviation": 0.0
+      }
+    }
+  },
+  "status": "exploratory_post_hoc_uncertainty_and_design_sensitivity"
+}

@@ -1,0 +1,19 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "fixed_pose_scores.csv.gz": {
+      "bytes": 1763770,
+      "sha256": "8c0d10d2c31150a12dbd29ad419de65b5bc5ff902339faa7eb335987d1935e6b"
+    },
+    "scorer_spectral_metrics.csv": {
+      "bytes": 6658,
+      "sha256": "29ecc126055c2c6e6a73e5e87a1a3bd9ead1f62814dd6422ee6de92caf47a789"
+    },
+    "summary.json": {
+      "bytes": 58933,
+      "sha256": "5dd74a078b1ef68c48ed77c8dd6bf1cbbd0c00d163887bea7c8db0b6fa7ba72f"
+    }
+  },
+  "schema_version": "1.0.0",
+  "scope": "all regular files in this result directory except this manifest"
+}

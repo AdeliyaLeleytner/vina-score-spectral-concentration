@@ -1,0 +1,106 @@
+# Novartis SPD external target-geometry validation
+
+Status: **exploratory, post hoc, science-only**. This directory is not yet part
+of the manuscript or its evidence ledger.
+
+## Question
+
+Does the target--target geometry revealed by centering DOCKSTRING Vina scores
+agree with co-response across a broad, non-kinase safety-pharmacology panel?
+The operational interpretation is counterscreen prioritization: for a query
+target, the geometry may suggest other targets whose responses vary similarly
+across compounds. It is not an affinity predictor and does not validate
+ligand-level target ranking.
+
+## Fixed analysis contract
+
+- Twelve human targets: ADORA2A, ADRB1, ADRB2, AR, DRD2, EGFR, ESR1, ESR2,
+  F2, NR3C1, PGR, and PTGS2.
+- Candidate direct binding/inhibition assay groups were fixed before inspecting
+  target-pair outcomes. If two campaigns were available, the group with the
+  greatest compound coverage was selected; ties go to the smaller group ID.
+- Compounds are aggregated by the first 14 Standard InChIKey characters.
+- The primary experimental surface converts released IC50 bounds in micromolar
+  to pIC50, standardizes each observed target column, removes each observed
+  ligand-row mean, and computes pairwise Spearman correlations with at least 40
+  common compounds.
+- The primary docking predictor removes all DOCKSTRING rows whose connectivity
+  block occurs in SPD, clips positive scores to zero, standardizes the 12 target
+  columns, removes each row mean, and correlates target columns.
+- QAP permutes complete target labels while leaving the experimental endpoint,
+  support mask, and controls fixed. A family-preserving version is also shown.
+
+The floor-at-bound surface is not a quantitative affinity surface: 10,188 of
+11,126 selected rows (91.6%) are right-censored. Therefore two censor-aware
+binary endpoints and an exact-only diagnostic are mandatory, not optional.
+
+## Main results
+
+On 59 target pairs, with all 932 connectivity-overlapping chemical blocks
+removed from the docking predictor:
+
+| Experimental endpoint | Raw Vina rho | Residual Vina rho | Difference |
+|---|---:|---:|---:|
+| Released bound ranks | 0.149 | 0.333 | +0.184 |
+| Censor-aware active at 10 uM | 0.348 | 0.395 | +0.047 |
+| Censor-aware active at 30 uM | 0.180 | 0.409 | +0.229 |
+
+Unrestricted 50,000-draw target-label QAP gives residual-network probabilities
+of 0.0223, 0.00562, and 0.0123, respectively. The residual-minus-raw contrast
+is resolved for released-bound ranks (0.0460) and the 30-uM binary endpoint
+(0.0203), but not at 10 uM (0.347). After rank control for full-sequence
+identity, curated family, pair support, and target coverage, residual partial
+rho is 0.226 for the released-bound endpoint; its unrestricted QAP probability
+is 0.0636. Thus the marginal signal is credible, while the claim of information
+beyond all structural/support controls is weaker.
+
+The observation-mask control is favorable. The largest outcome-blind complete
+rectangle contains 102 compounds measured on the same 11 targets (all except
+EGFR). On its 55 pairs, raw rho is 0.055 and residual rho is 0.508; residual
+partial rho is 0.317. Leave-one-target-out residual-minus-raw differences are
+positive for all 12 targets.
+
+The fixed 58-target DOCKSTRING residual representation is even more concordant
+than centering only the 12 validation targets (rho 0.527 versus 0.333 on the
+primary endpoint), but this is reported as a representation sensitivity rather
+than used to replace the more conservative local-panel primary result.
+
+## What did not become a headline
+
+- Exact-only measurements are too sparse: residual rho is 0.446 across 28
+  pairs at minimum support 5, but 0.000 across only 16 pairs at support 10.
+- Family-preserving QAP supports the residual network itself, but not a
+  residual-minus-raw gain. Family structure explains part of the advantage.
+- In the per-query best-partner stress test, residual Vina improves binary
+  top-3 recovery over raw Vina (8/12 versus 6/12 targets at 10 uM; 9/12 versus
+  7/12 at 30 uM), but does not beat sequence reliably. This does not yet justify
+  a strong counterscreen-design claim.
+- Replacing the selected ESR1, PGR, or PTGS2 campaign leaves residual rho
+  positive, but the PGR and PTGS2 alternatives weaken support-adjusted effects.
+
+## Reproduction
+
+The SPD input is not redistributed here.  The official Zenodo record is open
+under CC BY 4.0 (metadata checked 2026-08-03). Download the activity export from
+the [Novartis SPD Zenodo record](https://zenodo.org/records/8103950). Expected
+SHA256: `7132723f85e746de2f8387d01dcde6ffff703c92561fda9751cbd6753e900240`.
+
+The reviewed human UniProt snapshot contains exactly the 12 primary gene
+labels. Expected SHA256:
+`26ebfda18fabdbaf605f14329f2c439e47427ff315f4160f3a68439ae7bf1729`.
+
+```bash
+.venv/bin/python analysis/spd_external_validation.py \
+  --spd /tmp/spd_activity.txt \
+  --uniprot /tmp/spd_uniprot.tsv \
+  --dockstring data/frozen/dockstring-dataset.tsv.gz \
+  --output-dir results/spd_external_validation \
+  --qap-permutations 50000 \
+  --seed 20260803
+
+.venv/bin/python -m pytest -q analysis/test_spd_external_validation.py
+```
+
+The released CSVs contain target-level and aggregate results only. No SPD or
+DOCKSTRING compound identifiers, structures, or row-level activities are
+written.

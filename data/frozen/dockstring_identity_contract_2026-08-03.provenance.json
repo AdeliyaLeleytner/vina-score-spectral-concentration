@@ -1,0 +1,47 @@
+{
+  "artifact_date": "2026-08-03",
+  "audit": {
+    "raw_vs_standardized_connectivity_differences": 10,
+    "raw_vs_standardized_scaffold_differences": 251,
+    "reported_vs_raw_connectivity_differences": 1031,
+    "reported_vs_raw_full_inchikey_differences": 260060
+  },
+  "identity_contract": {
+    "raw_connectivity": "first 14 characters of the Standard InChIKey generated after Chem.MolFromSmiles, without FragmentParent or Uncharger",
+    "raw_murcko_scaffold": "MurckoScaffold.MurckoScaffoldSmiles on the raw parsed molecule",
+    "reported_inchikey": "verbatim frozen DOCKSTRING source value",
+    "standardized_connectivity": "first Standard-InChIKey block after FragmentParent then Uncharger",
+    "standardized_cyclic_murcko_scaffold": "non-isomeric Murcko scaffold after FragmentParent then Uncharger; empty for acyclic compounds"
+  },
+  "output": {
+    "bytes": 10817845,
+    "columns": [
+      "source_row_index",
+      "complete_support_row_index",
+      "reported_inchikey",
+      "reported_connectivity",
+      "raw_inchikey",
+      "raw_connectivity",
+      "raw_murcko_scaffold",
+      "standardized_connectivity",
+      "standardized_cyclic_murcko_scaffold"
+    ],
+    "gzip_mtime": 0,
+    "path": "data/frozen/dockstring_identity_contract_2026-08-03.csv.gz",
+    "rows": 260060,
+    "sha256": "5c5d06635cb276f543f9744487d6b8d4015432087e5f87b7875628973b8f32b3"
+  },
+  "schema_version": 1,
+  "software": {
+    "pandas_version": "2.3.2",
+    "rdkit_version": "2025.03.6"
+  },
+  "source": {
+    "complete_rows": 260060,
+    "incomplete_rows_excluded": 95,
+    "path": "data/frozen/dockstring-dataset.tsv.gz",
+    "rows": 260155,
+    "score_columns": 58,
+    "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+  }
+}

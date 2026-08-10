@@ -1,0 +1,239 @@
+{
+  "analysis": "paired bootstrap confidence intervals for the docking-side increment against the fixed centred experimental endpoint",
+  "claim_boundary": "These are nonparametric bootstrap intervals for one fixed estimand on one fixed 20-kinase panel, and they quantify uncertainty from the finite compound libraries only. An interval excluding zero establishes that the increment reproduces across compound resamples with the twenty target labels held fixed. It does NOT establish that the increment is tied to target identity: that is the paired target-label QAP, which remains unresolved for every panel. It does NOT establish that the increment exceeds the alignment that within-ligand centring induces mechanically on marginal-matched independent docking columns: that is the transformation-matched null, which also remains unresolved for every panel. The three tests answer different questions and a bootstrap interval cannot substitute for either null. These intervals also say nothing about the separate question of whether the residual surface is target-blind, because Delta_D is computed from docking scores and activities and involves no descriptor regression. The 190 edges of a 20-target panel are not independent, no interval is adjusted for the four panels sharing those same 190 pairs, and percentile intervals are not bias corrected, which is why the reverse-percentile interval is reported beside every conservative union.",
+  "configuration": {
+    "accumulation_boundary": "group moments and every concordance are accumulated with numpy.einsum(optimize=False) because BLAS reductions differ bitwise across thread counts and this summary must be byte-deterministic",
+    "base_seed": 20260806,
+    "bootstrap_replicates": 5000,
+    "docking_chemical_group_seed": 21260806,
+    "docking_molecule_seed": 22260806,
+    "experimental_seeds": {
+      "DAVIS:butina_0.65": 23261006,
+      "DAVIS:compound": 23260806,
+      "DAVIS:murcko": 23260906,
+      "KiRHub:compound": 23290806,
+      "PKIS1:butina_0.65": 23281006,
+      "PKIS1:compound": 23280806,
+      "PKIS1:murcko": 23280906,
+      "PKIS2:butina_0.65": 23271006,
+      "PKIS2:compound": 23270806,
+      "PKIS2:murcko": 23270906
+    },
+    "interval_convention": "2.5/97.5 and 5/95 replicate percentiles, following dense_davis_benchmark._distribution; the reported interval is the conservative union of the Murcko and Butina-0.65 intervals, following dockstring_chembl_ranking_benchmark.conservative_union; a reverse-percentile (basic) interval is reported alongside because the percentile interval is not bias corrected and some replicate distributions are shifted away from the plug-in estimate",
+    "negligible_margin": 0.05,
+    "negligible_margin_boundary": "0.05 Spearman units is a post-hoc reporting threshold, roughly a quarter of the experimental-side increments this same design produces; the interval and the smallest supported symmetric margin are reported so a reader can substitute another margin",
+    "resampling_contract": "clusters are drawn with replacement, as many clusters as were observed, following dense_davis_benchmark._bootstrap_mean",
+    "seed_derivation": "replicate r of a stream with seed s uses numpy.random.default_rng([s, r]), so every replicate is independent of the chunking used to accumulate it"
+  },
+  "consistency_checks": {
+    "all_within_tolerance": true,
+    "frozen_fixed20_increments": {
+      "DAVIS": 0.016391764752194615,
+      "KiRHub": 0.045476693478897934,
+      "PKIS1": 0.0008607907202561604,
+      "PKIS2": 0.04367638117982567
+    },
+    "frozen_paired_target_label_qap_p_positive": {
+      "DAVIS": 0.33536,
+      "KiRHub": 0.1255,
+      "PKIS1": 0.46218,
+      "PKIS2": 0.14606
+    },
+    "max_absolute_differences": {
+      "frozen_fixed20_increment": 1.3877787807814457e-16,
+      "moment_reconstruction": 1.4121759317475835e-12,
+      "rank_dot_versus_scipy_spearman": 1.6653345369377348e-16,
+      "released_ledger_centered_docking": 1.2130487586636818e-14,
+      "released_ledger_raw_docking": 5.10702591327572e-15,
+      "unit_weight_experimental_geometry": 1.3322676295501878e-15
+    },
+    "tolerance": 1e-10,
+    "verified_against": "results/released_pair_geometry_ledger/target_pair_geometry.csv and results/fixed20_estimand_decomposition/summary.json, both read-only"
+  },
+  "docking_chemical_grouping": {
+    "acyclic_connectivity_groups": 751,
+    "butina_boundary": "Morgan/Butina clustering is quadratic in 259,579 ligands and was not run on the docking reference, so the docking side carries a Murcko/acyclic cluster bootstrap only and no Murcko-versus-Butina conservative union",
+    "chemical_groups": 99985,
+    "cyclic_murcko_groups": 99234,
+    "group_definition": "MURCKO:<canonical cyclic Bemis-Murcko scaffold> when the molecule has a ring system, otherwise ACYCLIC:<14-character Standard InChI connectivity block>; identical to the grouping used by biological_core_modes",
+    "reference_rows": 259579
+  },
+  "docking_reference": {
+    "complete_dockstring_rows_before_exclusion": 260060,
+    "excluded_connectivity_blocks": 1050,
+    "identity_contract": "data/frozen/dockstring_identity_contract_2026-08-03.csv.gz",
+    "identity_contract_sha256": "5c5d06635cb276f543f9744487d6b8d4015432087e5f87b7875628973b8f32b3",
+    "identity_definition": "first 14 characters of the Standard InChIKey generated from the raw parsed molecule, without FragmentParent or Uncharger",
+    "kirhub_exclusion_boundary": "The KiRHub supplement provides names but no structures; its remaining compounds could not be excluded by molecular identity.",
+    "kirhub_rows_excluded_from_reference": null,
+    "positive_scores_clipped_to_zero_primary": true,
+    "reference_rows_after_old_panel_connectivity_exclusion": 259579
+  },
+  "estimand": "Delta_D = Spearman(edges of the within-ligand-centred docking target correlation, edges of the two-way-centred experimental target correlation) minus Spearman(edges of the raw docking target correlation, the same experimental edges), over the 190 pairs of the fixed 20-kinase panel",
+  "kirhub_boundary": "The KiRHub supplement releases compound names but no structures, so that panel can only be resampled compound by compound. If KiRHub contains analogue series its interval is narrower than a chemical-cluster interval would be, making the KiRHub row the least conservative of the four.",
+  "panels": {
+    "DAVIS": {
+      "basic_interval_verdict": "consistent_with_a_negligible_increment",
+      "bootstrap_sources": "murcko|butina_0.65",
+      "chemical_cluster_bootstrap_available": true,
+      "combined_conservative_basic_interval_95": [
+        -0.026314171117147005,
+        0.04036797928503662
+      ],
+      "combined_conservative_interval_95": [
+        -0.007584449780647164,
+        0.05909770062153646
+      ],
+      "combined_conservative_interval_95_width": 0.06668215040218362,
+      "docking_chemical_group_interval_95": [
+        0.009032835141956163,
+        0.021309819050243428
+      ],
+      "experimental_ligands": 72,
+      "observed_delta_d": 0.016391764752194726,
+      "published_paired_target_label_qap_p_positive": 0.33536,
+      "reading": "zero lies inside the interval and the interval also admits increments larger than 0.05 Spearman units, so the data support explanation (b), large sampling uncertainty, and cannot distinguish a null effect from a scientifically appreciable one",
+      "smallest_supported_symmetric_margin_95": 0.05909770062153646,
+      "verdict": "dominated_by_sampling_uncertainty",
+      "verdict_robust_to_interval_construction": false
+    },
+    "KiRHub": {
+      "basic_interval_verdict": "resolved_positive_increment",
+      "bootstrap_sources": "compound",
+      "chemical_cluster_bootstrap_available": false,
+      "combined_conservative_basic_interval_95": [
+        0.020788139633551556,
+        0.07640624248229613
+      ],
+      "combined_conservative_interval_95": [
+        0.01454714447549951,
+        0.07016524732424409
+      ],
+      "combined_conservative_interval_95_width": 0.05561810284874458,
+      "docking_chemical_group_interval_95": [
+        0.03751949682233535,
+        0.0517944512240462
+      ],
+      "experimental_ligands": 92,
+      "observed_delta_d": 0.04547669347889782,
+      "published_paired_target_label_qap_p_positive": 0.1255,
+      "reading": "the interval excludes zero from above, so the increment is resolved once compound sampling is accounted for",
+      "smallest_supported_symmetric_margin_95": 0.07016524732424409,
+      "verdict": "resolved_positive_increment",
+      "verdict_robust_to_interval_construction": true
+    },
+    "PKIS1": {
+      "basic_interval_verdict": "consistent_with_a_negligible_increment",
+      "bootstrap_sources": "murcko|butina_0.65",
+      "chemical_cluster_bootstrap_available": true,
+      "combined_conservative_basic_interval_95": [
+        -0.028121000581733367,
+        0.023253552729992612
+      ],
+      "combined_conservative_interval_95": [
+        -0.021531971289480235,
+        0.029842582022245743
+      ],
+      "combined_conservative_interval_95_width": 0.05137455331172598,
+      "docking_chemical_group_interval_95": [
+        -0.0049147738456087825,
+        0.004344325035975529
+      ],
+      "experimental_ligands": 360,
+      "observed_delta_d": 0.0008607907202561882,
+      "published_paired_target_label_qap_p_positive": 0.46218,
+      "reading": "zero lies inside the interval and the interval also excludes every increment larger than 0.05 Spearman units, so the data support explanation (c), a genuinely tiny effect, rather than mere absence of evidence",
+      "smallest_supported_symmetric_margin_95": 0.029842582022245743,
+      "verdict": "consistent_with_a_negligible_increment",
+      "verdict_robust_to_interval_construction": true
+    },
+    "PKIS2": {
+      "basic_interval_verdict": "resolved_positive_increment",
+      "bootstrap_sources": "murcko|butina_0.65",
+      "chemical_cluster_bootstrap_available": true,
+      "combined_conservative_basic_interval_95": [
+        0.023139524203178358,
+        0.06823581641713383
+      ],
+      "combined_conservative_interval_95": [
+        0.019116945942517775,
+        0.06421323815647326
+      ],
+      "combined_conservative_interval_95_width": 0.04509629221395548,
+      "docking_chemical_group_interval_95": [
+        0.03427731632746769,
+        0.05026576038700597
+      ],
+      "experimental_ligands": 645,
+      "observed_delta_d": 0.04367638117982581,
+      "published_paired_target_label_qap_p_positive": 0.14606,
+      "reading": "the interval excludes zero from above, so the increment is resolved once compound sampling is accounted for",
+      "smallest_supported_symmetric_margin_95": 0.06421323815647326,
+      "verdict": "resolved_positive_increment",
+      "verdict_robust_to_interval_construction": true
+    }
+  },
+  "question": "The manuscript resolves the docking-side increments Delta_D only against a paired target-label QAP null. A QAP null interval is not a confidence interval and holds both compound libraries fixed. Once the finite DOCKSTRING reference and the finite experimental panels are resampled, how wide is Delta_D, and does that width distinguish (a) no target-label evidence, (b) large sampling uncertainty, and (c) a genuinely tiny effect?",
+  "status": "post_hoc_uncertainty_companion_to_the_reported_increments",
+  "strongest_honest_conclusion": "Compound resampling separates the four panels that the target-label QAP could not. The 95% interval excludes zero for PKIS2, KiRHub, so the increment there is reproducible across compound resamples rather than absent. The interval contains zero and excludes every increment above 0.05 for PKIS1, which supports a genuinely tiny effect. The interval contains zero and still admits increments above 0.05 for DAVIS, which remains uninformative about effect size. The verdict changes under a reverse-percentile interval for DAVIS and should be read as borderline. An interval excluding zero is not evidence of target specificity: the paired target-label QAP and the transformation-matched null remain unresolved for all four panels, and those are the tests that address target identity and the mechanical centring baseline.",
+  "support": {
+    "docking_chemical_groups": 99985,
+    "docking_reference_ligands": 259579,
+    "experimental_chemical_clusters": {
+      "DAVIS:butina_0.65": 69,
+      "DAVIS:compound": 72,
+      "DAVIS:murcko": 72,
+      "KiRHub:compound": 92,
+      "PKIS1:butina_0.65": 181,
+      "PKIS1:compound": 360,
+      "PKIS1:murcko": 189,
+      "PKIS2:butina_0.65": 338,
+      "PKIS2:compound": 645,
+      "PKIS2:murcko": 369
+    },
+    "experimental_panel_ligands": {
+      "DAVIS": 72,
+      "KiRHub": 92,
+      "PKIS1": 360,
+      "PKIS2": 645
+    },
+    "target_pairs": 190,
+    "targets": [
+      "ABL1",
+      "AKT1",
+      "AKT2",
+      "CDK2",
+      "CSF1R",
+      "EGFR",
+      "FGFR1",
+      "IGF1R",
+      "JAK2",
+      "KDR",
+      "KIT",
+      "LCK",
+      "MAP2K1",
+      "MAPK1",
+      "MAPK14",
+      "MAPKAPK2",
+      "MET",
+      "PLK1",
+      "ROCK1",
+      "SRC"
+    ]
+  },
+  "verdicts": {
+    "consistent_with_a_negligible_increment": [
+      "PKIS1"
+    ],
+    "dominated_by_sampling_uncertainty": [
+      "DAVIS"
+    ],
+    "resolved_nonzero": [
+      "PKIS2",
+      "KiRHub"
+    ],
+    "verdict_not_robust_to_interval_construction": [
+      "DAVIS"
+    ]
+  }
+}

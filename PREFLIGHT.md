@@ -1,86 +1,97 @@
 # Journal of Cheminformatics submission preflight
 
-Audit date: 2026-08-01. Article type: Research article.
+Article type: **Research article**.
 
-## Passed locally
+## Scientific checks
 
-- Title states that the target-ranking gain is unresolved; conclusions remain limited to the
-  two tested large Vina matrices and do not confuse absence of significance with equivalence.
-- Target uncertainty includes leave-one-out deletion plus uniform and family-stratified
-  subsampling for both column-standardized and residual surfaces.
-- Parallel analysis uses 500 permutations, a family-wise-error-controlled simultaneous
-  envelope, and five independent 100-permutation series.
-- Fitted additive, empirical target-marginal and row-norm-preserving random-direction nulls
-  show that the centered residuals remain much more concentrated than independent target-
-  specific noise. The last null preserves every ligand-specific residual norm and the exact
-  row-zero-sum constraint. A one-ligand-per-Butina-cluster sensitivity addresses ordinary
-  chemical redundancy.
-- Exact-relation median ChEMBL aggregation is primary; raw and residual paired contrasts,
-  100 multiple imputations, human binding, and Ki/Kd blocks are reported and limited to their
-  matched support.
-- The operational target-preference benchmark reports complementary broad-coverage and
-  human binding Ki/Kd estimands. The broad support covers 137 ligands, 38 targets, 691
-  observed cells and 2,522 non-tied target pairs without activity imputation. Evaluation
-  ligands are excluded from docking imputation/transformation references. Predicted ties
-  receive half credit. Controls include external and scaffold-held-out cohort target
-  priors, ligand-identity and within-ligand outcome permutations, independent Murcko and
-  Butina cluster uncertainty, target deletion, experimental margins, assay restrictions,
-  within-cell dispersion and minimum observed-target coverage. Twenty-five seeded one-
-  ligand-per-Murcko-cluster supports expose the chemical-dependence sensitivity of ordinary
-  permutation probabilities. Human binding Ki/Kd, endpoint-specific and duplicate-collapsed
-  same-endpoint analyses reduce endpoint mixing. All intervals are labelled conditional on
-  the fixed curated target panel.
-- The ranking decomposition proves that unscaled row centering cannot change within-ligand
-  target order; target-specific scaling is the operationally active component. Post hoc
-  equivalence checks at +/-0.02 and +/-0.05 are reported as sensitivities, not preregistered
-  endpoints.
-- PR is shown algebraically and numerically to be a re-expression of mean squared target
-  correlation. Generated Table 1 reports PR beside mean squared/absolute correlation and PC1
-  fraction. Fig. S7 reports residual correlation distributions, clustered heatmaps, leading-
-  mode chemistry and weak broad-family alignment.
-- A generic `analysis/spectral_audit.py` CLI and a nine-step protocol in Table S9 make the
-  recommended workflow reusable; the CLI emits machine-readable metrics and optional
-  diagnostic plots and passes a real three-target smoke test.
-- The DTI rank–selectivity analysis is entirely Supplementary; all 20 arms are primary and
-  the outcome-restricted 12-arm panel is a labelled sensitivity.
-- All 26 frozen inputs are bundled and pass byte-size and SHA-256 verification.
-- `make all` succeeds while forcing bundled inputs; headline PR values are
-  `1.834 -> 9.303` and `2.266 -> 18.206`.
-- A fresh local clone reproduces the evidence JSON, machine-readable tables, figures and PDFs
-  byte for byte. A fresh Docker build/run completes `make all`; registered TeX artifacts and
-  operational CSVs are identical. Two unrounded spectral-summary CSVs differ by at most
-  `3.6e-15`, and the largest unrounded cross-platform JSON difference is `2.2e-14`.
-- The current Springer Research-article instructions were rechecked on 2026-08-01 and specify
-  the heading `Scientific Contribution` with at most three sentences. The older journal
-  GitHub author-guide page says `Contribution`; the current publisher page is treated as
-  controlling. The manuscript subsection has two sentences.
-- Bibliography: 30 cited entries, with exactly 30 defined keys and no missing keys.
-- Article: 31 A4 pages. Supplement: 17 A4 pages, with no blank or near-empty continuation page.
-- Five main and seven supplementary figures are regenerated as vector PDFs plus PNG previews;
-  Fig. S5 point IDs map to Table S6.
-- Two-pass LaTeX builds contain no unresolved references, citation warnings, package warnings,
-  or overfull boxes. Greek rho survives PDF text extraction.
-- Consecutive pinned-environment rebuilds produce byte-identical figure and compiled PDF
-  artifacts through fixed release metadata and `SOURCE_DATE_EPOCH`.
-- MIT code license, file-specific data licenses, provenance, pinned environment, Makefile,
-  Dockerfile, and clean-clone instructions are present.
-- AI systems are not authors or evidence sources; the Methods disclosure assigns scientific
-  responsibility to the manuscript authors.
-- A generated result registry supplies headline LaTeX macros and Table 1 from the evidence
-  JSON; the pre-build verifier regenerates and compares them and rejects known stale numeric
-  fragments in manuscript sources.
-- A separate evidence validator asserts the exact PR--mean-$r^2$ identity, correlation-spectrum
-  trace, structural residual zero, row-norm-null separation, operational rank invariance and
-  paired-contrast consistency before manuscript artifacts are built.
-- The public GitHub repository and permanent Zenodo concept DOI `10.5281/zenodo.21733767`
-  are present as numbered references and in citation metadata. The release target is v1.4.0;
-  its version DOI is added to the GitHub release metadata after Zenodo mints it.
+- Claims are limited to the two tested Vina-family matrices and fixed experimental panels.
+- PR is defined as a continuous dependence summary and explicitly linked to mean squared
+  target correlation; it is not presented as a new rank estimator or quality metric.
+- Correlation and covariance spectra, missing-score handling, target deletion/subsampling,
+  chemical-support sensitivity and four transformation-matched residual nulls are reported.
+- Seven-descriptor residualization and the rank-matched count-Morgan controls are five-fold
+  chemical-group-held-out with every fit and preprocessing quantity fold-local. Stable-hash
+  and row-permuted nuisance bases demonstrate that fitted-component map agreement alone is
+  scale-free and non-identifying; every interpretation is paired with an out-of-fold
+  predictive-performance metric.
+- Same-distribution probe recovery is explicitly separated from exploratory, post hoc
+  low/high-MW molecular-size-domain
+  transport, with raw-surface, random, MW-matched group-disjoint and restriction-matched
+  within-band controls. The manuscript does not
+  describe PR increase or probe recovery as a docking-quality criterion, and it does not
+  treat 200 ligands as a universal accuracy threshold. The complete inspected descriptor
+  family and opposite MW-domain PR directions are reported.
+- The external kinase analysis uses a strict common 20-target/190-pair estimand and reports
+  the complete raw/centred docking × raw/centred experiment factorial.
+- Both paired target-label and transformation-matched independent-column nulls are reported
+  for every docking-side factorial increment.
+- The fixed 15-pair endpoint is listed in full and described as fixed before KiRHub but not
+  preregistered.
+- Sequence and KLIFS pocket baselines are shown beside Vina as comparable or higher point
+  estimates; unrestricted and within-group tests are not conflated.
+- The ranking section proves row-subtraction invariance and uses the 6,480-ligand,
+  31-target DOCKSTRING--ChEMBL overlap as the broad primary observed-pair benchmark. The
+  paired absolute-Vina-minus-target-only-prior interval is reported and does not
+  resolve ligand-specific information beyond the target-only baseline. The
+  137-ligand Docking-44 block and its 38-vs-44 row-mean sensitivity are explicitly legacy.
+- The less heterogeneous, endpoint-restricted human binding Ki/Kd arm is reported beside the
+  all-endpoint primary; its possibility of mixed Ki/Kd cell pairs and the opposite-sign
+  separate Ki and Kd arms are explicit. The scaffold-cross-fitted cohort prior is
+  labelled benchmark-fitted and non-deployable.
+- Dense full-Standard-InChIKey-matched DAVIS and PKIS2 checks report the net residual-vs-absolute contrast,
+  target-prior baseline, target-jackknife sensitivity and the complete offset/scale/row
+  path. Path contrasts are labelled exploratory, correlated and multiplicity-unadjusted.
+- DAVIS both-uncensored/floor-detection and primary-margin PKIS2 both-active strata are explicitly
+  outcome-conditioned and do not replace the aggregate endpoints.
+- Chemical-cluster operational intervals are labelled conditional on fixed 21- or 31-target
+  panels, and target-jackknife ranges are shown separately as composition sensitivities.
+  Neither universal superiority nor equivalence is claimed. The 38-target qualifier applies
+  only to the legacy sparse sensitivity.
+- No future project, model leaderboard, conference plan or unpublished strategic programme
+  is mentioned in the manuscript or Supplement.
 
-## Blocking before journal submission
+## Journal-format checks
 
-1. Obtain final coauthor confirmation of funding, contribution roles, author order,
-   affiliations, ORCIDs, and the AI-use disclosure.
+- Abstract is below 350 words.
+- The required abstract subsection is titled exactly `Scientific Contribution` and contains
+  no more than three sentences.
+- Sections run Introduction, Methods, Results, Discussion, Conclusions, as the journal
+  requires.
+- A 920x300 graphical abstract is generated by `analysis/make_graphical_abstract.py`.
+- Main text and Supplement use double spacing and page numbering.
+- All special symbols are embedded correctly in the compiled PDFs.
+- Data/software availability, author contributions, competing interests, funding and
+  AI-use disclosure are present.
+- Repository and Zenodo URLs appear as numbered references; the version-specific archive DOI
+  must be inserted when the submission release is minted.
 
-The GitHub repository is public at
-<https://github.com/AdeliyaLeleytner/vina-score-spectral-concentration>; versioned archives
-are indexed at <https://doi.org/10.5281/zenodo.21733767>.
+## Reproducibility checks
+
+- `analysis/verify_inputs.py` validates both input and manuscript-source manifests.
+- `make all` rebuilds the report layer from checksum-verified frozen artifacts and does not
+  claim to repeat upstream docking.
+- The secondary ODDT outputs are checksum-verified but not recreated by the default
+  container; their separate Python 3.9/ODDT 0.7 source environment is documented.
+- Headline values are generated through `results/evidence_macros.tex`.
+- The evidence validator and focused test suite pass.
+- Five main and six supplementary figures are generated by submission-specific drivers.
+- Both LaTeX documents compile twice without undefined references or citations.
+
+## Required immediately before submission
+
+1. Build from a clean archived checkout or `git archive`, not the development worktree.
+   Include only the five `fig[1-5]_*` files and six `figS*` files referenced by the current
+   TeX sources; exclude legacy figure stems retained in the development worktree.
+2. Run the pinned local and Docker builds and record their logs.
+3. Inspect every PDF page at final size and resolve remaining overfull boxes.
+4. Obtain coauthor confirmation of author order, affiliations, contributions, funding,
+   competing interests and AI-use wording.
+5. Mint the versioned Zenodo archive, insert its DOI, and synchronize README,
+   `CITATION.cff`, GitHub release metadata and manuscript availability statement.
+
+Repository: <https://github.com/AdeliyaLeleytner/vina-score-spectral-concentration>
+
+Zenodo concept DOI: <https://doi.org/10.5281/zenodo.21733767>
+
+Submission release: `v3.0.0`; reserved version-specific Zenodo DOI:
+<https://doi.org/10.5281/zenodo.21865607> (registered when the archive is published).

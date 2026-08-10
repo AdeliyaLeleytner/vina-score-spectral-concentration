@@ -1,0 +1,475 @@
+{
+  "analysis": "fixed-20-target docking-by-experimental estimand decomposition",
+  "status": "exploratory_post_hoc",
+  "targets": [
+    "ABL1",
+    "AKT1",
+    "AKT2",
+    "CDK2",
+    "CSF1R",
+    "EGFR",
+    "FGFR1",
+    "IGF1R",
+    "JAK2",
+    "KDR",
+    "KIT",
+    "LCK",
+    "MAP2K1",
+    "MAPK1",
+    "MAPK14",
+    "MAPKAPK2",
+    "MET",
+    "PLK1",
+    "ROCK1",
+    "SRC"
+  ],
+  "target_pairs": 190,
+  "docking_reference": {
+    "complete_dockstring_rows_before_exclusion": 260060,
+    "reference_rows_after_old_panel_connectivity_exclusion": 259579,
+    "excluded_connectivity_blocks": 1050,
+    "positive_scores_clipped_to_zero_primary": true,
+    "identity_contract": "data/frozen/dockstring_identity_contract_2026-08-03.csv.gz",
+    "identity_contract_sha256": "5c5d06635cb276f543f9744487d6b8d4015432087e5f87b7875628973b8f32b3",
+    "identity_definition": "first 14 characters of the Standard InChIKey generated from the raw parsed molecule, without FragmentParent or Uncharger",
+    "kirhub_rows_excluded_from_reference": null,
+    "kirhub_exclusion_boundary": "The KiRHub supplement provides names but no structures; its remaining compounds could not be excluded by molecular identity."
+  },
+  "panels": {
+    "DAVIS": {
+      "docking_raw__experimental_raw": 0.050220665100797375,
+      "docking_raw__experimental_centered": 0.2634080839095995,
+      "docking_centered__experimental_raw": 0.2186032270904137,
+      "docking_centered__experimental_centered": 0.27979984866179414,
+      "experimental_estimand_increment_with_raw_docking": 0.21318741880880215,
+      "docking_transform_increment_with_centered_experiment": 0.016391764752194615,
+      "docking_transform_increment_with_raw_experiment": 0.16838256198961632,
+      "experimental_estimand_increment_with_centered_docking": 0.06119662157138045,
+      "two_factor_interaction_on_spearman_scale": -0.1519907972374217,
+      "path_averaged_descriptive_attribution": {
+        "experimental_estimand": 0.1371920201900913,
+        "docking_transform": 0.09238716337090547,
+        "experimental_fraction_of_total": 0.5975803993293705,
+        "docking_fraction_of_total": 0.4024196006706295,
+        "boundary": "Shapley-style averages of the two transformation orders on the Spearman scale; descriptive, not a causal or variance decomposition."
+      },
+      "matched_estimand_total_change": 0.22957918356099677,
+      "fraction_of_matched_change_before_docking_centering": 0.9286008230452676,
+      "sequential_fraction_boundary": "This fraction follows the experimental-first path and is order-dependent; the complete 2 x 2 table and path-averaged attribution must accompany it.",
+      "paired_qap_for_docking_increment": {
+        "fixed_experimental_endpoint": "two-way-centered experimental target geometry",
+        "raw_docking_concordance": 0.26340808390959947,
+        "centered_docking_concordance": 0.2797998486617941,
+        "centered_minus_raw_docking": 0.016391764752194615,
+        "permutations": 49999,
+        "one_sided_p_positive_delta": 0.33536,
+        "null_interval_95": [
+          -0.08619874293062499,
+          0.10099480813727157
+        ],
+        "null_median": -0.002507140451477735,
+        "seed": 20260806
+      },
+      "paired_qap_for_docking_increment_with_raw_experiment": {
+        "fixed_experimental_endpoint": "raw experimental target geometry",
+        "raw_docking_concordance": 0.05022066510079737,
+        "centered_docking_concordance": 0.21860322709041363,
+        "centered_minus_raw_docking": 0.16838256198961626,
+        "permutations": 49999,
+        "one_sided_p_positive_delta": 0.01512,
+        "null_interval_95": [
+          -0.15221036885407235,
+          0.1528050492723956
+        ],
+        "null_median": 0.0008100530558507943,
+        "seed": 40260806
+      },
+      "paired_qap_for_joint_matched_transition": {
+        "warning": "both docking and experimental estimands change; this is not a centering-gain estimate",
+        "raw_concordance": 0.05022066510079737,
+        "centered_concordance": 0.2797998486617941,
+        "centered_centered_minus_raw_raw": 0.2295791835609967,
+        "permutations": 49999,
+        "one_sided_p_positive_transition": 0.05254,
+        "null_interval_95": [
+          -0.26012019577740164,
+          0.2800999881903711
+        ],
+        "null_median": -0.0032944490370778595,
+        "seed": 30260806
+      }
+    },
+    "PKIS2": {
+      "docking_raw__experimental_raw": -0.21524054464258383,
+      "docking_raw__experimental_centered": 0.24349442541782032,
+      "docking_centered__experimental_raw": 0.03333027157772267,
+      "docking_centered__experimental_centered": 0.287170806597646,
+      "experimental_estimand_increment_with_raw_docking": 0.45873497006040415,
+      "docking_transform_increment_with_centered_experiment": 0.04367638117982567,
+      "docking_transform_increment_with_raw_experiment": 0.2485708162203065,
+      "experimental_estimand_increment_with_centered_docking": 0.2538405350199233,
+      "two_factor_interaction_on_spearman_scale": -0.20489443504048083,
+      "path_averaged_descriptive_attribution": {
+        "experimental_estimand": 0.35628775254016376,
+        "docking_transform": 0.14612359870006608,
+        "experimental_fraction_of_total": 0.7091554592877888,
+        "docking_fraction_of_total": 0.2908445407122112,
+        "boundary": "Shapley-style averages of the two transformation orders on the Spearman scale; descriptive, not a causal or variance decomposition."
+      },
+      "matched_estimand_total_change": 0.5024113512402298,
+      "fraction_of_matched_change_before_docking_centering": 0.9130664920846072,
+      "sequential_fraction_boundary": "This fraction follows the experimental-first path and is order-dependent; the complete 2 x 2 table and path-averaged attribution must accompany it.",
+      "paired_qap_for_docking_increment": {
+        "fixed_experimental_endpoint": "two-way-centered experimental target geometry",
+        "raw_docking_concordance": 0.2434944254178203,
+        "centered_docking_concordance": 0.28717080659764593,
+        "centered_minus_raw_docking": 0.04367638117982564,
+        "permutations": 49999,
+        "one_sided_p_positive_delta": 0.14606,
+        "null_interval_95": [
+          -0.07781513119622792,
+          0.09522829762014104
+        ],
+        "null_median": -0.002615614078827079,
+        "seed": 21260806
+      },
+      "paired_qap_for_docking_increment_with_raw_experiment": {
+        "fixed_experimental_endpoint": "raw experimental target geometry",
+        "raw_docking_concordance": -0.21524054464258377,
+        "centered_docking_concordance": 0.03333027157772266,
+        "centered_minus_raw_docking": 0.24857081622030644,
+        "permutations": 49999,
+        "one_sided_p_positive_delta": 0.00152,
+        "null_interval_95": [
+          -0.1702362363150459,
+          0.1712159106317276
+        ],
+        "null_median": -0.0003429166283947221,
+        "seed": 41260806
+      },
+      "paired_qap_for_joint_matched_transition": {
+        "warning": "both docking and experimental estimands change; this is not a centering-gain estimate",
+        "raw_concordance": -0.21524054464258377,
+        "centered_concordance": 0.28717080659764593,
+        "centered_centered_minus_raw_raw": 0.5024113512402297,
+        "permutations": 49999,
+        "one_sided_p_positive_transition": 0.0027,
+        "null_interval_95": [
+          -0.28238335804607506,
+          0.3301223390063289
+        ],
+        "null_median": -0.006307216557974341,
+        "seed": 31260806
+      }
+    },
+    "PKIS1": {
+      "docking_raw__experimental_raw": -0.1592384101615295,
+      "docking_raw__experimental_centered": 0.17278186740848633,
+      "docking_centered__experimental_raw": 0.0587148499521054,
+      "docking_centered__experimental_centered": 0.1736426581287425,
+      "experimental_estimand_increment_with_raw_docking": 0.33202027757001584,
+      "docking_transform_increment_with_centered_experiment": 0.0008607907202561604,
+      "docking_transform_increment_with_raw_experiment": 0.21795326011363492,
+      "experimental_estimand_increment_with_centered_docking": 0.11492780817663709,
+      "two_factor_interaction_on_spearman_scale": -0.21709246939337876,
+      "path_averaged_descriptive_attribution": {
+        "experimental_estimand": 0.22347404287332645,
+        "docking_transform": 0.10940702541694554,
+        "experimental_fraction_of_total": 0.6713329899508051,
+        "docking_fraction_of_total": 0.32866701004919485,
+        "boundary": "Shapley-style averages of the two transformation orders on the Spearman scale; descriptive, not a causal or variance decomposition."
+      },
+      "matched_estimand_total_change": 0.332881068290272,
+      "fraction_of_matched_change_before_docking_centering": 0.9974141193289324,
+      "sequential_fraction_boundary": "This fraction follows the experimental-first path and is order-dependent; the complete 2 x 2 table and path-averaged attribution must accompany it.",
+      "paired_qap_for_docking_increment": {
+        "fixed_experimental_endpoint": "two-way-centered experimental target geometry",
+        "raw_docking_concordance": 0.1727818674084863,
+        "centered_docking_concordance": 0.17364265812874244,
+        "centered_minus_raw_docking": 0.0008607907202561327,
+        "permutations": 49999,
+        "one_sided_p_positive_delta": 0.46218,
+        "null_interval_95": [
+          -0.08461669006722741,
+          0.10351437056865542
+        ],
+        "null_median": -0.0031037454018991648,
+        "seed": 22260806
+      },
+      "paired_qap_for_docking_increment_with_raw_experiment": {
+        "fixed_experimental_endpoint": "raw experimental target geometry",
+        "raw_docking_concordance": -0.15923841016152948,
+        "centered_docking_concordance": 0.058714849952105394,
+        "centered_minus_raw_docking": 0.21795326011363486,
+        "permutations": 49999,
+        "one_sided_p_positive_delta": 0.00536,
+        "null_interval_95": [
+          -0.17460055024122262,
+          0.17320780135329583
+        ],
+        "null_median": 0.0009587668997974863,
+        "seed": 42260806
+      },
+      "paired_qap_for_joint_matched_transition": {
+        "warning": "both docking and experimental estimands change; this is not a centering-gain estimate",
+        "raw_concordance": -0.15923841016152948,
+        "centered_concordance": 0.17364265812874244,
+        "centered_centered_minus_raw_raw": 0.3328810682902719,
+        "permutations": 49999,
+        "one_sided_p_positive_transition": 0.02162,
+        "null_interval_95": [
+          -0.30379710182961767,
+          0.3211316248737017
+        ],
+        "null_median": -0.0001434651200426934,
+        "seed": 32260806
+      }
+    },
+    "KiRHub": {
+      "docking_raw__experimental_raw": -0.029274757574564686,
+      "docking_raw__experimental_centered": 0.27611174533191624,
+      "docking_centered__experimental_raw": 0.235169949306075,
+      "docking_centered__experimental_centered": 0.32158843881081417,
+      "experimental_estimand_increment_with_raw_docking": 0.30538650290648095,
+      "docking_transform_increment_with_centered_experiment": 0.045476693478897934,
+      "docking_transform_increment_with_raw_experiment": 0.2644447068806397,
+      "experimental_estimand_increment_with_centered_docking": 0.08641848950473918,
+      "two_factor_interaction_on_spearman_scale": -0.21896801340174174,
+      "path_averaged_descriptive_attribution": {
+        "experimental_estimand": 0.19590249620561007,
+        "docking_transform": 0.15496070017976882,
+        "experimental_fraction_of_total": 0.5583443867120105,
+        "docking_fraction_of_total": 0.4416556132879895,
+        "boundary": "Shapley-style averages of the two transformation orders on the Spearman scale; descriptive, not a causal or variance decomposition."
+      },
+      "matched_estimand_total_change": 0.3508631963853789,
+      "fraction_of_matched_change_before_docking_centering": 0.8703862532536826,
+      "sequential_fraction_boundary": "This fraction follows the experimental-first path and is order-dependent; the complete 2 x 2 table and path-averaged attribution must accompany it.",
+      "paired_qap_for_docking_increment": {
+        "fixed_experimental_endpoint": "two-way-centered experimental target geometry",
+        "raw_docking_concordance": 0.2761117453319162,
+        "centered_docking_concordance": 0.3215884388108141,
+        "centered_minus_raw_docking": 0.045476693478897934,
+        "permutations": 49999,
+        "one_sided_p_positive_delta": 0.1255,
+        "null_interval_95": [
+          -0.07285613685172791,
+          0.093553517301106
+        ],
+        "null_median": -0.0035236433142192287,
+        "seed": 23260806
+      },
+      "paired_qap_for_docking_increment_with_raw_experiment": {
+        "fixed_experimental_endpoint": "raw experimental target geometry",
+        "raw_docking_concordance": -0.029274757574564682,
+        "centered_docking_concordance": 0.23516994930607496,
+        "centered_minus_raw_docking": 0.26444470688063965,
+        "permutations": 49999,
+        "one_sided_p_positive_delta": 8e-05,
+        "null_interval_95": [
+          -0.14168475289445254,
+          0.1472671206812842
+        ],
+        "null_median": -0.0009430207280854835,
+        "seed": 43260806
+      },
+      "paired_qap_for_joint_matched_transition": {
+        "warning": "both docking and experimental estimands change; this is not a centering-gain estimate",
+        "raw_concordance": -0.029274757574564682,
+        "centered_concordance": 0.3215884388108141,
+        "centered_centered_minus_raw_raw": 0.3508631963853788,
+        "permutations": 49999,
+        "one_sided_p_positive_transition": 0.01392,
+        "null_interval_95": [
+          -0.24067883495825076,
+          0.3029566936538551
+        ],
+        "null_median": -0.00904180171195878,
+        "seed": 33260806
+      }
+    }
+  },
+  "transformation_matched_independent_column_null": {
+    "null": "independently permute ligand identities within each docking-target column on one fixed reference support; preserve target marginals, variances, ties and zero clipping; derive raw and row-centred docking geometries from the identical permuted matrix while holding each experimental geometry fixed",
+    "reference_ligands_full": 259579,
+    "reference_ligands_fixed_subsample": 15000,
+    "support_sampling": "simple random sample without replacement, selected once",
+    "support_seed": 50260806,
+    "support_row_index_sha256": "8f6eec2cd6f96b9e1fcfd6228ac64480aebb1106fa3d5f1f2c5bc65ff9de397d",
+    "permutation_seed": 51260806,
+    "repeats": 2000,
+    "panels": {
+      "DAVIS": {
+        "raw_experimental_target_geometry": {
+          "full_reference_observed_raw_docking_concordance": 0.050220665100797375,
+          "full_reference_observed_centered_docking_concordance": 0.2186032270904137,
+          "full_reference_observed_centered_minus_raw_docking": 0.16838256198961632,
+          "matched_support_observed_raw_docking_concordance": 0.05166581374903227,
+          "matched_support_observed_centered_docking_concordance": 0.21415930751835963,
+          "matched_support_observed_centered_minus_raw_docking": 0.16249349376932737,
+          "null_raw_mean": 0.0019831323509471753,
+          "null_centered_mean": 0.024562494368556648,
+          "null_centered_minus_raw_mean": 0.022579362017609468,
+          "null_centered_minus_raw_median": 0.021189973187768732,
+          "null_centered_minus_raw_interval_95": [
+            -0.07243982556740892,
+            0.12081403333814451
+          ],
+          "p_observed_raw_at_least_as_large": 0.25537231384307846,
+          "p_observed_centered_at_least_as_large": 0.0004997501249375312,
+          "p_observed_gain_at_least_as_large": 0.0029985007496251873
+        },
+        "two_way_centered_experimental_target_geometry": {
+          "full_reference_observed_raw_docking_concordance": 0.2634080839095995,
+          "full_reference_observed_centered_docking_concordance": 0.27979984866179414,
+          "full_reference_observed_centered_minus_raw_docking": 0.016391764752194615,
+          "matched_support_observed_raw_docking_concordance": 0.25564522125558226,
+          "matched_support_observed_centered_docking_concordance": 0.26589073031619187,
+          "matched_support_observed_centered_minus_raw_docking": 0.010245509060609614,
+          "null_raw_mean": 0.002046997948623741,
+          "null_centered_mean": 0.028117273112974413,
+          "null_centered_minus_raw_mean": 0.02607027516435067,
+          "null_centered_minus_raw_median": 0.025947066619428163,
+          "null_centered_minus_raw_interval_95": [
+            -0.03575299505307774,
+            0.08901512069878008
+          ],
+          "p_observed_raw_at_least_as_large": 0.0009995002498750624,
+          "p_observed_centered_at_least_as_large": 0.0004997501249375312,
+          "p_observed_gain_at_least_as_large": 0.6901549225387307
+        }
+      },
+      "PKIS2": {
+        "raw_experimental_target_geometry": {
+          "full_reference_observed_raw_docking_concordance": -0.21524054464258383,
+          "full_reference_observed_centered_docking_concordance": 0.03333027157772267,
+          "full_reference_observed_centered_minus_raw_docking": 0.2485708162203065,
+          "matched_support_observed_raw_docking_concordance": -0.21251470736177272,
+          "matched_support_observed_centered_docking_concordance": 0.030331500653903526,
+          "matched_support_observed_centered_minus_raw_docking": 0.24284620801567625,
+          "null_raw_mean": 0.0017448848998587222,
+          "null_centered_mean": -0.06494383515507793,
+          "null_centered_minus_raw_mean": -0.06668872005493666,
+          "null_centered_minus_raw_median": -0.06522676674233577,
+          "null_centered_minus_raw_interval_95": [
+            -0.16979866769891572,
+            0.03619445647276996
+          ],
+          "p_observed_raw_at_least_as_large": 0.999000499750125,
+          "p_observed_centered_at_least_as_large": 0.009995002498750625,
+          "p_observed_gain_at_least_as_large": 0.0004997501249375312
+        },
+        "two_way_centered_experimental_target_geometry": {
+          "full_reference_observed_raw_docking_concordance": 0.24349442541782032,
+          "full_reference_observed_centered_docking_concordance": 0.287170806597646,
+          "full_reference_observed_centered_minus_raw_docking": 0.04367638117982567,
+          "matched_support_observed_raw_docking_concordance": 0.23627568047518446,
+          "matched_support_observed_centered_docking_concordance": 0.270376639679478,
+          "matched_support_observed_centered_minus_raw_docking": 0.03410095920429354,
+          "null_raw_mean": 0.0016783319555433091,
+          "null_centered_mean": 0.006688891513250843,
+          "null_centered_minus_raw_mean": 0.005010559557707532,
+          "null_centered_minus_raw_median": 0.004832325140950108,
+          "null_centered_minus_raw_interval_95": [
+            -0.054794228153280236,
+            0.06421656234827895
+          ],
+          "p_observed_raw_at_least_as_large": 0.001999000499750125,
+          "p_observed_centered_at_least_as_large": 0.0004997501249375312,
+          "p_observed_gain_at_least_as_large": 0.17191404297851073
+        }
+      },
+      "PKIS1": {
+        "raw_experimental_target_geometry": {
+          "full_reference_observed_raw_docking_concordance": -0.1592384101615295,
+          "full_reference_observed_centered_docking_concordance": 0.0587148499521054,
+          "full_reference_observed_centered_minus_raw_docking": 0.21795326011363492,
+          "matched_support_observed_raw_docking_concordance": -0.1612329252450498,
+          "matched_support_observed_centered_docking_concordance": 0.05386327949017396,
+          "matched_support_observed_centered_minus_raw_docking": 0.21509620473522378,
+          "null_raw_mean": 0.0023877975917105153,
+          "null_centered_mean": -0.017576157671666082,
+          "null_centered_minus_raw_mean": -0.019963955263376597,
+          "null_centered_minus_raw_median": -0.020420160348515275,
+          "null_centered_minus_raw_interval_95": [
+            -0.12211427346726328,
+            0.091332913435421
+          ],
+          "p_observed_raw_at_least_as_large": 0.9830084957521239,
+          "p_observed_centered_at_least_as_large": 0.03698150924537731,
+          "p_observed_gain_at_least_as_large": 0.0004997501249375312
+        },
+        "two_way_centered_experimental_target_geometry": {
+          "full_reference_observed_raw_docking_concordance": 0.17278186740848633,
+          "full_reference_observed_centered_docking_concordance": 0.1736426581287425,
+          "full_reference_observed_centered_minus_raw_docking": 0.0008607907202561604,
+          "matched_support_observed_raw_docking_concordance": 0.16291951519286876,
+          "matched_support_observed_centered_docking_concordance": 0.15707068718917713,
+          "matched_support_observed_centered_minus_raw_docking": -0.005848828003691631,
+          "null_raw_mean": 0.0011265213644932577,
+          "null_centered_mean": -0.003579942001600862,
+          "null_centered_minus_raw_mean": -0.004706463366094119,
+          "null_centered_minus_raw_median": -0.005035275798571471,
+          "null_centered_minus_raw_interval_95": [
+            -0.06406430561569718,
+            0.055586348069125685
+          ],
+          "p_observed_raw_at_least_as_large": 0.015992003998001,
+          "p_observed_centered_at_least_as_large": 0.004497751124437781,
+          "p_observed_gain_at_least_as_large": 0.512743628185907
+        }
+      },
+      "KiRHub": {
+        "raw_experimental_target_geometry": {
+          "full_reference_observed_raw_docking_concordance": -0.029274757574564686,
+          "full_reference_observed_centered_docking_concordance": 0.235169949306075,
+          "full_reference_observed_centered_minus_raw_docking": 0.2644447068806397,
+          "matched_support_observed_raw_docking_concordance": -0.028797123699300608,
+          "matched_support_observed_centered_docking_concordance": 0.23220092115104518,
+          "matched_support_observed_centered_minus_raw_docking": 0.2609980448503458,
+          "null_raw_mean": 0.003288231048826254,
+          "null_centered_mean": 0.029231834385265085,
+          "null_centered_minus_raw_mean": 0.02594360333643883,
+          "null_centered_minus_raw_median": 0.024419687963363912,
+          "null_centered_minus_raw_interval_95": [
+            -0.06797849772773995,
+            0.11825335590284607
+          ],
+          "p_observed_raw_at_least_as_large": 0.6776611694152923,
+          "p_observed_centered_at_least_as_large": 0.0004997501249375312,
+          "p_observed_gain_at_least_as_large": 0.0004997501249375312
+        },
+        "two_way_centered_experimental_target_geometry": {
+          "full_reference_observed_raw_docking_concordance": 0.27611174533191624,
+          "full_reference_observed_centered_docking_concordance": 0.32158843881081417,
+          "full_reference_observed_centered_minus_raw_docking": 0.045476693478897934,
+          "matched_support_observed_raw_docking_concordance": 0.2676910426152642,
+          "matched_support_observed_centered_docking_concordance": 0.3087430618430895,
+          "matched_support_observed_centered_minus_raw_docking": 0.041052019227825254,
+          "null_raw_mean": 0.0020546960770162753,
+          "null_centered_mean": 0.00364419338048437,
+          "null_centered_minus_raw_mean": 0.0015894973034680949,
+          "null_centered_minus_raw_median": 0.0015518727009495772,
+          "null_centered_minus_raw_interval_95": [
+            -0.05274232702174285,
+            0.055105433741421614
+          ],
+          "p_observed_raw_at_least_as_large": 0.0009995002498750624,
+          "p_observed_centered_at_least_as_large": 0.0004997501249375312,
+          "p_observed_gain_at_least_as_large": 0.07296351824087956
+        }
+      }
+    },
+    "inference_boundary": "Monte Carlo p-values compare each matched-support observed increment with paired null increments on that same fixed chemical support. Full-reference increments are descriptive and are not compared with the subsampled null distribution. Target-label QAP and this transformation-matched null test different hypotheses."
+  },
+  "configuration": {
+    "permutations": 49999,
+    "seed": 20260806,
+    "permutation_unit": "complete target labels",
+    "matched_null_repeats": 2000,
+    "matched_null_reference_size": 15000,
+    "matched_null_support_seed": 50260806,
+    "matched_null_permutation_seed": 51260806
+  },
+  "claim_boundary": "A raw/raw versus centered/centered transition changes predictor and endpoint simultaneously. Only raw-docking versus centered-docking comparisons against the same fixed experimental geometry isolate the docking transform on this panel; both raw and centered experimental geometries are reported. The sequential percentage is order-dependent; all four cells and the path-averaged descriptive attribution are reported. Target-label QAP asks whether the observed docking increment is tied to target identities, whereas the paired independent-column null asks whether it exceeds the increment induced mechanically by applying row centring to marginal-matched independent docking columns."
+}

@@ -1,5 +1,6 @@
 .matplotlib-cache/
 .venv/
+downloads/
 .DS_Store
 *.aux
 *.log
@@ -10,3 +11,19 @@ CLAIM.md
 FIGURE-PLAN.md
 LITERATURE.md
 OUTLINE.md
+SCIENCE_PIVOT_RESIDUAL_GEOMETRY.md
+SCIENCE_POSITIVE_RESULTS_2026-08-03.md
+RESIDUAL_SELECTIVITY_BIOLOGY_MIE.md
+analysis/pbas_*.py
+analysis/test_pbas_*.py
+analysis/sea_*.py
+analysis/test_sea_*.py
+results/pbas_*/
+results/sea_*/
+figures/pbas_*
+figures/sea_*
+data/frozen/chembl_sea_*
+# The two 190-edge target-pair geometry tables ARE distributed. They are aggregate
+# statistics over target pairs, not compound-by-target activities: see
+# DATA_LICENSES.md for the identifiability argument that fixes why releasing them
+# does not redistribute Reaction Biology's KiRHub inhibition data.

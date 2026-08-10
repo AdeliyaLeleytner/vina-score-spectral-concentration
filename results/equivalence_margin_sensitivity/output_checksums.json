@@ -1,0 +1,11 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "summary.json": {
+      "bytes": 15788,
+      "sha256": "00aa2ab8cf34103c62f910ff99abd2e13e9427037b5f6379d16c4649d26b3d96"
+    }
+  },
+  "schema_version": "1.0.0",
+  "scope": "all regular files in this result directory except this manifest"
+}

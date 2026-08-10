@@ -1,0 +1,4 @@
+representation,positive_pairs,total_pairs,roc_auc,average_precision
+raw_unprojected,15,190,0.5965714285714285,0.2355064642070323
+kinase_validation_panel_centered,15,190,0.7104761904761905,0.3014656490938134
+all_58_centered_then_extract_kinases,15,190,0.7047619047619048,0.2853341816220308

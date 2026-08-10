@@ -1,0 +1,31 @@
+{
+  "analysis_status": "science_only_post_hoc_process_validation",
+  "full_endpoint_metrics": {
+    "full_residual_correlation": {
+      "average_precision": 0.3014656490938134,
+      "roc_auc": 0.7104761904761905
+    },
+    "leading_spectral_kernel": {
+      "average_precision": 0.3163902262775297,
+      "roc_auc": 0.7413333333333333
+    },
+    "leading_unit_diagonal_correlation": {
+      "average_precision": 0.260186756622296,
+      "roc_auc": 0.7474285714285714
+    }
+  },
+  "full_ligands": 260060,
+  "full_selected_cumulative_trace_fraction": 0.5167707903328685,
+  "full_selected_k": 5,
+  "inference_boundary": "The endpoint was inspected in prior project analyses. The numerical selection rule is outcome-blind, but endpoint performance is post hoc and cannot serve as independent confirmation.",
+  "repetitions_per_size": 200,
+  "representations": {
+    "full_residual_correlation": "ordinary unit-diagonal residual target correlation",
+    "leading_spectral_kernel": "rank-k PSD reconstruction; diagonal contains retained communality and is not one",
+    "leading_unit_diagonal_correlation": "same rank-k reconstruction renormalized to unit diagonal"
+  },
+  "sampling": "simple random ligands without replacement; outcome-blind",
+  "seed": 20260813,
+  "targets": 20,
+  "trace_threshold": 0.5
+}

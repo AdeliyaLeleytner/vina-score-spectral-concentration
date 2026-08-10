@@ -1,0 +1,1529 @@
+{
+  "analysis": "nonvina_scorer_transport",
+  "analysis_status": "confirmatory_prespecified_prediction_on_fixed_poses",
+  "analysis_version": "1.0.0",
+  "bootstrap": {
+    "butina": {
+      "nnscore": {
+        "participation_ratio_increase": {
+          "interval95": [
+            3.342534847631387,
+            3.7759547484046494
+          ],
+          "median": 3.570440293778179
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9680411732463178,
+            0.977271534413521
+          ],
+          "median": 0.9729785833455162
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.20868525687560535,
+            0.24331211852096657
+          ],
+          "median": 0.22571351847061655
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            3.054474571649134,
+            3.3714405375491543
+          ],
+          "median": 3.207746325137312
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.5091099538725106,
+            0.5424339331023298
+          ],
+          "median": 0.5258971739768108
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.03765720535991672,
+            0.044943866105944676
+          ],
+          "median": 0.04097680559653895
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            6.619832924127855,
+            6.916385889644477
+          ],
+          "median": 6.778055499727296
+        }
+      },
+      "plecscore_linear": {
+        "participation_ratio_increase": {
+          "interval95": [
+            2.5735312189803006,
+            3.1181571975003606
+          ],
+          "median": 2.84496817150126
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9807233671517954,
+            0.9894624147834222
+          ],
+          "median": 0.9854564756566317
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.10703341577735338,
+            0.1344962419330935
+          ],
+          "median": 0.11992324964210938
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            4.335322899626185,
+            4.8484395962152025
+          ],
+          "median": 4.5932756554217935
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.3963907142823328,
+            0.43232921636163424
+          ],
+          "median": 0.4137015769030843
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.024364504359765685,
+            0.028328725246181047
+          ],
+          "median": 0.026236708592662722
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            7.337177024407879,
+            7.531909973057983
+          ],
+          "median": 7.438670217602329
+        }
+      },
+      "released_vina": {
+        "participation_ratio_increase": {
+          "interval95": [
+            2.174572480687585,
+            2.582814551419053
+          ],
+          "median": 2.37352488114594
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9400065100647225,
+            0.9585684806364303
+          ],
+          "median": 0.9502320505285158
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.27078164907938623,
+            0.30287018176863895
+          ],
+          "median": 0.28588665159022386
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            2.6293021760868194,
+            2.842476407477375
+          ],
+          "median": 2.7379813767304615
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.5596691076626118,
+            0.5880666354511777
+          ],
+          "median": 0.5733449232274253
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.08760594081527659,
+            0.10283943219043881
+          ],
+          "median": 0.09513397791452097
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            4.9376878674237865,
+            5.291479606348541
+          ],
+          "median": 5.1105241029161785
+        }
+      },
+      "rfscore_v1": {
+        "participation_ratio_increase": {
+          "interval95": [
+            3.879487114287556,
+            4.263856032025551
+          ],
+          "median": 4.0807856734242245
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9530044868210206,
+            0.9638211052802534
+          ],
+          "median": 0.9585786185551783
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.33396148889296023,
+            0.37554868400020663
+          ],
+          "median": 0.3551176084594488
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            2.247533628516216,
+            2.4511860552987934
+          ],
+          "median": 2.343175880656462
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.6183209716057602,
+            0.6500131627963255
+          ],
+          "median": 0.6347210940384538
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.04606137356827055,
+            0.05460224446128851
+          ],
+          "median": 0.0501118031771709
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            6.263841542610009,
+            6.576586967199575
+          ],
+          "median": 6.424466995312843
+        }
+      },
+      "rfscore_v2": {
+        "participation_ratio_increase": {
+          "interval95": [
+            3.3124481750834742,
+            3.690985754977217
+          ],
+          "median": 3.5060880983922162
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9477313263946087,
+            0.9588135326516727
+          ],
+          "median": 0.953464371171186
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.38299127681923717,
+            0.42403348571230837
+          ],
+          "median": 0.4036026129819639
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            2.0490553477640407,
+            2.214604957482144
+          ],
+          "median": 2.1282528167196184
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.6540263842548053,
+            0.6833939410920569
+          ],
+          "median": 0.6689589351378088
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.06892212484501094,
+            0.08066591931092765
+          ],
+          "median": 0.0746653471419948
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            5.4700360856109285,
+            5.801297819475952
+          ],
+          "median": 5.634427887010311
+        }
+      },
+      "rfscore_v3": {
+        "participation_ratio_increase": {
+          "interval95": [
+            3.398579861793289,
+            3.813461086081501
+          ],
+          "median": 3.612438470558449
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9503086840318969,
+            0.9614811967300302
+          ],
+          "median": 0.9561105657484613
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.32953962969924705,
+            0.370523787925883
+          ],
+          "median": 0.35019535737370544
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            2.2703249120901416,
+            2.4750317169284872
+          ],
+          "median": 2.3674473720032143
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.6137851960196358,
+            0.645326326669813
+          ],
+          "median": 0.6299559024340222
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.05778544684069211,
+            0.06871017010908796
+          ],
+          "median": 0.06313642791500607
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            5.807645511692206,
+            6.154756953900939
+          ],
+          "median": 5.979703200081751
+        }
+      },
+      "smina_vina": {
+        "participation_ratio_increase": {
+          "interval95": [
+            2.2075959391457567,
+            2.6131628322521423
+          ],
+          "median": 2.409926119817189
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9452811130612234,
+            0.9623961425399553
+          ],
+          "median": 0.9546880037286755
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.275052088437885,
+            0.30750748595834815
+          ],
+          "median": 0.29035019616436114
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            2.601111048506403,
+            2.812133800888759
+          ],
+          "median": 2.708557767873779
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.5634159571406347,
+            0.5919949642503428
+          ],
+          "median": 0.5770204138949705
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.0873362673431197,
+            0.10252786364653133
+          ],
+          "median": 0.09482388859600491
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            4.944449366352896,
+            5.298199945241698
+          ],
+          "median": 5.117733141677075
+        }
+      },
+      "vinardo": {
+        "participation_ratio_increase": {
+          "interval95": [
+            2.658363531925217,
+            3.1689845552342435
+          ],
+          "median": 2.920986601479999
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9538432052248978,
+            0.976677784726626
+          ],
+          "median": 0.9674771074709503
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.2602769341584582,
+            0.2943001761663725
+          ],
+          "median": 0.27677162426633056
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            2.683042039919434,
+            2.9199775573566122
+          ],
+          "median": 2.8000981952259054
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.5524109410116639,
+            0.5835539354662321
+          ],
+          "median": 0.5677466041826144
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.06507839606055513,
+            0.07923425470538284
+          ],
+          "median": 0.07169917936353237
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            5.5083805686384615,
+            5.918610548679087
+          ],
+          "median": 5.719393459801142
+        }
+      }
+    },
+    "butina_clusters": 1957,
+    "butina_recipe": "RDKit Butina on Morgan r=2 2048-bit Tanimoto distances, cutoff 0.35 (similarity 0.65); DOCKSTRING carries no upstream Butina column, so this recipe is stated rather than inherited",
+    "murcko": {
+      "nnscore": {
+        "participation_ratio_increase": {
+          "interval95": [
+            3.30375884757228,
+            3.814295459671553
+          ],
+          "median": 3.5618339643065298
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9674203366721588,
+            0.977438205201545
+          ],
+          "median": 0.9729260346120476
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.2062028571885489,
+            0.24599672885472942
+          ],
+          "median": 0.22543493554090732
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            3.032371750493262,
+            3.3967098278092047
+          ],
+          "median": 3.2102963659162738
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.5066524409489578,
+            0.5449899585123561
+          ],
+          "median": 0.5255505368931591
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.03751792308303265,
+            0.04493035540743442
+          ],
+          "median": 0.0410960137949589
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            6.620359249669326,
+            6.922313420399092
+          ],
+          "median": 6.773190844861939
+        }
+      },
+      "plecscore_linear": {
+        "participation_ratio_increase": {
+          "interval95": [
+            2.5709302164315333,
+            3.1071066601196393
+          ],
+          "median": 2.8482190823623106
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9803225296617468,
+            0.9894436932466385
+          ],
+          "median": 0.985473772564243
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.10725240243158195,
+            0.13357755242133829
+          ],
+          "median": 0.12015619915809572
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            4.350725702895895,
+            4.843868142951427
+          ],
+          "median": 4.5889110856481885
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.39637677153029544,
+            0.43135088377605646
+          ],
+          "median": 0.41402636408680876
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.02435333381315743,
+            0.028340517169530836
+          ],
+          "median": 0.026231009940495396
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            7.336612793694759,
+            7.532473305518097
+          ],
+          "median": 7.438950519763413
+        }
+      },
+      "released_vina": {
+        "participation_ratio_increase": {
+          "interval95": [
+            2.1573201868680205,
+            2.5818094765356756
+          ],
+          "median": 2.368791744369304
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9390689026080762,
+            0.9587110501194492
+          ],
+          "median": 0.9500103230122441
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.26229697022827414,
+            0.3140292998361431
+          ],
+          "median": 0.2844517402378592
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            2.5624713439852047,
+            2.9047477439195553
+          ],
+          "median": 2.747576550448246
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.5520042460880414,
+            0.5974413070566909
+          ],
+          "median": 0.5719827407441808
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.08725895764089409,
+            0.10320348837717831
+          ],
+          "median": 0.09505553930009597
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            4.929810706154006,
+            5.3001296742405675
+          ],
+          "median": 5.112345744987966
+        }
+      },
+      "rfscore_v1": {
+        "participation_ratio_increase": {
+          "interval95": [
+            3.838677885407095,
+            4.305783753868929
+          ],
+          "median": 4.071269926332015
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9521408801494599,
+            0.9644551961209924
+          ],
+          "median": 0.9585472170199022
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.3278504757101392,
+            0.38447486627740257
+          ],
+          "median": 0.35419925861564916
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            2.2081560337369672,
+            2.484263703688092
+          ],
+          "median": 2.347666403638316
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.6135491627782952,
+            0.6566044870858326
+          ],
+          "median": 0.6339899861854754
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.045960741869089015,
+            0.05470152028714422
+          ],
+          "median": 0.05025993027572839
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            6.2603810941653375,
+            6.580458108715569
+          ],
+          "median": 6.419037131564565
+        }
+      },
+      "rfscore_v2": {
+        "participation_ratio_increase": {
+          "interval95": [
+            3.283075653810972,
+            3.72727915927588
+          ],
+          "median": 3.4982077232073294
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9469746023282863,
+            0.9593599648609561
+          ],
+          "median": 0.9534060936723086
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.3752611166451875,
+            0.4352100984130012
+          ],
+          "median": 0.4020436975513414
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            2.008175152938226,
+            2.2488255891685314
+          ],
+          "median": 2.1345478673632066
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.6482340618875587,
+            0.6910291610841326
+          ],
+          "median": 0.6678623040903748
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.06904670267847299,
+            0.08054273937090664
+          ],
+          "median": 0.07469862622667328
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            5.473314230504921,
+            5.797573390697703
+          ],
+          "median": 5.633488929376565
+        }
+      },
+      "rfscore_v3": {
+        "participation_ratio_increase": {
+          "interval95": [
+            3.3608224435837295,
+            3.856896178478603
+          ],
+          "median": 3.6050500221250035
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9495434581158008,
+            0.9619931050367311
+          ],
+          "median": 0.956071550903415
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.32323425188591165,
+            0.38011993404018335
+          ],
+          "median": 0.34893368201565583
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            2.227193829844925,
+            2.5098483619857874
+          ],
+          "median": 2.3737498360853744
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.6087176631485738,
+            0.6524581095995377
+          ],
+          "median": 0.6289659010296518
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.05792529041550447,
+            0.0688095141124478
+          ],
+          "median": 0.06316317110664368
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            5.804668596286033,
+            6.150051738058531
+          ],
+          "median": 5.978853318622109
+        }
+      },
+      "smina_vina": {
+        "participation_ratio_increase": {
+          "interval95": [
+            2.1968629238131254,
+            2.6180384214203087
+          ],
+          "median": 2.407321938415629
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.944828071714639,
+            0.9623329666829338
+          ],
+          "median": 0.9546602118711496
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.2675969954423439,
+            0.31649358305540853
+          ],
+          "median": 0.28906491389326805
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            2.54816840653568,
+            2.8655339016896653
+          ],
+          "median": 2.716965292804134
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.5567375453825426,
+            0.5993315540958682
+          ],
+          "median": 0.575989748601984
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.08692118050145922,
+            0.1028734946297348
+          ],
+          "median": 0.09471496111086683
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            4.936949783638446,
+            5.308577450184112
+          ],
+          "median": 5.120270346306886
+        }
+      },
+      "vinardo": {
+        "participation_ratio_increase": {
+          "interval95": [
+            2.6631780067857864,
+            3.165728796318662
+          ],
+          "median": 2.9187763045486506
+        },
+        "pc1_uniform_cosine": {
+          "interval95": [
+            0.9532190641924163,
+            0.9763385526153762
+          ],
+          "median": 0.9673830887028549
+        },
+        "raw_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.2585945762555241,
+            0.29592638180353803
+          ],
+          "median": 0.27646413168284756
+        },
+        "raw_participation_ratio": {
+          "interval95": [
+            2.6726763838878584,
+            2.932783907120528
+          ],
+          "median": 2.8022428686630354
+        },
+        "raw_pc1_fraction": {
+          "interval95": [
+            0.551167560281787,
+            0.584777567584115
+          ],
+          "median": 0.5675408686786845
+        },
+        "row_centered_mean_squared_offdiagonal_correlation": {
+          "interval95": [
+            0.06458852763361479,
+            0.07965113287587218
+          ],
+          "median": 0.07164004049884885
+        },
+        "row_centered_participation_ratio": {
+          "interval95": [
+            5.49715989457272,
+            5.933903354946814
+          ],
+          "median": 5.721113549146852
+        }
+      }
+    },
+    "murcko_scaffold_clusters": 1876,
+    "replicates": 5000
+  },
+  "claim_boundary": "This is a rescoring of retained AutoDock Vina poses, not an independent re-docking: each scorer is evaluated on the pose Vina selected, so a scoring function that would have chosen a different pose during search is not simulated, and agreement with Vina here is an upper bound on the agreement a full re-docking run would show. RF-Score, NNScore and PLECscore are trained on PDBbind crystal complexes and are being applied off-distribution to docked poses; RF-Score v3 additionally takes Vina terms as input features and is therefore not scoring-function-independent. The panel is nine structurally diverse DOCKSTRING targets, which speaks to the spectral claims and not to any ranking or experimental-recovery claim. No commercial scoring function (Glide, GOLD) was tested, and no result here shows that any scorer is accurate, that the shared axis is biologically meaningful, or that the residual carries target-resolved mechanism.",
+  "falsifiable_prediction": "On an identical ligand-by-target block of fixed DOCKSTRING poses, every non-Vina scorer shows raw PC1 fraction >= 0.50, a PC1 loading vector with cosine >= 0.95 to the uniform target direction and no negative loading, a raw participation ratio <= half the target count, and a participation-ratio increase under within-ligand centring whose conservative 95% cluster-bootstrap interval excludes zero. Any scorer failing any criterion falsifies the general form of the claim for that scorer.",
+  "frozen_output_contract": {
+    "algorithm": "sha256",
+    "files_excluding_summary_and_checksum_manifest": {
+      "fixed_pose_scores.csv.gz": "8c0d10d2c31150a12dbd29ad419de65b5bc5ff902339faa7eb335987d1935e6b",
+      "scorer_spectral_metrics.csv": "29ecc126055c2c6e6a73e5e87a1a3bd9ead1f62814dd6422ee6de92caf47a789"
+    }
+  },
+  "interval_rule": "conservative union of the Bemis-Murcko-scaffold and Butina-cluster 95% bootstrap intervals, 5,000 replicates each, resampling whole clusters",
+  "manuscript_vinardo_direction_prediction": {
+    "interpretation": "The direction test uses the paired cluster-bootstrap contrast on the same ligand block, so it is not confounded by ligand sampling. A refutation concerns only the predicted DIRECTION of the Vina-to-Vinardo shift; it leaves the qualitative transport claim -- dominant near-uniform PC1, low raw PR rising under within-ligand centring -- to be judged on its own criteria.",
+    "observed_raw_participation_ratio_vinardo_minus_vina": 0.06657990251908696,
+    "observed_raw_pc1_fraction_vinardo_minus_vina": -0.006066408162891723,
+    "raw_participation_ratio_delta_ci95": [
+      -0.07679240809661383,
+      0.19481870414451102
+    ],
+    "raw_pc1_fraction_delta_ci95": [
+      -0.023879016199621798,
+      0.012928679658793464
+    ],
+    "source": "manuscript.tex, Discussion, transportability paragraph",
+    "stated_prediction": "Vinardo removes gauss2, reweights repulsion and redefines the hydrophobic and hydrogen-bond terms, so on identical poses it should show a higher raw PR and a smaller uniform PC1 fraction than Vina, while still showing the centring-induced rise.",
+    "status": "tested",
+    "verdict": "indeterminate",
+    "vinardo_raw_participation_ratio_is_higher_as_predicted": false,
+    "vinardo_raw_participation_ratio_is_lower_contradicting_prediction": false,
+    "vinardo_raw_pc1_fraction_is_larger_contradicting_prediction": false,
+    "vinardo_raw_pc1_fraction_is_smaller_as_predicted": false,
+    "vinardo_shows_the_centring_induced_rise": true
+  },
+  "metric_definitions": {
+    "pc1_uniform_cosine": "cosine between the raw PC1 loading vector (sign fixed so its sum is positive) and the uniform target vector 1/sqrt(p)",
+    "raw_mean_squared_offdiagonal_correlation": "mean of squared off-diagonal target correlations",
+    "raw_participation_ratio": "(sum of eigenvalues)^2 / sum of squared eigenvalues of the raw target correlation matrix",
+    "raw_pc1_fraction": "largest eigenvalue of the target correlation matrix divided by its trace",
+    "row_centered_participation_ratio": "same, after subtracting each ligand's mean across targets; identical to the two-way-centred residual because correlation removes column means"
+  },
+  "observed": {
+    "nnscore": {
+      "participation_ratio_increase": 3.5851615979802878,
+      "pc1_max_loading": 0.38740259544669997,
+      "pc1_min_loading": 0.13421540790674305,
+      "pc1_uniform_cosine": 0.973024961590511,
+      "raw_mean_correlation": 0.44241374194753114,
+      "raw_mean_squared_offdiagonal_correlation": 0.22551077722913357,
+      "raw_participation_ratio": 3.2096017386209272,
+      "raw_pc1_fraction": 0.5257573810676985,
+      "row_centered_mean_absolute_correlation": 0.16250339684182818,
+      "row_centered_mean_squared_offdiagonal_correlation": 0.04056868050723497,
+      "row_centered_participation_ratio": 6.794763336601215,
+      "row_centered_pc1_fraction": 0.25603442429623896,
+      "z_then_row_center_participation_ratio": 6.879489198603659
+    },
+    "plecscore_linear": {
+      "participation_ratio_increase": 2.87194018109415,
+      "pc1_max_loading": 0.3885687413344412,
+      "pc1_min_loading": 0.22347873474148133,
+      "pc1_uniform_cosine": 0.9857554956967747,
+      "raw_mean_correlation": 0.33093814023135393,
+      "raw_mean_squared_offdiagonal_correlation": 0.1199235182434469,
+      "raw_participation_ratio": 4.593270617980356,
+      "raw_pc1_fraction": 0.4140126381957506,
+      "row_centered_mean_absolute_correlation": 0.13292189006425315,
+      "row_centered_mean_squared_offdiagonal_correlation": 0.02569902649493451,
+      "row_centered_participation_ratio": 7.465210799074506,
+      "row_centered_pc1_fraction": 0.19481571224569577,
+      "z_then_row_center_participation_ratio": 7.562278042753848
+    },
+    "released_vina": {
+      "participation_ratio_increase": 2.38493387104939,
+      "pc1_max_loading": 0.40212635950871695,
+      "pc1_min_loading": 0.08196720032065337,
+      "pc1_uniform_cosine": 0.9500659103814194,
+      "raw_mean_correlation": 0.47202937718946436,
+      "raw_mean_squared_offdiagonal_correlation": 0.28564102052483603,
+      "raw_participation_ratio": 2.739619141220106,
+      "raw_pc1_fraction": 0.5731439853187308,
+      "row_centered_mean_absolute_correlation": 0.2721382677117694,
+      "row_centered_mean_squared_offdiagonal_correlation": 0.09453134201294448,
+      "row_centered_participation_ratio": 5.124553012269496,
+      "row_centered_pc1_fraction": 0.355851946262061,
+      "z_then_row_center_participation_ratio": 5.026055772428728
+    },
+    "rfscore_v1": {
+      "participation_ratio_increase": 4.099267784709097,
+      "pc1_max_loading": 0.3796148385157902,
+      "pc1_min_loading": 0.06406094270006937,
+      "pc1_uniform_cosine": 0.9586823616813316,
+      "raw_mean_correlation": 0.541177746999351,
+      "raw_mean_squared_offdiagonal_correlation": 0.35484637088920984,
+      "raw_participation_ratio": 2.3445003823103803,
+      "raw_pc1_fraction": 0.6345392431332049,
+      "row_centered_mean_absolute_correlation": 0.1803715281603792,
+      "row_centered_mean_squared_offdiagonal_correlation": 0.049587286637340466,
+      "row_centered_participation_ratio": 6.443768167019477,
+      "row_centered_pc1_fraction": 0.2681368293378603,
+      "z_then_row_center_participation_ratio": 6.677574892932688
+    },
+    "rfscore_v2": {
+      "participation_ratio_increase": 3.522057802628678,
+      "pc1_max_loading": 0.37927560116804787,
+      "pc1_min_loading": 0.0468618264003108,
+      "pc1_uniform_cosine": 0.9535457402759491,
+      "raw_mean_correlation": 0.5708582741833705,
+      "raw_mean_squared_offdiagonal_correlation": 0.4032755184162904,
+      "raw_participation_ratio": 2.12957057592338,
+      "raw_pc1_fraction": 0.6687951580830438,
+      "row_centered_mean_absolute_correlation": 0.22400828388468336,
+      "row_centered_mean_squared_offdiagonal_correlation": 0.07405767411554826,
+      "row_centered_participation_ratio": 5.651628378552058,
+      "row_centered_pc1_fraction": 0.32430010705349777,
+      "z_then_row_center_participation_ratio": 6.0016602375162265
+    },
+    "rfscore_v3": {
+      "participation_ratio_increase": 3.6295564177009974,
+      "pc1_max_loading": 0.3814999595214996,
+      "pc1_min_loading": 0.057190780841224025,
+      "pc1_uniform_cosine": 0.9562269136750033,
+      "raw_mean_correlation": 0.5340545691539115,
+      "raw_mean_squared_offdiagonal_correlation": 0.34987634807333695,
+      "raw_participation_ratio": 2.3690377601755435,
+      "raw_pc1_fraction": 0.6297732701888057,
+      "row_centered_mean_absolute_correlation": 0.20774373934244292,
+      "row_centered_mean_squared_offdiagonal_correlation": 0.0625439422371863,
+      "row_centered_participation_ratio": 5.998594177876541,
+      "row_centered_pc1_fraction": 0.30309640142259114,
+      "z_then_row_center_participation_ratio": 6.228753233916521
+    },
+    "smina_vina": {
+      "participation_ratio_increase": 2.4212043176108784,
+      "pc1_max_loading": 0.3998122803307425,
+      "pc1_min_loading": 0.09452708969622826,
+      "pc1_uniform_cosine": 0.9545510536908395,
+      "raw_mean_correlation": 0.48019243488879737,
+      "raw_mean_squared_offdiagonal_correlation": 0.290089116449047,
+      "raw_participation_ratio": 2.7102613762172574,
+      "raw_pc1_fraction": 0.5769648766815985,
+      "row_centered_mean_absolute_correlation": 0.2717127201827586,
+      "row_centered_mean_squared_offdiagonal_correlation": 0.09423560774324045,
+      "row_centered_participation_ratio": 5.131465693828136,
+      "row_centered_pc1_fraction": 0.3553416380147206,
+      "z_then_row_center_participation_ratio": 5.027697583588598
+    },
+    "vinardo": {
+      "participation_ratio_increase": 2.92997781884851,
+      "pc1_max_loading": 0.3954602734548082,
+      "pc1_min_loading": 0.15274741813197906,
+      "pc1_uniform_cosine": 0.966814373544579,
+      "raw_mean_correlation": 0.480857255780496,
+      "raw_mean_squared_offdiagonal_correlation": 0.2758981481587864,
+      "raw_participation_ratio": 2.806199043739193,
+      "raw_pc1_fraction": 0.5670775771558391,
+      "row_centered_mean_absolute_correlation": 0.2262650883975684,
+      "row_centered_mean_squared_offdiagonal_correlation": 0.07112365987831307,
+      "row_centered_participation_ratio": 5.736176862587703,
+      "row_centered_pc1_fraction": 0.3170799329469713,
+      "z_then_row_center_participation_ratio": 5.59346956687931
+    }
+  },
+  "prediction_outcome": {
+    "nnscore": {
+      "criteria": {
+        "participation_ratio_rises_under_within_ligand_centring": "lower end of the conservative 95% cluster-bootstrap interval on the participation-ratio increase is strictly positive",
+        "pc1_dominant": "raw_pc1_fraction >= 0.5",
+        "pc1_near_uniform": "cosine with the uniform target vector >= 0.95 and every PC1 loading strictly positive",
+        "raw_participation_ratio_low": "raw participation ratio <= 0.5 x number of targets (4.5)"
+      },
+      "participation_ratio_rises_under_within_ligand_centring": true,
+      "pc1_dominant": true,
+      "pc1_near_uniform": true,
+      "prediction_holds": true,
+      "raw_participation_ratio_low": true
+    },
+    "plecscore_linear": {
+      "criteria": {
+        "participation_ratio_rises_under_within_ligand_centring": "lower end of the conservative 95% cluster-bootstrap interval on the participation-ratio increase is strictly positive",
+        "pc1_dominant": "raw_pc1_fraction >= 0.5",
+        "pc1_near_uniform": "cosine with the uniform target vector >= 0.95 and every PC1 loading strictly positive",
+        "raw_participation_ratio_low": "raw participation ratio <= 0.5 x number of targets (4.5)"
+      },
+      "participation_ratio_rises_under_within_ligand_centring": true,
+      "pc1_dominant": false,
+      "pc1_near_uniform": true,
+      "prediction_holds": false,
+      "raw_participation_ratio_low": false
+    },
+    "released_vina": {
+      "criteria": {
+        "participation_ratio_rises_under_within_ligand_centring": "lower end of the conservative 95% cluster-bootstrap interval on the participation-ratio increase is strictly positive",
+        "pc1_dominant": "raw_pc1_fraction >= 0.5",
+        "pc1_near_uniform": "cosine with the uniform target vector >= 0.95 and every PC1 loading strictly positive",
+        "raw_participation_ratio_low": "raw participation ratio <= 0.5 x number of targets (4.5)"
+      },
+      "participation_ratio_rises_under_within_ligand_centring": true,
+      "pc1_dominant": true,
+      "pc1_near_uniform": true,
+      "prediction_holds": true,
+      "raw_participation_ratio_low": true
+    },
+    "rfscore_v1": {
+      "criteria": {
+        "participation_ratio_rises_under_within_ligand_centring": "lower end of the conservative 95% cluster-bootstrap interval on the participation-ratio increase is strictly positive",
+        "pc1_dominant": "raw_pc1_fraction >= 0.5",
+        "pc1_near_uniform": "cosine with the uniform target vector >= 0.95 and every PC1 loading strictly positive",
+        "raw_participation_ratio_low": "raw participation ratio <= 0.5 x number of targets (4.5)"
+      },
+      "participation_ratio_rises_under_within_ligand_centring": true,
+      "pc1_dominant": true,
+      "pc1_near_uniform": true,
+      "prediction_holds": true,
+      "raw_participation_ratio_low": true
+    },
+    "rfscore_v2": {
+      "criteria": {
+        "participation_ratio_rises_under_within_ligand_centring": "lower end of the conservative 95% cluster-bootstrap interval on the participation-ratio increase is strictly positive",
+        "pc1_dominant": "raw_pc1_fraction >= 0.5",
+        "pc1_near_uniform": "cosine with the uniform target vector >= 0.95 and every PC1 loading strictly positive",
+        "raw_participation_ratio_low": "raw participation ratio <= 0.5 x number of targets (4.5)"
+      },
+      "participation_ratio_rises_under_within_ligand_centring": true,
+      "pc1_dominant": true,
+      "pc1_near_uniform": true,
+      "prediction_holds": true,
+      "raw_participation_ratio_low": true
+    },
+    "rfscore_v3": {
+      "criteria": {
+        "participation_ratio_rises_under_within_ligand_centring": "lower end of the conservative 95% cluster-bootstrap interval on the participation-ratio increase is strictly positive",
+        "pc1_dominant": "raw_pc1_fraction >= 0.5",
+        "pc1_near_uniform": "cosine with the uniform target vector >= 0.95 and every PC1 loading strictly positive",
+        "raw_participation_ratio_low": "raw participation ratio <= 0.5 x number of targets (4.5)"
+      },
+      "participation_ratio_rises_under_within_ligand_centring": true,
+      "pc1_dominant": true,
+      "pc1_near_uniform": true,
+      "prediction_holds": true,
+      "raw_participation_ratio_low": true
+    },
+    "smina_vina": {
+      "criteria": {
+        "participation_ratio_rises_under_within_ligand_centring": "lower end of the conservative 95% cluster-bootstrap interval on the participation-ratio increase is strictly positive",
+        "pc1_dominant": "raw_pc1_fraction >= 0.5",
+        "pc1_near_uniform": "cosine with the uniform target vector >= 0.95 and every PC1 loading strictly positive",
+        "raw_participation_ratio_low": "raw participation ratio <= 0.5 x number of targets (4.5)"
+      },
+      "participation_ratio_rises_under_within_ligand_centring": true,
+      "pc1_dominant": true,
+      "pc1_near_uniform": true,
+      "prediction_holds": true,
+      "raw_participation_ratio_low": true
+    },
+    "vinardo": {
+      "criteria": {
+        "participation_ratio_rises_under_within_ligand_centring": "lower end of the conservative 95% cluster-bootstrap interval on the participation-ratio increase is strictly positive",
+        "pc1_dominant": "raw_pc1_fraction >= 0.5",
+        "pc1_near_uniform": "cosine with the uniform target vector >= 0.95 and every PC1 loading strictly positive",
+        "raw_participation_ratio_low": "raw participation ratio <= 0.5 x number of targets (4.5)"
+      },
+      "participation_ratio_rises_under_within_ligand_centring": true,
+      "pc1_dominant": true,
+      "pc1_near_uniform": true,
+      "prediction_holds": true,
+      "raw_participation_ratio_low": true
+    }
+  },
+  "prediction_summary": {
+    "fraction_non_vina_supporting": 0.8333333333333334,
+    "non_vina_scorers_failing_each_criterion": {
+      "participation_ratio_rises_under_within_ligand_centring": [],
+      "pc1_dominant": [
+        "plecscore_linear"
+      ],
+      "pc1_near_uniform": [],
+      "raw_participation_ratio_low": [
+        "plecscore_linear"
+      ]
+    },
+    "non_vina_scorers_falsifying_the_prediction": [
+      "plecscore_linear"
+    ],
+    "non_vina_scorers_supporting_the_prediction": [
+      "vinardo",
+      "rfscore_v1",
+      "rfscore_v2",
+      "rfscore_v3",
+      "nnscore"
+    ]
+  },
+  "question": "Conditional on the identical Vina-selected DOCKSTRING poses, do the tested empirical and learned scorers retain a dominant shared ligand axis and a participation-ratio increase after within-ligand centring?",
+  "reproducibility_boundary": {
+    "generalization_limit": "Agreement across these rescored columns is conditional on Vina pose selection and cannot establish transport to independent re-docking, commercial scorers, new targets, pose accuracy or affinity accuracy.",
+    "independent_redocking_per_scorer": false,
+    "pose_selection": "top poses selected by AutoDock Vina and held fixed",
+    "source_restricted_oddt_stage": {
+      "environment": "Python 3.9 with ODDT 0.7; separate from the release Python environment",
+      "redistributed": false,
+      "requires": "external Figshare pose archives, Dockstring receptors, PDBbind-derived ODDT training tables/models and analysis/nonvina_scorer_oddt_worker.py"
+    },
+    "source_restricted_smina_stage": {
+      "environment": "external smina executable identified by SHA-256 and version",
+      "redistributed": false,
+      "requires": "external Figshare pose archives and Dockstring receptors"
+    },
+    "standard_release_stage": {
+      "environment": "release Python environment pinned by requirements-lock.txt",
+      "inputs": [
+        "results/nonvina_scorer_transport/fixed_pose_scores.csv.gz",
+        "results/nonvina_scorer_transport/scorer_spectral_metrics.csv"
+      ],
+      "scope": "verification and downstream reporting from frozen scores"
+    }
+  },
+  "reproduction": {
+    "command": "analysis/nonvina_scorer_transport.py --sample-size 2000 --workers 6, run with the release .venv interpreter",
+    "external_requirements": {
+      "oddt_interpreter": "external-not-redistributed/python",
+      "pose_archives": "Figshare DOI 10.6084/m9.figshare.16511577.v1, MD5-verified at run time",
+      "receptors": "dockstring package resources/targets/*_target.pdbqt",
+      "smina_binary": "external-not-redistributed/smina"
+    },
+    "not_in_make_all": "This analysis is deliberately outside the `make PYTHON=.venv/bin/python all` target because it needs three things the release bundle does not carry: the ~600 MB DOCKSTRING pose archives, an ODDT 0.7 environment on Python 3.9, and a smina binary. Its outputs are versioned instead, exactly as for the other source-restricted upstream analyses."
+  },
+  "scorer_notes": {
+    "nnscore": "NNScore 2.0: ensemble of neural networks over 350 BINANA descriptors.",
+    "plecscore_linear": "PLECscore linear, applied from the pretrained coefficients shipped with ODDT. Those coefficients carry intercept_ = 0, so absolute PLECscore values are offset from the pKd scale; every statistic reported here is correlation-based and is invariant to a per-column constant shift.",
+    "released_vina": "AutoDock Vina 1.1.2 score released with DOCKSTRING; the reference column and the score whose pose every other column is evaluated on.",
+    "rfscore_v1": "Random forest over 36 element-pair close-contact counts within 12 A.",
+    "rfscore_v2": "RF-Score v1 contacts binned over multiple distance shells.",
+    "rfscore_v3": "RF-Score v1 contacts PLUS the AutoDock Vina intermolecular terms as extra features. It is therefore NOT Vina-independent and is reported as a graded intermediate between the Vina family and the contact-only models.",
+    "smina_vina": "smina's re-implementation of the Vina function. Not an independent scoring function: it is here only as a same-program control, so that any Vinardo-versus-Vina difference cannot be attributed to the change of executable.",
+    "vinardo": "Vinardo drops Vina's gauss2 term, reweights repulsion and redefines the hydrophobic and hydrogen-bond terms; it is a genuinely different empirical function evaluated by the same program as smina_vina."
+  },
+  "seeds": {
+    "butina_cluster_bootstrap_seed": 20260806,
+    "dockstring_primary_support_seed": 71,
+    "ligand_subset_seed": 20260802,
+    "murcko_cluster_bootstrap_seed": 20260805,
+    "oddt_internal_training_seed": 1
+  },
+  "shared_axis_agreement": {
+    "nnscore": {
+      "spearman_ligand_axis_vs_heavy_atoms": 0.6393952819614391,
+      "spearman_residual_rms_vs_heavy_atoms": 0.0984448296246516,
+      "spearman_with_released_vina_ligand_axis": 0.368131264300874
+    },
+    "plecscore_linear": {
+      "spearman_ligand_axis_vs_heavy_atoms": 0.3669313630283005,
+      "spearman_residual_rms_vs_heavy_atoms": 0.5389213241818859,
+      "spearman_with_released_vina_ligand_axis": 0.3170731790771676
+    },
+    "released_vina": {
+      "spearman_ligand_axis_vs_heavy_atoms": 0.4529887922104136,
+      "spearman_residual_rms_vs_heavy_atoms": 0.20188844976992193,
+      "spearman_with_released_vina_ligand_axis": 1.0
+    },
+    "rfscore_v1": {
+      "spearman_ligand_axis_vs_heavy_atoms": 0.5395772401911618,
+      "spearman_residual_rms_vs_heavy_atoms": 0.024685507402724956,
+      "spearman_with_released_vina_ligand_axis": 0.42520950734135304
+    },
+    "rfscore_v2": {
+      "spearman_ligand_axis_vs_heavy_atoms": 0.6887910766354245,
+      "spearman_residual_rms_vs_heavy_atoms": 0.15940710493554724,
+      "spearman_with_released_vina_ligand_axis": 0.5072337939367224
+    },
+    "rfscore_v3": {
+      "spearman_ligand_axis_vs_heavy_atoms": 0.7061461070799089,
+      "spearman_residual_rms_vs_heavy_atoms": 0.27679122690241875,
+      "spearman_with_released_vina_ligand_axis": 0.5063998165637518
+    },
+    "smina_vina": {
+      "spearman_ligand_axis_vs_heavy_atoms": 0.44239558240505056,
+      "spearman_residual_rms_vs_heavy_atoms": 0.20801120379698848,
+      "spearman_with_released_vina_ligand_axis": 0.9616262130490372
+    },
+    "vinardo": {
+      "spearman_ligand_axis_vs_heavy_atoms": 0.4563372370021903,
+      "spearman_residual_rms_vs_heavy_atoms": 0.2808735392301691,
+      "spearman_with_released_vina_ligand_axis": 0.7574617927944011
+    }
+  },
+  "smina_vina_reproduction_check": {
+    "minimum_pearson_r": 0.9753087749240246,
+    "per_target_pearson_r": {
+      "ACHE": 0.9792852409917439,
+      "ADORA2A": 0.9782077918780727,
+      "ADRB1": 0.9808126455383535,
+      "ADRB2": 0.9810579405685247,
+      "AR": 0.984323803005126,
+      "DRD2": 0.9821045225922747,
+      "LCK": 0.9753087749240246,
+      "NR3C1": 0.9845223659304108,
+      "PTGS2": 0.9777845943381331
+    },
+    "purpose": "smina re-implements the Vina function, so smina_vina rescored on the released pose must reproduce the released DOCKSTRING score; this also verifies that the order-based alignment of smina output to ligand keys is correct."
+  },
+  "status": "complete_with_at_least_one_scorer_failing_the_prediction",
+  "support": {
+    "clipping": "no clip(upper=0) is applied: the comparison is across scorers on one block, and clipping only the Vina-family columns would be asymmetric",
+    "ligand_source": "the frozen 15,000-ligand DOCKSTRING primary support (seed 71) used throughout this package, sub-sampled with seed 20260802 exactly as in analysis/dockstring_vina_term_decomposition.py",
+    "ligands_dropped_for_missing_pose": 0,
+    "n_cells": 18000,
+    "n_ligands": 2000,
+    "n_non_vina_scorers": 6,
+    "n_scorers": 8,
+    "n_targets": 9,
+    "non_vina_scorers": [
+      "vinardo",
+      "rfscore_v1",
+      "rfscore_v2",
+      "rfscore_v3",
+      "nnscore",
+      "plecscore_linear"
+    ],
+    "pose_source": "released DOCKSTRING pose archives (Figshare DOI 10.6084/m9.figshare.16511577.v1); the top Vina pose per ligand-target cell, held fixed across all scorers",
+    "released_scores_above_zero": 3,
+    "requested_sample_size": 2000,
+    "scorers": [
+      "released_vina",
+      "smina_vina",
+      "vinardo",
+      "rfscore_v1",
+      "rfscore_v2",
+      "rfscore_v3",
+      "nnscore",
+      "plecscore_linear"
+    ],
+    "targets": [
+      "NR3C1",
+      "ADRB2",
+      "ADRB1",
+      "ADORA2A",
+      "AR",
+      "PTGS2",
+      "ACHE",
+      "DRD2",
+      "LCK"
+    ]
+  },
+  "toolchain": {
+    "analysis_interpreter": "3.12.11 (main, Jun  4 2025, 17:42:58) [Clang 20.1.4 ]",
+    "analysis_interpreter_executable": "external-not-redistributed/python",
+    "numpy_version": "1.26.4",
+    "oddt_stage": {
+      "interpreter": "3.9.23 | packaged by conda-forge | (main, Jun  4 2025, 18:02:02) \n[Clang 18.1.8 ]",
+      "interpreter_executable": "external-not-redistributed/python",
+      "model_provenance": {
+        "nnscore": {
+          "core_set_complexes": 290,
+          "core_set_pearson_r": 0.8192756336641651,
+          "model_pickle_sha256": "5acb21881ae5ece220b5a90046ee446d3bf5f0d9c42b1f3dc3bfb0d2d3e834b7",
+          "oddt_internal_training_seed": 1,
+          "pdbbind_version": 2016,
+          "score_title": "nnscore",
+          "train_complexes": 3767,
+          "trained_in_this_run": true,
+          "training_table": "nnscore_descs.csv",
+          "training_table_sha256": "e3919a4d878d9f10668f904db8968f3c4b71444a545c3ef4b1418838a9abf1e0"
+        },
+        "plecscore_linear": {
+          "core_set_pearson_note": "PLECscore ships pretrained linear coefficients but not its PDBbind descriptor table, so no offline hold-out check is possible.",
+          "core_set_pearson_r": null,
+          "model_pickle_sha256": "e0dc7c68bcfa93c777fefbcdcf8e54da5e0d0ae7a69d0171d303252dc4165346",
+          "oddt_internal_training_seed": 1,
+          "pdbbind_version": 2016,
+          "pretrained_coefficients": "plecscore_linear_p5_l1_s65536_pdbbind2016.json",
+          "pretrained_coefficients_sha256": "319a5041544becb262b65b616d787c0237bd463265a356e1d069830da19ab728",
+          "score_title": "PLEClinear_p5_l1_s65536",
+          "trained_in_this_run": true
+        },
+        "rfscore_v1": {
+          "core_set_complexes": 290,
+          "core_set_pearson_r": 0.7883734406291424,
+          "model_pickle_sha256": "6d8c9c04a6cb072f42d211f185dfc2075f9f8a76d6bd2f7138000e403bf9ac37",
+          "oddt_internal_training_seed": 1,
+          "pdbbind_version": 2016,
+          "score_title": "rfscore_v1",
+          "train_complexes": 3767,
+          "trained_in_this_run": true,
+          "training_table": "rfscore_descs_v1.csv",
+          "training_table_sha256": "1c1fbf6b1b75755b70b7fdeb9902f91c14e6cff2c461e74ca8488e68b3e7de01"
+        },
+        "rfscore_v2": {
+          "core_set_complexes": 290,
+          "core_set_pearson_r": 0.808890291741432,
+          "model_pickle_sha256": "62b8f6b1a6a407dd4e7eb2be433ce4b60309dfbeda5cde965a2065b59e5487ee",
+          "oddt_internal_training_seed": 1,
+          "pdbbind_version": 2016,
+          "score_title": "rfscore_v2",
+          "train_complexes": 3767,
+          "trained_in_this_run": true,
+          "training_table": "rfscore_descs_v2.csv",
+          "training_table_sha256": "2d1ae3e84dfeb48f229c4b9c3d1af489d549b74fffb938ece76951a5417bab2b"
+        },
+        "rfscore_v3": {
+          "core_set_complexes": 290,
+          "core_set_pearson_r": 0.7966426103635891,
+          "model_pickle_sha256": "a2c0d566601293d439a23f5dcb9e8f1493472b8399497a71e76f817c0b11f84c",
+          "oddt_internal_training_seed": 1,
+          "pdbbind_version": 2016,
+          "score_title": "rfscore_v3",
+          "train_complexes": 3767,
+          "trained_in_this_run": true,
+          "training_table": "rfscore_descs_v3.csv",
+          "training_table_sha256": "7e3af86524b1ade22d903b8534f2462781f419196869847c257dba91ff7fdf58"
+        }
+      },
+      "numpy_version": "1.26.4",
+      "oddt_toolkit": "rdk",
+      "oddt_version": "0.7",
+      "per_target": {
+        "ACHE": {
+          "n_poses": 2000,
+          "protein_atoms": 3474,
+          "receptor_sha256": "57a1b1e352f82f11f94030979b85e66435c60c7e374b911dfecc5063f61d575a"
+        },
+        "ADORA2A": {
+          "n_poses": 2000,
+          "protein_atoms": 2246,
+          "receptor_sha256": "e5ec8b58335119bde92035913961430c076d7879dbc09cfef332620bc68bc36e"
+        },
+        "ADRB1": {
+          "n_poses": 2000,
+          "protein_atoms": 2195,
+          "receptor_sha256": "43b3c96f0c4680f112097b1de459fe0894e58cee47367ef6abe8349fd3d320ce"
+        },
+        "ADRB2": {
+          "n_poses": 2000,
+          "protein_atoms": 1852,
+          "receptor_sha256": "6be07396930aac871d6d93a16623bc8d6cb4c61312735db2c33f912c90b68989"
+        },
+        "AR": {
+          "n_poses": 2000,
+          "protein_atoms": 1878,
+          "receptor_sha256": "bec8384e9af82860a8e757f4d3e928fcd075754fa36c3f4cb5ba8b9dcc1670f8"
+        },
+        "DRD2": {
+          "n_poses": 2000,
+          "protein_atoms": 3368,
+          "receptor_sha256": "47b7489c01a0c6b189c4952c7be671b2c54a03263251abb5542445d3bc97576a"
+        },
+        "LCK": {
+          "n_poses": 2000,
+          "protein_atoms": 2061,
+          "receptor_sha256": "365c5594742e5691dff7ea1ea9aa5b0fb3d25c5011fe5b0044865573b97cb4d0"
+        },
+        "NR3C1": {
+          "n_poses": 2000,
+          "protein_atoms": 2010,
+          "receptor_sha256": "ef285d1dcfe0bdce4f745f07b89f164c2f720fefa72135e8005b008b8c2875d0"
+        },
+        "PTGS2": {
+          "n_poses": 2000,
+          "protein_atoms": 4441,
+          "receptor_sha256": "b95b049130dea2c32f27cbee4d9d971afb9717d2db0de7a70038b0a3e07ed346"
+        }
+      },
+      "receptor_reader": "oddt.toolkit.readstring('pdbqt', ..., sanitize=False) followed by Chem.SanitizeMol(sanitizeOps=SANITIZE_ALL ^ SANITIZE_PROPERTIES); applied uniformly to all targets because the DRD2 receptor fails the RDKit valence check, and verified bit-identical to the default reader where the default reader succeeds",
+      "scipy_compatibility_patch": {
+        "numeric_effect": "none; the iterator is materialised into a list before stacking",
+        "patched_symbols": [
+          "oddt.scoring.sparse_vstack",
+          "oddt.scoring.descriptors.sparse_vstack"
+        ],
+        "reason": "scipy.sparse.vstack no longer accepts a map object",
+        "scipy_version": "1.13.1"
+      },
+      "scorers": [
+        "rfscore_v1",
+        "rfscore_v2",
+        "rfscore_v3",
+        "nnscore",
+        "plecscore_linear"
+      ],
+      "targets": [
+        "NR3C1",
+        "ADRB2",
+        "ADRB1",
+        "ADORA2A",
+        "AR",
+        "PTGS2",
+        "ACHE",
+        "DRD2",
+        "LCK"
+      ],
+      "workers": 6
+    },
+    "pandas_version": "2.3.2",
+    "platform": "macOS-15.7.3-arm64-arm-64bit",
+    "pose_manifest": {
+      "ACHE": {
+        "archive": "external-not-redistributed/dockstring_ACHE.sdf.xz",
+        "archive_md5": "edc3b91759d2bfffb81960b157c3dac2",
+        "expected_archive_md5": "edc3b91759d2bfffb81960b157c3dac2",
+        "pose_sdf_sha256": "cce5ac6866b4df84e7e9d1b20bbecaac221679900d360c558a63503c9bb908b9",
+        "records_found": 2000,
+        "records_scanned": 260149
+      },
+      "ADORA2A": {
+        "archive": "external-not-redistributed/dockstring_ADORA2A.sdf.xz",
+        "archive_md5": "2f24eed4245e23b415a6acea757138f6",
+        "expected_archive_md5": "2f24eed4245e23b415a6acea757138f6",
+        "pose_sdf_sha256": "eb72dbfe62e3834974531df4ad36229762e97eef65f4e3bc18b18fa1f675f254",
+        "records_found": 2000,
+        "records_scanned": 260146
+      },
+      "ADRB1": {
+        "archive": "external-not-redistributed/dockstring_ADRB1.sdf.xz",
+        "archive_md5": "914ac7c3b100e731f04746476a6bf4ec",
+        "expected_archive_md5": "914ac7c3b100e731f04746476a6bf4ec",
+        "pose_sdf_sha256": "4bc9fda60c275cd4e65283591f6b786deeb74fde49918d206d1fbf2beefac062",
+        "records_found": 2000,
+        "records_scanned": 260150
+      },
+      "ADRB2": {
+        "archive": "external-not-redistributed/dockstring_ADRB2.sdf.xz",
+        "archive_md5": "d93ab68c4bfd32c5c3c9359e7e96f239",
+        "expected_archive_md5": "d93ab68c4bfd32c5c3c9359e7e96f239",
+        "pose_sdf_sha256": "d1014568df10e20fb3093a720957e4a521f6916bdd812a6f3336de6fb9ce0805",
+        "records_found": 2000,
+        "records_scanned": 260149
+      },
+      "AR": {
+        "archive": "external-not-redistributed/dockstring_AR.sdf.xz",
+        "archive_md5": "6c782e184a2de5a762fa7385452d0c2c",
+        "expected_archive_md5": "6c782e184a2de5a762fa7385452d0c2c",
+        "pose_sdf_sha256": "cf33b15f15c8c67e9fdcc959254dfe3fdd1dfdb6214894be9747e6c85f47ce46",
+        "records_found": 2000,
+        "records_scanned": 260149
+      },
+      "DRD2": {
+        "archive": "external-not-redistributed/dockstring_DRD2.sdf.xz",
+        "archive_md5": "96712bd62173e274367b2bb150b670ac",
+        "expected_archive_md5": "96712bd62173e274367b2bb150b670ac",
+        "pose_sdf_sha256": "8417b1be306be6436c2a5aeb2e6837a328293c4c3a77bee67a2da9812cf08503",
+        "records_found": 2000,
+        "records_scanned": 260150
+      },
+      "LCK": {
+        "archive": "external-not-redistributed/dockstring_LCK.sdf.xz",
+        "archive_md5": "49229ce457f578763dfe7c9b58b6462b",
+        "expected_archive_md5": "49229ce457f578763dfe7c9b58b6462b",
+        "pose_sdf_sha256": "502ac172ced23d6a8e0bf5d12ace7c55ced956623a69cf7e3062b13f38ea4a64",
+        "records_found": 2000,
+        "records_scanned": 260151
+      },
+      "NR3C1": {
+        "archive": "external-not-redistributed/dockstring_NR3C1.sdf.xz",
+        "archive_md5": "d5dfaa591ded3a5cf66c87fb9996ef81",
+        "expected_archive_md5": "d5dfaa591ded3a5cf66c87fb9996ef81",
+        "pose_sdf_sha256": "26ca934e47b0293546d88d5cd34f0281158eec9160225cab035310e759d0b57e",
+        "records_found": 2000,
+        "records_scanned": 260147
+      },
+      "PTGS2": {
+        "archive": "external-not-redistributed/dockstring_PTGS2.sdf.xz",
+        "archive_md5": "c774ede532ce42643a2b65c39d456500",
+        "expected_archive_md5": "c774ede532ce42643a2b65c39d456500",
+        "pose_sdf_sha256": "df15f52a940ed4534f68eaba8367b17b425590c26d6464444ac5d79c6aa7fcb2",
+        "records_found": 2000,
+        "records_scanned": 260150
+      }
+    },
+    "rdkit_version": "2025.03.6",
+    "scipy_version": "1.16.2",
+    "smina_stage": {
+      "alignment_rule": "smina --score_only does not echo SDF data tags, so scores are aligned to the input SDF record order; the per-target count is asserted and the smina_vina column is cross-checked against the released DOCKSTRING score.",
+      "binary": "external-not-redistributed/smina",
+      "binary_sha256": "b69020914f01a2a07b2adfef96ee211ab851100712e98877141311f7f1a98ce8",
+      "scoring_arguments": {
+        "smina_vina": "vina",
+        "vinardo": "vinardo"
+      },
+      "seconds_by_target": {
+        "smina_vina/ACHE": 1.9168552089831792,
+        "smina_vina/ADORA2A": 1.7515185420052148,
+        "smina_vina/ADRB1": 1.7745731250033714,
+        "smina_vina/ADRB2": 1.7366984170221258,
+        "smina_vina/AR": 1.687082292017294,
+        "smina_vina/DRD2": 1.9251498749945313,
+        "smina_vina/LCK": 1.7263323339866474,
+        "smina_vina/NR3C1": 1.9470052500255406,
+        "smina_vina/PTGS2": 2.0755126670119353,
+        "vinardo/ACHE": 1.8816688749939203,
+        "vinardo/ADORA2A": 1.781424832995981,
+        "vinardo/ADRB1": 1.738787082984345,
+        "vinardo/ADRB2": 1.7490551249939017,
+        "vinardo/AR": 1.6601775420131162,
+        "vinardo/DRD2": 1.9057531250000466,
+        "vinardo/LCK": 1.711321709008189,
+        "vinardo/NR3C1": 1.7236242920043878,
+        "vinardo/PTGS2": 2.0495075839862693
+      },
+      "version_string": "smina 2020.12.10 conda-forge:b08c07c   Built Jul 15 2025.  Based on AutoDock Vina 1.1.2."
+    }
+  }
+}

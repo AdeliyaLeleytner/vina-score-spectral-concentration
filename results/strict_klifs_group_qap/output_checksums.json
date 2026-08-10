@@ -1,0 +1,27 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "README.md": {
+      "bytes": 4874,
+      "sha256": "7b646f95cfb70d1c248b2f112856c0fae2f1e066d377f84dfb483a671f077809"
+    },
+    "exchangeability_blocks.csv": {
+      "bytes": 314,
+      "sha256": "74d0384ce75d4afaecd5070ba4cdd4872db5f8263dbd0241e482eef10a03b04a"
+    },
+    "pair_strata.csv": {
+      "bytes": 440,
+      "sha256": "bfd92beabc32d3c339b940f0b8e0decea102c7cc93c4a88965146f55e0e1123b"
+    },
+    "restricted_partial_qap.csv": {
+      "bytes": 5455,
+      "sha256": "c77a74f49b273874cd795fbd42abc73b59ce845ce1fda60ccdabcd951b8932bc"
+    },
+    "summary.json": {
+      "bytes": 10165,
+      "sha256": "f66006d0904cec7f8af023463cd45a07d3696ddfee873704c8c177f8c2067592"
+    }
+  },
+  "schema_version": "1.0.0",
+  "scope": "all regular files in this result directory except this manifest"
+}

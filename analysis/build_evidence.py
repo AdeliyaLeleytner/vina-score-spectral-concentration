@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Build the evidence ledger for the Journal of Cheminformatics paper.
+"""Deprecated legacy evidence builder; direct execution is disabled.
+
+The current release builder is ``analysis/build_manuscript_evidence.py``.
+This module is retained only to keep its historical analysis helpers readable.
 
 The script deliberately keeps three objects separate:
 
@@ -13,6 +16,7 @@ different estimand and is not submission-ready.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import warnings
@@ -138,6 +142,66 @@ def rank_summary_from_eigenvalues(eig: np.ndarray, shape: tuple[int, int]) -> di
     }
 
 
+def covariance_rank_summary(x: np.ndarray) -> dict:
+    """Effective-dimension summaries without target-wise variance equalisation."""
+    x = np.asarray(x, dtype=np.float64)
+    covariance = np.cov(x, rowvar=False, ddof=1)
+    eig = np.clip(np.linalg.eigvalsh(covariance)[::-1], 0.0, None)
+    weights = eig / eig.sum()
+    positive = weights[weights > 0]
+    cumulative = np.cumsum(weights)
+    target_sd = x.std(axis=0, ddof=1)
+    return {
+        "n_ligands": int(x.shape[0]),
+        "n_targets": int(x.shape[1]),
+        "participation_ratio": float(eig.sum() ** 2 / np.square(eig).sum()),
+        "entropy_rank": float(np.exp(-np.sum(positive * np.log(positive)))),
+        "pc1_fraction": float(weights[0]),
+        "pcs_for_80pct": int(np.searchsorted(cumulative, 0.80) + 1),
+        "pcs_for_90pct": int(np.searchsorted(cumulative, 0.90) + 1),
+        "trace": float(eig.sum()),
+        "target_standard_deviation": {
+            "minimum": float(target_sd.min()),
+            "median": float(np.median(target_sd)),
+            "maximum": float(target_sd.max()),
+            "coefficient_of_variation": float(target_sd.std(ddof=1) / target_sd.mean()),
+        },
+        "eigenvalues": [float(value) for value in eig],
+    }
+
+
+def correlation_covariance_sensitivity(x: np.ndarray) -> dict:
+    """Compare equal-target-variance and score-scale spectral estimands."""
+    x = np.asarray(x, dtype=np.float64)
+    residual = two_way_center(x)
+    p = x.shape[1]
+    raw_ceiling = min(x.shape[0] - 1, p)
+    residual_ceiling = min(x.shape[0] - 1, p - 1)
+    correlation = {"raw": rank_summary(x), "residual": rank_summary(residual)}
+    covariance = {
+        "raw": covariance_rank_summary(x),
+        "residual": covariance_rank_summary(residual),
+    }
+    for estimand in (correlation, covariance):
+        estimand["raw"]["algebraic_ceiling"] = int(raw_ceiling)
+        estimand["residual"]["algebraic_ceiling"] = int(residual_ceiling)
+        estimand["raw"]["dimension_fraction_of_ceiling"] = (
+            estimand["raw"]["participation_ratio"] / raw_ceiling
+        )
+        estimand["residual"]["dimension_fraction_of_ceiling"] = (
+            estimand["residual"]["participation_ratio"] / residual_ceiling
+        )
+    return {
+        "correlation": correlation,
+        "covariance": covariance,
+        "interpretation": (
+            "The correlation spectrum is primary because it gives every target equal variance. "
+            "The covariance spectrum retains target-specific score variance; its participation "
+            "ratio is invariant only to a single global multiplicative rescaling."
+        ),
+    }
+
+
 def centering_ladder(x: np.ndarray) -> dict:
     x = np.asarray(x, dtype=np.float64)
     interaction = two_way_center(x)
@@ -161,6 +225,8 @@ def pc1_loading_summary(
     if loading.mean() < 0:
         loading = -loading
     scores = z @ loading
+    uniform = np.ones(len(loading), dtype=np.float64) / np.sqrt(len(loading))
+    uniform_cosine = float(np.dot(loading, uniform))
     return {
         "targets": list(target_names),
         "families": list(families),
@@ -169,6 +235,14 @@ def pc1_loading_summary(
         "maximum_loading": float(loading.max()),
         "n_positive_loadings": int(np.sum(loading > 0)),
         "n_negative_loadings": int(np.sum(loading < 0)),
+        "cosine_with_uniform_target_vector": uniform_cosine,
+        "squared_cosine_with_uniform_target_vector": uniform_cosine ** 2,
+        "angle_from_uniform_target_vector_degrees": float(
+            np.degrees(np.arccos(np.clip(uniform_cosine, -1.0, 1.0)))
+        ),
+        "loading_coefficient_of_variation": float(
+            loading.std(ddof=1) / loading.mean()
+        ),
         "pc1_eigenvalue": float(eigenvalues[-1]),
         "correlation_with_raw_per_ligand_mean": float(
             stats.pearsonr(scores, matrix.mean(axis=1)).statistic
@@ -204,6 +278,175 @@ def molecular_descriptor_frame(smiles: pd.Series) -> pd.DataFrame:
             "ring_count": float(rdMolDescriptors.CalcNumRings(molecule)),
         })
     return pd.DataFrame(rows, index=smiles.index)
+
+
+def target_physicochemical_slopes(
+    matrix: np.ndarray,
+    target_names: list[str],
+    families: list[str],
+    smiles: pd.Series,
+    sample_size: int,
+    seed: int,
+    imputed_cells_by_target: np.ndarray | pd.Series | None = None,
+) -> dict:
+    """Quantify common and target-specific molecular-size/flexibility slopes."""
+    matrix = np.asarray(matrix, dtype=np.float64)
+    if matrix.shape[1] != len(target_names) or len(target_names) != len(families):
+        raise ValueError("target metadata do not match the score matrix")
+    if len(smiles) != len(matrix):
+        raise ValueError("SMILES do not match the score matrix")
+    if imputed_cells_by_target is None:
+        imputed_cells = np.zeros(len(target_names), dtype=np.int64)
+    else:
+        imputed_cells = np.asarray(imputed_cells_by_target, dtype=np.int64)
+        if imputed_cells.shape != (len(target_names),):
+            raise ValueError("imputed-cell counts do not match target metadata")
+        if np.any(imputed_cells < 0) or np.any(imputed_cells > len(matrix)):
+            raise ValueError("invalid target-level imputed-cell count")
+
+    rng = np.random.default_rng(seed)
+    if len(matrix) > sample_size:
+        support = np.sort(rng.choice(len(matrix), sample_size, replace=False))
+    else:
+        support = np.arange(len(matrix))
+    x = matrix[support]
+    descriptors = molecular_descriptor_frame(
+        pd.Series(smiles).iloc[support].reset_index(drop=True)
+    )[["molecular_weight", "heavy_atoms", "rotatable_bonds"]]
+    if descriptors.isna().any().any():
+        raise ValueError("physicochemical slope support contains invalid molecules")
+
+    residual = two_way_center(x)
+    residual_z = (residual - residual.mean(axis=0)) / residual.std(axis=0, ddof=1)
+    eigenvalues, eigenvectors = np.linalg.eigh(
+        (residual_z.T @ residual_z) / (len(residual_z) - 1)
+    )
+    residual_pc1 = eigenvectors[:, -1]
+
+    descriptor_scales = {
+        "molecular_weight": 100.0,
+        "heavy_atoms": 1.0,
+        "rotatable_bonds": 1.0,
+    }
+    descriptor_units = {
+        "molecular_weight": "kcal/mol per 100 Da",
+        "heavy_atoms": "kcal/mol per heavy atom",
+        "rotatable_bonds": "kcal/mol per RDKit rotatable bond",
+    }
+    records: dict[str, dict] = {}
+    per_target: dict[str, dict[str, float]] = {target: {} for target in target_names}
+    molecular_weight_vector: np.ndarray | None = None
+
+    for descriptor_name in descriptors.columns:
+        values = descriptors[descriptor_name].to_numpy(dtype=np.float64)
+        scale = descriptor_scales[descriptor_name]
+        scaled_values = values / scale
+        design = np.column_stack([np.ones(len(values)), scaled_values])
+        raw_slopes = np.asarray([
+            np.linalg.lstsq(design, x[:, column], rcond=None)[0][1]
+            for column in range(x.shape[1])
+        ])
+        residual_direct = np.asarray([
+            np.linalg.lstsq(design, residual[:, column], rcond=None)[0][1]
+            for column in range(x.shape[1])
+        ])
+        residual_from_identity = raw_slopes - raw_slopes.mean()
+
+        standardized_values = (values - values.mean()) / values.std(ddof=1)
+        residual_correlations = (
+            residual_z.T @ standardized_values
+        ) / (len(standardized_values) - 1)
+        norm = np.linalg.norm(residual_correlations)
+        alignment = float(abs(np.dot(residual_pc1, residual_correlations)) / norm)
+        pc1_score_correlation = float(
+            abs(np.dot(residual_pc1, residual_correlations)) / np.sqrt(eigenvalues[-1])
+        )
+        if descriptor_name == "molecular_weight":
+            molecular_weight_vector = residual_correlations
+
+        records[descriptor_name] = {
+            "target_slope_unit": descriptor_units[descriptor_name],
+            "target_descriptor_correlation_unit": "dimensionless Pearson correlation",
+            "raw_target_slope": describe_distribution(raw_slopes),
+            "residual_target_slope": describe_distribution(residual_direct),
+            "residual_target_descriptor_correlation": describe_distribution(
+                residual_correlations
+            ),
+            "cosine_with_residual_pc1_loading": alignment,
+            "absolute_correlation_with_residual_pc1_scores": pc1_score_correlation,
+            "maximum_absolute_error_in_two_way_slope_identity": float(
+                np.max(np.abs(residual_direct - residual_from_identity))
+            ),
+        }
+        for index, target in enumerate(target_names):
+            per_target[target][f"{descriptor_name}_raw_slope"] = float(raw_slopes[index])
+            per_target[target][f"{descriptor_name}_residual_slope"] = float(
+                residual_direct[index]
+            )
+            per_target[target][f"{descriptor_name}_residual_correlation"] = float(
+                residual_correlations[index]
+            )
+
+    if molecular_weight_vector is None:
+        raise AssertionError("molecular-weight slope vector was not computed")
+    if np.dot(residual_pc1, molecular_weight_vector) < 0:
+        residual_pc1 = -residual_pc1
+
+    conditional_design = np.column_stack([
+        np.ones(len(descriptors)),
+        descriptors["molecular_weight"].to_numpy(dtype=np.float64) / 100.0,
+        descriptors["rotatable_bonds"].to_numpy(dtype=np.float64),
+    ])
+    conditional_coefficients = np.asarray([
+        np.linalg.lstsq(conditional_design, x[:, column], rcond=None)[0]
+        for column in range(x.shape[1])
+    ])
+    for index, target in enumerate(target_names):
+        per_target[target]["imputed_cells"] = int(imputed_cells[index])
+        per_target[target]["imputed_fraction"] = float(
+            imputed_cells[index] / len(matrix)
+        )
+        per_target[target]["conditional_mw_slope_per_100_da"] = float(
+            conditional_coefficients[index, 1]
+        )
+        per_target[target]["conditional_rotatable_bond_slope"] = float(
+            conditional_coefficients[index, 2]
+        )
+        per_target[target]["residual_pc1_loading"] = float(residual_pc1[index])
+
+    return {
+        "input_n": int(len(matrix)),
+        "support_n": int(len(support)),
+        "support_rule": (
+            "all ligands when N <= sample_size; otherwise a sorted simple random sample "
+            f"without replacement using seed {seed}"
+        ),
+        "imputed_cells_by_target": {
+            target: int(imputed_cells[index])
+            for index, target in enumerate(target_names)
+        },
+        "target_names": list(target_names),
+        "families": list(families),
+        "descriptor_slopes": records,
+        "conditional_model": {
+            "formula": "score ~ 1 + molecular_weight/100 + RDKit_NumRotatableBonds",
+            "molecular_weight_slope": describe_distribution(
+                conditional_coefficients[:, 1]
+            ),
+            "rotatable_bond_slope": describe_distribution(
+                conditional_coefficients[:, 2]
+            ),
+            "targets_with_positive_rotatable_bond_slope": int(
+                np.sum(conditional_coefficients[:, 2] > 0)
+            ),
+            "interpretation_boundary": (
+                "RDKit rotatable-bond count is a proxy, not Vina's internal num_tors. "
+                "The result is consistent with a flexibility adjustment but is not a "
+                "decomposition of the Vina score."
+            ),
+        },
+        "per_target": per_target,
+    }
 
 
 def residual_structure_characterization(
@@ -827,6 +1070,43 @@ def parallel_analysis(
     return reports
 
 
+def fixed_ligand_support_indices(
+    n_rows: int,
+    sample_size: int,
+    seed: int,
+) -> tuple[np.ndarray, np.random.Generator, dict]:
+    """Select and fingerprint one deterministic ligand support for residual nulls.
+
+    The returned generator is the same generator used for sampling.  Continuing from
+    that state preserves the historical simulation stream while making the sampled
+    support an explicit, machine-checkable part of every null artifact.  The digest is
+    computed from sorted little-endian int64 row indices, so it identifies the support
+    set independently of row order and platform byte order.
+    """
+
+    if n_rows < 1:
+        raise ValueError("residual-null input must contain at least one ligand row")
+    if sample_size < 1:
+        raise ValueError("residual-null sample_size must be positive")
+    rng = np.random.default_rng(seed)
+    if n_rows > sample_size:
+        support = rng.choice(n_rows, sample_size, replace=False)
+        method = "uniform_without_replacement"
+    else:
+        support = np.arange(n_rows, dtype=np.int64)
+        method = "all_rows"
+    canonical = np.asarray(np.sort(support), dtype="<i8")
+    metadata = {
+        "method": method,
+        "seed": int(seed),
+        "source_rows": int(n_rows),
+        "sample_rows": int(len(support)),
+        "support_index_sha256": hashlib.sha256(canonical.tobytes()).hexdigest(),
+        "digest_contract": "sha256(sorted zero-based row indices encoded as little-endian int64)",
+    }
+    return np.asarray(support, dtype=np.int64), rng, metadata
+
+
 def additive_main_effect_null(
     matrix: np.ndarray,
     sample_size: int = 12000,
@@ -840,12 +1120,10 @@ def additive_main_effect_null(
     two-way centering and column standardisation are then applied to every simulation.
     """
     matrix = np.asarray(matrix, dtype=np.float64)
-    rng = np.random.default_rng(seed)
-    if len(matrix) > sample_size:
-        support = rng.choice(len(matrix), sample_size, replace=False)
-        work = matrix[support]
-    else:
-        work = matrix
+    support, rng, support_selection = fixed_ligand_support_indices(
+        len(matrix), sample_size, seed
+    )
+    work = matrix[support]
     grand = float(work.mean())
     ligand_effect = work.mean(axis=1) - grand
     target_effect = work.mean(axis=0) - grand
@@ -867,6 +1145,7 @@ def additive_main_effect_null(
         "sample_n": int(len(work)),
         "n_targets": int(work.shape[1]),
         "repeats": repeats,
+        "support_selection": support_selection,
         "observed": {
             "raw": observed_raw,
             "residual": observed_residual,
@@ -908,13 +1187,10 @@ def empirical_residual_permutation_null(
     de-redundant supports.
     """
     matrix = np.asarray(matrix, dtype=np.float64)
-    rng = np.random.default_rng(seed)
-    if len(matrix) > sample_size:
-        support = rng.choice(len(matrix), sample_size, replace=False)
-        work = matrix[support]
-    else:
-        support = np.arange(len(matrix))
-        work = matrix
+    support, rng, support_selection = fixed_ligand_support_indices(
+        len(matrix), sample_size, seed
+    )
+    work = matrix[support]
     residual = two_way_center(work)
     observed_residual = rank_summary(residual)["participation_ratio"]
     null_values: list[float] = []
@@ -931,6 +1207,7 @@ def empirical_residual_permutation_null(
         "sample_n": int(len(work)),
         "n_targets": int(work.shape[1]),
         "repeats": repeats,
+        "support_selection": support_selection,
         "observed_residual": float(observed_residual),
         "null_residual": describe_distribution(null_array),
         "empirical_lower_tail_p_for_residual_pr": float(
@@ -1006,12 +1283,10 @@ def row_norm_preserving_residual_null(
     retains ligand-specific residual scale exactly while destroying target alignment.
     """
     matrix = np.asarray(matrix, dtype=np.float64)
-    rng = np.random.default_rng(seed)
-    if len(matrix) > sample_size:
-        support = rng.choice(len(matrix), sample_size, replace=False)
-        work = matrix[support]
-    else:
-        work = matrix
+    support, rng, support_selection = fixed_ligand_support_indices(
+        len(matrix), sample_size, seed
+    )
+    work = matrix[support]
     residual = two_way_center(work)
     row_norms = np.linalg.norm(residual, axis=1)
     observed_residual = rank_summary(residual)["participation_ratio"]
@@ -1031,6 +1306,7 @@ def row_norm_preserving_residual_null(
         "sample_n": int(len(work)),
         "n_targets": int(work.shape[1]),
         "repeats": int(repeats),
+        "support_selection": support_selection,
         "observed_residual": float(observed_residual),
         "null_residual": describe_distribution(null_values),
         "empirical_lower_tail_p_for_residual_pr": float(
@@ -1070,16 +1346,61 @@ def participation_ratio_from_correlation(corr: np.ndarray) -> float:
     return float(np.trace(corr) ** 2 / np.square(corr).sum())
 
 
+def observed_additive_least_squares_imputation(
+    values: np.ndarray,
+    tolerance: float = 1e-12,
+    max_iter: int = 1000,
+) -> tuple[np.ndarray, dict]:
+    """Fill missing cells with the fitted observed-cell additive surface."""
+    x = np.asarray(values, dtype=np.float64)
+    observed = np.isfinite(x)
+    if np.any(observed.sum(axis=1) == 0) or np.any(observed.sum(axis=0) == 0):
+        raise ValueError("additive imputation requires an observation in every row and column")
+    grand = float(np.nanmean(x))
+    row_effect = np.zeros(x.shape[0], dtype=np.float64)
+    column_effect = np.zeros(x.shape[1], dtype=np.float64)
+
+    for iteration in range(1, max_iter + 1):
+        previous = np.concatenate([[grand], row_effect, column_effect])
+        row_effect = np.nanmean(x - grand - column_effect[None, :], axis=1)
+        column_effect = np.nanmean(x - grand - row_effect[:, None], axis=0)
+        shift = float(np.average(column_effect, weights=observed.sum(axis=0)))
+        column_effect -= shift
+        grand += shift
+        current = np.concatenate([[grand], row_effect, column_effect])
+        if np.max(np.abs(current - previous)) < tolerance:
+            break
+    else:
+        raise RuntimeError("observed-cell additive least squares did not converge")
+
+    fitted = grand + row_effect[:, None] + column_effect[None, :]
+    completed = np.where(observed, x, fitted)
+    return completed, {
+        "iterations": int(iteration),
+        "tolerance": float(tolerance),
+        "observed_cells": int(observed.sum()),
+        "imputed_cells": int((~observed).sum()),
+        "assumption": (
+            "Each missing ligand-target interaction residual is set to zero after fitting "
+            "the additive ligand and target effects on observed cells."
+        ),
+    }
+
+
 def preprocessing_sensitivity(
     docking_frame: pd.DataFrame,
     smiles: pd.Series | None = None,
     butina_labels: pd.Series | np.ndarray | None = None,
+    unclipped_docking_frame: pd.DataFrame | None = None,
 ) -> dict:
     """Quantify the preprocessing alternatives requested during internal review."""
     numeric = docking_frame.apply(pd.to_numeric, errors="coerce")
     mean_filled = numeric.fillna(numeric.mean())
     median_filled = numeric.fillna(numeric.median())
     complete = numeric.dropna(axis=0, how="any")
+    additive_filled_values, additive_fit = observed_additive_least_squares_imputation(
+        numeric.to_numpy(dtype=np.float64)
+    )
 
     x = mean_filled.to_numpy(dtype=np.float64)
     interaction = two_way_center(x)
@@ -1092,6 +1413,87 @@ def preprocessing_sensitivity(
     pairwise_corr = numeric.corr(min_periods=100).to_numpy(dtype=np.float64)
     spearman_corr = ranked.corr(min_periods=100).to_numpy(dtype=np.float64)
 
+    def missing_ladder(values: np.ndarray | pd.DataFrame, method: str, assumption: str) -> dict:
+        array = np.asarray(values, dtype=np.float64)
+        raw_pr = rank_summary(array)["participation_ratio"]
+        residual_pr = rank_summary(two_way_center(array))["participation_ratio"]
+        return {
+            "method": method,
+            "assumption": assumption,
+            "n_ligands": int(array.shape[0]),
+            "n_targets": int(array.shape[1]),
+            "raw_participation_ratio": raw_pr,
+            "residual_participation_ratio": residual_pr,
+            "residual_minus_raw": residual_pr - raw_pr,
+            "residual_to_raw_ratio": residual_pr / raw_pr,
+            "residual_fraction_of_algebraic_ceiling": residual_pr / (array.shape[1] - 1),
+        }
+
+    missing_methods = {
+        "target_mean": missing_ladder(
+            mean_filled,
+            "target mean imputation",
+            "missing scores equal the observed target mean",
+        ),
+        "target_median": missing_ladder(
+            median_filled,
+            "target median imputation",
+            "missing scores equal the observed target median",
+        ),
+        "observed_additive_least_squares": {
+            **missing_ladder(
+                additive_filled_values,
+                "observed-cell additive least-squares imputation",
+                additive_fit["assumption"],
+            ),
+            "fit": additive_fit,
+        },
+        "complete_case": missing_ladder(
+            complete,
+            "complete-case deletion",
+            "changes chemical support and is not a like-for-like imputation analysis",
+        ),
+        "mean_imputed_restricted_to_complete_rows": missing_ladder(
+            mean_filled.loc[complete.index],
+            "primary mean-imputed matrix restricted to complete rows",
+            "equals complete-case input exactly because these rows contain no missing cells",
+        ),
+    }
+    most_missing_target = str(numeric.isna().sum(axis=0).idxmax())
+    without_target = numeric.drop(columns=[most_missing_target])
+    without_target_mean = without_target.fillna(without_target.mean())
+    without_target_median = without_target.fillna(without_target.median())
+    without_target_complete = without_target.dropna(axis=0, how="any")
+    missing_without_most_affected_target = {
+        "removed_target": most_missing_target,
+        "removed_target_missing_cells": int(numeric[most_missing_target].isna().sum()),
+        "target_mean": missing_ladder(
+            without_target_mean,
+            "target mean imputation after target removal",
+            "removes the target with the largest missing-cell count",
+        ),
+        "target_median": missing_ladder(
+            without_target_median,
+            "target median imputation after target removal",
+            "removes the target with the largest missing-cell count",
+        ),
+        "complete_case": missing_ladder(
+            without_target_complete,
+            "complete cases after target removal",
+            "changes both chemical and target support",
+        ),
+    }
+
+    rng = np.random.default_rng(SEED + 80)
+    random_equal_support = []
+    for _ in range(100):
+        indices = rng.choice(len(mean_filled), len(complete), replace=False)
+        random_equal_support.append(
+            rank_summary(two_way_center(mean_filled.iloc[indices].to_numpy(dtype=np.float64)))[
+                "participation_ratio"
+            ]
+        )
+
     report = {
         "input_characterization": {
             "n_ligands": int(len(numeric)),
@@ -1100,9 +1502,11 @@ def preprocessing_sensitivity(
             "missing_fraction": float(numeric.isna().to_numpy().mean()),
             "rows_with_any_missing": int(numeric.isna().any(axis=1).sum()),
             "complete_rows": int(len(complete)),
-            "exact_zero_or_source_censored_cells": int((numeric.to_numpy() == 0).sum()),
-            "exact_zero_or_source_censored_fraction": float((numeric.to_numpy() == 0).mean()),
-            "strictly_positive_cells_in_processed_file": int((numeric.to_numpy() > 0).sum()),
+            "zero_after_primary_clipping_cells": int((numeric.to_numpy() == 0).sum()),
+            "zero_after_primary_clipping_fraction": float((numeric.to_numpy() == 0).mean()),
+            "strictly_positive_cells_after_primary_clipping": int(
+                (numeric.to_numpy() > 0).sum()
+            ),
         },
         "raw_participation_ratio": {
             "target_mean_imputation_primary": rank_summary(mean_filled)["participation_ratio"],
@@ -1120,12 +1524,57 @@ def preprocessing_sensitivity(
             "standardize_then_center": rank_summary(two_way_center(z))["participation_ratio"],
             "robust_scale_then_center": rank_summary(two_way_center(robust_z))["participation_ratio"],
         },
+        "missing_value_residual_sensitivity": {
+            "methods": missing_methods,
+            "excluded_method": {
+                "method": "nearest-neighbour imputation",
+                "reason": (
+                    "It constructs each missing score from the other target scores and can "
+                    "therefore induce the cross-target dependence being measured; it is also "
+                    "computationally disproportionate for this sensitivity analysis."
+                ),
+            },
+            "without_most_affected_target": missing_without_most_affected_target,
+            "random_mean_imputed_supports_matched_to_complete_case_n": {
+                "repeats": len(random_equal_support),
+                "seed": SEED + 80,
+                "residual_participation_ratio": describe_distribution(
+                    random_equal_support
+                ),
+                "complete_case_residual_participation_ratio": missing_methods[
+                    "complete_case"
+                ]["residual_participation_ratio"],
+                "interpretation": (
+                    "This separates the effect of reducing N from the chemical-support "
+                    "selection induced by complete-case deletion."
+                ),
+            },
+            "interpretation_boundary": (
+                "Imputation methods encode different assumptions about an unobserved "
+                "ligand-target interaction. Their spread is a model-sensitivity range, "
+                "not a confidence interval. Pairwise-complete residual correlations are "
+                "not used as a spectrum because their correlation matrix is not guaranteed "
+                "to be positive semidefinite."
+            ),
+        },
         "invariance_note": (
             "For a raw complete matrix, the correlation spectrum is algebraically invariant to "
             "non-zero affine rescaling of individual columns. Robust scaling matters only when "
             "performed before row-effect removal."
         ),
     }
+    if unclipped_docking_frame is not None:
+        unclipped_numeric = unclipped_docking_frame.apply(pd.to_numeric, errors="coerce")
+        if unclipped_numeric.shape != numeric.shape:
+            raise ValueError("unclipped Docking-44 frame does not match processed input")
+        report["input_characterization"].update({
+            "strictly_positive_cells_before_primary_clipping": int(
+                (unclipped_numeric.to_numpy() > 0).sum()
+            ),
+            "strictly_positive_fraction_before_primary_clipping": float(
+                (unclipped_numeric.to_numpy() > 0).mean()
+            ),
+        })
     if smiles is not None:
         descriptor_frame = molecular_descriptor_frame(pd.Series(smiles).reset_index(drop=True))
         complete_mask = ~numeric.isna().any(axis=1).to_numpy()
@@ -2955,7 +3404,7 @@ def dti_associations(leaderboard: dict) -> dict:
     all_selectivity = all_frame["selectivity_p_at_5"].to_numpy()
     all_affinity = all_frame["affinity_pearson"].to_numpy()
 
-    davis = pd.read_csv(source_path("project_clean/data/processed/davis_boltz2/davis_complete.tab"), sep="\t")
+    davis = pd.read_csv(source_path("davis_complete.tab"), sep="\t")
     measured_per_ligand = (
         davis.assign(measured=davis["y"] > 5.0)
         .groupby("drug_name", sort=False)["measured"]
@@ -3053,7 +3502,7 @@ def dti_associations(leaderboard: dict) -> dict:
     }
 
 
-def main() -> None:
+def _legacy_main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
 
     canonical = pd.read_csv(
@@ -3173,6 +3622,68 @@ def main() -> None:
             sample_size=15000,
             family_permutations=5000,
             seed=SEED + 71,
+        ),
+    }
+    spectral_estimand_sensitivity = {
+        "docking44": correlation_covariance_sensitivity(docking),
+        "dockstring58": correlation_covariance_sensitivity(dockstring),
+    }
+    dock44_missing_counts = (
+        docking_frame.isna().sum().reindex(DOCK44).to_numpy(dtype=np.int64)
+    )
+    docking44_target_slopes = target_physicochemical_slopes(
+        docking,
+        DOCK44,
+        dock44_families,
+        canonical["analysis_smiles"],
+        sample_size=len(docking),
+        seed=SEED + 70,
+        imputed_cells_by_target=dock44_missing_counts,
+    )
+    most_imputed_index = int(np.argmax(dock44_missing_counts))
+    most_imputed_target = DOCK44[most_imputed_index]
+    keep_slope_targets = np.arange(len(DOCK44)) != most_imputed_index
+    exclusion_slopes = target_physicochemical_slopes(
+        docking[:, keep_slope_targets],
+        [target for index, target in enumerate(DOCK44) if keep_slope_targets[index]],
+        [family for index, family in enumerate(dock44_families) if keep_slope_targets[index]],
+        canonical["analysis_smiles"],
+        sample_size=len(docking),
+        seed=SEED + 70,
+        imputed_cells_by_target=dock44_missing_counts[keep_slope_targets],
+    )
+    exclusion_axis = pc1_loading_summary(
+        docking[:, keep_slope_targets],
+        exclusion_slopes["target_names"],
+        exclusion_slopes["families"],
+    )
+    docking44_target_slopes["most_imputed_target_exclusion_sensitivity"] = {
+        "removed_target": most_imputed_target,
+        "removed_target_imputed_cells": int(dock44_missing_counts[most_imputed_index]),
+        "removed_target_imputed_fraction": float(
+            dock44_missing_counts[most_imputed_index] / len(docking)
+        ),
+        "remaining_n_targets": int(keep_slope_targets.sum()),
+        "shared_axis_cosine_with_uniform_target_vector": exclusion_axis[
+            "cosine_with_uniform_target_vector"
+        ],
+        "descriptor_slopes": exclusion_slopes["descriptor_slopes"],
+        "conditional_model": exclusion_slopes["conditional_model"],
+        "interpretation": (
+            "This excludes the target whose scores required the most imputations while "
+            "retaining the primary mean-imputed 44-target analysis separately."
+        ),
+    }
+    physicochemical_target_slopes = {
+        "docking44": docking44_target_slopes,
+        "dockstring58": target_physicochemical_slopes(
+            dockstring,
+            dockstring_cols,
+            dockstring_families,
+            dockstring_smiles,
+            sample_size=15000,
+            seed=SEED + 71,
+            imputed_cells_by_target=np.zeros(len(dockstring_cols), dtype=np.int64),
         ),
     }
 
@@ -3304,6 +3815,8 @@ def main() -> None:
                 dockstring, dockstring_cols, dockstring_families
             ),
         },
+        "spectral_estimand_sensitivity": spectral_estimand_sensitivity,
+        "physicochemical_target_slopes": physicochemical_target_slopes,
         "target_panel_uncertainty": {
             "docking44_jackknife": target_jackknife(
                 docking, DOCK44, sample_size=15000, seed=SEED
@@ -3388,10 +3901,10 @@ def main() -> None:
         },
         "row_norm_preserving_residual_null": {
             "docking44": row_norm_preserving_residual_null(
-                docking, sample_size=12000, repeats=500, seed=SEED + 62
+                docking, sample_size=12000, repeats=500, seed=SEED + 60
             ),
             "dockstring58": row_norm_preserving_residual_null(
-                dockstring, sample_size=12000, repeats=500, seed=SEED + 63
+                dockstring, sample_size=12000, repeats=500, seed=SEED + 61
             ),
         },
         "residual_structure_characterization": residual_characterization,
@@ -3405,9 +3918,10 @@ def main() -> None:
         "expanded_target_preference_benchmark": expanded_preference,
         "preprocessing_sensitivity": {
             **preprocessing_sensitivity(
-                docking_frame,
+                docking_frame.clip(upper=0),
                 smiles=canonical["analysis_smiles"],
                 butina_labels=canonical["Butina_clusters"],
+                unclipped_docking_frame=docking_frame,
             ),
             "dockstring_clipping": {
                 "complete_rows": int(len(dockstring_unclipped)),
@@ -3503,7 +4017,119 @@ def main() -> None:
         OUT / "complete_case_chemical_support.csv", index=False
     )
 
-    (OUT / "evidence_summary.json").write_text(json.dumps(out, indent=2) + "\n")
+    missing_rows = []
+    missing_sensitivity = out["preprocessing_sensitivity"][
+        "missing_value_residual_sensitivity"
+    ]
+    for key, record in missing_sensitivity["methods"].items():
+        missing_rows.append({"analysis": "all_targets", "method_key": key, **{
+            field: value for field, value in record.items() if field != "fit"
+        }})
+    removed = missing_sensitivity["without_most_affected_target"]
+    for key in ("target_mean", "target_median", "complete_case"):
+        missing_rows.append({
+            "analysis": f"without_{removed['removed_target']}",
+            "method_key": key,
+            **removed[key],
+        })
+    pd.DataFrame(missing_rows).to_csv(
+        OUT / "missing_residual_sensitivity.csv", index=False
+    )
+
+    covariance_rows = []
+    for dataset, key in (("Docking-44", "docking44"), ("DOCKSTRING-58", "dockstring58")):
+        sensitivity = spectral_estimand_sensitivity[key]
+        for estimand in ("correlation", "covariance"):
+            for surface in ("raw", "residual"):
+                record = sensitivity[estimand][surface]
+                covariance_rows.append({
+                    "dataset": dataset,
+                    "estimand": estimand,
+                    "surface": surface,
+                    "n_ligands": record["n_ligands"],
+                    "n_targets": record["n_targets"],
+                    "algebraic_ceiling": record["algebraic_ceiling"],
+                    "participation_ratio": record["participation_ratio"],
+                    "dimension_fraction_of_ceiling": record[
+                        "dimension_fraction_of_ceiling"
+                    ],
+                    "entropy_rank": record["entropy_rank"],
+                    "pc1_fraction": record["pc1_fraction"],
+                    "pcs_for_90pct": record["pcs_for_90pct"],
+                    "target_sd_cv": (
+                        record.get("target_standard_deviation", {})
+                        .get("coefficient_of_variation", np.nan)
+                    ),
+                })
+    pd.DataFrame(covariance_rows).to_csv(
+        OUT / "correlation_covariance_sensitivity.csv", index=False
+    )
+
+    slope_rows = []
+    for dataset, key in (("Docking-44", "docking44"), ("DOCKSTRING-58", "dockstring58")):
+        record = physicochemical_target_slopes[key]
+        family_by_target = dict(zip(record["target_names"], record["families"]))
+        for target in record["target_names"]:
+            slope_rows.append({
+                "dataset": dataset,
+                "target": target,
+                "family": family_by_target[target],
+                **record["per_target"][target],
+            })
+    pd.DataFrame(slope_rows).to_csv(
+        OUT / "target_physicochemical_slopes.csv", index=False
+    )
+
+    slope_sensitivity_rows = []
+    for dataset, key in (("Docking-44", "docking44"), ("DOCKSTRING-58", "dockstring58")):
+        record = physicochemical_target_slopes[key]
+        target_sets = [("primary", "", record)]
+        if key == "docking44":
+            exclusion = record["most_imputed_target_exclusion_sensitivity"]
+            target_sets.append((
+                "without_most_imputed_target",
+                exclusion["removed_target"],
+                exclusion,
+            ))
+        for target_set, removed_target, target_set_record in target_sets:
+            conditional = target_set_record["conditional_model"]
+            for descriptor, descriptor_record in target_set_record[
+                "descriptor_slopes"
+            ].items():
+                slope_sensitivity_rows.append({
+                    "dataset": dataset,
+                    "target_set": target_set,
+                    "removed_target": removed_target,
+                    "descriptor": descriptor,
+                    "loading_vector_cosine": descriptor_record[
+                        "cosine_with_residual_pc1_loading"
+                    ],
+                    "absolute_descriptor_residual_pc1_score_correlation":
+                        descriptor_record[
+                            "absolute_correlation_with_residual_pc1_scores"
+                        ],
+                    "median_raw_target_slope": descriptor_record[
+                        "raw_target_slope"
+                    ]["median"],
+                    "median_residual_target_slope": descriptor_record[
+                        "residual_target_slope"
+                    ]["median"],
+                    "conditional_mw_slope_median": conditional[
+                        "molecular_weight_slope"
+                    ]["median"],
+                    "conditional_rotatable_bond_slope_median": conditional[
+                        "rotatable_bond_slope"
+                    ]["median"],
+                    "targets_with_positive_conditional_rotatable_bond_slope":
+                        conditional["targets_with_positive_rotatable_bond_slope"],
+                })
+    pd.DataFrame(slope_sensitivity_rows).to_csv(
+        OUT / "physicochemical_slope_sensitivity.csv", index=False
+    )
+
+    (OUT / "evidence_summary.json").write_text(
+        json.dumps(out, indent=2, allow_nan=False) + "\n"
+    )
     print(f"Wrote {OUT / 'evidence_summary.json'}")
     print(
         "Headline PR: "
@@ -3511,6 +4137,16 @@ def main() -> None:
         f"{dock44_ladder['interaction']['participation_ratio']:.3f}; "
         f"DOCKSTRING-58 {dockstring_ladder['raw']['participation_ratio']:.3f} -> "
         f"{dockstring_ladder['interaction']['participation_ratio']:.3f}"
+    )
+
+
+def main() -> None:
+    """Stop the obsolete DTI/RF evidence workflow from overwriting release outputs."""
+
+    raise SystemExit(
+        "analysis/build_evidence.py is a deprecated legacy DTI/RF workflow and "
+        "is intentionally disabled. Use analysis/build_manuscript_evidence.py "
+        "for the current release evidence ledger."
     )
 
 

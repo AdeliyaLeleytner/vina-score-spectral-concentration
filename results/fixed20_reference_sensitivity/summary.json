@@ -1,0 +1,228 @@
+{
+  "analysis": "strict common-20 reference-support sensitivity",
+  "status": "exploratory_post_hoc",
+  "targets": [
+    "ABL1",
+    "AKT1",
+    "AKT2",
+    "CDK2",
+    "CSF1R",
+    "EGFR",
+    "FGFR1",
+    "IGF1R",
+    "JAK2",
+    "KDR",
+    "KIT",
+    "LCK",
+    "MAP2K1",
+    "MAPK1",
+    "MAPK14",
+    "MAPKAPK2",
+    "MET",
+    "PLK1",
+    "ROCK1",
+    "SRC"
+  ],
+  "target_pairs": 190,
+  "reference": {
+    "rows_after_connectivity_exclusion": 259579,
+    "excluded_connectivity_blocks": 1050,
+    "positive_scores_clipped_to_zero": true
+  },
+  "primary_full_reference": {
+    "DAVIS": {
+      "raw_docking__raw_experiment": 0.050220665100797375,
+      "raw_docking__centered_experiment": 0.2634080839095995,
+      "centered_docking__raw_experiment": 0.2186032270904137,
+      "centered_docking__centered_experiment": 0.27979984866179414
+    },
+    "PKIS2": {
+      "raw_docking__raw_experiment": -0.21524054464258383,
+      "raw_docking__centered_experiment": 0.24349442541782032,
+      "centered_docking__raw_experiment": 0.03333027157772267,
+      "centered_docking__centered_experiment": 0.287170806597646
+    },
+    "PKIS1": {
+      "raw_docking__raw_experiment": -0.1592384101615295,
+      "raw_docking__centered_experiment": 0.17278186740848633,
+      "centered_docking__raw_experiment": 0.0587148499521054,
+      "centered_docking__centered_experiment": 0.1736426581287425
+    },
+    "KiRHub": {
+      "raw_docking__raw_experiment": -0.029274757574564686,
+      "raw_docking__centered_experiment": 0.27611174533191624,
+      "centered_docking__raw_experiment": 0.235169949306075,
+      "centered_docking__centered_experiment": 0.32158843881081417
+    }
+  },
+  "same_cyclic_murcko_exclusion": {
+    "experimental_panels_with_structures": [
+      "DAVIS",
+      "PKIS2",
+      "PKIS1"
+    ],
+    "experimental_cyclic_scaffolds": 575,
+    "reference_rows_excluded": 3039,
+    "reference_rows_remaining": 256540,
+    "panels": {
+      "DAVIS": {
+        "raw_docking__raw_experiment": 0.049338879484925234,
+        "raw_docking__centered_experiment": 0.2614643064904845,
+        "centered_docking__raw_experiment": 0.2183897789849843,
+        "centered_docking__centered_experiment": 0.2788638262322473,
+        "centered_delta_from_primary": -0.0009360224295468234,
+        "raw_delta_from_primary": -0.000881785615872141
+      },
+      "PKIS2": {
+        "raw_docking__raw_experiment": -0.21601035748183725,
+        "raw_docking__centered_experiment": 0.24215949997156944,
+        "centered_docking__raw_experiment": 0.03425579655946148,
+        "centered_docking__centered_experiment": 0.2865462084530699,
+        "centered_delta_from_primary": -0.0006245981445761051,
+        "raw_delta_from_primary": -0.0007698128392534254
+      },
+      "PKIS1": {
+        "raw_docking__raw_experiment": -0.15919991951956683,
+        "raw_docking__centered_experiment": 0.1716236490003368,
+        "centered_docking__raw_experiment": 0.05901927593853746,
+        "centered_docking__centered_experiment": 0.17193157413603818,
+        "centered_delta_from_primary": -0.0017110839927043098,
+        "raw_delta_from_primary": 3.8490641962679595e-05
+      }
+    },
+    "KiRHub_boundary": "KiRHub compound structures were unavailable, so no KiRHub-specific scaffold exclusion was possible."
+  },
+  "random_reference_supports": {
+    "support_size": 15000,
+    "seeds": [
+      11,
+      29,
+      47,
+      71,
+      97
+    ],
+    "panels": {
+      "DAVIS": {
+        "raw_docking__raw_experiment": {
+          "n": 5,
+          "mean": 0.05014053458252963,
+          "minimum": 0.045692765946279315,
+          "maximum": 0.05749014770783854,
+          "standard_deviation": 0.004562498250659488
+        },
+        "raw_docking__centered_experiment": {
+          "n": 5,
+          "mean": 0.26483258757714534,
+          "minimum": 0.2594382990635402,
+          "maximum": 0.26823341075201096,
+          "standard_deviation": 0.0034777044980067438
+        },
+        "centered_docking__raw_experiment": {
+          "n": 5,
+          "mean": 0.21643760360762293,
+          "minimum": 0.21321803636490883,
+          "maximum": 0.222761965997017,
+          "standard_deviation": 0.0038299006784158944
+        },
+        "centered_docking__centered_experiment": {
+          "n": 5,
+          "mean": 0.2784477773841235,
+          "minimum": 0.270696811837622,
+          "maximum": 0.28497334085650433,
+          "standard_deviation": 0.005115184835690522
+        }
+      },
+      "PKIS2": {
+        "raw_docking__raw_experiment": {
+          "n": 5,
+          "mean": -0.21279918819736957,
+          "minimum": -0.2193327997130698,
+          "maximum": -0.20257887301149913,
+          "standard_deviation": 0.007180481690617915
+        },
+        "raw_docking__centered_experiment": {
+          "n": 5,
+          "mean": 0.24422154863598786,
+          "minimum": 0.23775582061611272,
+          "maximum": 0.24731899556920225,
+          "standard_deviation": 0.003880529246862053
+        },
+        "centered_docking__raw_experiment": {
+          "n": 5,
+          "mean": 0.033571013047452844,
+          "minimum": 0.031948107616335784,
+          "maximum": 0.03438351550779217,
+          "standard_deviation": 0.0009737421056151182
+        },
+        "centered_docking__centered_experiment": {
+          "n": 5,
+          "mean": 0.28557134546663343,
+          "minimum": 0.27692179838776704,
+          "maximum": 0.28992988579651574,
+          "standard_deviation": 0.005417567023636606
+        }
+      },
+      "PKIS1": {
+        "raw_docking__raw_experiment": {
+          "n": 5,
+          "mean": -0.15988680252113707,
+          "minimum": -0.16529718712138114,
+          "maximum": -0.15298892956649918,
+          "standard_deviation": 0.004555328707553943
+        },
+        "raw_docking__centered_experiment": {
+          "n": 5,
+          "mean": 0.17410349608751371,
+          "minimum": 0.170750611257638,
+          "maximum": 0.17640523647688158,
+          "standard_deviation": 0.0023136868056795436
+        },
+        "centered_docking__raw_experiment": {
+          "n": 5,
+          "mean": 0.058816325280916085,
+          "minimum": 0.05651213548705972,
+          "maximum": 0.06375712404921555,
+          "standard_deviation": 0.0030240634610541523
+        },
+        "centered_docking__centered_experiment": {
+          "n": 5,
+          "mean": 0.17358912114492164,
+          "minimum": 0.16684381109842672,
+          "maximum": 0.17646647158909493,
+          "standard_deviation": 0.003997127467099634
+        }
+      },
+      "KiRHub": {
+        "raw_docking__raw_experiment": {
+          "n": 5,
+          "mean": -0.027229504826639023,
+          "minimum": -0.03249397490235187,
+          "maximum": -0.016842280220621363,
+          "standard_deviation": 0.006522454598272566
+        },
+        "raw_docking__centered_experiment": {
+          "n": 5,
+          "mean": 0.2771884335620902,
+          "minimum": 0.27288203055632104,
+          "maximum": 0.2815879139384237,
+          "standard_deviation": 0.003541557758121689
+        },
+        "centered_docking__raw_experiment": {
+          "n": 5,
+          "mean": 0.23687018593604434,
+          "minimum": 0.23407296601013883,
+          "maximum": 0.2400180206187371,
+          "standard_deviation": 0.002448568111547942
+        },
+        "centered_docking__centered_experiment": {
+          "n": 5,
+          "mean": 0.32104817016362897,
+          "minimum": 0.3115721240273459,
+          "maximum": 0.32568244345593483,
+          "standard_deviation": 0.005458384537226364
+        }
+      }
+    }
+  },
+  "claim_boundary": "These checks use the same 20 targets and the same local-20 centering contract as the primary factorial comparison. They assess sensitivity to reference-library composition, not biological validity."
+}

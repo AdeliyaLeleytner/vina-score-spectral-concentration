@@ -1,0 +1,9 @@
+experimental_panel,experimental_ligands,kinase_targets,docking_row_centering_panel,concordance_spearman,target_label_qap_p_positive,qap_permutations
+DAVIS,72,21,kinase_validation_panel,0.2822681434305281,0.004149792510374482,20000
+DAVIS,72,21,all_58_then_extract_kinases,0.26167810737528874,0.0055997200139993,20000
+PKIS2,645,21,kinase_validation_panel,0.2855633266708348,0.003749812509374531,20000
+PKIS2,645,21,all_58_then_extract_kinases,0.26986358615193734,0.0050997450127493625,20000
+PKIS1,360,20,kinase_validation_panel,0.17364265812874244,0.026298685065746712,20000
+PKIS1,360,20,all_58_then_extract_kinases,0.16575557567566385,0.03249837508124594,20000
+KiRHub,92,20,kinase_validation_panel,0.3215884388108141,0.0022998850057497125,20000
+KiRHub,92,20,all_58_then_extract_kinases,0.30243759485974975,0.00359982000899955,20000

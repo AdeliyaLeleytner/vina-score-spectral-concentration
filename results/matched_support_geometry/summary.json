@@ -1,0 +1,1041 @@
+{
+  "analysis": "matched_support_geometry",
+  "claim_boundary": "This does NOT show that the docking geometry is target-resolved, that it is mechanistically informative, or that it ranks compounds. It compares two estimators of the same docking target-pair geometry against one fixed experimental endpoint and asks only whether restricting the docking support to exactly the compounds that were screened changes the agreement. The matched arms have 59 and 154 ligands, so their intervals are wide and a real difference the size of the manuscript's own low- versus high-molecular-weight contrast is not excluded. Agreement of two target-pair maps is a network-level statement and implies nothing about ligand-level retrieval. Nothing here addresses the separate objection that the descriptor surface fits per-target regression coefficients and is therefore not target-blind. PKIS1 and KiRHub are not analysed: KiRHub publishes no structures and PKIS1 requires an external supplement that is not a frozen input of this package.",
+  "configuration": {
+    "bootstrap_replicates": 5000,
+    "bootstrap_units": [
+      "ligand",
+      "murcko_scaffold",
+      "butina_cluster"
+    ],
+    "matching_variables": [
+      "molecular_weight",
+      "clogp",
+      "tpsa"
+    ],
+    "neighbour_counts": [
+      20,
+      50,
+      100
+    ],
+    "primary_neighbours": 100,
+    "primary_transform": "center_then_correlation",
+    "published_reference_table": "results/fixed20_estimand_decomposition/decomposition.csv",
+    "random_support_repeats": 200,
+    "reliability_repeats": 500,
+    "score_preprocessing": "positive Vina scores clipped to zero",
+    "target_label_qap_permutations": 49999
+  },
+  "headline": {
+    "matched_minus_broad_support": {
+      "DAVIS": 0.02568025648764144,
+      "PKIS2": -0.015147817186946466
+    },
+    "resolved_by_conservative_cluster_bootstrap_union": {
+      "DAVIS": false,
+      "PKIS2": false
+    },
+    "verdict": "indistinguishable: no panel's conservative chemical-cluster bootstrap interval for matched-minus-broad support excludes zero"
+  },
+  "limitations": [
+    "Matched supports of 59 and 154 ligands give wide intervals; absence of a resolved difference is not evidence of equality.",
+    "The broad arm excludes the panel compounds by connectivity block while the matched arm is exactly those compounds, so the contrast mixes chemical support with in-sample versus out-of-sample support.",
+    "The matched experimental endpoint is estimated from the same small support in both arms; the bootstrap is paired for that reason and its interval is not a target-population interval.",
+    "The Bayesian bootstrap re-estimates the matched docking geometry in every replicate but holds the broad geometry fixed, so the resampled contrast is displaced below its point estimate; the reported displacement makes that asymmetry explicit and the interval should be read as a width.",
+    "OAS shrinkage is close to rank preserving on the 190 edges, so it is a weak instrument for this question; the reliability analysis carries the sampling-noise statement instead.",
+    "The attenuation correction is approximate: the 190 edges are neither independent nor normal.",
+    "Propensity matching balances molecular weight, cLogP and TPSA only; unmeasured chemotype differences remain.",
+    "Every arm here is post hoc and none is multiplicity adjusted."
+  ],
+  "panels": {
+    "DAVIS": {
+      "bootstrap": {
+        "butina_cluster": {
+          "broad_support_spearman": {
+            "interval_90": [
+              0.21288369265222393,
+              0.3521709159460607
+            ],
+            "interval_95": [
+              0.20223630629803133,
+              0.3665656724708804
+            ],
+            "maximum": 0.4534818722198166,
+            "mean": 0.28090002808067294,
+            "median": 0.2800220446403968,
+            "minimum": 0.14924833899758122,
+            "n": 5000,
+            "standard_deviation": 0.042260991505113706
+          },
+          "clusters": 57,
+          "fraction_matched_above_broad": 0.3726,
+          "matched_minus_broad_support": {
+            "interval_90": [
+              -0.12430544073972015,
+              0.10590533926439137
+            ],
+            "interval_95": [
+              -0.1397665630043696,
+              0.13247512323566324
+            ],
+            "maximum": 0.22868515092268188,
+            "mean": -0.01843962681573043,
+            "median": -0.022954419206830348,
+            "minimum": -0.2178412873370162,
+            "n": 5000,
+            "standard_deviation": 0.06972720508423311
+          },
+          "matched_support_spearman": {
+            "interval_90": [
+              0.1480620399165453,
+              0.3929458025517547
+            ],
+            "interval_95": [
+              0.13086809519435585,
+              0.4190917083284125
+            ],
+            "maximum": 0.5085584817191321,
+            "mean": 0.26246040126494247,
+            "median": 0.2584060500290867,
+            "minimum": 0.040125619458769086,
+            "n": 5000,
+            "standard_deviation": 0.07442840445492382
+          },
+          "method": "paired Bayesian bootstrap with iid Exp(1) weights",
+          "point_estimate": {
+            "broad_support_spearman": 0.29772249121932237,
+            "matched_minus_broad_support": 0.02568025648764144,
+            "matched_support_spearman": 0.3234027477069638
+          },
+          "repeats": 5000,
+          "resampled_median_minus_point_estimate": {
+            "broad_support_spearman": -0.017700446578925555,
+            "matched_minus_broad_support": -0.04863467569447179,
+            "matched_support_spearman": -0.06499669767787714
+          },
+          "resampling_bias_note": "Exp(1) weights reduce each replicate's effective ligand count and the matched docking geometry is re-estimated in every replicate while the broad one is fixed, so the resampled contrast is displaced downward relative to its point estimate; read the interval as a width.",
+          "resampling_unit": "butina_cluster",
+          "seed": 20360808
+        },
+        "ligand": {
+          "broad_support_spearman": {
+            "interval_90": [
+              0.21672330914546403,
+              0.35159967982784185
+            ],
+            "interval_95": [
+              0.20541239661107397,
+              0.36741224789723004
+            ],
+            "maximum": 0.45206296719110173,
+            "mean": 0.28155274993767143,
+            "median": 0.2804533147878422,
+            "minimum": 0.14454723195423114,
+            "n": 5000,
+            "standard_deviation": 0.04149231083884375
+          },
+          "clusters": null,
+          "fraction_matched_above_broad": 0.3738,
+          "matched_minus_broad_support": {
+            "interval_90": [
+              -0.12330179725054345,
+              0.10483722394992737
+            ],
+            "interval_95": [
+              -0.14226106277911185,
+              0.1306419626728252
+            ],
+            "maximum": 0.24568401807310597,
+            "mean": -0.01789389179755672,
+            "median": -0.022580885022328925,
+            "minimum": -0.21806698246488826,
+            "n": 5000,
+            "standard_deviation": 0.06979764876781026
+          },
+          "matched_support_spearman": {
+            "interval_90": [
+              0.14970086647683786,
+              0.39442707991619547
+            ],
+            "interval_95": [
+              0.1321142734672633,
+              0.41879891701330096
+            ],
+            "maximum": 0.5321742401378665,
+            "mean": 0.2636588581401147,
+            "median": 0.25909713200978013,
+            "minimum": 0.04091642719363855,
+            "n": 5000,
+            "standard_deviation": 0.07408856790122678
+          },
+          "method": "paired Bayesian bootstrap with iid Exp(1) weights",
+          "point_estimate": {
+            "broad_support_spearman": 0.29772249121932237,
+            "matched_minus_broad_support": 0.02568025648764144,
+            "matched_support_spearman": 0.3234027477069638
+          },
+          "repeats": 5000,
+          "resampled_median_minus_point_estimate": {
+            "broad_support_spearman": -0.017269176431480182,
+            "matched_minus_broad_support": -0.048261141509970365,
+            "matched_support_spearman": -0.06430561569718368
+          },
+          "resampling_bias_note": "Exp(1) weights reduce each replicate's effective ligand count and the matched docking geometry is re-estimated in every replicate while the broad one is fixed, so the resampled contrast is displaced downward relative to its point estimate; read the interval as a width.",
+          "resampling_unit": "ligand",
+          "seed": 20360806
+        },
+        "murcko_scaffold": {
+          "broad_support_spearman": {
+            "interval_90": [
+              0.2137298744242806,
+              0.3551793970091022
+            ],
+            "interval_95": [
+              0.20246952459683243,
+              0.36988483424967306
+            ],
+            "maximum": 0.4366334684879739,
+            "mean": 0.2819099773867479,
+            "median": 0.2803518394590315,
+            "minimum": 0.1675576375493708,
+            "n": 5000,
+            "standard_deviation": 0.04265063805588303
+          },
+          "clusters": 59,
+          "fraction_matched_above_broad": 0.3678,
+          "matched_minus_broad_support": {
+            "interval_90": [
+              -0.12445257996649566,
+              0.10441881317604657
+            ],
+            "interval_95": [
+              -0.14130264579424126,
+              0.12704050702672914
+            ],
+            "maximum": 0.24527111845932462,
+            "mean": -0.019208212153420202,
+            "median": -0.025318969325582696,
+            "minimum": -0.22429021944039862,
+            "n": 5000,
+            "standard_deviation": 0.06932793868642725
+          },
+          "matched_support_spearman": {
+            "interval_90": [
+              0.1496658749841445,
+              0.3911892296185491
+            ],
+            "interval_95": [
+              0.13286492846426715,
+              0.41553320473959765
+            ],
+            "maximum": 0.4906760793782012,
+            "mean": 0.26270176523332767,
+            "median": 0.25814973734510804,
+            "minimum": 0.05776308135084658,
+            "n": 5000,
+            "standard_deviation": 0.07357137811693522
+          },
+          "method": "paired Bayesian bootstrap with iid Exp(1) weights",
+          "point_estimate": {
+            "broad_support_spearman": 0.29772249121932237,
+            "matched_minus_broad_support": 0.02568025648764144,
+            "matched_support_spearman": 0.3234027477069638
+          },
+          "repeats": 5000,
+          "resampled_median_minus_point_estimate": {
+            "broad_support_spearman": -0.017370651760290845,
+            "matched_minus_broad_support": -0.050999225813224136,
+            "matched_support_spearman": -0.06525301036185577
+          },
+          "resampling_bias_note": "Exp(1) weights reduce each replicate's effective ligand count and the matched docking geometry is re-estimated in every replicate while the broad one is fixed, so the resampled contrast is displaced downward relative to its point estimate; read the interval as a width.",
+          "resampling_unit": "murcko_scaffold",
+          "seed": 20360807
+        }
+      },
+      "broad_support_raw_docking_spearman": 0.2867019205955552,
+      "broad_support_spearman": 0.29772249121932237,
+      "conservative_union_interval_95_murcko_and_butina": {
+        "broad_support_spearman": [
+          0.20223630629803133,
+          0.36988483424967306
+        ],
+        "matched_minus_broad_support": [
+          -0.14130264579424126,
+          0.13247512323566324
+        ],
+        "matched_support_spearman": [
+          0.13086809519435585,
+          0.4190917083284125
+        ]
+      },
+      "covariance_shrinkage": {
+        "broad_support_oas_minus_empirical": -0.0008118026304855253,
+        "broad_support_spearman_empirical": 0.29772249121932237,
+        "broad_support_spearman_oas": 0.29691068858883685,
+        "estimator": "Oracle Approximating Shrinkage (OAS) on the two-way-centred surface",
+        "interpretation": "OAS shrinks every off-diagonal entry by a nearly common factor, so it is close to rank preserving on the 190 edges and moves this Spearman estimate very little; the reliability analysis, not the shrinkage, is what quantifies sampling noise at these N.",
+        "matched_support_oas_minus_empirical": 0.011690657708844476,
+        "matched_support_spearman_empirical": 0.3234027477069638,
+        "matched_support_spearman_oas": 0.3350934054158083
+      },
+      "frozen_mapping_check": {
+        "frozen_mapping": "results/dense_davis_primary_molecule_mapping.csv",
+        "frozen_mapping_ligands": 59,
+        "frozen_mapping_sha256": "8182a2d2f651673f55dfad39dd605304febcf810c25a7658b8b02f9dd85b69fa",
+        "recomputed_match_equals_frozen_mapping": true
+      },
+      "matched_ligands": 59,
+      "matched_minus_broad_support": 0.02568025648764144,
+      "matched_support_raw_docking_spearman": 0.3330481526678826,
+      "matched_support_spearman": 0.3234027477069638,
+      "molecular_identity": "exact full Standard InChIKey of the raw parsed molecule; duplicates aggregated by the median on both sides",
+      "paired_target_label_qap_matched_minus_broad": {
+        "broad_support_concordance": 0.2977224912193223,
+        "fixed_experimental_endpoint": "two-way-centered experimental target geometry",
+        "matched_minus_broad_support": 0.02568025648764144,
+        "matched_support_concordance": 0.32340274770696376,
+        "null_interval_95": [
+          -0.11746941524841774,
+          0.10910399909022114
+        ],
+        "null_median": 0.0004076508898773999,
+        "one_sided_p_positive_matched_minus_broad": 0.324,
+        "permutations": 49999,
+        "seed": 20260811
+      },
+      "panel": "DAVIS",
+      "panel_ligands": 72,
+      "propensity_matched_support": {
+        "matching_variables": [
+          "molecular_weight",
+          "clogp",
+          "tpsa"
+        ],
+        "neighbour_count_sensitivity": {
+          "100": {
+            "maximum_absolute_standardized_mean_difference_after": 0.004167247595223189,
+            "maximum_absolute_standardized_mean_difference_before": 0.5729198320695545,
+            "neighbours_per_matched_ligand": 100,
+            "spearman": 0.25334453061099527,
+            "standardized_mean_difference_after": {
+              "clogp": -0.0020696630435395338,
+              "molecular_weight": -0.0011295028711726062,
+              "tpsa": -0.004167247595223189
+            },
+            "standardized_mean_difference_before": {
+              "clogp": -0.5122779197124812,
+              "molecular_weight": -0.5729198320695545,
+              "tpsa": -0.27125143106399485
+            },
+            "support_rows_with_reuse": 5900,
+            "support_unique_rows": 5828
+          },
+          "20": {
+            "maximum_absolute_standardized_mean_difference_after": 0.0028757565795943956,
+            "maximum_absolute_standardized_mean_difference_before": 0.5729198320695545,
+            "neighbours_per_matched_ligand": 20,
+            "spearman": 0.21034523481478568,
+            "standardized_mean_difference_after": {
+              "clogp": -4.2758410658182745e-05,
+              "molecular_weight": -0.0007432822301012124,
+              "tpsa": -0.0028757565795943956
+            },
+            "standardized_mean_difference_before": {
+              "clogp": -0.5122779197124812,
+              "molecular_weight": -0.5729198320695545,
+              "tpsa": -0.27125143106399485
+            },
+            "support_rows_with_reuse": 1180,
+            "support_unique_rows": 1180
+          },
+          "50": {
+            "maximum_absolute_standardized_mean_difference_after": 0.002972629308208827,
+            "maximum_absolute_standardized_mean_difference_before": 0.5729198320695545,
+            "neighbours_per_matched_ligand": 50,
+            "spearman": 0.24669089827535684,
+            "standardized_mean_difference_after": {
+              "clogp": -0.002972629308208827,
+              "molecular_weight": -0.0003258081077804728,
+              "tpsa": -0.001939956313307113
+            },
+            "standardized_mean_difference_before": {
+              "clogp": -0.5122779197124812,
+              "molecular_weight": -0.5729198320695545,
+              "tpsa": -0.27125143106399485
+            },
+            "support_rows_with_reuse": 2950,
+            "support_unique_rows": 2948
+          }
+        },
+        "primary_neighbours_per_matched_ligand": 100,
+        "size_matched_random_support_control": {
+          "method": "random draws with replacement from the broad pool, matched to the propensity arm's row count including its reuse",
+          "repeats": 200,
+          "seed": 20660806,
+          "spearman": {
+            "interval_90": [
+              0.28522746657218967,
+              0.31231429358737156
+            ],
+            "interval_95": [
+              0.28305598201437276,
+              0.3143064467451351
+            ],
+            "maximum": 0.32015378761038726,
+            "mean": 0.29927843168129753,
+            "median": 0.2989052036723572,
+            "minimum": 0.27979809908715947,
+            "n": 200,
+            "standard_deviation": 0.008311892543578728
+          },
+          "support_size_with_reuse": 5900
+        }
+      },
+      "published_broad_support_versus_full_panel_endpoint": 0.2797998486617941,
+      "recomputed_broad_support_versus_full_panel_endpoint": 0.27976660674373544,
+      "sampling_noise": {
+        "attenuation_correction_of_matched_support_spearman": {
+          "attenuation_factor_sqrt_reliability_product": 0.5941332891180658,
+          "disattenuated_spearman": 0.5443269273583783,
+          "disattenuated_spearman_uncapped": 0.5443269273583783,
+          "docking_geometry_reliability": 0.4108447208041561,
+          "experimental_geometry_reliability": 0.859191678421295,
+          "observed_spearman": 0.3234027477069638,
+          "status": "approximate"
+        },
+        "broad_reference_subsample_at_matched_n": {
+          "method": "random ligand subsamples of the broad reference scored against the full broad-support geometry",
+          "repeats": 500,
+          "seed": 20560806,
+          "spearman_against_full_reference": {
+            "interval_90": [
+              0.6987469546466517,
+              0.8622921177288773
+            ],
+            "interval_95": [
+              0.6811755391970329,
+              0.8701580740682422
+            ],
+            "maximum": 0.8890647211396729,
+            "mean": 0.7933099730128114,
+            "median": 0.7995258652740054,
+            "minimum": 0.5629352613645808,
+            "n": 500,
+            "standard_deviation": 0.05144708438827572
+          },
+          "subsample_size": 59
+        },
+        "matched_docking_geometry_split_half": {
+          "half_size": 29,
+          "half_split_spearman": {
+            "interval_90": [
+              0.15879725491739824,
+              0.3535461690876405
+            ],
+            "interval_95": [
+              0.14121114304084822,
+              0.3661198808539674
+            ],
+            "maximum": 0.43376766523638943,
+            "mean": 0.2588206327336667,
+            "median": 0.2585302698281481,
+            "minimum": 0.0906480861840465,
+            "n": 500,
+            "standard_deviation": 0.05998579398255028
+          },
+          "method": "random split-half of the ligand support, Spearman-Brown corrected",
+          "repeats": 500,
+          "seed": 20460806,
+          "spearman_brown_reliability": {
+            "interval_90": [
+              0.2740723616230865,
+              0.5223997447469605
+            ],
+            "interval_95": [
+              0.24747024618792715,
+              0.5359996333341852
+            ],
+            "maximum": 0.605073856460381,
+            "mean": 0.4075783119939058,
+            "median": 0.4108447208041561,
+            "minimum": 0.16622792875602163,
+            "n": 500,
+            "standard_deviation": 0.07653899810317152
+          }
+        },
+        "matched_experimental_geometry_split_half": {
+          "half_size": 29,
+          "half_split_spearman": {
+            "interval_90": [
+              0.6648889538414484,
+              0.8328228949336693
+            ],
+            "interval_95": [
+              0.6403835353205011,
+              0.8437072173396287
+            ],
+            "maximum": 0.8883229014945743,
+            "mean": 0.7483270630254603,
+            "median": 0.7531428921343499,
+            "minimum": 0.5577864236611608,
+            "n": 500,
+            "standard_deviation": 0.05174186963044658
+          },
+          "method": "random split-half of the ligand support, Spearman-Brown corrected",
+          "repeats": 500,
+          "seed": 20460807,
+          "spearman_brown_reliability": {
+            "interval_90": [
+              0.7987186454037183,
+              0.9087870913527808
+            ],
+            "interval_95": [
+              0.780768042437922,
+              0.9152289501951949
+            ],
+            "maximum": 0.9408591092037092,
+            "mean": 0.8550369804157906,
+            "median": 0.859191678421295,
+            "minimum": 0.7161269544899908,
+            "n": 500,
+            "standard_deviation": 0.034310450657966264
+          }
+        }
+      },
+      "target_pairs": 190,
+      "targets": 20,
+      "twenty_one_kinase_sensitivity": {
+        "broad_support_spearman": 0.29967832117994253,
+        "matched_minus_broad_support": 0.0007671051821712682,
+        "matched_support_spearman": 0.3004454263621138,
+        "target_pairs": 210,
+        "targets": 21
+      }
+    },
+    "PKIS2": {
+      "bootstrap": {
+        "butina_cluster": {
+          "broad_support_spearman": {
+            "interval_90": [
+              0.24717806733237985,
+              0.3763501248758896
+            ],
+            "interval_95": [
+              0.2329488643073653,
+              0.38595563953513795
+            ],
+            "maximum": 0.46379036596727424,
+            "mean": 0.31367931976538205,
+            "median": 0.3145122842009037,
+            "minimum": 0.1480708752684504,
+            "n": 5000,
+            "standard_deviation": 0.03879736780298344
+          },
+          "clusters": 103,
+          "fraction_matched_above_broad": 0.2472,
+          "matched_minus_broad_support": {
+            "interval_90": [
+              -0.12137026685387116,
+              0.05100884847371487
+            ],
+            "interval_95": [
+              -0.1358970287848767,
+              0.06747811938222521
+            ],
+            "maximum": 0.151962804043267,
+            "mean": -0.036241868195794905,
+            "median": -0.03646725889768049,
+            "minimum": -0.2481089285167544,
+            "n": 5000,
+            "standard_deviation": 0.052297970289012535
+          },
+          "matched_support_spearman": {
+            "interval_90": [
+              0.18314617258678983,
+              0.37447554313357573
+            ],
+            "interval_95": [
+              0.1636797491109974,
+              0.38832915622389297
+            ],
+            "maximum": 0.4784290569355326,
+            "mean": 0.2774374515695872,
+            "median": 0.2777528463392338,
+            "minimum": 0.07870548972780993,
+            "n": 5000,
+            "standard_deviation": 0.05755030387418867
+          },
+          "method": "paired Bayesian bootstrap with iid Exp(1) weights",
+          "point_estimate": {
+            "broad_support_spearman": 0.32511033255039873,
+            "matched_minus_broad_support": -0.015147817186946466,
+            "matched_support_spearman": 0.30996251536345226
+          },
+          "repeats": 5000,
+          "resampled_median_minus_point_estimate": {
+            "broad_support_spearman": -0.010598048349495015,
+            "matched_minus_broad_support": -0.02131944171073402,
+            "matched_support_spearman": -0.03220966902421846
+          },
+          "resampling_bias_note": "Exp(1) weights reduce each replicate's effective ligand count and the matched docking geometry is re-estimated in every replicate while the broad one is fixed, so the resampled contrast is displaced downward relative to its point estimate; read the interval as a width.",
+          "resampling_unit": "butina_cluster",
+          "seed": 21360808
+        },
+        "ligand": {
+          "broad_support_spearman": {
+            "interval_90": [
+              0.2595528087233792,
+              0.3719719018313673
+            ],
+            "interval_95": [
+              0.24916042287218923,
+              0.3840503090186198
+            ],
+            "maximum": 0.46313252590463944,
+            "mean": 0.3145353187506288,
+            "median": 0.31421135736374095,
+            "minimum": 0.18694642365074993,
+            "n": 5000,
+            "standard_deviation": 0.034072183017849623
+          },
+          "clusters": null,
+          "fraction_matched_above_broad": 0.2266,
+          "matched_minus_broad_support": {
+            "interval_90": [
+              -0.11122045952577778,
+              0.04486749159110697
+            ],
+            "interval_95": [
+              -0.1250724105201923,
+              0.06257414915998553
+            ],
+            "maximum": 0.17511492518381472,
+            "mean": -0.03457998644079659,
+            "median": -0.03513933174996828,
+            "minimum": -0.20226482436457638,
+            "n": 5000,
+            "standard_deviation": 0.047488775236650044
+          },
+          "matched_support_spearman": {
+            "interval_90": [
+              0.19606266976341377,
+              0.3673448017950637
+            ],
+            "interval_95": [
+              0.17970882704142557,
+              0.38453183569744603
+            ],
+            "maximum": 0.5157562317661519,
+            "mean": 0.2799553323098322,
+            "median": 0.27867924610829,
+            "minimum": 0.1129166721340874,
+            "n": 5000,
+            "standard_deviation": 0.05227215564242964
+          },
+          "method": "paired Bayesian bootstrap with iid Exp(1) weights",
+          "point_estimate": {
+            "broad_support_spearman": 0.32511033255039873,
+            "matched_minus_broad_support": -0.015147817186946466,
+            "matched_support_spearman": 0.30996251536345226
+          },
+          "repeats": 5000,
+          "resampled_median_minus_point_estimate": {
+            "broad_support_spearman": -0.010898975186657778,
+            "matched_minus_broad_support": -0.01999151456302181,
+            "matched_support_spearman": -0.03128326925516228
+          },
+          "resampling_bias_note": "Exp(1) weights reduce each replicate's effective ligand count and the matched docking geometry is re-estimated in every replicate while the broad one is fixed, so the resampled contrast is displaced downward relative to its point estimate; read the interval as a width.",
+          "resampling_unit": "ligand",
+          "seed": 21360806
+        },
+        "murcko_scaffold": {
+          "broad_support_spearman": {
+            "interval_90": [
+              0.2522855130846313,
+              0.3740763776806764
+            ],
+            "interval_95": [
+              0.23924803282202017,
+              0.3838625796603201
+            ],
+            "maximum": 0.4520612176164671,
+            "mean": 0.31358363167954795,
+            "median": 0.3138666911607116,
+            "minimum": 0.1698880709627472,
+            "n": 5000,
+            "standard_deviation": 0.037170314412992525
+          },
+          "clusters": 111,
+          "fraction_matched_above_broad": 0.2546,
+          "matched_minus_broad_support": {
+            "interval_90": [
+              -0.11971718126030613,
+              0.05446032183425402
+            ],
+            "interval_95": [
+              -0.1368230786390059,
+              0.06835172573668019
+            ],
+            "maximum": 0.15658518022805712,
+            "mean": -0.03474658303699914,
+            "median": -0.03539476964662969,
+            "minimum": -0.2295949297327088,
+            "n": 5000,
+            "standard_deviation": 0.052525117637673216
+          },
+          "matched_support_spearman": {
+            "interval_90": [
+              0.18367288203055634,
+              0.3780119583426281
+            ],
+            "interval_95": [
+              0.16253360276782708,
+              0.39817370651760287
+            ],
+            "maximum": 0.48784876676857947,
+            "mean": 0.2788370486425488,
+            "median": 0.2782217323413245,
+            "minimum": 0.076945417645335,
+            "n": 5000,
+            "standard_deviation": 0.059711625437088724
+          },
+          "method": "paired Bayesian bootstrap with iid Exp(1) weights",
+          "point_estimate": {
+            "broad_support_spearman": 0.32511033255039873,
+            "matched_minus_broad_support": -0.015147817186946466,
+            "matched_support_spearman": 0.30996251536345226
+          },
+          "repeats": 5000,
+          "resampled_median_minus_point_estimate": {
+            "broad_support_spearman": -0.011243641389687142,
+            "matched_minus_broad_support": -0.02024695245968322,
+            "matched_support_spearman": -0.03174078302212774
+          },
+          "resampling_bias_note": "Exp(1) weights reduce each replicate's effective ligand count and the matched docking geometry is re-estimated in every replicate while the broad one is fixed, so the resampled contrast is displaced downward relative to its point estimate; read the interval as a width.",
+          "resampling_unit": "murcko_scaffold",
+          "seed": 21360807
+        }
+      },
+      "broad_support_raw_docking_spearman": 0.30692000507376643,
+      "broad_support_spearman": 0.32511033255039873,
+      "conservative_union_interval_95_murcko_and_butina": {
+        "broad_support_spearman": [
+          0.2329488643073653,
+          0.38595563953513795
+        ],
+        "matched_minus_broad_support": [
+          -0.1368230786390059,
+          0.06835172573668019
+        ],
+        "matched_support_spearman": [
+          0.16253360276782708,
+          0.39817370651760287
+        ]
+      },
+      "covariance_shrinkage": {
+        "broad_support_oas_minus_empirical": 0.003943541226539282,
+        "broad_support_spearman_empirical": 0.32511033255039873,
+        "broad_support_spearman_oas": 0.329053873776938,
+        "estimator": "Oracle Approximating Shrinkage (OAS) on the two-way-centred surface",
+        "interpretation": "OAS shrinks every off-diagonal entry by a nearly common factor, so it is close to rank preserving on the 190 edges and moves this Spearman estimate very little; the reliability analysis, not the shrinkage, is what quantifies sampling noise at these N.",
+        "matched_support_oas_minus_empirical": -0.0011424722364374307,
+        "matched_support_spearman_empirical": 0.30996251536345226,
+        "matched_support_spearman_oas": 0.30882004312701483
+      },
+      "frozen_mapping_check": {
+        "frozen_mapping": "results/dense_pkis2_primary_molecule_mapping.csv",
+        "frozen_mapping_ligands": 154,
+        "frozen_mapping_sha256": "44377fea8dfeba0b333913b36c55b266b626b0e3eecc2ff1abe6608e27f500ad",
+        "recomputed_match_equals_frozen_mapping": true
+      },
+      "matched_ligands": 154,
+      "matched_minus_broad_support": -0.015147817186946466,
+      "matched_support_raw_docking_spearman": 0.3491407401575492,
+      "matched_support_spearman": 0.30996251536345226,
+      "molecular_identity": "exact full Standard InChIKey of the raw parsed molecule; duplicates aggregated by the median on both sides",
+      "paired_target_label_qap_matched_minus_broad": {
+        "broad_support_concordance": 0.3251103325503987,
+        "fixed_experimental_endpoint": "two-way-centered experimental target geometry",
+        "matched_minus_broad_support": -0.01514781718694641,
+        "matched_support_concordance": 0.30996251536345226,
+        "null_interval_95": [
+          -0.08605457798072844,
+          0.0900953080782234
+        ],
+        "null_median": -0.0008153017797548068,
+        "one_sided_p_positive_matched_minus_broad": 0.63592,
+        "permutations": 49999,
+        "seed": 21260811
+      },
+      "panel": "PKIS2",
+      "panel_ligands": 645,
+      "propensity_matched_support": {
+        "matching_variables": [
+          "molecular_weight",
+          "clogp",
+          "tpsa"
+        ],
+        "neighbour_count_sensitivity": {
+          "100": {
+            "maximum_absolute_standardized_mean_difference_after": 0.008632754955731093,
+            "maximum_absolute_standardized_mean_difference_before": 0.3727708645592713,
+            "neighbours_per_matched_ligand": 100,
+            "spearman": 0.3293145603975034,
+            "standardized_mean_difference_after": {
+              "clogp": -0.006282451228644283,
+              "molecular_weight": 0.003692688454063457,
+              "tpsa": -0.008632754955731093
+            },
+            "standardized_mean_difference_before": {
+              "clogp": -0.3727708645592713,
+              "molecular_weight": -0.14225484776655956,
+              "tpsa": -0.20755423991964791
+            },
+            "support_rows_with_reuse": 15400,
+            "support_unique_rows": 13435
+          },
+          "20": {
+            "maximum_absolute_standardized_mean_difference_after": 0.0022657450032915315,
+            "maximum_absolute_standardized_mean_difference_before": 0.3727708645592713,
+            "neighbours_per_matched_ligand": 20,
+            "spearman": 0.3208781115091393,
+            "standardized_mean_difference_after": {
+              "clogp": -0.0013987604753639654,
+              "molecular_weight": 0.0010571948276911559,
+              "tpsa": -0.0022657450032915315
+            },
+            "standardized_mean_difference_before": {
+              "clogp": -0.3727708645592713,
+              "molecular_weight": -0.14225484776655956,
+              "tpsa": -0.20755423991964791
+            },
+            "support_rows_with_reuse": 3080,
+            "support_unique_rows": 2836
+          },
+          "50": {
+            "maximum_absolute_standardized_mean_difference_after": 0.005737182451647154,
+            "maximum_absolute_standardized_mean_difference_before": 0.3727708645592713,
+            "neighbours_per_matched_ligand": 50,
+            "spearman": 0.32905737292620735,
+            "standardized_mean_difference_after": {
+              "clogp": -0.0045174256009246384,
+              "molecular_weight": 0.0029080078476680137,
+              "tpsa": -0.005737182451647154
+            },
+            "standardized_mean_difference_before": {
+              "clogp": -0.3727708645592713,
+              "molecular_weight": -0.14225484776655956,
+              "tpsa": -0.20755423991964791
+            },
+            "support_rows_with_reuse": 7700,
+            "support_unique_rows": 6911
+          }
+        },
+        "primary_neighbours_per_matched_ligand": 100,
+        "size_matched_random_support_control": {
+          "method": "random draws with replacement from the broad pool, matched to the propensity arm's row count including its reuse",
+          "repeats": 200,
+          "seed": 21660806,
+          "spearman": {
+            "interval_90": [
+              0.3170435687823398,
+              0.3347122605816461
+            ],
+            "interval_95": [
+              0.31576769148000894,
+              0.33714994292012757
+            ],
+            "maximum": 0.3393956094424544,
+            "mean": 0.325914655749321,
+            "median": 0.3260944682823989,
+            "minimum": 0.31256588241983674,
+            "n": 200,
+            "standard_deviation": 0.0056513892933114426
+          },
+          "support_size_with_reuse": 15400
+        }
+      },
+      "published_broad_support_versus_full_panel_endpoint": 0.287170806597646,
+      "recomputed_broad_support_versus_full_panel_endpoint": 0.2872582853293793,
+      "sampling_noise": {
+        "attenuation_correction_of_matched_support_spearman": {
+          "attenuation_factor_sqrt_reliability_product": 0.8805317802552279,
+          "disattenuated_spearman": 0.3520174084728749,
+          "disattenuated_spearman_uncapped": 0.3520174084728749,
+          "docking_geometry_reliability": 0.8721234693189088,
+          "experimental_geometry_reliability": 0.8890211573424867,
+          "observed_spearman": 0.30996251536345226,
+          "status": "approximate"
+        },
+        "broad_reference_subsample_at_matched_n": {
+          "method": "random ligand subsamples of the broad reference scored against the full broad-support geometry",
+          "repeats": 500,
+          "seed": 21560806,
+          "spearman_against_full_reference": {
+            "interval_90": [
+              0.8643280102525075,
+              0.9330599622966665
+            ],
+            "interval_95": [
+              0.8448255017998749,
+              0.9378875198467373
+            ],
+            "maximum": 0.9451070958373248,
+            "mean": 0.9025819242696621,
+            "median": 0.9053182694957289,
+            "minimum": 0.7842022158362749,
+            "n": 500,
+            "standard_deviation": 0.021809702629988752
+          },
+          "subsample_size": 154
+        },
+        "matched_docking_geometry_split_half": {
+          "half_size": 77,
+          "half_split_spearman": {
+            "interval_90": [
+              0.7063171016546603,
+              0.8283278877822832
+            ],
+            "interval_95": [
+              0.6939826004802583,
+              0.8374549812576818
+            ],
+            "maximum": 0.8561954624781851,
+            "mean": 0.7708748660481922,
+            "median": 0.7732437551120384,
+            "minimum": 0.6226674889667451,
+            "n": 500,
+            "standard_deviation": 0.03724056887743892
+          },
+          "method": "random split-half of the ligand support, Spearman-Brown corrected",
+          "repeats": 500,
+          "seed": 21460806,
+          "spearman_brown_reliability": {
+            "interval_90": [
+              0.8278849222290227,
+              0.9061043073644733
+            ],
+            "interval_95": [
+              0.8193501359278461,
+              0.9115379535726392
+            ],
+            "maximum": 0.9225272658894322,
+            "mean": 0.870111254102454,
+            "median": 0.8721234693189088,
+            "minimum": 0.7674615941966481,
+            "n": 500,
+            "standard_deviation": 0.02400221142453379
+          }
+        },
+        "matched_experimental_geometry_split_half": {
+          "half_size": 77,
+          "half_split_spearman": {
+            "interval_90": [
+              0.7225766860432057,
+              0.853765215831901
+            ],
+            "interval_95": [
+              0.7047124355391097,
+              0.8632818958390742
+            ],
+            "maximum": 0.8815520476584131,
+            "mean": 0.7958568043144512,
+            "median": 0.8002143228927469,
+            "minimum": 0.5043944940886248,
+            "n": 500,
+            "standard_deviation": 0.04202411569334868
+          },
+          "method": "random split-half of the ligand support, Spearman-Brown corrected",
+          "repeats": 500,
+          "seed": 21460807,
+          "spearman_brown_reliability": {
+            "interval_90": [
+              0.8389486321586748,
+              0.9211147214774587
+            ],
+            "interval_95": [
+              0.8267799234239696,
+              0.9266250567433784
+            ],
+            "maximum": 0.9370477407260697,
+            "mean": 0.8856938219331796,
+            "median": 0.8890211573424867,
+            "minimum": 0.6705614731649113,
+            "n": 500,
+            "standard_deviation": 0.02709779609732333
+          }
+        }
+      },
+      "target_pairs": 190,
+      "targets": 20,
+      "twenty_one_kinase_sensitivity": {
+        "broad_support_spearman": 0.3290058407544065,
+        "matched_minus_broad_support": -0.002923292721247306,
+        "matched_support_spearman": 0.32608254803315917,
+        "target_pairs": 210,
+        "targets": 21
+      }
+    }
+  },
+  "question": "When the docking target-pair geometry and the experimental target-pair geometry are computed on exactly the same compounds, is their agreement higher, lower or indistinguishable from the cross-support agreement the manuscript reports?",
+  "seeds": {
+    "base_seed": 20260806,
+    "bootstrap_seed_offset": 100000,
+    "panel_seed_stride": 1000000,
+    "qap_seed_offset": 0,
+    "random_support_seed_offset": 400000,
+    "sensitivity_seed_offset": 500000,
+    "split_half_seed_offset": 200000,
+    "subsample_seed_offset": 300000
+  },
+  "source_sha256": {
+    "DAVIS": "e5614549ec970bf24bd58d04d8a74feb8f8a53806410eaa8d84d24e96a4ff827",
+    "DOCKSTRING": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64",
+    "PKIS2": "48ead22a1f860cd0d5096fa87d5acd329f722fe8d65e693bb0be682a333e2a2c",
+    "dense_davis_primary_molecule_mapping": "8182a2d2f651673f55dfad39dd605304febcf810c25a7658b8b02f9dd85b69fa",
+    "dense_pkis2_primary_molecule_mapping": "44377fea8dfeba0b333913b36c55b266b626b0e3eecc2ff1abe6608e27f500ad",
+    "dockstring_identity_contract": "5c5d06635cb276f543f9744487d6b8d4015432087e5f87b7875628973b8f32b3",
+    "published_decomposition": "2122dc898fd632c736e89fb55e1c407d289a91b161198fd905794b128a5fde6b"
+  },
+  "status": "exploratory_post_hoc_reviewer_requested",
+  "support": {
+    "broad_reference_definition": "complete 260,060-row DOCKSTRING support minus every row whose raw InChIKey connectivity block occurs in DAVIS or PKIS2",
+    "broad_reference_ligands": 259806,
+    "panels": {
+      "DAVIS": {
+        "matched_ligands": 59,
+        "panel_ligands": 72
+      },
+      "PKIS2": {
+        "matched_ligands": 154,
+        "panel_ligands": 645
+      }
+    },
+    "sensitivity_target_pairs": 210,
+    "sensitivity_targets": 21,
+    "target_names": [
+      "ABL1",
+      "AKT1",
+      "AKT2",
+      "CDK2",
+      "CSF1R",
+      "EGFR",
+      "FGFR1",
+      "IGF1R",
+      "JAK2",
+      "KDR",
+      "KIT",
+      "LCK",
+      "MAP2K1",
+      "MAPK1",
+      "MAPK14",
+      "MAPKAPK2",
+      "MET",
+      "PLK1",
+      "ROCK1",
+      "SRC"
+    ],
+    "target_pairs": 190,
+    "targets": 20
+  }
+}

@@ -1,0 +1,4 @@
+analysis_status,predictor,annotation_endpoint,controls,partial_spearman,target_label_qap_p_positive,null_q025,null_q975,permutations,seed
+exploratory_post_hoc,centered_Vina_target_geometry,klifs_pocket_identity,none,0.06694262010006825,0.1745765084698306,-0.12410193419700444,0.18300385618178558,50000,20260803
+exploratory_post_hoc,centered_Vina_target_geometry,same_klifs_family,none,0.11229640449964477,0.06369872602547949,-0.13702835072873318,0.14037050562455594,50000,20260803
+exploratory_post_hoc,centered_Vina_target_geometry,same_klifs_group,none,0.030727304013846962,0.2656346873062539,-0.1020526730801029,0.205842106821858,50000,20260803

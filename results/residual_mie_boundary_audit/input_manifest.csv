@@ -1,0 +1,3 @@
+asset,package_relative_path,sha256,rows
+Docking-44 frozen score table,data/frozen/df_final_v4.csv.gz,25436e49b9fc80421d8499ef289ed8ef00b4ab35b904c7d930fc377f493e1d51,12651
+frozen ChEMBL activity records,data/frozen/negative_results_paper/analysis/chembl_activities_full.csv.gz,aa06d73bf9f5b6cf14bb5bb9cfb7cbb81a9961172237e72bc5d2aab71c52b0f6,194606

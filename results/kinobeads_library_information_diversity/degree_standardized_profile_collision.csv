@@ -1,0 +1,7 @@
+pair_type,comparator,common_positive_hit_degrees,KCGS_degree_standardized_collision,comparator_degree_standardized_collision,comparator_over_KCGS_collision
+all_pairs,PKIS_exclusive,"1,2,3,4,5,6,7,10,11",0.00678104575163,0.0351182602702,5.17888561093
+all_pairs,PKIS2_exclusive,"1,2,3,4,5,6,7,8,9,10,11",0.0063601532567,0.0235309097462,3.69973942395
+all_pairs,Roche,"1,2,3,4,5,6,7,8,9,10,11",0.0063601532567,0.0785259759398,12.3465540484
+cross_chemotype,PKIS_exclusive,"1,2,3,4,5,6,7,10,11",0.00493629745549,0.0186610745381,3.78037885812
+cross_chemotype,PKIS2_exclusive,"1,2,3,4,5,6,7,8,9,10,11",0.00462990657894,0.0184674883784,3.98873887917
+cross_chemotype,Roche,"1,2,3,4,5,6,7,8,9,10,11",0.00462990657894,0.0326946548048,7.06162300413

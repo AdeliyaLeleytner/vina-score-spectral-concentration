@@ -1,0 +1,84 @@
+{
+  "KiRHub_boundary": {
+    "boundary": "KiRHub Table S4/Table S1 do not provide structures. PKIS1/PKIS2 release identifiers are not comparable drug-name namespaces, so full InChIKey/connectivity/scaffold overlap with all three panels was not asserted.",
+    "exact_normalized_name_overlap_with_DAVIS": 11,
+    "geometry_spearman_to_DAVIS_PKIS2_PKIS1_mean_after_removing_11_DAVIS_names": 0.8165798649269518,
+    "ligand_rows": 92,
+    "name_comparison_definition": "exact normalized drug name against the DAVIS 72-drug panel",
+    "pkis_name_boundary": "PKIS1/PKIS2 project identifiers are not comparable to KiRHub clinical compound names; no string-based PKIS--KiRHub overlap is asserted.",
+    "source_summary": "results/kirhub_external_validation/summary.json",
+    "source_summary_sha256": "ed9cb8d1b920310dc7cac2f741035a63933c095f9d74ba09103862c878d93092",
+    "structures_available": false,
+    "unique_connectivity_blocks": null,
+    "unique_nonempty_murcko_scaffolds": null,
+    "unique_standard_inchikeys": null,
+    "value_origin": "copied_and_schema_validated_without_recomputation"
+  },
+  "analysis": "experimental_panel_overlap",
+  "identity_definitions": {
+    "acyclic_handling": "each acyclic ligand is a singleton for within-panel cluster counts; acyclic ligands are not treated as one shared scaffold across panels",
+    "connectivity_block": "first 14 characters of recomputed Standard InChIKey",
+    "nonempty_murcko_scaffold": "canonical Bemis--Murcko scaffold; empty/acyclic molecules excluded from cross-panel scaffold intersections",
+    "standard_inchikey": "RDKit Chem.MolToInchiKey recomputed from released SMILES"
+  },
+  "interpretation_boundary": "Structural overlap is quantified only for DAVIS, PKIS2, and PKIS1. The KiRHub statement is a validated reuse of an existing name-only sensitivity and makes no chemical-identity or scaffold-independence claim.",
+  "pairwise_structural_overlap": [
+    {
+      "first_panel": "DAVIS",
+      "second_panel": "PKIS2",
+      "shared_connectivity_blocks": 6,
+      "shared_nonempty_murcko_scaffolds": 10,
+      "shared_standard_inchikeys": 3
+    },
+    {
+      "first_panel": "DAVIS",
+      "second_panel": "PKIS1",
+      "shared_connectivity_blocks": 1,
+      "shared_nonempty_murcko_scaffolds": 5,
+      "shared_standard_inchikeys": 1
+    },
+    {
+      "first_panel": "PKIS2",
+      "second_panel": "PKIS1",
+      "shared_connectivity_blocks": 7,
+      "shared_nonempty_murcko_scaffolds": 43,
+      "shared_standard_inchikeys": 7
+    }
+  ],
+  "source_sha256": {
+    "DAVIS": "e5614549ec970bf24bd58d04d8a74feb8f8a53806410eaa8d84d24e96a4ff827",
+    "PKIS1": "1ffbe7fd0b4fc1ef72f2434a2b247d15c0f2b4d3c34668f112f4b4c9e4ead7dc",
+    "PKIS2": "48ead22a1f860cd0d5096fa87d5acd329f722fe8d65e693bb0be682a333e2a2c"
+  },
+  "structured_panels": {
+    "DAVIS": {
+      "acyclic_ligand_rows": 0,
+      "ligand_rows": 72,
+      "murcko_clusters_with_acyclic_singletons": 72,
+      "unique_connectivity_blocks": 72,
+      "unique_nonempty_murcko_scaffolds": 72,
+      "unique_standard_inchikeys": 72
+    },
+    "PKIS1": {
+      "acyclic_ligand_rows": 0,
+      "ligand_rows": 360,
+      "murcko_clusters_with_acyclic_singletons": 189,
+      "unique_connectivity_blocks": 355,
+      "unique_nonempty_murcko_scaffolds": 189,
+      "unique_standard_inchikeys": 359
+    },
+    "PKIS2": {
+      "acyclic_ligand_rows": 0,
+      "ligand_rows": 645,
+      "murcko_clusters_with_acyclic_singletons": 369,
+      "unique_connectivity_blocks": 637,
+      "unique_nonempty_murcko_scaffolds": 369,
+      "unique_standard_inchikeys": 640
+    }
+  },
+  "three_panel_structural_overlap": {
+    "shared_connectivity_blocks": 0,
+    "shared_nonempty_murcko_scaffolds": 3,
+    "shared_standard_inchikeys": 0
+  }
+}

@@ -1,7 +1,10 @@
-# Reproduced with CPython 3.12.9.
+# Reproduced with CPython 3.12.11.
 numpy==1.26.4
 pandas==2.3.2
+openpyxl==3.1.5
 scipy==1.16.2
 matplotlib==3.10.6
 rdkit==2025.3.6
 scikit-learn==1.7.2
+biopython==1.87
+pytest==9.1.1

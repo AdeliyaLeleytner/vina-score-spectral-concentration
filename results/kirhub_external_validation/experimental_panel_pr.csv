@@ -1,0 +1,25 @@
+transform,description,panel,ligands,targets,correlation_PR_dimension
+raw,no explicit preprocessing before target correlation,DAVIS,72,20,7.562847268057815
+raw,no explicit preprocessing before target correlation,PKIS2,645,20,9.288830880807547
+raw,no explicit preprocessing before target correlation,PKIS1,360,20,7.792597688983868
+raw,no explicit preprocessing before target correlation,KiRHub,92,20,7.502947049135988
+column_center_only,remove target offsets only; correlation is mathematically invariant,DAVIS,72,20,7.562847268057809
+column_center_only,remove target offsets only; correlation is mathematically invariant,PKIS2,645,20,9.288830880807545
+column_center_only,remove target offsets only; correlation is mathematically invariant,PKIS1,360,20,7.79259768898387
+column_center_only,remove target offsets only; correlation is mathematically invariant,KiRHub,92,20,7.50294704913599
+row_center_only,remove the per-ligand mean; target offsets are left to correlation,DAVIS,72,20,6.8547757186063745
+row_center_only,remove the per-ligand mean; target offsets are left to correlation,PKIS2,645,20,10.088424567424143
+row_center_only,remove the per-ligand mean; target offsets are left to correlation,PKIS1,360,20,7.257054603325512
+row_center_only,remove the per-ligand mean; target offsets are left to correlation,KiRHub,92,20,5.055119279803979
+two_way_center,remove ligand and target additive effects,DAVIS,72,20,6.8547757186063745
+two_way_center,remove ligand and target additive effects,PKIS2,645,20,10.088424567424145
+two_way_center,remove ligand and target additive effects,PKIS1,360,20,7.257054603325511
+two_way_center,remove ligand and target additive effects,KiRHub,92,20,5.055119279803977
+z_before_center,"column z-score, then remove ligand and target additive effects",DAVIS,72,20,8.786701198793729
+z_before_center,"column z-score, then remove ligand and target additive effects",PKIS2,645,20,12.252916187158295
+z_before_center,"column z-score, then remove ligand and target additive effects",PKIS1,360,20,9.44921662032966
+z_before_center,"column z-score, then remove ligand and target additive effects",KiRHub,92,20,8.35348701866416
+rank_normal_before_center,"column inverse-normal ranks, then remove additive effects",DAVIS,72,20,7.471418213770889
+rank_normal_before_center,"column inverse-normal ranks, then remove additive effects",PKIS2,645,20,13.623441190048272
+rank_normal_before_center,"column inverse-normal ranks, then remove additive effects",PKIS1,360,20,10.251384673857876
+rank_normal_before_center,"column inverse-normal ranks, then remove additive effects",KiRHub,92,20,10.032104797422182

@@ -1,0 +1,4402 @@
+{
+  "analysis": "rank/dimension-matched controls for fixed-20 descriptor geometry",
+  "arms": {
+    "morgan_count_plus_size_rp_7_locked_seed_20260910": "deterministically locked first-seed representative of the 20-seed 7-D unnormalized Morgan count-fingerprint random-projection ensemble",
+    "morgan_normalized_bit_rp_7_seed_a": "first secondary 7-D projection of normalized Morgan bit fingerprints",
+    "morgan_normalized_bit_rp_7_seed_b": "second secondary 7-D projection of normalized Morgan bit fingerprints",
+    "outcome_rank7_svd_transported_oracle": "outcome-derived fold-local rank-7 transported-subspace oracle; neither predictive nor a universal capacity ceiling",
+    "physicochemical_7": "seven published RDKit physicochemical descriptors",
+    "stable_hash_nuisance_7": "stable 7-D ligand-identity hash nuisance basis"
+  },
+  "claim_boundary": "These controls do NOT identify a causal physicochemical mechanism. Morgan random projections retain chemical topology, the stable-hash basis is only a negative control, and every predictive arm still fits separate coefficients for every target. The rank-7 SVD arm is not a predictor: held-out docking outcomes are used for projection. Relative reduction in mean squared target correlation is a non-additive operational contrast, not a share of correlation explained. Bootstrap intervals reweight coarsened blocks of chemical groups with the experimental geometries and target panel fixed; they are sensitivity intervals, not experimental- or target-population confidence intervals. The 20-seed count-Morgan range is algorithmic projection sensitivity, not uncertainty. It tests basis specificity only for this fixed common-20, de-leaked DOCKSTRING geometry and is not extrapolated to the Docking-44 or DOCKSTRING-58 headline supports. Because the same 20 targets and 190 dependent dyads are fixed, physicochemical-versus-RP experimental-agreement differences are descriptive and conditional, not inferential significance tests. Physicochemical feature specificity is not claimed solely from a finite random-projection ensemble, especially wherever an ensemble member matches or exceeds the physicochemical point. The stable-hash basis has essentially zero ligand-level held-out predictive performance but appreciable scale-free target-pair geometry agreement. Thus a target-specific fitted component's experimental geometry cannot by itself support feature-specific orientation without held-out-performance and negative-feature controls; the hash arm falsifies that interpretation here.",
+  "coefficient_effective_ranks_by_fold": {
+    "morgan_count_plus_size_rp_7_locked_seed_20260910": [
+      7,
+      7,
+      7,
+      7,
+      7
+    ],
+    "morgan_normalized_bit_rp_7_seed_a": [
+      7,
+      7,
+      7,
+      7,
+      7
+    ],
+    "morgan_normalized_bit_rp_7_seed_b": [
+      7,
+      7,
+      7,
+      7,
+      7
+    ],
+    "physicochemical_7": [
+      7,
+      7,
+      7,
+      7,
+      7
+    ],
+    "stable_hash_nuisance_7": [
+      7,
+      7,
+      7,
+      7,
+      7
+    ]
+  },
+  "component_remainder_and_partial_associations": {
+    "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+      "component_remainder_pearson": 0.4282918108413772,
+      "component_remainder_spearman": 0.4817654957638425,
+      "panels": {
+        "DAVIS": {
+          "joint_rank_r2": 0.09791925333369011,
+          "partial_spearman_component": 0.22332806263563004,
+          "partial_spearman_remainder": 0.09663763345638664,
+          "semipartial_rank_r2_component": 0.0473534317935822,
+          "semipartial_rank_r2_remainder": 0.008503796250257878,
+          "standardized_beta_component": 0.24832636304162092,
+          "standardized_beta_remainder": 0.10523338045517772
+        },
+        "KiRHub": {
+          "joint_rank_r2": 0.1362682117876478,
+          "partial_spearman_component": 0.28221505664123153,
+          "partial_spearman_remainder": 0.09176279858784189,
+          "semipartial_rank_r2_component": 0.07474532724921734,
+          "semipartial_rank_r2_remainder": 0.007334738340198488,
+          "standardized_beta_component": 0.3119888853340597,
+          "standardized_beta_remainder": 0.09773259072827864
+        },
+        "PKIS1": {
+          "joint_rank_r2": 0.025578635794888505,
+          "partial_spearman_component": 0.08512780951503447,
+          "partial_spearman_remainder": 0.0792211618634772,
+          "semipartial_rank_r2_component": 0.007112927694315596,
+          "semipartial_rank_r2_remainder": 0.00615408414679286,
+          "standardized_beta_component": 0.09624347504712766,
+          "standardized_beta_remainder": 0.08952180161715
+        },
+        "PKIS2": {
+          "joint_rank_r2": 0.08917093744953819,
+          "partial_spearman_component": 0.1979554206824531,
+          "partial_spearman_remainder": 0.11143529801839998,
+          "semipartial_rank_r2_component": 0.03714774981271429,
+          "semipartial_rank_r2_remainder": 0.011452734551461452,
+          "standardized_beta_component": 0.2199446257318259,
+          "standardized_beta_remainder": 0.12212418995402273
+        }
+      }
+    },
+    "morgan_normalized_bit_rp_7_seed_a": {
+      "component_remainder_pearson": 0.6398648601258959,
+      "component_remainder_spearman": 0.6020977399869658,
+      "panels": {
+        "DAVIS": {
+          "joint_rank_r2": 0.08254304758846975,
+          "partial_spearman_component": -0.052126646649714524,
+          "partial_spearman_remainder": 0.2581977100178864,
+          "semipartial_rank_r2_component": 0.0024996945092327083,
+          "semipartial_rank_r2_remainder": 0.06553199783841424,
+          "standardized_beta_component": -0.0626196680831621,
+          "standardized_beta_remainder": 0.3206225008670114
+        },
+        "KiRHub": {
+          "joint_rank_r2": 0.10591065441522485,
+          "partial_spearman_component": 0.044450656936585814,
+          "partial_spearman_remainder": 0.238604295993483,
+          "semipartial_rank_r2_component": 0.0017700936397355704,
+          "semipartial_rank_r2_remainder": 0.053975221475617396,
+          "standardized_beta_component": 0.052694515284712,
+          "standardized_beta_remainder": 0.2909809180143675
+        },
+        "PKIS1": {
+          "joint_rank_r2": 0.03844857981429284,
+          "partial_spearman_component": 0.087913103892954,
+          "partial_spearman_remainder": 0.08976340447216573,
+          "semipartial_rank_r2_component": 0.0074894394999925895,
+          "semipartial_rank_r2_remainder": 0.007810604250773623,
+          "standardized_beta_component": 0.10839068267731013,
+          "standardized_beta_remainder": 0.11069031157085016
+        },
+        "PKIS2": {
+          "joint_rank_r2": 0.09087290894648992,
+          "partial_spearman_component": -0.08289448694090572,
+          "partial_spearman_remainder": 0.281724811433019,
+          "semipartial_rank_r2_component": 0.006290286818517954,
+          "semipartial_rank_r2_remainder": 0.07837709038587415,
+          "standardized_beta_component": -0.0993350506133791,
+          "standardized_beta_remainder": 0.35064032620917596
+        }
+      }
+    },
+    "morgan_normalized_bit_rp_7_seed_b": {
+      "component_remainder_pearson": 0.8540846546305301,
+      "component_remainder_spearman": 0.8701343235925766,
+      "panels": {
+        "DAVIS": {
+          "joint_rank_r2": 0.12211084974572772,
+          "partial_spearman_component": 0.22231338778068513,
+          "partial_spearman_remainder": -0.05288796742175241,
+          "semipartial_rank_r2_component": 0.04564400287931303,
+          "semipartial_rank_r2_remainder": 0.0024624641599659824,
+          "standardized_beta_component": 0.43351913407637865,
+          "standardized_beta_remainder": -0.10069348397365693
+        },
+        "KiRHub": {
+          "joint_rank_r2": 0.1474814708892902,
+          "partial_spearman_component": 0.22565375126647982,
+          "partial_spearman_remainder": -0.03128377731936592,
+          "semipartial_rank_r2_component": 0.045738924102252776,
+          "semipartial_rank_r2_remainder": 0.0008351556813986916,
+          "standardized_beta_component": 0.4339696729427696,
+          "standardized_beta_remainder": -0.05864083266839606
+        },
+        "PKIS1": {
+          "joint_rank_r2": 0.04073922403667274,
+          "partial_spearman_component": 0.10660499738115548,
+          "partial_spearman_remainder": -0.0065594012002044965,
+          "semipartial_rank_r2_component": 0.011026956676321364,
+          "semipartial_rank_r2_remainder": 4.127468455128458e-05,
+          "standardized_beta_component": 0.21308076270057769,
+          "standardized_beta_remainder": -0.013036418379083174
+        },
+        "PKIS2": {
+          "joint_rank_r2": 0.12469140558208958,
+          "partial_spearman_component": 0.219237311399591,
+          "partial_spearman_remainder": -0.04602636733226799,
+          "semipartial_rank_r2_component": 0.044195986495170425,
+          "semipartial_rank_r2_remainder": 0.0018582134016627005,
+          "standardized_beta_component": 0.42658720445655285,
+          "standardized_beta_remainder": -0.08747102233423736
+        }
+      }
+    },
+    "physicochemical_7": {
+      "component_remainder_pearson": 0.3355771504802402,
+      "component_remainder_spearman": 0.34238213334383083,
+      "panels": {
+        "DAVIS": {
+          "joint_rank_r2": 0.08580360721928404,
+          "partial_spearman_component": 0.1972139613584488,
+          "partial_spearman_remainder": 0.1466196683204719,
+          "semipartial_rank_r2_component": 0.036995017146130627,
+          "semipartial_rank_r2_remainder": 0.02008454291380024,
+          "standardized_beta_component": 0.20471361755360984,
+          "standardized_beta_remainder": 0.15083637710271314
+        },
+        "KiRHub": {
+          "joint_rank_r2": 0.10750440799592642,
+          "partial_spearman_component": 0.22344799331447804,
+          "partial_spearman_remainder": 0.16408502312884865,
+          "semipartial_rank_r2_component": 0.04690325016027874,
+          "semipartial_rank_r2_remainder": 0.024694324846851745,
+          "standardized_beta_component": 0.23050300181158204,
+          "standardized_beta_remainder": 0.16725291468108872
+        },
+        "PKIS1": {
+          "joint_rank_r2": 0.021032123099603117,
+          "partial_spearman_component": 0.05445762275429417,
+          "partial_spearman_remainder": 0.10850943590658771,
+          "semipartial_rank_r2_component": 0.002911894734712428,
+          "semipartial_rank_r2_remainder": 0.011663994546469603,
+          "standardized_beta_component": 0.05743319173458876,
+          "standardized_beta_remainder": 0.11494729889312366
+        },
+        "PKIS2": {
+          "joint_rank_r2": 0.07296622257000052,
+          "partial_spearman_component": 0.1548058369596683,
+          "partial_spearman_remainder": 0.16279879127290342,
+          "semipartial_rank_r2_component": 0.022761703531444577,
+          "semipartial_rank_r2_remainder": 0.025238497227607293,
+          "standardized_beta_component": 0.16057483988431998,
+          "standardized_beta_remainder": 0.16908569328427153
+        }
+      }
+    },
+    "stable_hash_nuisance_7": {
+      "component_remainder_pearson": 0.593914411790035,
+      "component_remainder_spearman": 0.578614949240466,
+      "panels": {
+        "DAVIS": {
+          "joint_rank_r2": 0.0894221705232997,
+          "partial_spearman_component": 0.10990872614119751,
+          "partial_spearman_remainder": 0.1725384666881263,
+          "semipartial_rank_r2_component": 0.011134215212136644,
+          "semipartial_rank_r2_remainder": 0.027939203930533396,
+          "standardized_beta_component": 0.12937552882325332,
+          "standardized_beta_remainder": 0.2049412336187688
+        },
+        "KiRHub": {
+          "joint_rank_r2": 0.14265688084771055,
+          "partial_spearman_component": 0.20919791431189605,
+          "partial_spearman_remainder": 0.15749570873092747,
+          "semipartial_rank_r2_component": 0.03923775687093389,
+          "semipartial_rank_r2_remainder": 0.021807235100083977,
+          "standardized_beta_component": 0.24287030497268075,
+          "standardized_beta_remainder": 0.1810600496270299
+        },
+        "PKIS1": {
+          "joint_rank_r2": 0.03015867614092327,
+          "partial_spearman_component": 0.0026679656006021336,
+          "partial_spearman_remainder": 0.14084633485121978,
+          "semipartial_rank_r2_component": 6.903418907966419e-06,
+          "semipartial_rank_r2_remainder": 0.01962880165479497,
+          "standardized_beta_component": 0.003221472631668304,
+          "standardized_beta_remainder": 0.1717786659054901
+        },
+        "PKIS2": {
+          "joint_rank_r2": 0.09293051973710587,
+          "partial_spearman_component": 0.10678901284253392,
+          "partial_spearman_remainder": 0.18075010215563975,
+          "semipartial_rank_r2_component": 0.010463447575163043,
+          "semipartial_rank_r2_remainder": 0.030635379868227508,
+          "standardized_beta_component": 0.12541796033731253,
+          "standardized_beta_remainder": 0.214602099843229
+        }
+      }
+    }
+  },
+  "configuration": {
+    "bootstrap_repeats": 5000,
+    "bootstrap_seed": 20260824,
+    "features_per_predictive_basis": 7,
+    "folds": 5,
+    "holdout_group": "RDKit Bemis-Murcko scaffold; every acyclic molecule is a singleton",
+    "requested_bootstrap_blocks": 512
+  },
+  "estimands": {
+    "experimental_geometry": "Spearman correlation between the 190 predicted target-pair edges and a fixed centered experimental edge vector",
+    "paired_design_sensitivity": "physicochemical-minus-control Spearman difference under coarsened chemical-group block reweighting, with the target panel and experimental edges fixed",
+    "predictive_score_structure": "relative reduction in mean squared off-diagonal target correlation after subtracting a fixed group-held-out prediction; not an explained fraction"
+  },
+  "feature_construction": {
+    "diagnostics": [
+      {
+        "basis": "physicochemical_7",
+        "dimensions": 7,
+        "matrix_rank": 7,
+        "maximum_absolute_pearson_with_published_descriptors": 1.0000000000000075,
+        "maximum_absolute_within_basis_correlation": 0.9935267075525134
+      },
+      {
+        "basis": "morgan_count_plus_size_rp_7_locked_seed_20260910",
+        "dimensions": 7,
+        "matrix_rank": 7,
+        "maximum_absolute_pearson_with_published_descriptors": 0.9950831317959291,
+        "maximum_absolute_within_basis_correlation": 0.4178476098706362
+      },
+      {
+        "basis": "morgan_normalized_bit_rp_7_seed_a",
+        "dimensions": 7,
+        "matrix_rank": 7,
+        "maximum_absolute_pearson_with_published_descriptors": 0.13671976077903908,
+        "maximum_absolute_within_basis_correlation": 0.11655149174814507
+      },
+      {
+        "basis": "morgan_normalized_bit_rp_7_seed_b",
+        "dimensions": 7,
+        "matrix_rank": 7,
+        "maximum_absolute_pearson_with_published_descriptors": 0.191024843210897,
+        "maximum_absolute_within_basis_correlation": 0.10177734691017729
+      },
+      {
+        "basis": "stable_hash_nuisance_7",
+        "dimensions": 7,
+        "matrix_rank": 7,
+        "maximum_absolute_pearson_with_published_descriptors": 0.006326615969726178,
+        "maximum_absolute_within_basis_correlation": 0.005555709579352748
+      }
+    ],
+    "morgan_random_projections": {
+      "count_preserving_primary_ensemble": {
+        "definition": "one explicit total-occurrence-count coordinate plus six raw hashed Morgan count random-projection coordinates, without ligand-wise normalization; the size/magnitude direction and repeated environments are therefore retained",
+        "locked_representative_seed": 20260910,
+        "members": 20,
+        "seeds": [
+          20260910,
+          20260911,
+          20260912,
+          20260913,
+          20260914,
+          20260915,
+          20260916,
+          20260917,
+          20260918,
+          20260919,
+          20260920,
+          20260921,
+          20260922,
+          20260923,
+          20260924,
+          20260925,
+          20260926,
+          20260927,
+          20260928,
+          20260929
+        ]
+      },
+      "fingerprint": "hashed Morgan count fingerprint, radius 2, 2048 bins",
+      "maximum_nonzero_bins": 113,
+      "maximum_total_occurrences": 209,
+      "median_nonzero_bins": 49.0,
+      "median_total_occurrences": 77.0,
+      "minimum_nonzero_bins": 8,
+      "minimum_total_occurrences": 30,
+      "normalized_bit_secondary_controls": {
+        "definition": "binary nonzero bins divided by sqrt(number of nonzero bins) before projection; retained only as secondary normalization sensitivity",
+        "seeds": [
+          20260821,
+          20260822
+        ]
+      }
+    },
+    "stable_hash_nuisance_definition": "keyed BLAKE2b digest of the exact input SMILES mapped to seven centered uniform coordinates; duplicates receive identical coordinates",
+    "stable_hash_nuisance_seed": 20260823
+  },
+  "generic_murcko_acyclic_topology_grouping": {
+    "acyclic_groups": 613,
+    "acyclic_ligands": 806,
+    "definition": "generic Bemis-Murcko framework for cyclic ligands; generic whole-molecule heavy-atom connectivity topology for acyclic ligands",
+    "genericisation_failures_using_exact_connectivity_fallback": 0,
+    "groups": 46728,
+    "largest_group_ligands": 5842,
+    "ligands": 259579,
+    "singleton_groups": 23468
+  },
+  "generic_murcko_acyclic_topology_predictive_sensitivity": {
+    "coefficient_effective_ranks_by_fold": {
+      "morgan_count_plus_size_rp_7_locked_seed_20260910": [
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "morgan_normalized_bit_rp_7_seed_a": [
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "morgan_normalized_bit_rp_7_seed_b": [
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "physicochemical_7": [
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "stable_hash_nuisance_7": [
+        7,
+        7,
+        7,
+        7,
+        7
+      ]
+    },
+    "folds": [
+      {
+        "fold": 1,
+        "maximum_training_residual_target_sd": 0.8819930609460461,
+        "minimum_training_residual_target_sd": 0.37547648727131433,
+        "rank7_test_reconstruction_r2": 0.6154718562181543,
+        "rank7_training_energy_share": 0.6161491415341709,
+        "test_groups": 9342,
+        "test_ligands": 51916,
+        "train_groups": 37386,
+        "train_ligands": 207663
+      },
+      {
+        "fold": 2,
+        "maximum_training_residual_target_sd": 0.8795187051293564,
+        "minimum_training_residual_target_sd": 0.37202853578725636,
+        "rank7_test_reconstruction_r2": 0.6113682551135902,
+        "rank7_training_energy_share": 0.6169113805849992,
+        "test_groups": 9346,
+        "test_ligands": 51916,
+        "train_groups": 37382,
+        "train_ligands": 207663
+      },
+      {
+        "fold": 3,
+        "maximum_training_residual_target_sd": 0.8816382005845902,
+        "minimum_training_residual_target_sd": 0.3748347139736134,
+        "rank7_test_reconstruction_r2": 0.6176652877799931,
+        "rank7_training_energy_share": 0.6154926569110448,
+        "test_groups": 9347,
+        "test_ligands": 51916,
+        "train_groups": 37381,
+        "train_ligands": 207663
+      },
+      {
+        "fold": 4,
+        "maximum_training_residual_target_sd": 0.8809164719034862,
+        "minimum_training_residual_target_sd": 0.37497500092169306,
+        "rank7_test_reconstruction_r2": 0.6179717939415484,
+        "rank7_training_energy_share": 0.6154907270284036,
+        "test_groups": 9347,
+        "test_ligands": 51916,
+        "train_groups": 37381,
+        "train_ligands": 207663
+      },
+      {
+        "fold": 5,
+        "maximum_training_residual_target_sd": 0.8790573730000196,
+        "minimum_training_residual_target_sd": 0.37435852553479276,
+        "rank7_test_reconstruction_r2": 0.6161737117432241,
+        "rank7_training_energy_share": 0.6159763980969252,
+        "test_groups": 9346,
+        "test_ligands": 51915,
+        "train_groups": 37382,
+        "train_ligands": 207664
+      }
+    ],
+    "panel_geometry_agreement": {
+      "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+        "DAVIS": 0.297897448682789,
+        "KiRHub": 0.3577748909796307,
+        "PKIS1": 0.13839047881483815,
+        "PKIS2": 0.27774234889142574
+      },
+      "morgan_normalized_bit_rp_7_seed_a": {
+        "DAVIS": 0.12988579651572207,
+        "KiRHub": 0.22773600668337513,
+        "PKIS1": 0.17400831922738788,
+        "PKIS2": 0.1121556071680073
+      },
+      "morgan_normalized_bit_rp_7_seed_b": {
+        "DAVIS": 0.3449732533777725,
+        "KiRHub": 0.382620600366536,
+        "PKIS1": 0.20111797819155217,
+        "PKIS2": 0.34971635021235453
+      },
+      "observed_residual": {
+        "DAVIS": 0.2798523359008341,
+        "KiRHub": 0.3216304286020461,
+        "PKIS1": 0.1735201879043158,
+        "PKIS2": 0.2872180451127821
+      },
+      "physicochemical_7": {
+        "DAVIS": 0.25677719604421195,
+        "KiRHub": 0.2886526963132089,
+        "PKIS1": 0.09704977977229286,
+        "PKIS2": 0.2190633652193311
+      },
+      "stable_hash_nuisance_7": {
+        "DAVIS": 0.24313926176698297,
+        "KiRHub": 0.332962423510784,
+        "PKIS1": 0.09024218486880381,
+        "PKIS2": 0.24725776045698888
+      }
+    },
+    "predictive_metrics": {
+      "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+        "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.009020777116671295,
+        "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+        "maximum_out_of_fold_target_r2": 0.3867202274824366,
+        "mean_out_of_fold_target_r2": 0.09009209637896556,
+        "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.028965091175311434,
+        "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.03798586829198273,
+        "median_out_of_fold_target_r2": 0.059438200718949286,
+        "minimum_out_of_fold_target_r2": 0.0046971047508461705,
+        "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.23747718618229438
+      },
+      "morgan_normalized_bit_rp_7_seed_a": {
+        "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.0003242248423507635,
+        "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+        "maximum_out_of_fold_target_r2": 0.017746752429264046,
+        "mean_out_of_fold_target_r2": 0.006804718322001829,
+        "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.037661643449631965,
+        "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.03798586829198273,
+        "median_out_of_fold_target_r2": 0.00654049972752746,
+        "minimum_out_of_fold_target_r2": 0.0003554894656719876,
+        "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.00853540690076036
+      },
+      "morgan_normalized_bit_rp_7_seed_b": {
+        "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.0014391595064644422,
+        "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+        "maximum_out_of_fold_target_r2": 0.023221695364060935,
+        "mean_out_of_fold_target_r2": 0.011510401615380722,
+        "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.036546708785518286,
+        "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.03798586829198273,
+        "median_out_of_fold_target_r2": 0.0096297610398145,
+        "minimum_out_of_fold_target_r2": 0.0015823488470342317,
+        "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.03788670816742105
+      },
+      "physicochemical_7": {
+        "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.00885073374035171,
+        "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+        "maximum_out_of_fold_target_r2": 0.40515212772152476,
+        "mean_out_of_fold_target_r2": 0.10655829891781318,
+        "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.02913513455163102,
+        "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.03798586829198273,
+        "median_out_of_fold_target_r2": 0.06780905692848216,
+        "minimum_out_of_fold_target_r2": 0.023174033971183228,
+        "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.2330006957408353
+      },
+      "stable_hash_nuisance_7": {
+        "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 1.452535903744001e-06,
+        "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+        "maximum_out_of_fold_target_r2": -7.199338041496972e-06,
+        "mean_out_of_fold_target_r2": -3.545909631333943e-05,
+        "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.037984415756078985,
+        "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.03798586829198273,
+        "median_out_of_fold_target_r2": -3.665208376069096e-05,
+        "minimum_out_of_fold_target_r2": -6.463314279203658e-05,
+        "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 3.823884957897809e-05
+      }
+    },
+    "role": "all predictive ligand-feature arms refitted under one deterministic five-fold grouping that clusters acyclic ligands by generic heavy-atom topology",
+    "uncertainty_boundary": "single deterministic GroupKFold sensitivity; differences from the primary Murcko split have no calibrated confidence interval"
+  },
+  "morgan_count_plus_size_rp_7_seed_ensemble": {
+    "algorithmic_distributions": {
+      "panel_geometry_agreement": {
+        "DAVIS": {
+          "count_morgan_seed_distribution": {
+            "central_90_percent_seed_range": [
+              0.25124110450646686,
+              0.3229458462911205
+            ],
+            "central_95_percent_seed_range": [
+              0.24355806619515635,
+              0.3293922852506484
+            ],
+            "maximum": 0.33583872421017635,
+            "mean": 0.2823283339238148,
+            "median": 0.2822807454937518,
+            "members": 20,
+            "minimum": 0.23587502788384584,
+            "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+            "standard_deviation_across_seeds": 0.02465378690816335
+          },
+          "count_morgan_seed_maximum": 0.33583872421017635,
+          "count_morgan_seed_minimum": 0.23587502788384584,
+          "ensemble_members_at_least_as_large_as_physicochemical": 17,
+          "physicochemical_exceeds_all_ensemble_members": false,
+          "physicochemical_minus_count_morgan_distribution": {
+            "central_90_percent_seed_range": [
+              -0.06658854815922861,
+              0.00511619362542497
+            ],
+            "central_95_percent_seed_range": [
+              -0.07303498711875657,
+              0.012799231936735454
+            ],
+            "maximum": 0.020482270248045997,
+            "mean": -0.025971035791922947,
+            "median": -0.025923447361860003,
+            "members": 20,
+            "minimum": -0.07948142607828451,
+            "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+            "standard_deviation_across_seeds": 0.02465378690816335
+          },
+          "physicochemical_point": 0.25635729813189184
+        },
+        "KiRHub": {
+          "count_morgan_seed_distribution": {
+            "central_90_percent_seed_range": [
+              0.31456065993955223,
+              0.3881630778516974
+            ],
+            "central_95_percent_seed_range": [
+              0.3069507538479707,
+              0.39623920184405176
+            ],
+            "maximum": 0.4043153258364062,
+            "mean": 0.3472476129241079,
+            "median": 0.34236026366089745,
+            "members": 20,
+            "minimum": 0.2993408477563892,
+            "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+            "standard_deviation_across_seeds": 0.026389894083442587
+          },
+          "count_morgan_seed_maximum": 0.4043153258364062,
+          "count_morgan_seed_minimum": 0.2993408477563892,
+          "ensemble_members_at_least_as_large_as_physicochemical": 20,
+          "physicochemical_exceeds_all_ensemble_members": false,
+          "physicochemical_minus_count_morgan_distribution": {
+            "central_90_percent_seed_range": [
+              -0.10039566630362996,
+              -0.0267932483914848
+            ],
+            "central_95_percent_seed_range": [
+              -0.10847179029598439,
+              -0.019183342299903327
+            ],
+            "maximum": -0.011573436208321797,
+            "mean": -0.05948020137604043,
+            "median": -0.054592852112830076,
+            "members": 20,
+            "minimum": -0.11654791428833883,
+            "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+            "standard_deviation_across_seeds": 0.026389894083442587
+          },
+          "physicochemical_point": 0.2877674115480674
+        },
+        "PKIS1": {
+          "count_morgan_seed_distribution": {
+            "central_90_percent_seed_range": [
+              0.11153835723689677,
+              0.17272500623285983
+            ],
+            "central_95_percent_seed_range": [
+              0.1057742086455231,
+              0.17294938917975572
+            ],
+            "maximum": 0.1731737721266516,
+            "mean": 0.1337158778272033,
+            "median": 0.12889816163445256,
+            "members": 20,
+            "minimum": 0.10001006005414942,
+            "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+            "standard_deviation_across_seeds": 0.020826039252413255
+          },
+          "count_morgan_seed_maximum": 0.1731737721266516,
+          "count_morgan_seed_minimum": 0.10001006005414942,
+          "ensemble_members_at_least_as_large_as_physicochemical": 20,
+          "physicochemical_exceeds_all_ensemble_members": false,
+          "physicochemical_minus_count_morgan_distribution": {
+            "central_90_percent_seed_range": [
+              -0.07593591308113232,
+              -0.014749264085169269
+            ],
+            "central_95_percent_seed_range": [
+              -0.07616029602802822,
+              -0.008985115493795617
+            ],
+            "maximum": -0.0032209669024219206,
+            "mean": -0.03692678467547577,
+            "median": -0.032109068482725045,
+            "members": 20,
+            "minimum": -0.07638467897492411,
+            "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+            "standard_deviation_across_seeds": 0.020826039252413255
+          },
+          "physicochemical_point": 0.0967890931517275
+        },
+        "PKIS2": {
+          "count_morgan_seed_distribution": {
+            "central_90_percent_seed_range": [
+              0.24066553819102735,
+              0.30966062626024043
+            ],
+            "central_95_percent_seed_range": [
+              0.23925441876943676,
+              0.3159009653278046
+            ],
+            "maximum": 0.32214130439536887,
+            "mean": 0.27448297882577294,
+            "median": 0.2678458799704322,
+            "members": 20,
+            "minimum": 0.23784329934784618,
+            "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+            "standard_deviation_across_seeds": 0.022167126773701702
+          },
+          "count_morgan_seed_maximum": 0.32214130439536887,
+          "count_morgan_seed_minimum": 0.23784329934784618,
+          "ensemble_members_at_least_as_large_as_physicochemical": 20,
+          "physicochemical_exceeds_all_ensemble_members": false,
+          "physicochemical_minus_count_morgan_distribution": {
+            "central_90_percent_seed_range": [
+              -0.09119386599133067,
+              -0.02219877792211761
+            ],
+            "central_95_percent_seed_range": [
+              -0.0974342050588949,
+              -0.02078765850052703
+            ],
+            "maximum": -0.01937653907893644,
+            "mean": -0.05601621855686326,
+            "median": -0.04937911970152245,
+            "members": 20,
+            "minimum": -0.10367454412645913,
+            "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+            "standard_deviation_across_seeds": 0.022167126773701706
+          },
+          "physicochemical_point": 0.21846676026890974
+        }
+      },
+      "relative_reduction_in_mean_squared_offdiagonal_target_correlation": {
+        "count_morgan_seed_distribution": {
+          "central_90_percent_seed_range": [
+            0.1771353175050104,
+            0.23877016597541673
+          ],
+          "central_95_percent_seed_range": [
+            0.1765911232374091,
+            0.24936449894777424
+          ],
+          "maximum": 0.25995883192013186,
+          "mean": 0.20769359858233583,
+          "median": 0.2051488368825673,
+          "members": 20,
+          "minimum": 0.17604692896980778,
+          "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+          "standard_deviation_across_seeds": 0.02139703606882637
+        },
+        "count_morgan_seed_maximum": 0.25995883192013186,
+        "count_morgan_seed_minimum": 0.17604692896980778,
+        "ensemble_members_at_least_as_large_as_physicochemical": 3,
+        "physicochemical_exceeds_all_ensemble_members": false,
+        "physicochemical_minus_count_morgan_distribution": {
+          "central_90_percent_seed_range": [
+            -0.005164442138970158,
+            0.05647040633143613
+          ],
+          "central_95_percent_seed_range": [
+            -0.01575877511132774,
+            0.057014600599037436
+          ],
+          "maximum": 0.05755879486663876,
+          "mean": 0.025912125254110723,
+          "median": 0.02845688695387924,
+          "members": 20,
+          "minimum": -0.026353108083685323,
+          "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+          "standard_deviation_across_seeds": 0.021397036068826366
+        },
+        "physicochemical_point": 0.23360572383644654
+      }
+    },
+    "interpretation": "the across-seed distribution is algorithmic random-projection sensitivity, not a confidence interval or chemical-space uncertainty distribution",
+    "locked_representative_reproduction": {
+      "maximum_absolute_panel_geometry_difference": 0.0,
+      "maximum_absolute_predictive_metric_difference": 0.0
+    },
+    "locked_representative_seed": 20260910,
+    "members": 20,
+    "members_detail": [
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.4282918108413772,
+        "component_remainder_spearman": 0.4817654957638425,
+        "locked_representative": true,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.29902417474751447,
+          "KiRHub": 0.3590730753585536,
+          "PKIS1": 0.1393719901848863,
+          "PKIS2": 0.2787798466497832
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.00903042441667654,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3868127619770412,
+          "mean_out_of_fold_target_r2": 0.09034812499961609,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.028967620823050867,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.05975402717120604,
+          "minimum_out_of_fold_target_r2": 0.005179759492413005,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.237654973030958
+        },
+        "seed": 20260910
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.37348177873903404,
+        "component_remainder_spearman": 0.41083774007444446,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.29402738959090563,
+          "KiRHub": 0.363193323623194,
+          "PKIS1": 0.12571131143740671,
+          "PKIS2": 0.2877254217568353
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.0071323605693876975,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3823480817566509,
+          "mean_out_of_fold_target_r2": 0.08394978457364026,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.030865684670339708,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.042978607655275614,
+          "minimum_out_of_fold_target_r2": 0.00882704136778234,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.18770335485391576
+        },
+        "seed": 20260911
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.4914115559316122,
+        "component_remainder_spearman": 0.5315129009259625,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.2546199705196674,
+          "KiRHub": 0.3205666872241686,
+          "PKIS1": 0.10001006005414942,
+          "PKIS2": 0.24081407707751057
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.00890127390646811,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.38722458603620513,
+          "mean_out_of_fold_target_r2": 0.0900586618154664,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.029096771333259296,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.05292774828406127,
+          "minimum_out_of_fold_target_r2": 0.018961582256075027,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.23425610055229165
+        },
+        "seed": 20260912
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.34193626154564566,
+        "component_remainder_spearman": 0.3750466917730627,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.33583872421017635,
+          "KiRHub": 0.4043153258364062,
+          "PKIS1": 0.17270138697529183,
+          "PKIS2": 0.32214130439536887
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.006689439171309833,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3797976695080645,
+          "mean_out_of_fold_target_r2": 0.08104610337894083,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.03130860606841757,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.041647632982842575,
+          "minimum_out_of_fold_target_r2": 0.013606389003462005,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.17604692896980778
+        },
+        "seed": 20260913
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.39469805034440014,
+        "component_remainder_spearman": 0.4269635694821697,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.28124674688466367,
+          "KiRHub": 0.34098947193463597,
+          "PKIS1": 0.11314236726195946,
+          "PKIS2": 0.2673691208824853
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.007337354115160639,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3811841596344906,
+          "mean_out_of_fold_target_r2": 0.08382301728915985,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.030660691124566767,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.04840399802003931,
+          "minimum_out_of_fold_target_r2": 0.01206649423022843,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.19309819936445963
+        },
+        "seed": 20260914
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.446033539422411,
+        "component_remainder_spearman": 0.47184190843601154,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.25826958320758275,
+          "KiRHub": 0.31628022936923456,
+          "PKIS1": 0.11269097700621533,
+          "PKIS2": 0.23784329934784618
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.008340172146351008,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.38268883666756903,
+          "mean_out_of_fold_target_r2": 0.08944804259221009,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.029657873093376398,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.05528294619418078,
+          "minimum_out_of_fold_target_r2": 0.012703314170193214,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.21948950515041912
+        },
+        "seed": 20260915
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.49830557486098254,
+        "component_remainder_spearman": 0.5216557974342488,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.27725071841908433,
+          "KiRHub": 0.33764253565851804,
+          "PKIS1": 0.11927812550573651,
+          "PKIS2": 0.2628919593923727
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.008837747395187938,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.38219209283754274,
+          "mean_out_of_fold_target_r2": 0.09137189097812069,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.029160297844539468,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.05614595811377393,
+          "minimum_out_of_fold_target_r2": 0.018171529966316657,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.23258426425441403
+        },
+        "seed": 20260916
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.3834498953891386,
+        "component_remainder_spearman": 0.40090890402270946,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.23587502788384584,
+          "KiRHub": 0.3153617026860345,
+          "PKIS1": 0.13208501183149837,
+          "PKIS2": 0.2591531183980894
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.0067329724732035495,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3804202829373384,
+          "mean_out_of_fold_target_r2": 0.08258124549864332,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.031265072766523856,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.04353550585714355,
+          "minimum_out_of_fold_target_r2": 0.0075304979472298195,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.17719260111212634
+        },
+        "seed": 20260917
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.48894181691568317,
+        "component_remainder_spearman": 0.5083485327629721,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.2520498453813417,
+          "KiRHub": 0.2993408477563892,
+          "PKIS1": 0.11674299186010396,
+          "PKIS2": 0.25689791669400375
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.008231825354115221,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3873953265398443,
+          "mean_out_of_fold_target_r2": 0.08628367620622104,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.029766219885612184,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.04715565959411122,
+          "minimum_out_of_fold_target_r2": 0.013076458307607952,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.21663812709788424
+        },
+        "seed": 20260918
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.37346141037297464,
+        "component_remainder_spearman": 0.4027319607920325,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.26651357888613336,
+          "KiRHub": 0.343731055387159,
+          "PKIS1": 0.122873501379977,
+          "PKIS2": 0.2680234617958509
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.007196689891490842,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3831673060061709,
+          "mean_out_of_fold_target_r2": 0.08277945727631746,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.030801355348236564,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.04317840254522404,
+          "minimum_out_of_fold_target_r2": 0.00847319885181097,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.18939631883922856
+        },
+        "seed": 20260919
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.4232609491735579,
+        "component_remainder_spearman": 0.4576913487908253,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.28331474410284,
+          "KiRHub": 0.35669715300467575,
+          "PKIS1": 0.12325140950106508,
+          "PKIS2": 0.2676682981450135
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.007653455835503024,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.38440739630797915,
+          "mean_out_of_fold_target_r2": 0.08709016469095814,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.03034458940422438,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.047799941692631465,
+          "minimum_out_of_fold_target_r2": 0.019978176901148337,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.20141709362199625
+        },
+        "seed": 20260920
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.43815028691769686,
+        "component_remainder_spearman": 0.4698263984568752,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.30494473531122757,
+          "KiRHub": 0.36802739833877884,
+          "PKIS1": 0.15011262886710663,
+          "PKIS2": 0.3047067931609128
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.008183229850921212,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3889830460510918,
+          "mean_out_of_fold_target_r2": 0.09113279441131855,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.029814815388806194,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.051913877459666136,
+          "minimum_out_of_fold_target_r2": 0.022729332720200168,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.21535923227875808
+        },
+        "seed": 20260921
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.39480036883257824,
+        "component_remainder_spearman": 0.4374785130365181,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.27098199250307264,
+          "KiRHub": 0.33897396195549945,
+          "PKIS1": 0.11214510972019927,
+          "PKIS2": 0.25433478985421676
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.007543329609143914,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3860981371665686,
+          "mean_out_of_fold_target_r2": 0.08813738346790577,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.030454715630583492,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.044991479257171674,
+          "minimum_out_of_fold_target_r2": 0.02136607183917172,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.19851888594672426
+        },
+        "seed": 20260922
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.5433337563763672,
+        "component_remainder_spearman": 0.5609494941542338,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.289434756174905,
+          "KiRHub": 0.33767227842730735,
+          "PKIS1": 0.14115655631224658,
+          "PKIS2": 0.2742117072786681
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.009877927455767863,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3893975029181337,
+          "mean_out_of_fold_target_r2": 0.09846674979348134,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.028120117783959543,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.06220815789720624,
+          "minimum_out_of_fold_target_r2": 0.017385903786762857,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.25995883192013186
+        },
+        "seed": 20260923
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.4623455897436662,
+        "component_remainder_spearman": 0.478925936131778,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.2862050413993098,
+          "KiRHub": 0.36105359384499647,
+          "PKIS1": 0.16388528039120487,
+          "PKIS2": 0.2877989038914914
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.007937053733979477,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3799441839195279,
+          "mean_out_of_fold_target_r2": 0.08646720722579601,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.03006099150574793,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.04207554017063725,
+          "minimum_out_of_fold_target_r2": 0.019406817200529614,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.20888058014313834
+        },
+        "seed": 20260924
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.4611534616279611,
+        "component_remainder_spearman": 0.4841134249235655,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.26027809488818027,
+          "KiRHub": 0.3260621011516575,
+          "PKIS1": 0.1454535116149886,
+          "PKIS2": 0.2865269631320884
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.0076064806925667805,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3827046741582657,
+          "mean_out_of_fold_target_r2": 0.0848591211373935,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.030391564547160625,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.049773913605779485,
+          "minimum_out_of_fold_target_r2": 0.011179309400793924,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.2001808420558991
+        },
+        "seed": 20260925
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.465275857270697,
+        "component_remainder_spearman": 0.489274670095833,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.3089932510158469,
+          "KiRHub": 0.3873129595367127,
+          "PKIS1": 0.1731737721266516,
+          "PKIS2": 0.3090037484636547
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.007379117095890019,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.37663276601650586,
+          "mean_out_of_fold_target_r2": 0.0868771014958031,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.030618928143837387,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.04461645398901154,
+          "minimum_out_of_fold_target_r2": 0.016391450688443387,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.19419728171108827
+        },
+        "seed": 20260926
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.45039517175821275,
+        "component_remainder_spearman": 0.46900409837858176,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.2887016844029796,
+          "KiRHub": 0.34989130767582133,
+          "PKIS1": 0.12346835675576373,
+          "PKIS2": 0.26685474593989333
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.007953256742574414,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3836539006426266,
+          "mean_out_of_fold_target_r2": 0.09034609004276306,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.030044788497152992,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.054465844057155655,
+          "minimum_out_of_fold_target_r2": 0.013638252590474798,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.2093069970415002
+        },
+        "seed": 20260927
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.4637731051169961,
+        "component_remainder_spearman": 0.4779164315675752,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.27672934517795367,
+          "KiRHub": 0.3346105228166401,
+          "PKIS1": 0.13340594068067205,
+          "PKIS2": 0.2603690727691832
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.007945364975017008,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.38000571532191285,
+          "mean_out_of_fold_target_r2": 0.08702555230075489,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.030052680264710398,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.04641545085406412,
+          "minimum_out_of_fold_target_r2": 0.015606199899402817,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.2090993082641534
+        },
+        "seed": 20260928
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "component_remainder_pearson": 0.35059799087650273,
+        "component_remainder_spearman": 0.39956698027792004,
+        "locked_representative": false,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.3222672737690649,
+          "KiRHub": 0.3841567268957734,
+          "PKIS1": 0.153657267076942,
+          "PKIS2": 0.29654502749019135
+        },
+        "predictive_metrics": {
+          "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.007329539667952512,
+          "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+          "maximum_out_of_fold_target_r2": 0.3782175235419676,
+          "mean_out_of_fold_target_r2": 0.08375653880577535,
+          "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.030668505571774893,
+          "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+          "median_out_of_fold_target_r2": 0.0380377502929391,
+          "minimum_out_of_fold_target_r2": 0.013956518167502208,
+          "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+          "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.19289254543782142
+        },
+        "seed": 20260929
+      }
+    ],
+    "representative_selection": "first seed in ascending order, deterministically locked before inspecting this ensemble run and not selected by performance",
+    "seeds": [
+      20260910,
+      20260911,
+      20260912,
+      20260913,
+      20260914,
+      20260915,
+      20260916,
+      20260917,
+      20260918,
+      20260919,
+      20260920,
+      20260921,
+      20260922,
+      20260923,
+      20260924,
+      20260925,
+      20260926,
+      20260927,
+      20260928,
+      20260929
+    ]
+  },
+  "negative_control_interpretation": {
+    "conclusion": "The stable-hash basis has essentially zero ligand-level held-out predictive performance yet appreciable scale-free target-pair geometry agreement. Experimental geometry of a target-specific fitted component cannot by itself support feature-specific orientation without held-out-performance and negative-feature controls; the stable-hash arm falsifies that feature-specific interpretation here.",
+    "nuisance_projection_extension": "Twenty seeded row permutations of the same standardized physicochemical matrix were evaluated with the identical OOF estimator; see physicochemical_row_permutation_nuisance_ensemble.",
+    "stable_hash_mean_out_of_fold_target_r2": -3.631593708774417e-05,
+    "stable_hash_panel_geometry_agreement": {
+      "DAVIS": 0.24795759031085574,
+      "KiRHub": 0.34763435639710105,
+      "PKIS1": 0.10261517668516844,
+      "PKIS2": 0.24958994344499993
+    },
+    "stable_hash_relative_reduction_in_mean_squared_offdiagonal_target_correlation": 2.0828466307802814e-05
+  },
+  "operational_reduction_paired_block_bootstrap": {
+    "coarsening_limitation": "unrelated chemical groups packed in the same balanced block share a weight; intervals are conditional coarsened sensitivity intervals, not individual-cluster, chemical-space or target-population confidence intervals",
+    "conditioning": "OOF prediction surfaces, experimental edges and target panel are fixed; predictive models are not refitted inside bootstrap draws",
+    "estimand": "1 - weighted mean squared off-diagonal error correlation / weighted mean squared off-diagonal observed correlation",
+    "method": "paired Bayesian bootstrap with iid Exp(1) weights over balanced blocks of intact chemical groups; every arm and both parts of its ratio use the same draw weights",
+    "per_grouping": {
+      "generic_murcko_or_acyclic_topology": {
+        "arms": {
+          "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.21335356178701126,
+              0.2631529763881533
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.20898575748401377,
+              0.26863000231487555
+            ],
+            "maximum": 0.3002813470982256,
+            "mean": 0.23730954479899646,
+            "median": 0.23696189224801428,
+            "minimum": 0.18528882723019058,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.237654973030958,
+            "standard_deviation": 0.015066927243317449
+          },
+          "morgan_normalized_bit_rp_7_seed_a": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.006729734982165786,
+              0.011811254458538057
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.0062470155265717895,
+              0.012313579551130877
+            ],
+            "maximum": 0.015508578283301655,
+            "mean": 0.009231994745189086,
+            "median": 0.00919960279500498,
+            "minimum": 0.0032122515289971787,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.009230117642970975,
+            "standard_deviation": 0.0015395155260791479
+          },
+          "morgan_normalized_bit_rp_7_seed_b": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.03350473812263392,
+              0.04380629103493206
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.032562549596683206,
+              0.04484638394017817
+            ],
+            "maximum": 0.051334811658543256,
+            "mean": 0.038649582735639045,
+            "median": 0.03862835954777677,
+            "minimum": 0.027337223121747578,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.03864496972561947,
+            "standard_deviation": 0.0031582744837437794
+          },
+          "outcome_rank7_svd_transported_oracle": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              -0.04865714735957619,
+              0.013134412940208152
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              -0.05449034352222143,
+              0.01943633929663448
+            ],
+            "maximum": 0.05299296815224119,
+            "mean": -0.017964060320179113,
+            "median": -0.01817720513367349,
+            "minimum": -0.07735352933866313,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": -0.017846063342030507,
+            "standard_deviation": 0.01867705179129214
+          },
+          "physicochemical_7": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.21432769328269743,
+              0.25365105810439387
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.21061564984237124,
+              0.25797898384254375
+            ],
+            "maximum": 0.28099126033973076,
+            "mean": 0.23343536340569007,
+            "median": 0.23318627999761726,
+            "minimum": 0.1943206828281916,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.23360572383644654,
+            "standard_deviation": 0.011965007830950607
+          },
+          "stable_hash_nuisance_7": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              -2.555372264337885e-05,
+              6.721214359087792e-05
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              -3.4103617190600624e-05,
+              7.759274545890702e-05
+            ],
+            "maximum": 0.00012718547135759373,
+            "mean": 2.1078392379001266e-05,
+            "median": 2.1175496197123334e-05,
+            "minimum": -7.139112154752603e-05,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 2.0828466307802814e-05,
+            "standard_deviation": 2.8105065937246866e-05
+          }
+        },
+        "assignment_seed": 32260824,
+        "bootstrap_blocks": 512,
+        "chemical_groups": 46728,
+        "draw_seed": 32360824,
+        "maximum_block_ligands": 5842,
+        "median_block_ligands": 465.0,
+        "minimum_block_ligands": 464,
+        "physicochemical_minus_control": {
+          "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              -0.01359630992797191,
+              0.00558890648287
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              -0.015757480057976683,
+              0.007412518539663124
+            ],
+            "maximum": 0.02165199608059043,
+            "mean": -0.0038741813933063766,
+            "median": -0.0039043964769437944,
+            "minimum": -0.025169525330915543,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": -0.004049249194511467,
+            "standard_deviation": 0.005890098539016215
+          },
+          "morgan_normalized_bit_rp_7_seed_a": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.2054238319418823,
+              0.24357687979353373
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.20191326413383748,
+              0.24760429418537966
+            ],
+            "maximum": 0.2671754154304119,
+            "mean": 0.22420336866050097,
+            "median": 0.2241276173604116,
+            "minimum": 0.18178694279013063,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.22437560619347557,
+            "standard_deviation": 0.011686778057890241
+          },
+          "morgan_normalized_bit_rp_7_seed_b": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.17758852360810592,
+              0.21265587309374895
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.1741157502162979,
+              0.21590301356111524
+            ],
+            "maximum": 0.23558200995269196,
+            "mean": 0.19478578067005103,
+            "median": 0.19472285366952435,
+            "minimum": 0.15705604369917447,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.19496075411082708,
+            "standard_deviation": 0.010785494156302488
+          },
+          "outcome_rank7_svd_transported_oracle": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.22227685210699857,
+              0.27810431461120616
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.21421194082563094,
+              0.2833741726242311
+            ],
+            "maximum": 0.30587392581647443,
+            "mean": 0.2513994237258692,
+            "median": 0.2520799899376749,
+            "minimum": 0.17956924220840154,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.25145178717847705,
+            "standard_deviation": 0.01714514305853297
+          },
+          "stable_hash_nuisance_7": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.21427265625572095,
+              0.2536214047985739
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.21060711612898206,
+              0.2579644018483168
+            ],
+            "maximum": 0.2809891690922157,
+            "mean": 0.2334142850133111,
+            "median": 0.23314870777458957,
+            "minimum": 0.19427941637703838,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.23358489537013874,
+            "standard_deviation": 0.011963714962241695
+          }
+        },
+        "repeats": 5000
+      },
+      "murcko_generic_framework": {
+        "arms": {
+          "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.21346693814514892,
+              0.2630420521532529
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.2090253695786006,
+              0.26776644981030046
+            ],
+            "maximum": 0.30409450699039675,
+            "mean": 0.23731576039870006,
+            "median": 0.23671085313632456,
+            "minimum": 0.17689060244609633,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.237654973030958,
+            "standard_deviation": 0.015047004801886383
+          },
+          "morgan_normalized_bit_rp_7_seed_a": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.006729443828342008,
+              0.011816249645764516
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.006247897119724874,
+              0.012361864179115898
+            ],
+            "maximum": 0.014177703792611407,
+            "mean": 0.009263143935285902,
+            "median": 0.009243505219881432,
+            "minimum": 0.003949213255729611,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.009230117642970975,
+            "standard_deviation": 0.0015369125299489732
+          },
+          "morgan_normalized_bit_rp_7_seed_b": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.03384077788204296,
+              0.04355454864308501
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.03287527836616619,
+              0.04433166660564845
+            ],
+            "maximum": 0.05069851857761065,
+            "mean": 0.03864172709162797,
+            "median": 0.038573227179000524,
+            "minimum": 0.028826043715073135,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.03864496972561947,
+            "standard_deviation": 0.0029405730246818518
+          },
+          "outcome_rank7_svd_transported_oracle": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              -0.04708331056130891,
+              0.013971256778664662
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              -0.05243556359673992,
+              0.020828151864199878
+            ],
+            "maximum": 0.05252308894678481,
+            "mean": -0.01770352118713059,
+            "median": -0.018067331761491556,
+            "minimum": -0.08915223672979145,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": -0.017846063342030507,
+            "standard_deviation": 0.018629207557331513
+          },
+          "physicochemical_7": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.2142426291542578,
+              0.2534991231510726
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.21045367061194847,
+              0.25767802971764203
+            ],
+            "maximum": 0.28433857338170465,
+            "mean": 0.2334265064178502,
+            "median": 0.2332163455361202,
+            "minimum": 0.18202145659904068,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.23360572383644654,
+            "standard_deviation": 0.01199241781783237
+          },
+          "stable_hash_nuisance_7": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              -2.910913249051239e-05,
+              7.04946405056417e-05
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              -3.990730201677839e-05,
+              7.995157482686416e-05
+            ],
+            "maximum": 0.00014131171212461435,
+            "mean": 2.0556062709599843e-05,
+            "median": 2.0959983065227394e-05,
+            "minimum": -9.084481914700682e-05,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 2.0828466307802814e-05,
+            "standard_deviation": 3.0107984396468675e-05
+          }
+        },
+        "assignment_seed": 31260824,
+        "bootstrap_blocks": 512,
+        "chemical_groups": 46921,
+        "draw_seed": 31360824,
+        "maximum_block_ligands": 5842,
+        "median_block_ligands": 465.0,
+        "minimum_block_ligands": 464,
+        "physicochemical_minus_control": {
+          "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              -0.013909970448491193,
+              0.005583477193330625
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              -0.01585048054506282,
+              0.0073243420562563895
+            ],
+            "maximum": 0.018535464842143856,
+            "mean": -0.0038892539808498263,
+            "median": -0.003809100219564765,
+            "minimum": -0.0281516581361132,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": -0.004049249194511467,
+            "standard_deviation": 0.005940250714874099
+          },
+          "morgan_normalized_bit_rp_7_seed_a": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.20525757904846037,
+              0.2435297861512132
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.20158439546030396,
+              0.24744891338387923
+            ],
+            "maximum": 0.27031471493927406,
+            "mean": 0.2241633624825643,
+            "median": 0.22412132609159552,
+            "minimum": 0.168289594270851,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.22437560619347557,
+            "standard_deviation": 0.011721368039967654
+          },
+          "morgan_normalized_bit_rp_7_seed_b": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.17736331759956797,
+              0.21244577937227535
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.1739892848245478,
+              0.21620995024279388
+            ],
+            "maximum": 0.2383534999236595,
+            "mean": 0.19478477932622223,
+            "median": 0.19469041930556918,
+            "minimum": 0.1511028038327703,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.19496075411082708,
+            "standard_deviation": 0.010730063417449682
+          },
+          "outcome_rank7_svd_transported_oracle": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.22108918612771283,
+              0.27790128614812876
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.21386966237312793,
+              0.28227463279231346
+            ],
+            "maximum": 0.31410614563566,
+            "mean": 0.2511300276049808,
+            "median": 0.25237918455503355,
+            "minimum": 0.15984088409099362,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.25145178717847705,
+            "standard_deviation": 0.01736038055127794
+          },
+          "stable_hash_nuisance_7": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.21424320028676141,
+              0.2534981263118386
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.21046523672788878,
+              0.2576361384764744
+            ],
+            "maximum": 0.28434957265573424,
+            "mean": 0.2334059503551406,
+            "median": 0.23319325802256374,
+            "minimum": 0.18198136226351935,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.23358489537013874,
+            "standard_deviation": 0.011989839017036543
+          }
+        },
+        "repeats": 5000
+      },
+      "murcko_scaffold": {
+        "arms": {
+          "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.22373374119672856,
+              0.2567117423293466
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.22130496103730452,
+              0.2616900421073967
+            ],
+            "maximum": 0.2883067844002193,
+            "mean": 0.23730715336526928,
+            "median": 0.23570548875022407,
+            "minimum": 0.20935856480320336,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.237654973030958,
+            "standard_deviation": 0.010092708349352952
+          },
+          "morgan_normalized_bit_rp_7_seed_a": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.007346196541504596,
+              0.0111863259684705
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.006990504184830995,
+              0.011535341591448018
+            ],
+            "maximum": 0.013593893428297643,
+            "mean": 0.009215385032765634,
+            "median": 0.009165744002992415,
+            "minimum": 0.005190073654324223,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.009230117642970975,
+            "standard_deviation": 0.0011613274770861093
+          },
+          "morgan_normalized_bit_rp_7_seed_b": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.034822227384243995,
+              0.04248673831319494
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.034129123089702576,
+              0.04328994361950804
+            ],
+            "maximum": 0.04736479434799101,
+            "mean": 0.03853068073417416,
+            "median": 0.0384734295325061,
+            "minimum": 0.031156903656486712,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.03864496972561947,
+            "standard_deviation": 0.0023123253348876294
+          },
+          "outcome_rank7_svd_transported_oracle": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              -0.03407552382213175,
+              0.0015216713661593243
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              -0.03697256333917849,
+              0.006126244595151444
+            ],
+            "maximum": 0.03375405620250582,
+            "mean": -0.017930144294840532,
+            "median": -0.018797366950616956,
+            "minimum": -0.05738131577306538,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": -0.017846063342030507,
+            "standard_deviation": 0.010988547974041205
+          },
+          "physicochemical_7": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.22184121316293548,
+              0.2490304585626407
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.22007634030320009,
+              0.25286157908615553
+            ],
+            "maximum": 0.27292370404320765,
+            "mean": 0.23335931260449982,
+            "median": 0.2322309054167903,
+            "minimum": 0.2091045350282369,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.23360572383644654,
+            "standard_deviation": 0.008271359936301535
+          },
+          "stable_hash_nuisance_7": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              -2.6224162387433746e-05,
+              6.931318523292762e-05
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              -3.621937200404268e-05,
+              7.805766492411368e-05
+            ],
+            "maximum": 0.00013172419256923806,
+            "mean": 2.1273684706273177e-05,
+            "median": 2.103745545595226e-05,
+            "minimum": -8.585548978046198e-05,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 2.0828466307802814e-05,
+            "standard_deviation": 2.917950041982597e-05
+          }
+        },
+        "assignment_seed": 30260824,
+        "bootstrap_blocks": 512,
+        "chemical_groups": 100040,
+        "draw_seed": 30360824,
+        "maximum_block_ligands": 4911,
+        "median_block_ligands": 498.0,
+        "minimum_block_ligands": 498,
+        "physicochemical_minus_control": {
+          "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              -0.010151018285382523,
+              0.001932077936014127
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              -0.011566816260261917,
+              0.0030444724015877486
+            ],
+            "maximum": 0.008251321401625988,
+            "mean": -0.003947840760769435,
+            "median": -0.0038468173595236355,
+            "minimum": -0.01902879146922065,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": -0.004049249194511467,
+            "standard_deviation": 0.003705735837692152
+          },
+          "morgan_normalized_bit_rp_7_seed_a": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.2130550221647977,
+              0.23889083230464755
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.21114569295337274,
+              0.2424767274828933
+            ],
+            "maximum": 0.2619980841306909,
+            "mean": 0.22414392757173418,
+            "median": 0.2231599226126123,
+            "minimum": 0.19888408463078733,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.22437560619347557,
+            "standard_deviation": 0.007886300535551196
+          },
+          "morgan_normalized_bit_rp_7_seed_b": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.18448123273954525,
+              0.2079652008522584
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.1825829234807316,
+              0.21124722581924446
+            ],
+            "maximum": 0.22969265706544395,
+            "mean": 0.19482863187032567,
+            "median": 0.19407445422239678,
+            "minimum": 0.17344032921693653,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.19496075411082708,
+            "standard_deviation": 0.007229394681029752
+          },
+          "outcome_rank7_svd_transported_oracle": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.23654301905197575,
+              0.2653135383947262
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.23344024970257948,
+              0.26837749919755405
+            ],
+            "maximum": 0.2837820003519017,
+            "mean": 0.25128945689934035,
+            "median": 0.2514252073735683,
+            "minimum": 0.22155378641215795,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.25145178717847705,
+            "standard_deviation": 0.008813035141448159
+          },
+          "stable_hash_nuisance_7": {
+            "conditional_coarsened_sensitivity_interval_90": [
+              0.22184718334600337,
+              0.24901228695747196
+            ],
+            "conditional_coarsened_sensitivity_interval_95": [
+              0.2200757888067643,
+              0.2528329996141543
+            ],
+            "maximum": 0.27294041936361746,
+            "mean": 0.23333803891979354,
+            "median": 0.23221501428059133,
+            "minimum": 0.20908138839131085,
+            "n": 5000,
+            "not_a_confidence_interval": true,
+            "point": 0.23358489537013874,
+            "standard_deviation": 0.008272176520678801
+          }
+        },
+        "repeats": 5000
+      }
+    },
+    "physicochemical_minus_control_conservative_union": {
+      "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+        "conservative_union_sensitivity_interval_95": [
+          -0.01585048054506282,
+          0.007412518539663124
+        ],
+        "point": -0.004049249194511467
+      },
+      "morgan_normalized_bit_rp_7_seed_a": {
+        "conservative_union_sensitivity_interval_95": [
+          0.20158439546030396,
+          0.24760429418537966
+        ],
+        "point": 0.22437560619347557
+      },
+      "morgan_normalized_bit_rp_7_seed_b": {
+        "conservative_union_sensitivity_interval_95": [
+          0.1739892848245478,
+          0.21620995024279388
+        ],
+        "point": 0.19496075411082708
+      },
+      "outcome_rank7_svd_transported_oracle": {
+        "conservative_union_sensitivity_interval_95": [
+          0.21386966237312793,
+          0.2833741726242311
+        ],
+        "point": 0.25145178717847705
+      },
+      "stable_hash_nuisance_7": {
+        "conservative_union_sensitivity_interval_95": [
+          0.21046523672788878,
+          0.2579644018483168
+        ],
+        "point": 0.23358489537013874
+      }
+    }
+  },
+  "outcome_rank7_svd_transported_oracle": {
+    "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": -0.000678115522221516,
+    "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+    "folds": [
+      {
+        "fold": 1,
+        "maximum_training_residual_target_sd": 0.8828279430645048,
+        "minimum_training_residual_target_sd": 0.37531327866076386,
+        "rank7_test_reconstruction_r2": 0.614133960222228,
+        "rank7_training_energy_share": 0.6164233619981703,
+        "test_groups": 19969,
+        "test_ligands": 51916,
+        "train_groups": 80071,
+        "train_ligands": 207663
+      },
+      {
+        "fold": 2,
+        "maximum_training_residual_target_sd": 0.8812570511525389,
+        "minimum_training_residual_target_sd": 0.37474781794552786,
+        "rank7_test_reconstruction_r2": 0.6175884212968737,
+        "rank7_training_energy_share": 0.6154876874170121,
+        "test_groups": 20018,
+        "test_ligands": 51916,
+        "train_groups": 80022,
+        "train_ligands": 207663
+      },
+      {
+        "fold": 3,
+        "maximum_training_residual_target_sd": 0.880585393565903,
+        "minimum_training_residual_target_sd": 0.3737912046056869,
+        "rank7_test_reconstruction_r2": 0.6133839657337856,
+        "rank7_training_energy_share": 0.616545322036711,
+        "test_groups": 20018,
+        "test_ligands": 51916,
+        "train_groups": 80022,
+        "train_ligands": 207663
+      },
+      {
+        "fold": 4,
+        "maximum_training_residual_target_sd": 0.8804218598833192,
+        "minimum_training_residual_target_sd": 0.3733209394440717,
+        "rank7_test_reconstruction_r2": 0.6158963858105452,
+        "rank7_training_energy_share": 0.6159816107757982,
+        "test_groups": 20018,
+        "test_ligands": 51916,
+        "train_groups": 80022,
+        "train_ligands": 207663
+      },
+      {
+        "fold": 5,
+        "maximum_training_residual_target_sd": 0.8780229329869804,
+        "minimum_training_residual_target_sd": 0.37450676695236096,
+        "rank7_test_reconstruction_r2": 0.6179007432666692,
+        "rank7_training_energy_share": 0.6155303005636239,
+        "test_groups": 20017,
+        "test_ligands": 51915,
+        "train_groups": 80023,
+        "train_ligands": 207664
+      }
+    ],
+    "maximum_out_of_fold_target_r2": 0.7258112031402413,
+    "mean_out_of_fold_target_r2": 0.6157932790018806,
+    "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.03867616076194892,
+    "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+    "median_out_of_fold_target_r2": 0.6224107059684103,
+    "minimum_out_of_fold_target_r2": 0.45287154303855315,
+    "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+    "relative_reduction_in_mean_squared_offdiagonal_target_correlation": -0.017846063342030507,
+    "role": "outcome-derived fold-local rank-7 transported-subspace oracle reconstruction; not an OOF ligand-feature predictor because each test row's docking outcomes are used for projection, and not a universal rank-7 capacity ceiling"
+  },
+  "paired_chemical_group_block_bootstrap": {
+    "coarsening_limitation": "individual chemical groups are packed into balanced blocks for tractability; unrelated groups in the same block share a weight, so this is a coarsened chemical-group sensitivity interval rather than an individual-cluster full-refit confidence interval",
+    "method": "paired Bayesian bootstrap with iid Exp(1) weights over balanced blocks of intact chemical groups",
+    "per_grouping": {
+      "generic_murcko_or_acyclic_topology": {
+        "arms": {
+          "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.29511737458830334,
+                0.3039633114199111
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.29465714898065404,
+                0.3051882323610073
+              ],
+              "maximum": 0.31410550809834364,
+              "mean": 0.29871386039269204,
+              "median": 0.2981957511579997,
+              "minimum": 0.2920783634478867,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0028037417803689416
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.35360390505058464,
+                0.36573064423711993
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.3530562007112022,
+                0.3678237041119379
+              ],
+              "maximum": 0.3800032367130741,
+              "mean": 0.35853774471081723,
+              "median": 0.3577818892781694,
+              "minimum": 0.3502027319607921,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.003918119424728576
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.13640637370039416,
+                0.14374942592082304
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.13591824237732206,
+                0.14463956575557577
+              ],
+              "maximum": 0.15172748625490431,
+              "mean": 0.13953841812209408,
+              "median": 0.13916116644140894,
+              "minimum": 0.13353540920363732,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0022598596496639753
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.27412764021747205,
+                0.28425680256487645
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.2734450874131226,
+                0.28570654384652744
+              ],
+              "maximum": 0.2942250915246231,
+              "mean": 0.27850995481723506,
+              "median": 0.27802840434419385,
+              "minimum": 0.26958233279533905,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0031349620338800904
+            }
+          },
+          "morgan_normalized_bit_rp_7_seed_a": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.12690784553005555,
+                0.13227938957340996
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.12646336609411837,
+                0.1327498939320378
+              ],
+              "maximum": 0.13626299605908315,
+              "mean": 0.12956700862102902,
+              "median": 0.1295297580775674,
+              "minimum": 0.12409470447497455,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0016371409625089168
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.2242069396877885,
+                0.22996855139594188
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.22374168405306466,
+                0.23046901722018845
+              ],
+              "maximum": 0.23414819771942946,
+              "mean": 0.2270958002335683,
+              "median": 0.2270974119417218,
+              "minimum": 0.2209948956160034,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0017651774777369801
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.17249834883893853,
+                0.1774059931679111
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.17204345943392513,
+                0.17789254987381198
+              ],
+              "maximum": 0.17984315063400216,
+              "mean": 0.17494070009229007,
+              "median": 0.17494434165693468,
+              "minimum": 0.16903427854102976,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.00149195829572134
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.1086757032196548,
+                0.11441605759599696
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.10817003241087018,
+                0.11503759398496242
+              ],
+              "maximum": 0.11862728374164032,
+              "mean": 0.11143836799678083,
+              "median": 0.11138229517948453,
+              "minimum": 0.10467267645553675,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.00175896082329723
+            }
+          },
+          "morgan_normalized_bit_rp_7_seed_b": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.34193756642916195,
+                0.3484706530724717
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.3413392993828375,
+                0.34898690880779615
+              ],
+              "maximum": 0.35159189422071757,
+              "mean": 0.345298935646271,
+              "median": 0.34539927480131394,
+              "minimum": 0.33853131957292887,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0019829634815239023
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.3791890721568319,
+                0.38513316449938123
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.3784721402109113,
+                0.38557790637151346
+              ],
+              "maximum": 0.3883644538921475,
+              "mean": 0.38233304097941195,
+              "median": 0.38242989673135724,
+              "minimum": 0.3755103290512496,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0018281256096159234
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.1985216094337065,
+                0.20478701115791226
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.19787767848941742,
+                0.2053292480765614
+              ],
+              "maximum": 0.20840495654493998,
+              "mean": 0.20172310357044448,
+              "median": 0.201809934959563,
+              "minimum": 0.19433312775831385,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.001926397219718113
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.34636556487204045,
+                0.3535934950815084
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.3457448157916608,
+                0.35417124836524133
+              ],
+              "maximum": 0.35695259090133724,
+              "mean": 0.3501357792386726,
+              "median": 0.35022285206909076,
+              "minimum": 0.3426078284717027,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0021908912977552913
+            }
+          },
+          "outcome_rank7_svd_transported_oracle": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.26090234311782945,
+                0.27481775993211655
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.25969351826337217,
+                0.27641302208400587
+              ],
+              "maximum": 0.28688037720829124,
+              "mean": 0.2676866609805491,
+              "median": 0.2675397044093655,
+              "minimum": 0.254117842599518,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0042361876425975635
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.3119132036023743,
+                0.32673420024756483
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.3106553031794147,
+                0.3283927532618633
+              ],
+              "maximum": 0.34038586868567583,
+              "mean": 0.31918187405687004,
+              "median": 0.3190541799524991,
+              "minimum": 0.3050182174458835,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.004504907055584249
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.14293228708770184,
+                0.15422771588657508
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.14190183136724885,
+                0.15549270208680518
+              ],
+              "maximum": 0.1649752653886025,
+              "mean": 0.14836152790352847,
+              "median": 0.14819159591824238,
+              "minimum": 0.13561040472035232,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.003511787432254138
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.2584864429835497,
+                0.2737060802092491
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.25706574464083415,
+                0.2751605016030478
+              ],
+              "maximum": 0.287344014486478,
+              "mean": 0.26591030280762995,
+              "median": 0.26574376604687994,
+              "minimum": 0.25024778350763466,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.004610783280344367
+            }
+          },
+          "physicochemical_7": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.2530168352819222,
+                0.25925984245080425
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.25249900492942656,
+                0.25977797897886085
+              ],
+              "maximum": 0.26211689782921543,
+              "mean": 0.25618859924680826,
+              "median": 0.2562278296089264,
+              "minimum": 0.24974565558748532,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0019093573824928258
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.2824813342256165,
+                0.29317534674382284
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.28141461857086,
+                0.29393864241756223
+              ],
+              "maximum": 0.29734458309823425,
+              "mean": 0.28809193594807264,
+              "median": 0.2881750624379448,
+              "minimum": 0.27669960240916425,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0033072080347960778
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.09352246235134079,
+                0.09958517585412054
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.09300611913728471,
+                0.10014661435438514
+              ],
+              "maximum": 0.10274464520813383,
+              "mean": 0.09647090186198481,
+              "median": 0.0963761935379461,
+              "minimum": 0.09061834341525714,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.001876952818851801
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.2150998788419566,
+                0.22154251247665424
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.21453362901144662,
+                0.2220762639583252
+              ],
+              "maximum": 0.22444330722093203,
+              "mean": 0.21832508286422872,
+              "median": 0.21832941866008834,
+              "minimum": 0.21176239026886592,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.001942648508927732
+            }
+          },
+          "stable_hash_nuisance_7": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.24613252153070295,
+                0.24979989240116
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.24568292458895927,
+                0.250156805626632
+              ],
+              "maximum": 0.2523892628604671,
+              "mean": 0.24807768356318374,
+              "median": 0.24813779649822637,
+              "minimum": 0.24278059896687618,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0011418755844035957
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.3458526770678879,
+                0.34934544038980525
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.34528284060937686,
+                0.34973419587362836
+              ],
+              "maximum": 0.3521272640589257,
+              "mean": 0.3476280757740775,
+              "median": 0.347676346188333,
+              "minimum": 0.34095623001657727,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0011322347117615286
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.09912048883115296,
+                0.10445756625420448
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.0976986095255591,
+                0.1047971586907933
+              ],
+              "maximum": 0.1071955630787265,
+              "mean": 0.10245951318085793,
+              "median": 0.10270790414080577,
+              "minimum": 0.09353663390588163,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0016396920585265444
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.24609403088874024,
+                0.25175626675764456
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.24485887493603123,
+                0.2521216216807288
+              ],
+              "maximum": 0.25408809983072866,
+              "mean": 0.24960624003289203,
+              "median": 0.24987687368508535,
+              "minimum": 0.24054639215840656,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.001699811674236328
+            }
+          }
+        },
+        "assignment_seed": 22260824,
+        "bootstrap_blocks": 512,
+        "chemical_groups": 46728,
+        "draw_seed": 22360824,
+        "maximum_block_ligands": 5842,
+        "median_block_ligands": 465.0,
+        "minimum_block_ligands": 464,
+        "repeats": 5000
+      },
+      "murcko_generic_framework": {
+        "arms": {
+          "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.29510862671512983,
+                0.30394240400302674
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.2946694397424625,
+                0.30518849479720234
+              ],
+              "maximum": 0.3142962117335223,
+              "mean": 0.2986497423313957,
+              "median": 0.29804616252673566,
+              "minimum": 0.29258923924120944,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0027897101452810493
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.35361702686034463,
+                0.36571201126726066
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.3531121433601456,
+                0.3679715431685671
+              ],
+              "maximum": 0.38072056231328755,
+              "mean": 0.3584634451748919,
+              "median": 0.3576357997961746,
+              "minimum": 0.3510477765093363,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0038826671449017306
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.13635379898262234,
+                0.14381879655508759
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.13582205951178122,
+                0.14466799634338903
+              ],
+              "maximum": 0.1524745546239071,
+              "mean": 0.1394823869446741,
+              "median": 0.13907718685894496,
+              "minimum": 0.1335441570768107,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.002275365977745039
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.2741064703643926,
+                0.28435950259593146
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.27336285740529337,
+                0.2857013388619892
+              ],
+              "maximum": 0.29463449198913516,
+              "mean": 0.27843642334457436,
+              "median": 0.27793130295196977,
+              "minimum": 0.27053760054586723,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0031407833825627613
+            }
+          },
+          "morgan_normalized_bit_rp_7_seed_a": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.12680295853070722,
+                0.13231245653400517
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.12634111456652103,
+                0.13286011713402185
+              ],
+              "maximum": 0.13591483070678437,
+              "mean": 0.1295788672379028,
+              "median": 0.12960586457417544,
+              "minimum": 0.12391799743687315,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0016658892554674376
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.22417019862046045,
+                0.23002646231634943
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.22356318370096276,
+                0.23059660495042156
+              ],
+              "maximum": 0.23356034064218137,
+              "mean": 0.2271120320871989,
+              "median": 0.2271411513075885,
+              "minimum": 0.22049626684512327,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0017850995500552304
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.1725262545543614,
+                0.17734502049189296
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.17210438837057748,
+                0.17781036360534852
+              ],
+              "maximum": 0.1799848661794101,
+              "mean": 0.17492889851154936,
+              "median": 0.17490410144033727,
+              "minimum": 0.1700245377842512,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.001455453851185971
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.10866511829311508,
+                0.11450178675309561
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.10816285915486805,
+                0.1151789596154435
+              ],
+              "maximum": 0.1191574048559444,
+              "mean": 0.11146859539774395,
+              "median": 0.11142428497071655,
+              "minimum": 0.10524828651034224,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0017610225938379698
+            }
+          },
+          "morgan_normalized_bit_rp_7_seed_b": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.34190966071373896,
+                0.34855113350566636
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.34130255831550943,
+                0.3491777436610724
+              ],
+              "maximum": 0.35344119460956047,
+              "mean": 0.34531941931617877,
+              "median": 0.345428142782786,
+              "minimum": 0.3384840810577928,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0020215861947849444
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.3791546055365289,
+                0.3852386638498515
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.37858424420562753,
+                0.3857665979958623
+              ],
+              "maximum": 0.38963639465155053,
+              "mean": 0.38236568559269035,
+              "median": 0.38250687801528266,
+              "minimum": 0.3758532456796443,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0018498469211258265
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.19859141746162973,
+                0.20487125317657148
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.19802284944472875,
+                0.20541340261648888
+              ],
+              "maximum": 0.21025250735914824,
+              "mean": 0.2017567790330976,
+              "median": 0.201820432407371,
+              "minimum": 0.19447834245299114,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.001941376890745637
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.3464129783446399,
+                0.35370196870885773
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.34578286903996464,
+                0.3544210001443399
+              ],
+              "maximum": 0.3591133155751508,
+              "mean": 0.35016934902701785,
+              "median": 0.35028933590520805,
+              "minimum": 0.3423086512091747,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0022232126812012387
+            }
+          },
+          "outcome_rank7_svd_transported_oracle": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.26082562427009937,
+                0.2748015763667459
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.25959383624856214,
+                0.27621182100101915
+              ],
+              "maximum": 0.28457618741443474,
+              "mean": 0.26763957222900187,
+              "median": 0.26754495313326954,
+              "minimum": 0.253682198515486,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0041961700654837356
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.31184488271289057,
+                0.3265545189325846
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.31052321029449725,
+                0.32817217563979756
+              ],
+              "maximum": 0.33688846899097663,
+              "mean": 0.3191433291780937,
+              "median": 0.3190734252734805,
+              "minimum": 0.30355907220057127,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0044715822834564475
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.1428185647364485,
+                0.15421905549213338
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.1416288977242408,
+                0.15541747037751438
+              ],
+              "maximum": 0.1608287735044417,
+              "mean": 0.14833531507652203,
+              "median": 0.14818372283238637,
+              "minimum": 0.13634697564154716,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0034916809078790437
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.25846719766256837,
+                0.2736731882061174
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.25702165536004057,
+                0.2751130443910826
+              ],
+              "maximum": 0.2855349543142324,
+              "mean": 0.26583796244538055,
+              "median": 0.2657087745541865,
+              "minimum": 0.2511365674220455,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.004590728354286602
+            }
+          },
+          "physicochemical_7": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.2532604635497995,
+                0.25918286116687883
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.25264798120956855,
+                0.25960980111710347
+              ],
+              "maximum": 0.26367751840333825,
+              "mean": 0.25622684914730115,
+              "median": 0.25622258088502237,
+              "minimum": 0.24978589580408278,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0018399663086468572
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.282590070289161,
+                0.2931581134336715
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.281300808740875,
+                0.29392420842682626
+              ],
+              "maximum": 0.2985675357678664,
+              "mean": 0.28815726786425055,
+              "median": 0.2882258001023501,
+              "minimum": 0.27551514038149477,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0032519658321997482
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.09371159136934834,
+                0.09952201620980902
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.09328635725439256,
+                0.10007505675182721
+              ],
+              "maximum": 0.10364917529425659,
+              "mean": 0.09652611843745491,
+              "median": 0.09645230003455411,
+              "minimum": 0.09002523761410508,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0018112598385591112
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.2153454316419321,
+                0.22141864259251973
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.21468417990875976,
+                0.22189597029222283
+              ],
+              "maximum": 0.22620162972877225,
+              "mean": 0.21836596762412147,
+              "median": 0.218360036216195,
+              "minimum": 0.21116228616917512,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0018806511977134347
+            }
+          },
+          "stable_hash_nuisance_7": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.24607321095058773,
+                0.24976673796183302
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.24558669798405275,
+                0.2500520498453813
+              ],
+              "maximum": 0.2517401706710057,
+              "mean": 0.24804190896088393,
+              "median": 0.24810892851675448,
+              "minimum": 0.24265288001854557,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0011188313921870938
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.34577438360298657,
+                0.3492632103819759
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.3452845027052798,
+                0.3495554330853311
+              ],
+              "maximum": 0.3513889435630962,
+              "mean": 0.34759748061252616,
+              "median": 0.3476387303336877,
+              "minimum": 0.34025640016271047,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0010954963499639546
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.09905549213347509,
+                0.10444706880639645
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.09780555227510314,
+                0.10474095360565464
+              ],
+              "maximum": 0.10620530383550501,
+              "mean": 0.10243789963565109,
+              "median": 0.1027061545661711,
+              "minimum": 0.09400551990797239,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0016283944269205233
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.24617459880066667,
+                0.25160370384950165
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.24501887353637147,
+                0.2519274188962809
+              ],
+              "maximum": 0.2536752002169472,
+              "mean": 0.2495821693850683,
+              "median": 0.24987249974849865,
+              "minimum": 0.23961561845276377,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0016642862318228754
+            }
+          }
+        },
+        "assignment_seed": 21260824,
+        "bootstrap_blocks": 512,
+        "chemical_groups": 46921,
+        "draw_seed": 21360824,
+        "maximum_block_ligands": 5842,
+        "median_block_ligands": 465.0,
+        "minimum_block_ligands": 464,
+        "repeats": 5000
+      },
+      "murcko_scaffold": {
+        "arms": {
+          "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.2954723632816772,
+                0.3038129354800614
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.29504900995945366,
+                0.30474012255770316
+              ],
+              "maximum": 0.31041915434310036,
+              "mean": 0.29866703232776537,
+              "median": 0.2979595585823196,
+              "minimum": 0.29331531271459627,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0026789488802153724
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.35416000734821357,
+                0.3649383493638109
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.353775057189221,
+                0.36670660070770295
+              ],
+              "maximum": 0.37412991466449724,
+              "mean": 0.3584420720212399,
+              "median": 0.3576148049005586,
+              "minimum": 0.3509428020312561,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0035040092594620996
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.13696265095548646,
+                0.14379141571205503
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.13660057648484217,
+                0.14453152952188505
+              ],
+              "maximum": 0.14981170202994404,
+              "mean": 0.1395440542018222,
+              "median": 0.13896171493305692,
+              "minimum": 0.1344941761034349,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0021383483848885125
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.27482047177280017,
+                0.2844073534621896
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.274311345554112,
+                0.28558569197863776
+              ],
+              "maximum": 0.29186841449172674,
+              "mean": 0.2785018434393138,
+              "median": 0.27770385824946314,
+              "minimum": 0.27130566381048593,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0030100727176607094
+            }
+          },
+          "morgan_normalized_bit_rp_7_seed_a": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.1275466152291724,
+                0.1317668516841843
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.12711447029440973,
+                0.13218653089967508
+              ],
+              "maximum": 0.1337751009285868,
+              "mean": 0.12962594549200226,
+              "median": 0.12962161074588746,
+              "minimum": 0.12526167075629738,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0012819684267141188
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.22482287743792292,
+                0.22955748883552698
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.22437153092154474,
+                0.23011201651598462
+              ],
+              "maximum": 0.23193673538121057,
+              "mean": 0.22720550626129035,
+              "median": 0.22722513089005245,
+              "minimum": 0.22236131340567836,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0014349162833257186
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.17284966342557967,
+                0.17713830824880697
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.17245981445761,
+                0.17758978598328282
+              ],
+              "maximum": 0.17943899889339404,
+              "mean": 0.17494502049189292,
+              "median": 0.17491809803741465,
+              "minimum": 0.17044618527120597,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0012908461911060186
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.10930729966276954,
+                0.11385094498899957
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.10889610588425692,
+                0.11440381057355427
+              ],
+              "maximum": 0.11638432905999725,
+              "mean": 0.11146950062765995,
+              "median": 0.11142253539608188,
+              "minimum": 0.10700485944354783,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0013657665280788595
+            }
+          },
+          "morgan_normalized_bit_rp_7_seed_b": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.3424746858420048,
+                0.3478110634352023
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.34198493616239556,
+                0.3482278558525459
+              ],
+              "maximum": 0.35087106947123486,
+              "mean": 0.34532747645728634,
+              "median": 0.34543251671937253,
+              "minimum": 0.34012693163974517,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0016372608614988885
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.3797545346787562,
+                0.38461336587542155
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.37930502521574455,
+                0.38491801055868297
+              ],
+              "maximum": 0.3872237312303447,
+              "mean": 0.3824108753559292,
+              "median": 0.38255761567968793,
+              "minimum": 0.3773351353952071,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0014813459501842178
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.1990305606949311,
+                0.20417273550368065
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.19854081101532192,
+                0.2045786805582893
+              ],
+              "maximum": 0.20700354726257184,
+              "mean": 0.2017164989261986,
+              "median": 0.20181080974688037,
+              "minimum": 0.19622966666229277,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0015742752913424645
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.3470671443005419,
+                0.3528638349801205
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.34650924868891253,
+                0.35333831962104223
+              ],
+              "maximum": 0.3557366365302436,
+              "mean": 0.3501261817720567,
+              "median": 0.35023597387885075,
+              "minimum": 0.344308415016599,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0017779403629345485
+            }
+          },
+          "outcome_rank7_svd_transported_oracle": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.26402909542617453,
+                0.2719303494337939
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.2633183307308411,
+                0.2729240640869189
+              ],
+              "maximum": 0.2793607054284927,
+              "mean": 0.2678070012728156,
+              "median": 0.2676997904884375,
+              "minimum": 0.2588889326282547,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0024364137327616674
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.31535995311139997,
+                0.32382990635401776
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.31451250289773314,
+                0.3249073818927773
+              ],
+              "maximum": 0.33193192405096517,
+              "mean": 0.31935142848395,
+              "median": 0.3192396348637738,
+              "minimum": 0.3098995306766043,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.002602823760712661
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.14540443604648617,
+                0.15190436825046913
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.1448513080257363,
+                0.15250119189771985
+              ],
+              "maximum": 0.15620114859574774,
+              "mean": 0.14852165282315735,
+              "median": 0.1484566564753945,
+              "minimum": 0.14046547433155313,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0019950400476639444
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.26216588591898604,
+                0.2706654944516616
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.26147274818809685,
+                0.27174668783651984
+              ],
+              "maximum": 0.27793480210123916,
+              "mean": 0.26612800797806047,
+              "median": 0.26597470989865596,
+              "minimum": 0.2562383270567343,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0026123467209648032
+            }
+          },
+          "physicochemical_7": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.25407576532955434,
+                0.2587263096659626
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.25364191455952273,
+                0.25901341486351154
+              ],
+              "maximum": 0.2612771020045753,
+              "mean": 0.25640587542153825,
+              "median": 0.25639228962458516,
+              "minimum": 0.2510473391156775,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0013860701333545157
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.2835786674364796,
+                0.2922572574542814
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.2824117011551568,
+                0.2927992756761013
+              ],
+              "maximum": 0.2948356930721218,
+              "mean": 0.28825322958355754,
+              "median": 0.28835701819995024,
+              "minimum": 0.27829871362524994,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0026251024447882017
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.09442358076692606,
+                0.09892182463138653
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.09407550289335906,
+                0.09928403032012847
+              ],
+              "maximum": 0.10085160545342416,
+              "mean": 0.09658907478119383,
+              "median": 0.0965100359974981,
+              "minimum": 0.09201800312299072,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0013706801043038921
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.21610649660801226,
+                0.22081993815253675
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.215681393711154,
+                0.2212241773718765
+              ],
+              "maximum": 0.22292992516194512,
+              "mean": 0.21845652350772224,
+              "median": 0.21843001920158173,
+              "minimum": 0.21284187781845543,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0014205898275068162
+            }
+          },
+          "stable_hash_nuisance_7": {
+            "DAVIS": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.2456912788078399,
+                0.24987862325971993
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.24504446106540345,
+                0.2501935904333259
+              ],
+              "maximum": 0.2524994860624511,
+              "mean": 0.24800691326921145,
+              "median": 0.24811592681529307,
+              "minimum": 0.24131795457229463,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.001278639795114353
+            },
+            "KiRHub": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.3455241069514974,
+                0.34929653977876646
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.34475788074024516,
+                0.34965699589287375
+              ],
+              "maximum": 0.3517231123183177,
+              "mean": 0.3475591904718166,
+              "median": 0.347650102568813,
+              "minimum": 0.340058698228993,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0012181174875221224
+            },
+            "PKIS1": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.09845451324646694,
+                0.10463593538820873
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.09717539923106198,
+                0.10497010414343014
+              ],
+              "maximum": 0.10743525480367588,
+              "mean": 0.10239507284791387,
+              "median": 0.10270965371544044,
+              "minimum": 0.09319721642675624,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0018494326685315197
+            },
+            "PKIS2": {
+              "conditional_coarsened_sensitivity_interval_90": [
+                0.2456166594496714,
+                0.2517297607019293
+              ],
+              "conditional_coarsened_sensitivity_interval_95": [
+                0.24437778565086365,
+                0.25220739457719343
+              ],
+              "maximum": 0.25405310833803535,
+              "mean": 0.24952076701351986,
+              "median": 0.24985150485288266,
+              "minimum": 0.23894553136768626,
+              "n": 5000,
+              "not_a_confidence_interval": true,
+              "standard_deviation": 0.0018651034854884146
+            }
+          }
+        },
+        "assignment_seed": 20260824,
+        "bootstrap_blocks": 512,
+        "chemical_groups": 100040,
+        "draw_seed": 20360824,
+        "maximum_block_ligands": 4911,
+        "median_block_ligands": 498.0,
+        "minimum_block_ligands": 498,
+        "repeats": 5000
+      }
+    },
+    "physicochemical_minus_control": {
+      "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+        "DAVIS": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.051462819352044845,
+            -0.03678476295450654
+          ],
+          "point": -0.04266687661562263
+        },
+        "KiRHub": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.08578531844445314,
+            -0.061715895322949625
+          ],
+          "point": -0.0713056638104862
+        },
+        "PKIS1": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.05036539866245028,
+            -0.03771177507468495
+          ],
+          "point": -0.042582897033158804
+        },
+        "PKIS2": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.07027568922305756,
+            -0.05380278794718025
+          ],
+          "point": -0.06031308638087349
+        }
+      },
+      "morgan_normalized_bit_rp_7_seed_a": {
+        "DAVIS": {
+          "conservative_union_sensitivity_interval_95": [
+            0.12158826385335067,
+            0.13160834022228357
+          ],
+          "point": 0.12593088305405764
+        },
+        "KiRHub": {
+          "conservative_union_sensitivity_interval_95": [
+            0.05287039588500053,
+            0.06791197015225671
+          ],
+          "point": 0.05987394314757222
+        },
+        "PKIS1": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.08327804677487789,
+            -0.0737025373206139
+          ],
+          "point": -0.0782479759608445
+        },
+        "PKIS2": {
+          "conservative_union_sensitivity_interval_95": [
+            0.10168812082562424,
+            0.11172455571739122
+          ],
+          "point": 0.10668206292345185
+        }
+      },
+      "morgan_normalized_bit_rp_7_seed_b": {
+        "DAVIS": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.09409754753375572,
+            -0.08411018821049107
+          ],
+          "point": -0.08954497937688882
+        },
+        "KiRHub": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.1002755580049599,
+            -0.08762547730583013
+          ],
+          "point": -0.095176860125882
+        },
+        "PKIS1": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.10996282153901332,
+            -0.10054949765338304
+          ],
+          "point": -0.10494823446049682
+        },
+        "PKIS2": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.13708472752562034,
+            -0.12642601267566816
+          ],
+          "point": -0.13200890533489038
+        }
+      },
+      "outcome_rank7_svd_transported_oracle": {
+        "DAVIS": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.020807953566289148,
+            -0.0033082706766916475
+          ],
+          "point": -0.011935598157697791
+        },
+        "KiRHub": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.04354275741710295,
+            -0.021304395368875954
+          ],
+          "point": -0.03163230939477851
+        },
+        "PKIS1": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.05905343638327937,
+            -0.044883500199014034
+          ],
+          "point": -0.051885385365683004
+        },
+        "PKIS2": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.05763111968402691,
+            -0.038539498834345993
+          ],
+          "point": -0.04807306223674376
+        }
+      },
+      "stable_hash_nuisance_7": {
+        "DAVIS": {
+          "conservative_union_sensitivity_interval_95": [
+            0.004212975720278011,
+            0.011916396576082604
+          ],
+          "point": 0.008399707821036106
+        },
+        "KiRHub": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.0654218880534669,
+            -0.05336023304334135
+          ],
+          "point": -0.059866944849033654
+        },
+        "PKIS1": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.009937715143005888,
+            -0.0018454513246466528
+          ],
+          "point": -0.00582608353344094
+        },
+        "PKIS2": {
+          "conservative_union_sensitivity_interval_95": [
+            -0.035221211842870706,
+            -0.02733006162876646
+          ],
+          "point": -0.031123183176090197
+        }
+      }
+    }
+  },
+  "panel_geometry_agreement": {
+    "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+      "DAVIS": 0.29902417474751447,
+      "KiRHub": 0.3590730753585536,
+      "PKIS1": 0.1393719901848863,
+      "PKIS2": 0.2787798466497832
+    },
+    "morgan_normalized_bit_rp_7_seed_a": {
+      "DAVIS": 0.1304264150778342,
+      "KiRHub": 0.22789346840049518,
+      "PKIS1": 0.175037069112572,
+      "PKIS2": 0.11178469734545789
+    },
+    "morgan_normalized_bit_rp_7_seed_b": {
+      "DAVIS": 0.34590227750878066,
+      "KiRHub": 0.3829442716739494,
+      "PKIS1": 0.20173732761222432,
+      "PKIS2": 0.3504756656038001
+    },
+    "observed_residual": {
+      "DAVIS": 0.27979984866179414,
+      "KiRHub": 0.3215884388108141,
+      "PKIS1": 0.1736426581287425,
+      "PKIS2": 0.28717080659764616
+    },
+    "outcome_rank7_svd_transported_oracle": {
+      "DAVIS": 0.26829289628958963,
+      "KiRHub": 0.3193997209428459,
+      "PKIS1": 0.1486744785174105,
+      "PKIS2": 0.2665398225056535
+    },
+    "physicochemical_7": {
+      "DAVIS": 0.25635729813189184,
+      "KiRHub": 0.2877674115480674,
+      "PKIS1": 0.0967890931517275,
+      "PKIS2": 0.21846676026890974
+    },
+    "stable_hash_nuisance_7": {
+      "DAVIS": 0.24795759031085574,
+      "KiRHub": 0.34763435639710105,
+      "PKIS1": 0.10261517668516844,
+      "PKIS2": 0.24958994344499993
+    }
+  },
+  "physicochemical_row_permutation_nuisance_ensemble": {
+    "algorithmic_seed_distributions": {
+      "mean_out_of_fold_target_r2": {
+        "central_90_percent_seed_range": [
+          -4.833851530583577e-05,
+          -2.0148811597203442e-05
+        ],
+        "central_95_percent_seed_range": [
+          -4.95248232007256e-05,
+          -2.013679256381559e-05
+        ],
+        "maximum": -2.0124773530427743e-05,
+        "mean": -3.589412451579121e-05,
+        "median": -3.726924147708366e-05,
+        "members": 20,
+        "minimum": -5.0711131095615425e-05,
+        "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+        "standard_deviation_across_seeds": 8.80280483877883e-06
+      },
+      "panel_geometry_agreement": {
+        "DAVIS": {
+          "central_90_percent_seed_range": [
+            0.03804240094127113,
+            0.47281344723064195
+          ],
+          "central_95_percent_seed_range": [
+            0.03626894461284101,
+            0.48079649385243217
+          ],
+          "maximum": 0.4887795404742224,
+          "mean": 0.17708118463698516,
+          "median": 0.13607404199853917,
+          "members": 20,
+          "minimum": 0.034495488284410895,
+          "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+          "standard_deviation_across_seeds": 0.1347345219170757
+        },
+        "KiRHub": {
+          "central_90_percent_seed_range": [
+            0.06262121271765803,
+            0.4041800837171465
+          ],
+          "central_95_percent_seed_range": [
+            0.04612906612079935,
+            0.4843213618688954
+          ],
+          "maximum": 0.564462640020645,
+          "mean": 0.19397595209664648,
+          "median": 0.15919816994493213,
+          "members": 20,
+          "minimum": 0.029636919523940687,
+          "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+          "standard_deviation_across_seeds": 0.13549327098220654
+        },
+        "PKIS1": {
+          "central_90_percent_seed_range": [
+            -0.014067279892576142,
+            0.37089057722841134
+          ],
+          "central_95_percent_seed_range": [
+            -0.04278663499936577,
+            0.38610706521976834
+          ],
+          "maximum": 0.4013235532111255,
+          "mean": 0.126280098151137,
+          "median": 0.12998114833331148,
+          "members": 20,
+          "minimum": -0.0715059901061554,
+          "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+          "standard_deviation_across_seeds": 0.12928434931849855
+        },
+        "PKIS2": {
+          "central_90_percent_seed_range": [
+            0.03392880106024226,
+            0.432652748800448
+          ],
+          "central_95_percent_seed_range": [
+            0.029525909013371134,
+            0.44232199171576414
+          ],
+          "maximum": 0.4519912346310804,
+          "mean": 0.18398833033718678,
+          "median": 0.1713008524802408,
+          "members": 20,
+          "minimum": 0.025123016966500013,
+          "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+          "standard_deviation_across_seeds": 0.12057061330439714
+        }
+      },
+      "relative_reduction_in_mean_squared_offdiagonal_target_correlation": {
+        "central_90_percent_seed_range": [
+          -4.102629010102367e-05,
+          6.344872582576495e-05
+        ],
+        "central_95_percent_seed_range": [
+          -5.759906124402324e-05,
+          6.433892741948457e-05
+        ],
+        "maximum": 6.522912901320421e-05,
+        "mean": -2.8911938437245543e-06,
+        "median": -6.9531631195705465e-06,
+        "members": 20,
+        "minimum": -7.417183238702281e-05,
+        "not_an_uncertainty_interval": "quantiles summarize deterministic algorithmic seed sensitivity only",
+        "standard_deviation_across_seeds": 3.4193862863196756e-05
+      }
+    },
+    "checksums": "SHA-256 over contiguous explicit little-endian int64 permutation indices and float64 permuted matrices",
+    "interpretation": "Across-seed ranges diagnose the algorithmic nuisance-projection mechanism; they are distributions over fixed row permutations, not confidence intervals or sampling uncertainty.",
+    "members": 20,
+    "members_detail": [
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -3.754799472471815e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.4719731265336114,
+          "KiRHub": 0.3928678590017803,
+          "PKIS1": 0.36928884165037373,
+          "PKIS2": 0.4316349337567305
+        },
+        "permutation_index_sha256": "9c4908eba76805b366806b27ae49c7294479d63ab5389be4dbf86fcc8eab4719",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "d7d1d0b2b71d55ec79d2dd7d21bcbff4f7ba8c48831e01e22480b4031977abc3",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": -1.424701278007574e-05,
+        "seed": 20261010
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -3.596426731280467e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.03822908055479009,
+          "KiRHub": 0.08337160527846664,
+          "PKIS1": 0.04623863323229536,
+          "PKIS2": 0.025123016966500013
+        },
+        "permutation_index_sha256": "87022692de4084baaa8b2d0e474de3f4ae1bac2cd0b07d955e2f1273a2a449c9",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "d611209aa14268f30b323e00df545ffd7a0f5a90c526062eedf433ab663e02ca",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": -2.1805875464988144e-05,
+        "seed": 20261011
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -2.7044569047013355e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.0503833755418214,
+          "KiRHub": 0.0643572281489063,
+          "PKIS1": 0.0442371198502364,
+          "PKIS2": 0.05297449557576312
+        },
+        "permutation_index_sha256": "b184355765fd450a6fd926e0b6f71f56284f265228002a520cdad202b1bb9181",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "2f4d64a54538dab117f3a6672a450f673c6bb4f0a43f3a16f9b782fd87327ff5",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": -1.2119613177448862e-06,
+        "seed": 20261012
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -3.778884788481207e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.2332594138050187,
+          "KiRHub": 0.2718235379023476,
+          "PKIS1": 0.18339303756774128,
+          "PKIS2": 0.2540688545097474
+        },
+        "permutation_index_sha256": "f61341af6c1a3b5761a8e91e08142484eb355382525919e6d97c00e76cb59615",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "2c4d3a1c1f7027d8b5003b1d528d706c5d876f954e2e6e94d7a53a1cd286021a",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 3.3837175372036406e-06,
+        "seed": 20261013
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -4.364068865937431e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.1162985999028986,
+          "KiRHub": 0.15692897164376912,
+          "PKIS1": 0.19638887795404747,
+          "PKIS2": 0.18746954646651529
+        },
+        "permutation_index_sha256": "a8ed64d53086fb51cb738b0f0310dcd758671183ab350e8becff59e6bc8e185a",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "c45794f0f4bbbc4c1df391d686f597f3cfb97ec8f761f3d7409fc41f96b472e2",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": -2.5477151164450864e-05,
+        "seed": 20261014
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -4.438131511936838e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.08988877079260109,
+          "KiRHub": 0.1095907307535855,
+          "PKIS1": -0.0028421839940164615,
+          "PKIS2": 0.08663281239748584
+        },
+        "permutation_index_sha256": "428a53d06fe23341976419cb904b5ec9580a736228cc0b56dde45fccb3c3fd93",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "de809ad651db62357f6e0a23f23c510bb84bf3d69a4a88ffa989c10fe82adf3f",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": -1.0437690158713625e-05,
+        "seed": 20261015
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -4.478782202332887e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.11540806641385316,
+          "KiRHub": 0.14386139869744172,
+          "PKIS1": 0.001407532793589558,
+          "PKIS2": 0.16713249091314683
+        },
+        "permutation_index_sha256": "53f0cfddff1e980ebc921b2125c15ff8d3aeb23bf428f4656e719b56cf15c5c1",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "cc3867bb223a84fd6423e9ea49db565521e73cdd3d0d12ff2daed8beb471c3e0",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": -3.9281787875444775e-05,
+        "seed": 20261016
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -2.4581816409879886e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.3725378017469504,
+          "KiRHub": 0.39574415970117277,
+          "PKIS1": 0.23847314621632615,
+          "PKIS2": 0.3318776872372905
+        },
+        "permutation_index_sha256": "794345a4a35050d0ea1f9b68c563bbbecba3e59658c2ead993e315338a5fe913",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "72c82d25abd7c5643cfaff9f328030aaac784d9a4a8a8bf49e4a2faa858778ae",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 2.2180321894360197e-05,
+        "seed": 20261017
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -2.8210177862719733e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.18311135605155998,
+          "KiRHub": 0.21672943265668534,
+          "PKIS1": 0.2163322792146159,
+          "PKIS2": 0.19802647981209567
+        },
+        "permutation_index_sha256": "dcb06465ec3991387e2a76ebab29dfaa552194f0b6d6cd4bf23a87b71fe8cc23",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "da86b66a77b637675cbc48a935e9ced07932fa670eeec1a8d9e36ee2fb59cc50",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": -1.7507357924327787e-05,
+        "seed": 20261018
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -5.0711131095615425e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.034495488284410895,
+          "KiRHub": 0.029636919523940687,
+          "PKIS1": 0.027194513333945736,
+          "PKIS2": 0.0840171983186588
+        },
+        "permutation_index_sha256": "171405c140521325d05638ed66278b1eab88387162979a4143e282922b48889a",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "325e606e4234680c1051e6900f06c7fc890b2d90dfc3eae4177e3cde4d024c14",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 1.8979558510287285e-06,
+        "seed": 20261019
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -4.0364613103927025e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.1488564342794158,
+          "KiRHub": 0.16146736824609512,
+          "PKIS1": 0.10675991899469442,
+          "PKIS2": 0.14911362175071188
+        },
+        "permutation_index_sha256": "9468e74589a5c4d9cf5662b206fa9eb55dabeefb56402040181afacf00f375c2",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "a53edb52eb495154f17a749b0507ad27f0da65f5930dc6946156bb4e7bb09537",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": -2.6242136222468358e-05,
+        "seed": 20261020
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -4.107367472222512e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.11291317298481804,
+          "KiRHub": 0.08873230195908612,
+          "PKIS1": -0.0023855450143683786,
+          "PKIS2": 0.11042527785432167
+        },
+        "permutation_index_sha256": "353feba5c44f460e1b3aee8e574272c2daab2ede3a049e332a83fb5b20ad7dd3",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "d18455e5c9c15384c92d4b28fb623d851b731b429b72a71e16f822a80e8f5c55",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": -2.413664225121638e-05,
+        "seed": 20261021
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -3.177548258075924e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.26509117470814897,
+          "KiRHub": 0.30211042440306696,
+          "PKIS1": 0.20064384346555741,
+          "PKIS2": 0.27525270418629477
+        },
+        "permutation_index_sha256": "7697beef8519b46d96ddd058f8fc440f0deaffbeaa308e83f682f08f6d976f9e",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "58cf68e28fdf9b0d9b9b4bd4e8008cd2a71119cd9a637e76300eb0b1149c4acb",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 3.716221691486754e-05,
+        "seed": 20261022
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -3.941820770775872e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.24886037082234388,
+          "KiRHub": 0.23267155672777046,
+          "PKIS1": 0.15816767048511335,
+          "PKIS2": 0.2202758204411552
+        },
+        "permutation_index_sha256": "c994af40d1f7d2ba22cc37703693fb66f473529ff5e51dda241759d01935172d",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "ec10aac63f8b88fee475e290d24f77c2c149b8b0af710cdd3e3864a7b35062bb",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": -3.4686360804274684e-06,
+        "seed": 20261023
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -2.9242597841649953e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.06946598608213381,
+          "KiRHub": 0.07953828725391136,
+          "PKIS1": 0.044515302217148424,
+          "PKIS2": 0.09480682509064989
+        },
+        "permutation_index_sha256": "f16b3f67d56a6e3a091799e8b9e3963811c49239a4c27abec05a1e8add4f6f7a",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "70d8e4c9ef59f440611c38b243307f1f59334b7c19cdf7346c14a2befa458cf1",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": -3.539860585833081e-05,
+        "seed": 20261024
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -2.015007675861269e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.1336141400621974,
+          "KiRHub": 0.13335345344163205,
+          "PKIS1": -0.011044189881335133,
+          "PKIS2": 0.11518762000988514
+        },
+        "permutation_index_sha256": "ace11711eeaba255e2e1371102b2a122f7e8a7bf0239ce56d77cadf2d8de79fb",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "aa89bfe70476b31f4113f5d0538bdffa311e5c08f8a0ad798f899005f78740c3",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 6.522912901320421e-05,
+        "seed": 20261025
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -3.699048822944917e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.13853394393488094,
+          "KiRHub": 0.19390273239818565,
+          "PKIS1": 0.1532023776719285,
+          "PKIS2": 0.17546921404733473
+        },
+        "permutation_index_sha256": "ef2e6a3c7502231015b0ebb97289b0467278591a8f2ffb1daf4ec1a1574f176d",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "c14e9be429bf2e1ff193f402cabe271625890077b7856a27da07fe5283c7b490",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 2.2471119107363836e-05,
+        "seed": 20261026
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -3.587030491079557e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.4887795404742224,
+          "KiRHub": 0.564462640020645,
+          "PKIS1": 0.4013235532111255,
+          "PKIS2": 0.4519912346310804
+        },
+        "permutation_index_sha256": "9cf7a1548a56e5de141c72fb97f220d67bb09f772ef5a88975eac6fd4221eb45",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "a7f2a4d986ab0d8440a9d1c5d28f69408eefbae2633cc15624bf7155eeb210cf",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 1.9883331897845303e-05,
+        "seed": 20261027
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -4.821364079058421e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.05111819688838154,
+          "KiRHub": 0.0693242705367258,
+          "PKIS1": -0.0715059901061554,
+          "PKIS2": 0.03439226338096553
+        },
+        "permutation_index_sha256": "367c715241f78e98de187919d87e15a5042bb3f8d3df96c95ee33516d5825b33",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "f79eb9ed299a403de42c114df6fa35cb3a5465e3416880f00d4250bb2ff9fea2",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": -7.417183238702281e-05,
+        "seed": 20261028
+      },
+      {
+        "coefficient_effective_ranks_by_fold": [
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "mean_out_of_fold_target_r2": -2.0124773530427743e-05,
+        "panel_geometry_agreement": {
+          "DAVIS": 0.17880565287564462,
+          "KiRHub": 0.18904416363771562,
+          "PKIS1": 0.22581322415987612,
+          "PKIS2": 0.23389450939740278
+        },
+        "permutation_index_sha256": "fd7fa27fe29473fb277eabd8aee983f2e97640ad3d18246fa2bbb2936548f923",
+        "permutation_is_bijection": true,
+        "permuted_feature_matrix_sha256": "18b77ae7b996a6ff7718b41e3486b575ff13fc558a7d1918c4ddad2b772a0f68",
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 6.33550203948471e-05,
+        "seed": 20261029
+      }
+    ],
+    "same_oof_observed_surface_maximum_absolute_difference": 0.0,
+    "seed_selection": "fixed ascending integer range chosen for this post-hoc nuisance extension; no member was selected by performance",
+    "seeds": [
+      20261010,
+      20261011,
+      20261012,
+      20261013,
+      20261014,
+      20261015,
+      20261016,
+      20261017,
+      20261018,
+      20261019,
+      20261020,
+      20261021,
+      20261022,
+      20261023,
+      20261024,
+      20261025,
+      20261026,
+      20261027,
+      20261028,
+      20261029
+    ],
+    "source": "row permutations of one globally standardized copy of the same seven physicochemical descriptor matrix; the fit then repeats the primary training-fold-only standardization",
+    "source_standardized_feature_matrix_sha256": "103df17a7d9c8571a586fb29edf2811d9512f2c61e547eddf3861c4bc41886c5"
+  },
+  "predictive_metrics": {
+    "morgan_count_plus_size_rp_7_locked_seed_20260910": {
+      "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.00903042441667654,
+      "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+      "maximum_out_of_fold_target_r2": 0.3868127619770412,
+      "mean_out_of_fold_target_r2": 0.09034812499961609,
+      "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.028967620823050867,
+      "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+      "median_out_of_fold_target_r2": 0.05975402717120604,
+      "minimum_out_of_fold_target_r2": 0.005179759492413005,
+      "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+      "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.237654973030958
+    },
+    "morgan_normalized_bit_rp_7_seed_a": {
+      "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.0003507264277656172,
+      "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+      "maximum_out_of_fold_target_r2": 0.017881472442324853,
+      "mean_out_of_fold_target_r2": 0.007019449521755173,
+      "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.03764731881196179,
+      "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+      "median_out_of_fold_target_r2": 0.006779524018232008,
+      "minimum_out_of_fold_target_r2": 0.0004728544395538048,
+      "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+      "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.009230117642970975
+    },
+    "morgan_normalized_bit_rp_7_seed_b": {
+      "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.0014684333079219847,
+      "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+      "maximum_out_of_fold_target_r2": 0.023764737137774383,
+      "mean_out_of_fold_target_r2": 0.011735362261123278,
+      "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.03652961193180542,
+      "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+      "median_out_of_fold_target_r2": 0.009695886255746078,
+      "minimum_out_of_fold_target_r2": 0.0016564222048365274,
+      "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+      "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.03864496972561947
+    },
+    "physicochemical_7": {
+      "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 0.008876560862596562,
+      "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+      "maximum_out_of_fold_target_r2": 0.4051405962225023,
+      "mean_out_of_fold_target_r2": 0.10683480232126966,
+      "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.029121484377130843,
+      "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+      "median_out_of_fold_target_r2": 0.06809323865162148,
+      "minimum_out_of_fold_target_r2": 0.023455939667515247,
+      "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+      "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 0.23360572383644654
+    },
+    "stable_hash_nuisance_7": {
+      "absolute_reduction_in_mean_squared_offdiagonal_target_correlation": 7.914410050380294e-07,
+      "estimand": "relative reduction in mean squared off-diagonal target correlation after subtracting the fixed out-of-fold prediction surface",
+      "maximum_out_of_fold_target_r2": 9.520338422608354e-06,
+      "mean_out_of_fold_target_r2": -3.631593708774417e-05,
+      "mean_squared_offdiagonal_target_correlation_after_subtraction": 0.03799725379872237,
+      "mean_squared_offdiagonal_target_correlation_before_subtraction": 0.037998045239727406,
+      "median_out_of_fold_target_r2": -3.5308912894604916e-05,
+      "minimum_out_of_fold_target_r2": -7.292252557045131e-05,
+      "not_an_explained_fraction": "the correlation-ratio contrast is non-additive and is not a fraction of correlation, covariance, or variance explained",
+      "relative_reduction_in_mean_squared_offdiagonal_target_correlation": 2.0828466307802814e-05
+    }
+  },
+  "status": "exploratory_post_hoc_reviewer_requested_controls",
+  "support": {
+    "cells": 5191580,
+    "dockstring_complete_rows_before_exclusion": 260060,
+    "dockstring_reference_rows": 259579,
+    "dockstring_rows_excluded": 481,
+    "excluded_connectivity_blocks": 1050,
+    "generic_framework_failures": 0,
+    "generic_murcko_acyclic_topology_groups": 46728,
+    "generic_murcko_groups": 46921,
+    "ligands": 259579,
+    "murcko_groups": 100040,
+    "positive_score_handling": "clip to zero before centering, as in the primary analysis",
+    "target_columns": [
+      "PPARD",
+      "ABL1",
+      "ADAM17",
+      "ADRB1",
+      "ADRB2",
+      "AKT2",
+      "MAOB",
+      "CASP3",
+      "DHFR",
+      "ESR2",
+      "PTK2",
+      "FGFR1",
+      "HMGCR",
+      "HSP90AA1",
+      "KIT",
+      "MAPKAPK2",
+      "MAP2K1",
+      "NOS1",
+      "PARP1",
+      "PDE5A",
+      "PGR",
+      "PTPN1",
+      "ROCK1",
+      "AKT1",
+      "AR",
+      "CDK2",
+      "CSF1R",
+      "ESR1",
+      "NR3C1",
+      "IGF1R",
+      "JAK2",
+      "LCK",
+      "MET",
+      "MMP13",
+      "PTGS2",
+      "PPARA",
+      "PPARG",
+      "REN",
+      "ADORA2A",
+      "ACHE",
+      "BACE1",
+      "CA2",
+      "CYP2C9",
+      "CYP3A4",
+      "HSD11B1",
+      "DPP4",
+      "DRD2",
+      "DRD3",
+      "EGFR",
+      "F10",
+      "GBA",
+      "MAPK1",
+      "MAPK14",
+      "PLK1",
+      "SRC",
+      "THRB",
+      "F2",
+      "KDR"
+    ],
+    "targets": 20
+  },
+  "verification": {
+    "every_predictive_basis_has_seven_columns": true,
+    "locked_count_morgan_ensemble_reproduction": {
+      "maximum_absolute_panel_geometry_difference": 0.0,
+      "maximum_absolute_predictive_metric_difference": 0.0
+    },
+    "observed_surface_is_identical_across_all_arms": true,
+    "physical_oof_reproduction": {
+      "artifact_limitation": "the established result artifact does not serialize ligand-level OOF values; the established implementation is therefore rerun on the locked support",
+      "maximum_absolute_difference_descriptor_prediction": 0.0,
+      "maximum_absolute_difference_observed_surface": 0.0,
+      "reference": "residual_mechanism_analysis.grouped_descriptor_decomposition"
+    },
+    "physical_prediction_reproduction_max_abs_difference": 0.0,
+    "transported_oracle_uses_test_outcomes_for_projection": true
+  }
+}

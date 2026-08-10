@@ -1,0 +1,31 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "contrast_summary.csv": {
+      "bytes": 2383,
+      "sha256": "0d13f5f5e94ba417c6b559652adaa951973947600c3c6440d7f4b822dca36aae"
+    },
+    "endpoint_sensitivity_summary.csv": {
+      "bytes": 1767,
+      "sha256": "55869878f9e3f3de0610feecfc4e7e37d94546411952d498a22b4d98b7ac7ecc"
+    },
+    "per_ligand_metrics.csv": {
+      "bytes": 1392037,
+      "sha256": "09cc2f155d49e1997ec1f7a378c7c2c95b09014f431b8096583518a63382326c"
+    },
+    "representation_summary.csv": {
+      "bytes": 3551,
+      "sha256": "19cb7dc6b2febb894176be1aed108a3b9743925093e04e2fc4ac260043f7f79f"
+    },
+    "summary.json": {
+      "bytes": 214278,
+      "sha256": "b716fe25a60627926c6bcf95c32bcb2458a6d9d341272c0ffc8808454a32ccba"
+    },
+    "target_support.csv": {
+      "bytes": 2293,
+      "sha256": "e344f6923eaadcb3e0623b1d54becad0cff70569920fae50079469aa6c32b8ce"
+    }
+  },
+  "schema_version": "1.0.0",
+  "scope": "all regular files in this result directory except this manifest"
+}

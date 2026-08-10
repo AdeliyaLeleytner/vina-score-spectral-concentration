@@ -1,0 +1,136 @@
+{
+  "analysis": "KLIFS pocket and kinase-annotation controls",
+  "analysis_status": "exploratory_post_hoc",
+  "claim_boundary": "The results support transferable chemistry-induced target co-response geometry beyond the tested sequence and KLIFS controls. They do not establish pose accuracy, causal pocket determinants, superiority to sequence as a standalone baseline, or a universal benefit of centering. PR magnitude is not evaluated as a quality score.",
+  "configuration": {
+    "partial_control": "ordinary least squares residualization of pairwise ranks with an intercept",
+    "pocket_gap_handling": "aligned characters are compared directly; identical gaps count as matches",
+    "pocket_identity_denominator": 85,
+    "seed": 20260803,
+    "target_label_qap_permutations": 50000
+  },
+  "key_results": {
+    "different_family_stratum": {
+      "analysis_status": "exploratory_post_hoc_stratum",
+      "centered_average_precision": 0.21817609146179406,
+      "centered_roc_auc": 0.6623563218390804,
+      "paired_gain_average_precision_qap_p_positive": 0.023299534009319812,
+      "paired_gain_roc_auc_qap_p_positive": 0.04371912561748765,
+      "pairs": 186,
+      "positive_pairs": 12,
+      "raw_average_precision": 0.16021617257621207,
+      "raw_roc_auc": 0.5440613026819924
+    },
+    "independent_KiRHub_controlling_KLIFS_pocket": {
+      "partial_spearman": 0.31525295499214595,
+      "target_label_qap_p_positive": 0.004159916801663967
+    },
+    "independent_KiRHub_controlling_all_structural_labels": {
+      "partial_spearman": 0.2855745199964602,
+      "target_label_qap_p_positive": 0.006139877202455951
+    },
+    "old_three_panel_mean_controlling_KLIFS_pocket": {
+      "partial_spearman": 0.263039808962936,
+      "target_label_qap_p_positive": 0.00871982560348793
+    },
+    "old_three_panel_mean_controlling_all_structural_labels": {
+      "partial_spearman": 0.22163693503785972,
+      "target_label_qap_p_positive": 0.014579708405831884
+    }
+  },
+  "output_files": {
+    "annotation_associations.csv": {
+      "rows": 3,
+      "sha256": "ef64e287fbf207920157cb6ef6b6b10932b0046a5ccc0e1078b24120f2280fad"
+    },
+    "locked_endpoint_retrieval.csv": {
+      "rows": 6,
+      "sha256": "718b5d5ae6585eb4d32b1daf091f07ec6ff302d205765aa9093f8fd043397aeb"
+    },
+    "partial_geometry_qap.csv": {
+      "rows": 20,
+      "sha256": "8e6e2a1b15706c22352530bc2a75a44c3f3d231cfc06070dc2ee0cbffb31d190"
+    },
+    "stratified_retrieval.csv": {
+      "rows": 3,
+      "sha256": "e3c69786068ea6865a1a233bf81172b4d3964ade8b3d9a62de3f664ebde47bb5"
+    },
+    "target_annotations.csv": {
+      "rows": 20,
+      "sha256": "005d118db9510f59355330afeda0280f40041c8d53bbeb41a41eb3c6aaf4847a"
+    },
+    "target_pairs.csv": {
+      "rows": 190,
+      "sha256": "08238b207ac4f9f991193db0d0e03063403727f98aa1230cbfe636eeb6501a23"
+    }
+  },
+  "preexisting_locked_endpoint": "upper 10% centered target-correlation pair in at least two of DAVIS, PKIS2, and PKIS1; fixed before the KLIFS analysis",
+  "primary_estimand": "partial Spearman association between centered Vina and experimental target-pair geometries after rank-linear structural control; inference permutes complete Vina target labels",
+  "selection_boundary": "This is post hoc: KLIFS controls and all structural strata were formulated after inspection of the docking/experimental geometry results. Nominal probabilities are descriptive and are not adjusted for this broader exploratory search.",
+  "software": {
+    "numpy": "1.26.4",
+    "pandas": "2.3.2",
+    "python": "3.12.11",
+    "scipy": "1.16.2",
+    "script_sha256": "a8ab00e7b4792634d7d0e67608feac94caed7bca5f9809704ea1f9a3d1e6e4a3"
+  },
+  "sources": {
+    "KLIFS_kinase_information": {
+      "selected_fields": [
+        "kinase_ID",
+        "name",
+        "gene_name",
+        "family",
+        "group",
+        "subfamily",
+        "species",
+        "uniprot",
+        "pocket"
+      ],
+      "sha256": "041a159e662a27696554867acbe1ac7fb35d36f71483d42ab4ac90e219dbef8f",
+      "snapshot_date": "2026-08-03",
+      "source_data_redistributed": false,
+      "url": "https://klifs.net/api_v2/kinase_information?species=HUMAN"
+    },
+    "KiRHub": {
+      "derived_pair_values_redistributed": false,
+      "doi": "10.1038/s41587-026-03090-8",
+      "sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03",
+      "source_activity_rows_redistributed": false,
+      "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41587-026-03090-8/MediaObjects/41587_2026_3090_MOESM4_ESM.xlsx"
+    },
+    "fixed_target_pairs": {
+      "path": "results/replicated_pair_retrieval/target_pairs.csv",
+      "sha256": "f2e372ee45b38648cea8a23d485d7ed519c769e5146eef99b2e4177503466fc3"
+    }
+  },
+  "support": {
+    "KLIFS_same_family_pairs": 4,
+    "KLIFS_same_group_pairs": 61,
+    "locked_positive_pairs": 15,
+    "target_pairs": 190,
+    "targets": 20,
+    "targets_in_order": [
+      "ABL1",
+      "AKT1",
+      "AKT2",
+      "CDK2",
+      "CSF1R",
+      "EGFR",
+      "FGFR1",
+      "IGF1R",
+      "JAK2",
+      "KDR",
+      "KIT",
+      "LCK",
+      "MAP2K1",
+      "MAPK1",
+      "MAPK14",
+      "MAPKAPK2",
+      "MET",
+      "PLK1",
+      "ROCK1",
+      "SRC"
+    ]
+  }
+}

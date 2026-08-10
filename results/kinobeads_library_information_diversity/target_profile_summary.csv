@@ -1,0 +1,5 @@
+group,n_compounds,n_chemotypes,n_target_calls,n_targets_covered,target_entropy_effective_number,n_nonzero_compounds,n_unique_binary_profiles
+KCGS,187,87,558,164,117.457087278,149,137
+PKIS_exclusive,299,30,1121,172,111.850153417,233,179
+PKIS2_exclusive,470,53,2683,223,150.102634046,318,255
+Roche,222,16,1227,163,95.747679349,168,124

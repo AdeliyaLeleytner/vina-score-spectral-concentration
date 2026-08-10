@@ -1,0 +1,436 @@
+{
+  "analysis_question": "Across which symmetric equivalence margins does a two-one-sided-test reading of the scaled-two-way-residual-minus-absolute-Vina ranking contrast pass, on the dense DAVIS and PKIS2 benchmarks and on the broad DOCKSTRING-ChEMBL benchmark?",
+  "benchmarks": {
+    "DAVIS": {
+      "benchmark": "DAVIS",
+      "cluster_bootstrap_intervals_90": {
+        "butina_cluster_bootstrap": [
+          -0.02631921240377427,
+          0.007025212941973957
+        ],
+        "murcko_cluster_bootstrap": [
+          -0.025957632118492575,
+          0.006348889238056228
+        ]
+      },
+      "conservative_union_interval_90": [
+        -0.02631921240377427,
+        0.007025212941973957
+      ],
+      "conservative_union_interval_95": [
+        -0.030179865662891065,
+        0.010030505705378669
+      ],
+      "estimand_path": "primary.paired_comparisons.two_way_residual_minus_absolute_vina.0.0.all_informative",
+      "excludes_zero_90": false,
+      "interval_90_half_width": 0.02631921240377427,
+      "margin_decisions_90": {
+        "0.010": false,
+        "0.015": false,
+        "0.020": false,
+        "0.025": false,
+        "0.030": true,
+        "0.035": true,
+        "0.040": true,
+        "0.045": true,
+        "0.050": true,
+        "0.055": true,
+        "0.060": true
+      },
+      "plugin_mean_difference": -0.009235955395609605,
+      "relabelled_manuscript_margin_passes": true,
+      "seed": 0,
+      "smallest_grid_margin_passing": 0.03,
+      "smallest_supported_symmetric_margin_90_exact": 0.02631921240377427,
+      "smallest_supported_symmetric_margin_90_rounded_up_3dp": 0.027,
+      "source": "results/dense_davis_benchmark.json",
+      "stratum": "all informative within-ligand target pairs: exact pKd ties and floor--floor pairs at the pKd = 5 reporting floor removed",
+      "support": {
+        "bootstrap_replicates_per_scheme": 5000,
+        "butina_clusters": 57,
+        "evaluated_ligands": 56,
+        "evaluated_within_ligand_target_pairs": 6065,
+        "matched_ligands": 59,
+        "murcko_scaffold_clusters": 59,
+        "observed_experimental_cells": 1239,
+        "targets": 21
+      }
+    },
+    "DOCKSTRING-ChEMBL": {
+      "benchmark": "DOCKSTRING-ChEMBL",
+      "cluster_bootstrap_intervals_90": {
+        "butina_cluster_bootstrap": [
+          -0.019466560898798287,
+          0.004021065727747181
+        ],
+        "scaffold_cluster_bootstrap": [
+          -0.017799067520414477,
+          0.002241810402582626
+        ]
+      },
+      "conservative_union_interval_90": [
+        -0.019466560898798287,
+        0.004021065727747181
+      ],
+      "conservative_union_interval_95": [
+        -0.02198749424962591,
+        0.006128483320029131
+      ],
+      "estimand_path": "headline_contrasts.two_way_residual_minus_absolute_vina",
+      "excludes_zero_90": false,
+      "frozen_headline_interval_90": [
+        -0.019466560898798287,
+        0.004021065727747181
+      ],
+      "interval_90_half_width": 0.019466560898798287,
+      "margin_decisions_90": {
+        "0.010": false,
+        "0.015": false,
+        "0.020": true,
+        "0.025": true,
+        "0.030": true,
+        "0.035": true,
+        "0.040": true,
+        "0.045": true,
+        "0.050": true,
+        "0.055": true,
+        "0.060": true
+      },
+      "matches_frozen_headline_interval_90": true,
+      "plugin_mean_difference": -0.0077206678910093016,
+      "relabelled_manuscript_margin_passes": true,
+      "seed": 20260805,
+      "smallest_grid_margin_passing": 0.02,
+      "smallest_supported_symmetric_margin_90_exact": 0.019466560898798287,
+      "smallest_supported_symmetric_margin_90_rounded_up_3dp": 0.02,
+      "source": "results/dockstring_chembl_ranking/summary.json",
+      "stratum": "non-tied within-ligand target pairs from exact-relation ChEMBL activities (median pChEMBL per ligand-target cell, at least two observed targets)",
+      "support": {
+        "bootstrap_replicates_per_scheme": 5000,
+        "butina_clusters": 2312,
+        "evaluated_ligands": 6480,
+        "evaluated_within_ligand_target_pairs": 25214,
+        "matched_ligands": 6557,
+        "murcko_scaffold_clusters": 2815,
+        "observed_experimental_cells": 18020,
+        "targets": 31
+      }
+    },
+    "PKIS2": {
+      "benchmark": "PKIS2",
+      "cluster_bootstrap_intervals_90": {
+        "butina_cluster_bootstrap": [
+          -0.015409412180685847,
+          0.010213549195942485
+        ],
+        "murcko_cluster_bootstrap": [
+          -0.015512213214719999,
+          0.009841105344977605
+        ]
+      },
+      "conservative_union_interval_90": [
+        -0.015512213214719999,
+        0.010213549195942485
+      ],
+      "conservative_union_interval_95": [
+        -0.01793345407393822,
+        0.012433626854080523
+      ],
+      "estimand_path": "primary.paired_comparisons.two_way_residual_minus_absolute_vina.absolute_difference_gt_10",
+      "excludes_zero_90": false,
+      "interval_90_half_width": 0.015512213214719999,
+      "margin_decisions_90": {
+        "0.010": false,
+        "0.015": false,
+        "0.020": true,
+        "0.025": true,
+        "0.030": true,
+        "0.035": true,
+        "0.040": true,
+        "0.045": true,
+        "0.050": true,
+        "0.055": true,
+        "0.060": true
+      },
+      "plugin_mean_difference": -0.0028477837820351363,
+      "relabelled_manuscript_margin_passes": true,
+      "seed": 0,
+      "smallest_grid_margin_passing": 0.02,
+      "smallest_supported_symmetric_margin_90_exact": 0.015512213214719999,
+      "smallest_supported_symmetric_margin_90_rounded_up_3dp": 0.016,
+      "source": "results/dense_pkis2_benchmark.json",
+      "stratum": "within-ligand target pairs whose single-dose percentage-inhibition values differ by more than 10 percentage points",
+      "support": {
+        "bootstrap_replicates_per_scheme": 5000,
+        "butina_clusters": 103,
+        "evaluated_ligands": 154,
+        "evaluated_within_ligand_target_pairs": 16417,
+        "matched_ligands": 154,
+        "murcko_scaffold_clusters": 111,
+        "observed_experimental_cells": 3234,
+        "targets": 21
+      }
+    }
+  },
+  "bootstrap_contract": {
+    "chemical_cluster_schemes_broad": [
+      "scaffold_cluster_bootstrap",
+      "butina_cluster_bootstrap"
+    ],
+    "chemical_cluster_schemes_dense": [
+      "murcko_cluster_bootstrap",
+      "butina_cluster_bootstrap"
+    ],
+    "note": "no bootstrap is re-run here; the intervals are read from the frozen benchmark artifacts, which used 5,000 replicates per scheme",
+    "replicates_per_scheme": 5000
+  },
+  "claim_boundary": "This is a post hoc equivalence reading of already-computed intervals, not a confirmatory or preregistered test, and it re-runs no resampling. Passing a margin bounds the size of any residual-rule advantage on the evaluated ligand-target pairs of these three benchmarks; it does not show the two rules are identical, does not extend to other chemical supports, target panels, scoring functions or endpoints, and does not license the word 'prespecified' anywhere. The conservative union widens the interval and therefore makes every decision here harder, not easier. The equivalence holds on the primary strata only: the exploratory binder-only strata (DAVIS both_uncensored, PKIS2 both_active) show intervals excluding zero in favour of the residual rule and fail every margin on this grid, so no global 'the rules are equivalent' statement is supported.",
+  "cross_benchmark_summary": {
+    "any_primary_benchmark_excludes_zero_at_90": false,
+    "largest_half_width_across_primary_benchmarks": 0.02631921240377427,
+    "primary_benchmark_order": [
+      "DAVIS",
+      "PKIS2",
+      "DOCKSTRING-ChEMBL"
+    ],
+    "relabelled_manuscript_margin": 0.03,
+    "relabelled_manuscript_margin_passes_everywhere": true,
+    "smallest_grid_margin_passing": {
+      "DAVIS": 0.03,
+      "DOCKSTRING-ChEMBL": 0.02,
+      "PKIS2": 0.02
+    },
+    "smallest_grid_margin_passing_on_all_three": 0.03,
+    "smallest_supported_symmetric_margin_90_exact": {
+      "DAVIS": 0.02631921240377427,
+      "DOCKSTRING-ChEMBL": 0.019466560898798287,
+      "PKIS2": 0.015512213214719999
+    }
+  },
+  "decision_rule": {
+    "alpha": 0.05,
+    "criterion": "two one-sided tests at alpha = 0.05: equivalence is declared when the conservative union of the two chemical-cluster 90% bootstrap intervals lies strictly inside (-margin, +margin), i.e. when max(|lower|, |upper|) < margin",
+    "interval_union_rule": "elementwise min of lower bounds and max of upper bounds across the two chemical-cluster schemes, the package-wide conservative union",
+    "interval_used": "conservative union of the two chemical-cluster 90% bootstrap intervals",
+    "strictness": "strict inequality; a margin exactly equal to the interval half-width does not pass",
+    "test": "two one-sided tests (TOST)"
+  },
+  "estimand": "mean per-ligand pairwise concordance of the scaled two-way-residual Vina rule minus plain absolute Vina, on within-ligand target pairs",
+  "margin_grid": {
+    "labels": [
+      "0.010",
+      "0.015",
+      "0.020",
+      "0.025",
+      "0.030",
+      "0.035",
+      "0.040",
+      "0.045",
+      "0.050",
+      "0.055",
+      "0.060"
+    ],
+    "start": 0.01,
+    "step": 0.005,
+    "stop": 0.06,
+    "values": [
+      0.01,
+      0.015,
+      0.02,
+      0.025,
+      0.03,
+      0.035,
+      0.04,
+      0.045,
+      0.05,
+      0.055,
+      0.06
+    ]
+  },
+  "prespecification": "post hoc throughout: no equivalence margin was preregistered, and every margin on this grid was chosen after the corresponding benchmark had been computed. The Results sentence that called +/-0.03 prespecified is withdrawn; this curve replaces it.",
+  "secondary_outcome_conditioned_strata": {
+    "DAVIS_both_uncensored": {
+      "benchmark": "DAVIS",
+      "cluster_bootstrap_intervals_90": {
+        "butina_cluster_bootstrap": [
+          0.010399351058364672,
+          0.08124597272721665
+        ],
+        "murcko_cluster_bootstrap": [
+          0.009753578404184084,
+          0.0810983721532364
+        ]
+      },
+      "conservative_union_interval_90": [
+        0.009753578404184084,
+        0.08124597272721665
+      ],
+      "conservative_union_interval_95": [
+        0.004404990277212503,
+        0.08908605520390758
+      ],
+      "excludes_zero_90": true,
+      "interval_90_half_width": 0.08124597272721665,
+      "margin_decisions_90": {
+        "0.010": false,
+        "0.015": false,
+        "0.020": false,
+        "0.025": false,
+        "0.030": false,
+        "0.035": false,
+        "0.040": false,
+        "0.045": false,
+        "0.050": false,
+        "0.055": false,
+        "0.060": false
+      },
+      "plugin_mean_difference": 0.0441069184916724,
+      "relabelled_manuscript_margin_passes": false,
+      "smallest_grid_margin_passing": null,
+      "smallest_supported_symmetric_margin_90_exact": 0.08124597272721665,
+      "smallest_supported_symmetric_margin_90_rounded_up_3dp": 0.082,
+      "source": "results/dense_davis_benchmark.json",
+      "stratum": "exploratory outcome-conditioned stratum: both DAVIS measurements above the pKd = 5 reporting floor",
+      "stratum_label": "both_uncensored",
+      "support": {
+        "evaluated_ligands": 49,
+        "evaluated_within_ligand_target_pairs": 1757
+      }
+    },
+    "DAVIS_floor_vs_uncensored": {
+      "benchmark": "DAVIS",
+      "cluster_bootstrap_intervals_90": {
+        "butina_cluster_bootstrap": [
+          -0.03304179789783804,
+          0.006464097357732026
+        ],
+        "murcko_cluster_bootstrap": [
+          -0.033759627379809684,
+          0.005915838110847146
+        ]
+      },
+      "conservative_union_interval_90": [
+        -0.033759627379809684,
+        0.006464097357732026
+      ],
+      "conservative_union_interval_95": [
+        -0.037133583922547744,
+        0.010140217918202753
+      ],
+      "excludes_zero_90": false,
+      "interval_90_half_width": 0.033759627379809684,
+      "margin_decisions_90": {
+        "0.010": false,
+        "0.015": false,
+        "0.020": false,
+        "0.025": false,
+        "0.030": false,
+        "0.035": true,
+        "0.040": true,
+        "0.045": true,
+        "0.050": true,
+        "0.055": true,
+        "0.060": true
+      },
+      "plugin_mean_difference": -0.013096590884251996,
+      "relabelled_manuscript_margin_passes": false,
+      "smallest_grid_margin_passing": 0.035,
+      "smallest_supported_symmetric_margin_90_exact": 0.033759627379809684,
+      "smallest_supported_symmetric_margin_90_rounded_up_3dp": 0.034,
+      "source": "results/dense_davis_benchmark.json",
+      "stratum": "exploratory outcome-conditioned stratum: one measurement at the pKd = 5 floor and one above it",
+      "stratum_label": "floor_vs_uncensored",
+      "support": {
+        "evaluated_ligands": 56,
+        "evaluated_within_ligand_target_pairs": 4308
+      }
+    },
+    "PKIS2_both_active": {
+      "benchmark": "PKIS2",
+      "cluster_bootstrap_intervals_90": {
+        "butina_cluster_bootstrap": [
+          0.011500666463166461,
+          0.09806675804224824
+        ],
+        "murcko_cluster_bootstrap": [
+          0.009780916143042386,
+          0.09732140327899662
+        ]
+      },
+      "conservative_union_interval_90": [
+        0.009780916143042386,
+        0.09806675804224824
+      ],
+      "conservative_union_interval_95": [
+        0.002277912042009788,
+        0.10932996000598039
+      ],
+      "excludes_zero_90": true,
+      "interval_90_half_width": 0.09806675804224824,
+      "margin_decisions_90": {
+        "0.010": false,
+        "0.015": false,
+        "0.020": false,
+        "0.025": false,
+        "0.030": false,
+        "0.035": false,
+        "0.040": false,
+        "0.045": false,
+        "0.050": false,
+        "0.055": false,
+        "0.060": false
+      },
+      "plugin_mean_difference": 0.052053111298263656,
+      "relabelled_manuscript_margin_passes": false,
+      "smallest_grid_margin_passing": null,
+      "smallest_supported_symmetric_margin_90_exact": 0.09806675804224824,
+      "smallest_supported_symmetric_margin_90_rounded_up_3dp": 0.099,
+      "source": "results/dense_pkis2_benchmark.json",
+      "stratum": "exploratory outcome-conditioned stratum: both PKIS2 values at least 65% inhibition and the primary >10 percentage-point margin retained",
+      "stratum_label": "both_active",
+      "support": {
+        "evaluated_ligands": 57,
+        "evaluated_within_ligand_target_pairs": 256
+      }
+    }
+  },
+  "seeds": {
+    "dense_davis_benchmark": 0,
+    "dense_pkis2_benchmark": 0,
+    "dockstring_chembl_ranking": 20260805,
+    "this_script": "none; the script is a deterministic read-and-tabulate over frozen intervals and draws no random numbers"
+  },
+  "status": "post_hoc_equivalence_margin_sensitivity_complete",
+  "support": {
+    "DAVIS": {
+      "bootstrap_replicates_per_scheme": 5000,
+      "butina_clusters": 57,
+      "evaluated_ligands": 56,
+      "evaluated_within_ligand_target_pairs": 6065,
+      "matched_ligands": 59,
+      "murcko_scaffold_clusters": 59,
+      "observed_experimental_cells": 1239,
+      "targets": 21
+    },
+    "DOCKSTRING-ChEMBL": {
+      "bootstrap_replicates_per_scheme": 5000,
+      "butina_clusters": 2312,
+      "evaluated_ligands": 6480,
+      "evaluated_within_ligand_target_pairs": 25214,
+      "matched_ligands": 6557,
+      "murcko_scaffold_clusters": 2815,
+      "observed_experimental_cells": 18020,
+      "targets": 31
+    },
+    "PKIS2": {
+      "bootstrap_replicates_per_scheme": 5000,
+      "butina_clusters": 103,
+      "evaluated_ligands": 154,
+      "evaluated_within_ligand_target_pairs": 16417,
+      "matched_ligands": 154,
+      "murcko_scaffold_clusters": 111,
+      "observed_experimental_cells": 3234,
+      "targets": 21
+    }
+  }
+}

@@ -1,0 +1,5 @@
+endpoint,spearman,target_label_qap_p_positive,partial_spearman_controlling_receptor_sequence_identity,partial_target_label_qap_p_positive,permutations
+DAVIS,0.8485480717500558,2e-05,0.8369353818711289,2e-05,49999
+PKIS2,0.8049749154736755,2e-05,0.787346592046126,2e-05,49999
+PKIS1,0.650539962471624,2e-05,0.6266964464757228,2e-05,49999
+old_three_panel_mean_rank,0.8340198308460515,2e-05,0.8208674870893515,2e-05,49999

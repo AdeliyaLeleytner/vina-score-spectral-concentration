@@ -1,0 +1,6 @@
+basis,dimensions,matrix_rank,maximum_absolute_pearson_with_published_descriptors,maximum_absolute_within_basis_correlation
+physicochemical_7,7,7,1.0000000000000075,0.99352670755251338
+morgan_count_plus_size_rp_7_locked_seed_20260910,7,7,0.99508313179592911,0.41784760987063618
+morgan_normalized_bit_rp_7_seed_a,7,7,0.13671976077903908,0.11655149174814507
+morgan_normalized_bit_rp_7_seed_b,7,7,0.19102484321089699,0.10177734691017729
+stable_hash_nuisance_7,7,7,0.0063266159697261777,0.0055557095793527479

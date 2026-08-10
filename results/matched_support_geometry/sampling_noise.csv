@@ -1,0 +1,9 @@
+panel,quantity,method,n,repeats,mean,median,lower_95,upper_95,seed
+DAVIS,matched_docking_geometry_split_half_reliability,"random split-half of the ligand support, Spearman-Brown corrected",59,500,0.4075783119939058,0.4108447208041561,0.24747024618792715,0.5359996333341852,20460806
+DAVIS,matched_experimental_geometry_split_half_reliability,"random split-half of the ligand support, Spearman-Brown corrected",59,500,0.8550369804157906,0.859191678421295,0.780768042437922,0.9152289501951949,20460807
+DAVIS,broad_reference_subsample_agreement_at_matched_n,random ligand subsamples of the broad reference scored against the full broad-support geometry,59,500,0.7933099730128114,0.7995258652740054,0.6811755391970329,0.8701580740682422,20560806
+DAVIS,size_matched_random_broad_support_spearman,"random draws with replacement from the broad pool, matched to the propensity arm's row count including its reuse",5900,200,0.29927843168129753,0.2989052036723572,0.28305598201437276,0.3143064467451351,20660806
+PKIS2,matched_docking_geometry_split_half_reliability,"random split-half of the ligand support, Spearman-Brown corrected",154,500,0.870111254102454,0.8721234693189088,0.8193501359278461,0.9115379535726392,21460806
+PKIS2,matched_experimental_geometry_split_half_reliability,"random split-half of the ligand support, Spearman-Brown corrected",154,500,0.8856938219331796,0.8890211573424867,0.8267799234239696,0.9266250567433784,21460807
+PKIS2,broad_reference_subsample_agreement_at_matched_n,random ligand subsamples of the broad reference scored against the full broad-support geometry,154,500,0.9025819242696621,0.9053182694957289,0.8448255017998749,0.9378875198467373,21560806
+PKIS2,size_matched_random_broad_support_spearman,"random draws with replacement from the broad pool, matched to the propensity arm's row count including its reuse",15400,200,0.325914655749321,0.3260944682823989,0.31576769148000894,0.33714994292012757,21660806

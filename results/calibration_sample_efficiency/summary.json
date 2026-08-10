@@ -1,0 +1,151 @@
+{
+  "QAP_permutations": 20000,
+  "analysis": "sample efficiency of a transferable target-breadth prior",
+  "decision": "GO_small_diverse_calibration_panel",
+  "decision_rule": "GO at the smallest n<=80 only if, for every primary metric, the 2.5th percentile of the mean locked-panel delta is positive and at least 95% of diversity-sampled panels improve every locked panel",
+  "deterministic_MaxMin_80": {
+    "degree_spearman_vs_full_PKIS1": 0.9390240472319978,
+    "locked_panel_deltas": {
+      "continuous_spearman": {
+        "DAVIS": 0.28020312561508487,
+        "KiRHub": 0.20084591933586143,
+        "PKIS2": 0.30703810136160653
+      },
+      "top_10_average_precision": {
+        "DAVIS": 0.15316528466735885,
+        "KiRHub": 0.13731958894885993,
+        "PKIS2": 0.08665593659790288
+      },
+      "top_10_roc_auc": {
+        "DAVIS": 0.16189596799015082,
+        "KiRHub": 0.15820252385349343,
+        "PKIS2": 0.1286549707602339
+      }
+    },
+    "target_jackknife": {
+      "continuous_spearman": {
+        "minimum_delta": 0.12081023351813186,
+        "positive_panel_target_deletions": 60,
+        "total_panel_target_deletions": 60
+      },
+      "top_10_average_precision": {
+        "minimum_delta": 0.024552245780103066,
+        "positive_panel_target_deletions": 60,
+        "total_panel_target_deletions": 60
+      },
+      "top_10_roc_auc": {
+        "minimum_delta": 0.0374001452432825,
+        "positive_panel_target_deletions": 60,
+        "total_panel_target_deletions": 60
+      }
+    },
+    "target_label_QAP": {
+      "continuous_spearman": {
+        "holm_p": 0.00119994000299985,
+        "mean_locked_delta": 0.2626957154375176,
+        "minimum_locked_panel_delta": 0.20084591933586143,
+        "qap_p": 0.000599970001499925
+      },
+      "top_10_average_precision": {
+        "holm_p": 0.008999550022498875,
+        "mean_locked_delta": 0.12571360340470722,
+        "minimum_locked_panel_delta": 0.08665593659790288,
+        "qap_p": 0.008999550022498875
+      },
+      "top_10_roc_auc": {
+        "holm_p": 0.0010499475026248687,
+        "mean_locked_delta": 0.14958448753462605,
+        "minimum_locked_panel_delta": 0.1286549707602339,
+        "qap_p": 0.00034998250087495624
+      }
+    }
+  },
+  "discovery_resource": "PKIS1",
+  "inputs": {
+    "KiRHub_workbook": {
+      "path": "source-restricted/kirhub_supp_tables.xlsx",
+      "sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03"
+    },
+    "PKIS1_zip": {
+      "path": "source-restricted/pkis1_supplement.zip",
+      "sha256": "1ffbe7fd0b4fc1ef72f2434a2b247d15c0f2b4d3c34668f112f4b4c9e4ead7dc"
+    },
+    "target_pair_artifact": {
+      "path": "results/klifs_pocket_control/target_pairs.csv",
+      "sha256": "08238b207ac4f9f991193db0d0e03063403727f98aa1230cbfe636eeb6501a23"
+    }
+  },
+  "interpretation_boundary": "The result says that a modest dense calibration panel can learn a transferable marginal target-breadth prior for this fixed kinase set. It does not show improved ligand-level target ranking, unseen-target generalization, or sufficiency outside these assay panels.",
+  "locked_no_retuning_panels": [
+    "DAVIS",
+    "PKIS2",
+    "KiRHub"
+  ],
+  "models": {
+    "augmented": "the same sample-derived fit plus pair-rank geometric-mean target degree and negative absolute target-degree difference",
+    "baseline": "OLS fit on the sample-derived centered PKIS1 geometry using receptor-domain sequence and KLIFS pocket pair ranks"
+  },
+  "practical_80_repeated_diversity_sampling": {
+    "continuous_spearman": {
+      "fraction_positive_on_every_locked_panel": 0.985,
+      "median_mean_locked_delta": 0.1962387061312385,
+      "q025_mean_locked_delta": 0.04842318128071779,
+      "q975_mean_locked_delta": 0.3083030875618365
+    },
+    "top_10_average_precision": {
+      "fraction_positive_on_every_locked_panel": 0.991,
+      "median_mean_locked_delta": 0.1138328143366815,
+      "q025_mean_locked_delta": 0.05157799157172359,
+      "q975_mean_locked_delta": 0.1856267567845701
+    },
+    "top_10_roc_auc": {
+      "fraction_positive_on_every_locked_panel": 0.994,
+      "median_mean_locked_delta": 0.12239663486200883,
+      "q025_mean_locked_delta": 0.06561762593618546,
+      "q975_mean_locked_delta": 0.17638247665948492
+    }
+  },
+  "primary_target_degree": "fraction of sampled PKIS1 compounds with at least 50% inhibition",
+  "repetitions_per_scheme_and_size": 1000,
+  "sample_sizes": [
+    10,
+    20,
+    40,
+    80,
+    160,
+    360
+  ],
+  "sampling": {
+    "Butina_clusters": 181,
+    "Murcko_groups": 189,
+    "deterministic_practical_panel": "single structure-only Morgan-r2/2048 MaxMin ordering; fixed seed; activity values are never supplied to the selector",
+    "diversity": "seeded Butina-cluster round robin; one compound from every Morgan-r2/2048 Tanimoto>=0.65 cluster before a second",
+    "uniform": "seeded random permutations; sample sizes are nested prefixes"
+  },
+  "scientific_question": "how many outcome-blindly selected PKIS1 calibration compounds are needed before a marginal target-breadth prior improves target-pair co-selectivity prediction beyond sequence plus KLIFS pocket identity",
+  "seed": 20260830,
+  "smallest_sample_size_passing_rule": 80,
+  "status": "post_hoc_exploratory_science_only",
+  "targets": [
+    "ABL1",
+    "AKT1",
+    "AKT2",
+    "CDK2",
+    "CSF1R",
+    "EGFR",
+    "FGFR1",
+    "IGF1R",
+    "JAK2",
+    "KDR",
+    "KIT",
+    "LCK",
+    "MAP2K1",
+    "MAPK1",
+    "MAPK14",
+    "MAPKAPK2",
+    "MET",
+    "PLK1",
+    "ROCK1",
+    "SRC"
+  ]
+}

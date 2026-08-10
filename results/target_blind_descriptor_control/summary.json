@@ -1,0 +1,1192 @@
+{
+  "analysis": "target-blind (shared-coefficient) control for the descriptor component of the fixed common-20 kinase residual surface",
+  "arms": {
+    "descriptor_component_target_blind": "out-of-fold descriptor prediction with one slope vector shared by the whole 20-target panel (pooled least squares); contains no target-specific parameter of any kind",
+    "descriptor_component_target_specific": "out-of-fold descriptor prediction with a separate fitted slope vector per target (the published descriptor component)",
+    "observed_residual": "out-of-fold within-ligand residual surface"
+  },
+  "chemical_cluster_bootstrap": {
+    "butina_note": "Butina clustering is not computable at this support: the package helper dense_davis_benchmark._butina_labels materialises the complete pairwise Tanimoto distance list, which is 3.37e10 entries for 259,579 ligands. The generic Murcko framework is used as the coarse second definition and the reported interval is the conservative union of the two, in place of the Murcko/Butina union used on the smaller cohorts.",
+    "conservative_union_90": {
+      "arms": {
+        "descriptor_component_target_specific": {
+          "DAVIS": [
+            0.2530942539595062,
+            0.2591688645698015
+          ],
+          "KiRHub": [
+            0.282495943173816,
+            0.2932176864499818
+          ],
+          "PKIS1": [
+            0.09365018129967148,
+            0.09958867500338985
+          ],
+          "PKIS2": [
+            0.21520537819242702,
+            0.22143071465749897
+          ]
+        },
+        "observed_residual": {
+          "DAVIS": [
+            0.27122500841982794,
+            0.28986208977942246
+          ],
+          "KiRHub": [
+            0.3135278860327083,
+            0.3324954620407913
+          ],
+          "PKIS1": [
+            0.16722373123034467,
+            0.1815370887952867
+          ],
+          "PKIS2": [
+            0.2775871616213308,
+            0.2972023426804358
+          ]
+        }
+      },
+      "heterogeneity_share_of_descriptor_component_variance": [
+        0.9895372520849406,
+        0.9900027223463186
+      ],
+      "observed_minus_target_specific": {
+        "DAVIS": [
+          0.015068124062337313,
+          0.033732236350037345
+        ],
+        "KiRHub": [
+          0.024682736509686075,
+          0.04580911265948456
+        ],
+        "PKIS1": [
+          0.07066689411136912,
+          0.08483521193909735
+        ],
+        "PKIS2": [
+          0.05932448923355521,
+          0.07910850424490552
+        ]
+      }
+    },
+    "definitions": {
+      "generic_murcko_framework_clusters": "Bemis-Murcko generic frameworks (atom types and bond orders erased), a strictly coarser chemical grouping",
+      "murcko_scaffold_clusters": "RDKit Bemis-Murcko scaffolds, the same grouping used for the holdout folds; every acyclic molecule is a singleton"
+    },
+    "generic_framework_failures": 0,
+    "per_definition": {
+      "generic_murcko_framework_clusters": {
+        "arms": {
+          "descriptor_component_target_specific": {
+            "DAVIS": {
+              "interval_90": [
+                0.2530942539595062,
+                0.2591688645698015
+              ],
+              "interval_95": [
+                0.2525449312635866,
+                0.2596571271109713
+              ],
+              "maximum": 0.26251405127128474,
+              "mean": 0.25622514366194726,
+              "median": 0.25626194631430244,
+              "minimum": 0.24933800469760795,
+              "n": 5000,
+              "standard_deviation": 0.001869667573454668
+            },
+            "KiRHub": {
+              "interval_90": [
+                0.282495943173816,
+                0.2932176864499818
+              ],
+              "interval_95": [
+                0.2813918303612435,
+                0.2939329125606337
+              ],
+              "maximum": 0.29736907714311955,
+              "mean": 0.2881692590988816,
+              "median": 0.2882852856399288,
+              "minimum": 0.276727595603319,
+              "n": 5000,
+              "standard_deviation": 0.0032378219242318197
+            },
+            "PKIS1": {
+              "interval_90": [
+                0.09365018129967148,
+                0.09958867500338985
+              ],
+              "interval_95": [
+                0.09315693247079303,
+                0.10018326794298137
+              ],
+              "maximum": 0.1029196026716005,
+              "mean": 0.09651714661872834,
+              "median": 0.09646542184431414,
+              "minimum": 0.0904416363771558,
+              "n": 5000,
+              "standard_deviation": 0.0018307893343749138
+            },
+            "PKIS2": {
+              "interval_90": [
+                0.21520537819242702,
+                0.22143071465749897
+              ],
+              "interval_95": [
+                0.21456660849331013,
+                0.22202023383065003
+              ],
+              "maximum": 0.22426834975746524,
+              "mean": 0.2183629685032827,
+              "median": 0.21838278068644573,
+              "minimum": 0.2110328176462098,
+              "n": 5000,
+              "standard_deviation": 0.0019041972630831445
+            }
+          },
+          "observed_residual": {
+            "DAVIS": {
+              "interval_90": [
+                0.27122500841982794,
+                0.28986208977942246
+              ],
+              "interval_95": [
+                0.2694842253977001,
+                0.29180717937951334
+              ],
+              "maximum": 0.30423265843491804,
+              "mean": 0.2801779982241817,
+              "median": 0.2800377908121088,
+              "minimum": 0.2592213518088415,
+              "n": 5000,
+              "standard_deviation": 0.005686773989279768
+            },
+            "KiRHub": {
+              "interval_90": [
+                0.3135278860327083,
+                0.3324954620407913
+              ],
+              "interval_95": [
+                0.3115941686677428,
+                0.3346088607207373
+              ],
+              "maximum": 0.34643064904845017,
+              "mean": 0.3225377734038412,
+              "median": 0.32233113324323026,
+              "minimum": 0.2994685667047199,
+              "n": 5000,
+              "standard_deviation": 0.005793160791561494
+            },
+            "PKIS1": {
+              "interval_90": [
+                0.16722373123034467,
+                0.1815370887952867
+              ],
+              "interval_95": [
+                0.16595673301928465,
+                0.18325678944306664
+              ],
+              "maximum": 0.19163178452238788,
+              "mean": 0.17400431795019836,
+              "median": 0.17383161218928653,
+              "minimum": 0.15966180722311885,
+              "n": 5000,
+              "standard_deviation": 0.004396235488641424
+            },
+            "PKIS2": {
+              "interval_90": [
+                0.2775871616213308,
+                0.2972023426804358
+              ],
+              "interval_95": [
+                0.2758509712326191,
+                0.2993062936573546
+              ],
+              "maximum": 0.30974031938484964,
+              "mean": 0.2871437861669882,
+              "median": 0.2870570842463927,
+              "minimum": 0.26469052211681043,
+              "n": 5000,
+              "standard_deviation": 0.005977720024184552
+            }
+          }
+        },
+        "clusters": 46921,
+        "fast_path_maximum_absolute_deviation_from_weighted_target_correlation": 3.9968028886505635e-15,
+        "fixed_target_panel": 20,
+        "heterogeneity_share_of_descriptor_component_variance": {
+          "interval_90": [
+            0.9895372520849406,
+            0.9900027223463186
+          ],
+          "interval_95": [
+            0.9894707290763304,
+            0.9900370918404288
+          ],
+          "maximum": 0.9902150952401544,
+          "mean": 0.9897967071438949,
+          "median": 0.989814001891271,
+          "minimum": 0.9891393612432066,
+          "n": 5000,
+          "standard_deviation": 0.00014333803859026286
+        },
+        "method": "Bayesian bootstrap with iid Exp(1) weights, one weight per cluster",
+        "observed_minus_target_specific": {
+          "DAVIS": {
+            "interval_90": [
+              0.015068124062337313,
+              0.033732236350037345
+            ],
+            "interval_95": [
+              0.013457684350492037,
+              0.035728413529460656
+            ],
+            "maximum": 0.04816928884165028,
+            "mean": 0.02395285456223446,
+            "median": 0.023770595773902337,
+            "minimum": 0.0015168812082561045,
+            "n": 5000,
+            "standard_deviation": 0.005732902499853188
+          },
+          "KiRHub": {
+            "interval_90": [
+              0.024682736509686075,
+              0.04580911265948456
+            ],
+            "interval_95": [
+              0.02291579734677019,
+              0.04793974464958214
+            ],
+            "maximum": 0.060470548097993515,
+            "mean": 0.034368514304959574,
+            "median": 0.03395399493498136,
+            "minimum": 0.011844620276695195,
+            "n": 5000,
+            "standard_deviation": 0.006392389571996866
+          },
+          "PKIS1": {
+            "interval_90": [
+              0.07066689411136912,
+              0.08483521193909735
+            ],
+            "interval_95": [
+              0.0695542521224528,
+              0.08663075664729016
+            ],
+            "maximum": 0.09439654983882029,
+            "mean": 0.07748717133147004,
+            "median": 0.07734257108740444,
+            "minimum": 0.06196643441063386,
+            "n": 5000,
+            "standard_deviation": 0.004386031852372058
+          },
+          "PKIS2": {
+            "interval_90": [
+              0.05932448923355521,
+              0.07910850424490552
+            ],
+            "interval_95": [
+              0.05765364545744808,
+              0.08109291553491059
+            ],
+            "maximum": 0.09103036824172128,
+            "mean": 0.06878081766370554,
+            "median": 0.06852908886526965,
+            "minimum": 0.046344482497692824,
+            "n": 5000,
+            "standard_deviation": 0.0060435388473136925
+          }
+        },
+        "repeats": 5000,
+        "seed": 21060814,
+        "unit": "chemical cluster"
+      },
+      "murcko_scaffold_clusters": {
+        "arms": {
+          "descriptor_component_target_specific": {
+            "DAVIS": {
+              "interval_90": [
+                0.2540424359327639,
+                0.25867049823511673
+              ],
+              "interval_95": [
+                0.25362437507381025,
+                0.25904477598883785
+              ],
+              "maximum": 0.2606070149194979,
+              "mean": 0.2563750776592442,
+              "median": 0.25636867036701716,
+              "minimum": 0.2519973581423017,
+              "n": 5000,
+              "standard_deviation": 0.0013799715671558674
+            },
+            "KiRHub": {
+              "interval_90": [
+                0.2833092329427408,
+                0.2921992590551422
+              ],
+              "interval_95": [
+                0.2823244411202528,
+                0.29268397870767665
+              ],
+              "maximum": 0.2945872534739991,
+              "mean": 0.28821052876519404,
+              "median": 0.2883797626702009,
+              "minimum": 0.27775634548850314,
+              "n": 5000,
+              "standard_deviation": 0.002653944402516866
+            },
+            "PKIS1": {
+              "interval_90": [
+                0.0944079220739458,
+                0.09883793252765424
+              ],
+              "interval_95": [
+                0.09408411954843478,
+                0.09918089289541483
+              ],
+              "maximum": 0.1009705765285815,
+              "mean": 0.09654078547153223,
+              "median": 0.09647854365407411,
+              "minimum": 0.09252537976704413,
+              "n": 5000,
+              "standard_deviation": 0.0013532026931216078
+            },
+            "PKIS2": {
+              "interval_90": [
+                0.21605724608204638,
+                0.22074470644324612
+              ],
+              "interval_95": [
+                0.21554134026164895,
+                0.22113674237950914
+              ],
+              "maximum": 0.22266573939211032,
+              "mean": 0.2184164351542032,
+              "median": 0.21843176877621634,
+              "minimum": 0.21387237727827424,
+              "n": 5000,
+              "standard_deviation": 0.0014166630544641167
+            }
+          },
+          "observed_residual": {
+            "DAVIS": {
+              "interval_90": [
+                0.27425527168707114,
+                0.28599911646480947
+              ],
+              "interval_95": [
+                0.27341363880906455,
+                0.28751639132735857
+              ],
+              "maximum": 0.2973288369265223,
+              "mean": 0.27987634986243975,
+              "median": 0.27966950535151147,
+              "minimum": 0.26859032397748295,
+              "n": 5000,
+              "standard_deviation": 0.003618531597535216
+            },
+            "KiRHub": {
+              "interval_90": [
+                0.3165734580780048,
+                0.3283190524303777
+              ],
+              "interval_95": [
+                0.31549287704426865,
+                0.32992367480656287
+              ],
+              "maximum": 0.3397927628845237,
+              "mean": 0.3222280161135824,
+              "median": 0.32205732481290483,
+              "minimum": 0.3096563398023856,
+              "n": 5000,
+              "standard_deviation": 0.0036739386112815946
+            },
+            "PKIS1": {
+              "interval_90": [
+                0.1688689437380536,
+                0.17867828384224083
+              ],
+              "interval_95": [
+                0.16796664435959013,
+                0.1796581768557519
+              ],
+              "maximum": 0.18631132805836573,
+              "mean": 0.1736943209682146,
+              "median": 0.17364878163996378,
+              "minimum": 0.16407073530247956,
+              "n": 5000,
+              "standard_deviation": 0.0029703926303758
+            },
+            "PKIS2": {
+              "interval_90": [
+                0.2809804616252674,
+                0.29362262549917584
+              ],
+              "interval_95": [
+                0.27991352727368174,
+                0.29505001596486863
+              ],
+              "maximum": 0.3055483385601877,
+              "mean": 0.28700524050090337,
+              "median": 0.2868410117790113,
+              "minimum": 0.2735346218950518,
+              "n": 5000,
+              "standard_deviation": 0.003886686010408953
+            }
+          }
+        },
+        "clusters": 100040,
+        "fast_path_maximum_absolute_deviation_from_weighted_target_correlation": 6.328271240363392e-15,
+        "fixed_target_panel": 20,
+        "heterogeneity_share_of_descriptor_component_variance": {
+          "interval_90": [
+            0.9895768206540962,
+            0.9899396843859124
+          ],
+          "interval_95": [
+            0.989513093367315,
+            0.9899625323339372
+          ],
+          "maximum": 0.9900852806449821,
+          "mean": 0.9897918447352724,
+          "median": 0.9898099819642696,
+          "minimum": 0.9891631902499617,
+          "n": 5000,
+          "standard_deviation": 0.00011244996150516576
+        },
+        "method": "Bayesian bootstrap with iid Exp(1) weights, one weight per cluster",
+        "observed_minus_target_specific": {
+          "DAVIS": {
+            "interval_90": [
+              0.017609468697922737,
+              0.030325552100145602
+            ],
+            "interval_95": [
+              0.0165508010864856,
+              0.032052907136952205
+            ],
+            "maximum": 0.04254790554046539,
+            "mean": 0.0235012722031955,
+            "median": 0.023143373267374256,
+            "minimum": 0.009678646878977404,
+            "n": 5000,
+            "standard_deviation": 0.00397384685796658
+          },
+          "KiRHub": {
+            "interval_90": [
+              0.026854133588771374,
+              0.04302912604373058
+            ],
+            "interval_95": [
+              0.02561189185879177,
+              0.04537198143701319
+            ],
+            "maximum": 0.05883994453848401,
+            "mean": 0.03401748734838839,
+            "median": 0.03349560638069865,
+            "minimum": 0.017324288032472213,
+            "n": 5000,
+            "standard_deviation": 0.005019420442386674
+          },
+          "PKIS1": {
+            "interval_90": [
+              0.07186701483201897,
+              0.08268533462801862
+            ],
+            "interval_95": [
+              0.07101322241030154,
+              0.08388523665183907
+            ],
+            "maximum": 0.09039177350006775,
+            "mean": 0.07715353549668237,
+            "median": 0.07701889977999102,
+            "minimum": 0.06480249489342899,
+            "n": 5000,
+            "standard_deviation": 0.003298046647996631
+          },
+          "PKIS2": {
+            "interval_90": [
+              0.06199066601932399,
+              0.07629947469021583
+            ],
+            "interval_95": [
+              0.060918045550175555,
+              0.0778265034313535
+            ],
+            "maximum": 0.0892230576441104,
+            "mean": 0.06858880534670012,
+            "median": 0.06821504021834694,
+            "minimum": 0.05478792968459545,
+            "n": 5000,
+            "standard_deviation": 0.004397779911109797
+          }
+        },
+        "repeats": 5000,
+        "seed": 20960814,
+        "unit": "chemical cluster"
+      }
+    },
+    "variance_share_note": "the bootstrapped heterogeneity share reweights the per-ligand shared and heterogeneity sums of squares; the cross term is exactly zero only at the fitted (unit) weights, so the resampled share is defined as H(w) / (S(w) + H(w))"
+  },
+  "claim_boundary": "This control does NOT show that the residual target geometry is target-blind; it shows the opposite, and it does not rescue that wording. The shared-coefficient arm is degenerate BY CONSTRUCTION, not empirically null: one slope vector makes all 20 predicted target columns identical, so its 190 target-pair correlations are all exactly +1 and its Spearman agreement with experiment is undefined, not zero. Reporting that number as evidence would be circular. This analysis also does NOT test whether some genuinely target-blind model built from protein-side features (sequence, pocket geometry, contact area) could reproduce the geometry: no such model is fitted here, so nothing is concluded about it. The slope-permutation null with one permutation shared across folds is algebraically identical to the target-label QAP already reported and is therefore a restatement of that test rather than independent evidence; only the fold-independent variant adds anything, and it too keeps the fitted slope marginals. The variance split is a decomposition of a fitted surface, not a causal attribution, and the rank ladder is descriptive: rank k is a property of the fitted coefficient array, not a count of physical mechanisms. All numbers are post hoc on one fixed 20-kinase panel and one de-leaked DOCKSTRING ligand support; QAP probabilities and bootstrap intervals are conditional on that panel and that support. Butina clustering is infeasible at 259,579 ligands, so the conservative interval unions Murcko-scaffold and generic-Murcko-framework bootstraps rather than Murcko and Butina.",
+  "coefficient_rank_ladder": {
+    "definition": "the per-target coefficient array is replaced by its shared mean plus the rank-k truncation of its between-target deviation, fold-locally; k=0 is the target-blind arm and effective k=7 reconstructs the full published arm; the nominal eighth intercept direction is reported as numerical noise",
+    "diagnostics": {
+      "effective_maximum_rank": 7,
+      "effective_rank_relative_tolerance": 1e-10,
+      "interpretation": "the apparent eighth direction is a fold-local intercept residual at about 1e-12; rank 7 reconstructs the fitted target-specific coefficient surface to the reported numerical tolerance",
+      "nominal_maximum_rank_from_matrix_shape": 8,
+      "per_fold_singular_spectra": [
+        {
+          "absolute_threshold": 3.099874496737234e-10,
+          "effective_rank": 7,
+          "fold": 1,
+          "largest_discarded_singular_value": 7.501411674238082e-13,
+          "relative_tolerance": 1e-10,
+          "singular_values": [3.099874496737234, 0.9290307399130635, 0.6307874965673523, 0.45043525889234687, 0.42931298387009803, 0.16726393752610094, 0.1286389567142365, 7.501411674238082e-13]
+        },
+        {
+          "absolute_threshold": 3.198913728581807e-10,
+          "effective_rank": 7,
+          "fold": 2,
+          "largest_discarded_singular_value": 9.194769556384014e-13,
+          "relative_tolerance": 1e-10,
+          "singular_values": [3.198913728581807, 0.9130460767007665, 0.6625537017833515, 0.46585566787241667, 0.4158685346701459, 0.16993900302981926, 0.13085269759155016, 9.194769556384014e-13]
+        },
+        {
+          "absolute_threshold": 3.0858669566494385e-10,
+          "effective_rank": 7,
+          "fold": 3,
+          "largest_discarded_singular_value": 7.337119184703803e-13,
+          "relative_tolerance": 1e-10,
+          "singular_values": [3.0858669566494386, 0.9256735669343111, 0.6447598478287908, 0.4543666892667273, 0.4144445839540465, 0.1732422698404748, 0.12882898781867236, 7.337119184703803e-13]
+        },
+        {
+          "absolute_threshold": 3.163128888841688e-10,
+          "effective_rank": 7,
+          "fold": 4,
+          "largest_discarded_singular_value": 8.755252058426197e-13,
+          "relative_tolerance": 1e-10,
+          "singular_values": [3.1631288888416877, 0.9153841059825374, 0.6323573213280723, 0.44863662753641675, 0.42468956542388575, 0.17342991420695703, 0.12290312074519018, 8.755252058426197e-13]
+        },
+        {
+          "absolute_threshold": 3.107450843202605e-10,
+          "effective_rank": 7,
+          "fold": 5,
+          "largest_discarded_singular_value": 9.08601392201064e-13,
+          "relative_tolerance": 1e-10,
+          "singular_values": [3.107450843202605, 0.9051632198700813, 0.6863565188552747, 0.465992661202393, 0.42421272404923577, 0.17428293753885216, 0.12678345182609052, 9.08601392201064e-13]
+        }
+      ]
+    },
+    "rungs": [
+      {
+        "DAVIS_spearman": null,
+        "KiRHub_spearman": null,
+        "PKIS1_spearman": null,
+        "PKIS2_spearman": null,
+        "coefficient_deviation_rank": 0,
+        "degenerate": true,
+        "distinct_edge_values_at_1e-12": 1,
+        "maximum_absolute_coefficient_reconstruction_error": 1.1784036486784537,
+        "variance_share_of_full_descriptor_component": 0.010212023450288604
+      },
+      {
+        "DAVIS_spearman": 0.02225546414028089,
+        "KiRHub_spearman": 0.04563328040870062,
+        "PKIS1_spearman": -0.006437559868257028,
+        "PKIS2_spearman": 0.037039369803216565,
+        "coefficient_deviation_rank": 1,
+        "degenerate": false,
+        "distinct_edge_values_at_1e-12": 190,
+        "maximum_absolute_coefficient_reconstruction_error": 0.3924122427720806,
+        "variance_share_of_full_descriptor_component": 0.39103886132205024
+      },
+      {
+        "DAVIS_spearman": 0.04089018357411855,
+        "KiRHub_spearman": 0.06505705800277309,
+        "PKIS1_spearman": -0.04809143277040768,
+        "PKIS2_spearman": 0.010752010917345711,
+        "coefficient_deviation_rank": 2,
+        "degenerate": false,
+        "distinct_edge_values_at_1e-12": 190,
+        "maximum_absolute_coefficient_reconstruction_error": 0.258310718948134,
+        "variance_share_of_full_descriptor_component": 0.48919921833602076
+      },
+      {
+        "DAVIS_spearman": 0.1356226517427951,
+        "KiRHub_spearman": 0.16594802888547722,
+        "PKIS1_spearman": 0.02196853390019552,
+        "PKIS2_spearman": 0.09803653986624505,
+        "coefficient_deviation_rank": 3,
+        "degenerate": false,
+        "distinct_edge_values_at_1e-12": 190,
+        "maximum_absolute_coefficient_reconstruction_error": 0.17443772631816268,
+        "variance_share_of_full_descriptor_component": 0.7188483375951026
+      },
+      {
+        "DAVIS_spearman": 0.19202718838982272,
+        "KiRHub_spearman": 0.1875727713699606,
+        "PKIS1_spearman": 0.06558892869171182,
+        "PKIS2_spearman": 0.15121661046158147,
+        "coefficient_deviation_rank": 4,
+        "degenerate": false,
+        "distinct_edge_values_at_1e-12": 190,
+        "maximum_absolute_coefficient_reconstruction_error": 0.14429360556940965,
+        "variance_share_of_full_descriptor_component": 0.7680248677296146
+      },
+      {
+        "DAVIS_spearman": 0.25772896464547057,
+        "KiRHub_spearman": 0.3069549965664598,
+        "PKIS1_spearman": 0.10536550801086478,
+        "PKIS2_spearman": 0.22105438115358209,
+        "coefficient_deviation_rank": 5,
+        "degenerate": false,
+        "distinct_edge_values_at_1e-12": 190,
+        "maximum_absolute_coefficient_reconstruction_error": 0.07380836855506301,
+        "variance_share_of_full_descriptor_component": 0.9732485305444442
+      },
+      {
+        "DAVIS_spearman": 0.24468238659475913,
+        "KiRHub_spearman": 0.29215884388108143,
+        "PKIS1_spearman": 0.08845411959217415,
+        "PKIS2_spearman": 0.20292528878916322,
+        "coefficient_deviation_rank": 6,
+        "degenerate": false,
+        "distinct_edge_values_at_1e-12": 190,
+        "maximum_absolute_coefficient_reconstruction_error": 0.046118467781119186,
+        "variance_share_of_full_descriptor_component": 0.9900561225297528
+      },
+      {
+        "DAVIS_spearman": 0.25635729813189184,
+        "KiRHub_spearman": 0.2877674115480674,
+        "PKIS1_spearman": 0.0967890931517275,
+        "PKIS2_spearman": 0.21846676026890974,
+        "coefficient_deviation_rank": 7,
+        "degenerate": false,
+        "distinct_edge_values_at_1e-12": 190,
+        "maximum_absolute_coefficient_reconstruction_error": 5.186999606593056e-13,
+        "variance_share_of_full_descriptor_component": 1.000000000000001
+      }
+    ]
+  },
+  "coefficient_rank_7_svd_comparator": {
+    "role": "predictive coefficient-space comparator built only from the seven ligand descriptors; this is distinct from the outcome-derived rank-7 SVD transported-subspace oracle reconstruction reported by descriptor_rank_matched_controls",
+    "rung": {
+      "DAVIS_spearman": 0.25635729813189184,
+      "KiRHub_spearman": 0.2877674115480674,
+      "PKIS1_spearman": 0.0967890931517275,
+      "PKIS2_spearman": 0.21846676026890974,
+      "coefficient_deviation_rank": 7,
+      "degenerate": false,
+      "distinct_edge_values_at_1e-12": 190,
+      "maximum_absolute_coefficient_reconstruction_error": 5.186999606593056e-13,
+      "variance_share_of_full_descriptor_component": 1.000000000000001
+    }
+  },
+  "coefficients_per_target": [
+    "intercept",
+    "heavy_atoms",
+    "molecular_weight",
+    "labute_asa",
+    "tpsa",
+    "clogp",
+    "rotatable_bonds",
+    "ring_count"
+  ],
+  "configuration": {
+    "bootstrap_repeats": 5000,
+    "experimental_geometry_source": "results/released_pair_geometry_ledger/target_pair_geometry.csv",
+    "fixed_endpoint": "two-way-centered experimental target correlation",
+    "fold_summary": [
+      {
+        "fold": 1,
+        "maximum_training_residual_target_sd": 0.8828279430645048,
+        "minimum_training_residual_target_sd": 0.37531327866076386,
+        "test_groups": 19969,
+        "test_ligands": 51916,
+        "train_groups": 80071,
+        "train_ligands": 207663
+      },
+      {
+        "fold": 2,
+        "maximum_training_residual_target_sd": 0.8812570511525389,
+        "minimum_training_residual_target_sd": 0.37474781794552786,
+        "test_groups": 20018,
+        "test_ligands": 51916,
+        "train_groups": 80022,
+        "train_ligands": 207663
+      },
+      {
+        "fold": 3,
+        "maximum_training_residual_target_sd": 0.880585393565903,
+        "minimum_training_residual_target_sd": 0.3737912046056869,
+        "test_groups": 20018,
+        "test_ligands": 51916,
+        "train_groups": 80022,
+        "train_ligands": 207663
+      },
+      {
+        "fold": 4,
+        "maximum_training_residual_target_sd": 0.8804218598833192,
+        "minimum_training_residual_target_sd": 0.3733209394440717,
+        "test_groups": 20018,
+        "test_ligands": 51916,
+        "train_groups": 80022,
+        "train_ligands": 207663
+      },
+      {
+        "fold": 5,
+        "maximum_training_residual_target_sd": 0.8780229329869804,
+        "minimum_training_residual_target_sd": 0.37450676695236096,
+        "test_groups": 20017,
+        "test_ligands": 51915,
+        "train_groups": 80023,
+        "train_ligands": 207664
+      }
+    ],
+    "folds": 5,
+    "group_definition": "RDKit Bemis-Murcko scaffolds; every acyclic molecule is a singleton",
+    "qap_permutations": 49999,
+    "slope_permutations": 5000
+  },
+  "descriptor_component_variance_split": {
+    "between_target_coefficient_heterogeneity_sum_of_squares": 551758.4765662224,
+    "cross_term_relative_to_total": 1.109293113041001e-16,
+    "cross_term_sum_of_squares": 6.183767560508091e-11,
+    "definition": "the target-specific descriptor component splits as d(i).b + d(i).(B_j - b) with b the shared (pooled) coefficient vector; because b is the mean of the per-target vectors the cross term is exactly zero",
+    "heterogeneity_share_of_descriptor_component_variance": 0.9897879765497115,
+    "per_fold": [
+      {
+        "fold": 1,
+        "heterogeneity_share": 0.9891529202624181,
+        "heterogeneity_sum_of_squares": 126684.26604564462,
+        "shared_sum_of_squares": 1389.223351764041
+      },
+      {
+        "fold": 2,
+        "heterogeneity_share": 0.9899152138123155,
+        "heterogeneity_sum_of_squares": 105689.20222653897,
+        "shared_sum_of_squares": 1076.711411169081
+      },
+      {
+        "fold": 3,
+        "heterogeneity_share": 0.989978947628286,
+        "heterogeneity_sum_of_squares": 106734.13966367254,
+        "shared_sum_of_squares": 1080.4153017414435
+      },
+      {
+        "fold": 4,
+        "heterogeneity_share": 0.9899199824182068,
+        "heterogeneity_sum_of_squares": 104696.56758254388,
+        "shared_sum_of_squares": 1066.0894423076718
+      },
+      {
+        "fold": 5,
+        "heterogeneity_share": 0.9900924535613531,
+        "heterogeneity_sum_of_squares": 107954.30104782249,
+        "shared_sum_of_squares": 1080.2650268020498
+      }
+    ],
+    "shared_coefficient_sum_of_squares": 5692.704533784288,
+    "shared_share_of_descriptor_component_variance": 0.010212023450288498,
+    "total_sum_of_squares": 557451.1811000066
+  },
+  "descriptors": [
+    "heavy_atoms",
+    "molecular_weight",
+    "labute_asa",
+    "tpsa",
+    "clogp",
+    "rotatable_bonds",
+    "ring_count"
+  ],
+  "headline": {
+    "conclusion": "the descriptor component's target-pair geometry is carried entirely by the fitted per-target slope vectors; the surface is not target-blind",
+    "mean_out_of_fold_target_r2_target_blind": 0.00108956766243829,
+    "mean_out_of_fold_target_r2_target_specific": 0.10683480232126966,
+    "share_of_descriptor_component_variance_needing_per_target_slopes": 0.9897879765497115,
+    "target_blind_distinct_target_pair_values": 1,
+    "target_blind_geometry_is_degenerate_by_construction": true,
+    "target_blind_spearman_with_every_panel": null,
+    "why": "with one shared slope vector b the prediction for ligand i at target j is d(i).b for every j, so all 20 predicted target columns are the same vector of ligand scores, all 190 target-pair correlations equal +1 exactly, and Spearman against any experimental panel is undefined rather than zero"
+  },
+  "out_of_fold_predictive_r2": {
+    "descriptor_component_target_blind": {
+      "maximum_out_of_fold_target_r2": 0.03231279284927435,
+      "mean_out_of_fold_target_r2": 0.00108956766243829,
+      "median_out_of_fold_target_r2": 0.0007952687052301122,
+      "minimum_out_of_fold_target_r2": -0.024486713147562567,
+      "targets_with_positive_r2": 10
+    },
+    "descriptor_component_target_specific": {
+      "maximum_out_of_fold_target_r2": 0.4051405962225023,
+      "mean_out_of_fold_target_r2": 0.10683480232126966,
+      "median_out_of_fold_target_r2": 0.06809323865162148,
+      "minimum_out_of_fold_target_r2": 0.023455939667515247,
+      "targets_with_positive_r2": 20
+    },
+    "interpretation": "R^2 is against the same out-of-fold residual surface, so the two arms differ only in whether the seven descriptors are allowed a separate slope vector per target; a negative value means the arm predicts worse than that target's own out-of-fold mean"
+  },
+  "panel_agreement": {
+    "descriptor_component_target_blind": {
+      "DAVIS": {
+        "spearman": null,
+        "target_label_qap": null
+      },
+      "KiRHub": {
+        "spearman": null,
+        "target_label_qap": null
+      },
+      "PKIS1": {
+        "spearman": null,
+        "target_label_qap": null
+      },
+      "PKIS2": {
+        "spearman": null,
+        "target_label_qap": null
+      }
+    },
+    "descriptor_component_target_specific": {
+      "DAVIS": {
+        "spearman": 0.25635729813189184,
+        "target_label_qap": {
+          "null_interval_95": [
+            -0.10041779842275847,
+            0.1841392311494261
+          ],
+          "one_sided_p_positive": 0.00812,
+          "seed": 20270814,
+          "spearman": 0.2563572981318917
+        }
+      },
+      "KiRHub": {
+        "spearman": 0.2877674115480674,
+        "target_label_qap": {
+          "null_interval_95": [
+            -0.09310798812038823,
+            0.1956233515726485
+          ],
+          "one_sided_p_positive": 0.00738,
+          "seed": 23270814,
+          "spearman": 0.2877674115480674
+        }
+      },
+      "PKIS1": {
+        "spearman": 0.0967890931517275,
+        "target_label_qap": {
+          "null_interval_95": [
+            -0.0964452142572837,
+            0.1878566398544352
+          ],
+          "one_sided_p_positive": 0.09466,
+          "seed": 22270814,
+          "spearman": 0.09678909315172748
+        }
+      },
+      "PKIS2": {
+        "spearman": 0.21846676026890974,
+        "target_label_qap": {
+          "null_interval_95": [
+            -0.09861871082593045,
+            0.19081709509375527
+          ],
+          "one_sided_p_positive": 0.01712,
+          "seed": 21270814,
+          "spearman": 0.21846676026890963
+        }
+      }
+    },
+    "observed_residual": {
+      "DAVIS": {
+        "spearman": 0.27979984866179414,
+        "target_label_qap": {
+          "null_interval_95": [
+            -0.10576791017683826,
+            0.1794664672151573
+          ],
+          "one_sided_p_positive": 0.00546,
+          "seed": 20260814,
+          "spearman": 0.2797998486617941
+        }
+      },
+      "KiRHub": {
+        "spearman": 0.3215884388108141,
+        "target_label_qap": {
+          "null_interval_95": [
+            -0.09861599898524671,
+            0.18083192273878348
+          ],
+          "one_sided_p_positive": 0.00248,
+          "seed": 23260814,
+          "spearman": 0.3215884388108141
+        }
+      },
+      "PKIS1": {
+        "spearman": 0.1736426581287425,
+        "target_label_qap": {
+          "null_interval_95": [
+            -0.10134848464966954,
+            0.1810332987792338
+          ],
+          "one_sided_p_positive": 0.02794,
+          "seed": 22260814,
+          "spearman": 0.17364265812874244
+        }
+      },
+      "PKIS2": {
+        "spearman": 0.28717080659764616,
+        "target_label_qap": {
+          "null_interval_95": [
+            -0.10337921592812747,
+            0.177890187948055
+          ],
+          "one_sided_p_positive": 0.00442,
+          "seed": 21260814,
+          "spearman": 0.28717080659764593
+        }
+      }
+    }
+  },
+  "question": "The descriptor model fits a separate slope vector per target, so target identity can enter the 'descriptor' surface through those slopes. How much of the descriptor component's variance, and of its agreement with experimental kinase co-response, survives when the coefficients are shared across the whole panel and the model is therefore genuinely target-blind?",
+  "seeds": {
+    "base": 20260814,
+    "fold_assignment": "GroupKFold is deterministic and takes no seed",
+    "generic_framework_cluster_bootstrap": 21060814,
+    "murcko_cluster_bootstrap": 20960814,
+    "slope_permutation": 20760814,
+    "target_label_qap": "base + 1,000,000*panel_index + 10,000*arm_index"
+  },
+  "slope_permutation_null": {
+    "panels": {
+      "fold_independent_permutation": {
+        "DAVIS": {
+          "null_interval_95": [
+            -0.12098199250307266,
+            0.16093186718978944
+          ],
+          "null_mean": 0.0009132653623587764,
+          "null_sd": 0.07232860238638703,
+          "observed_spearman": 0.25635729813189184,
+          "one_sided_p_positive": 0.0015996800639872025
+        },
+        "KiRHub": {
+          "null_interval_95": [
+            -0.11854514121254271,
+            0.16662782610977708
+          ],
+          "null_mean": -3.229714775595207e-05,
+          "null_sd": 0.0740191626152027,
+          "observed_spearman": 0.2877674115480674,
+          "one_sided_p_positive": 0.001999600079984003
+        },
+        "PKIS1": {
+          "null_interval_95": [
+            -0.11460422434795536,
+            0.1666095430548447
+          ],
+          "null_mean": 0.0010015520476584132,
+          "null_sd": 0.07224936279381226,
+          "observed_spearman": 0.0967890931517275,
+          "one_sided_p_positive": 0.10757848430313938
+        },
+        "PKIS2": {
+          "null_interval_95": [
+            -0.11940894994904366,
+            0.1685978034090462
+          ],
+          "null_mean": 0.0012652510858297572,
+          "null_sd": 0.07492754636353206,
+          "observed_spearman": 0.21846676026890974,
+          "one_sided_p_positive": 0.007598480303939212
+        }
+      },
+      "shared_permutation": {
+        "DAVIS": {
+          "null_interval_95": [
+            -0.10007750615631572,
+            0.18143841278589118
+          ],
+          "null_mean": -0.0001400898406574898,
+          "null_sd": 0.07246227190323735,
+          "observed_spearman": 0.25635729813189184,
+          "one_sided_p_positive": 0.00639872025594881
+        },
+        "KiRHub": {
+          "null_interval_95": [
+            -0.09447790505933244,
+            0.1993474524006349
+          ],
+          "null_mean": 0.0001426421201345427,
+          "null_sd": 0.07368330094604542,
+          "observed_spearman": 0.2877674115480674,
+          "one_sided_p_positive": 0.004999000199960008
+        },
+        "PKIS1": {
+          "null_interval_95": [
+            -0.09727608725128702,
+            0.1915869079330087
+          ],
+          "null_mean": 0.00012056353798982613,
+          "null_sd": 0.07292384668496586,
+          "observed_spearman": 0.0967890931517275,
+          "one_sided_p_positive": 0.09398120375924815
+        },
+        "PKIS2": {
+          "null_interval_95": [
+            -0.09868055828926584,
+            0.1879425439689972
+          ],
+          "null_mean": -0.00022610942714552468,
+          "null_sd": 0.07322203145802629,
+          "observed_spearman": 0.21846676026890974,
+          "one_sided_p_positive": 0.015396920615876825
+        }
+      }
+    },
+    "permutations": 5000,
+    "seed": 20760814,
+    "shared_permutation_is_a_target_relabelling": {
+      "interpretation": "identical to machine precision, so the shared-permutation null is the target-label QAP already reported for this arm and is not independent evidence",
+      "maximum_absolute_geometry_difference_from_direct_relabelling": 1.0436096431476471e-14
+    },
+    "unit": "the fitted 8-vector of regression coefficients of one target"
+  },
+  "status": "exploratory_post_hoc_reviewer_requested_control",
+  "support": {
+    "chemical_groups_murcko": 100040,
+    "dockstring_complete_rows_before_exclusion": 260060,
+    "dockstring_reference_rows": 259579,
+    "dockstring_rows_excluded": 481,
+    "excluded_connectivity_blocks": 1050,
+    "ligand_by_target_cells": 5191580,
+    "ligands": 259579,
+    "positive_score_handling": "clip to zero before centering, as in the primary analysis",
+    "target_columns": [
+      "PPARD",
+      "ABL1",
+      "ADAM17",
+      "ADRB1",
+      "ADRB2",
+      "AKT2",
+      "MAOB",
+      "CASP3",
+      "DHFR",
+      "ESR2",
+      "PTK2",
+      "FGFR1",
+      "HMGCR",
+      "HSP90AA1",
+      "KIT",
+      "MAPKAPK2",
+      "MAP2K1",
+      "NOS1",
+      "PARP1",
+      "PDE5A",
+      "PGR",
+      "PTPN1",
+      "ROCK1",
+      "AKT1",
+      "AR",
+      "CDK2",
+      "CSF1R",
+      "ESR1",
+      "NR3C1",
+      "IGF1R",
+      "JAK2",
+      "LCK",
+      "MET",
+      "MMP13",
+      "PTGS2",
+      "PPARA",
+      "PPARG",
+      "REN",
+      "ADORA2A",
+      "ACHE",
+      "BACE1",
+      "CA2",
+      "CYP2C9",
+      "CYP3A4",
+      "HSD11B1",
+      "DPP4",
+      "DRD2",
+      "DRD3",
+      "EGFR",
+      "F10",
+      "GBA",
+      "MAPK1",
+      "MAPK14",
+      "PLK1",
+      "SRC",
+      "THRB",
+      "F2",
+      "KDR"
+    ],
+    "target_pairs": 190,
+    "targets": 20
+  },
+  "target_blind_degeneracy": {
+    "distinct_edge_values_at_1e-12": 1,
+    "is_degenerate": true,
+    "maximum_absolute_deviation_from_plus_one": 0.0,
+    "maximum_edge": 1.0,
+    "minimum_edge": 1.0,
+    "target_pairs": 190
+  },
+  "target_pairs": 190,
+  "targets": [
+    "ABL1",
+    "AKT1",
+    "AKT2",
+    "CDK2",
+    "CSF1R",
+    "EGFR",
+    "FGFR1",
+    "IGF1R",
+    "JAK2",
+    "KDR",
+    "KIT",
+    "LCK",
+    "MAP2K1",
+    "MAPK1",
+    "MAPK14",
+    "MAPKAPK2",
+    "MET",
+    "PLK1",
+    "ROCK1",
+    "SRC"
+  ],
+  "verification": {
+    "observed_arm_versus_released_ledger_spearman": 1.0,
+    "pooled_equals_mean_of_per_target_coefficients_max_abs_difference": 7.112366251504909e-16,
+    "published_descriptor_component_geometry_cross_check": {
+      "artifact": "results/descriptor_component_geometry/summary.json",
+      "available": true,
+      "maximum_absolute_spearman_deviation": 2.220446049250313e-16,
+      "per_panel_absolute_deviation": {
+        "DAVIS": {
+          "descriptor_component": 1.6653345369377348e-16,
+          "observed_residual": 5.551115123125783e-17
+        },
+        "KiRHub": {
+          "descriptor_component": 0.0,
+          "observed_residual": 0.0
+        },
+        "PKIS1": {
+          "descriptor_component": 1.3877787807814457e-17,
+          "observed_residual": 5.551115123125783e-17
+        },
+        "PKIS2": {
+          "descriptor_component": 1.1102230246251565e-16,
+          "observed_residual": 2.220446049250313e-16
+        }
+      }
+    },
+    "reference_arm_reproduces_published_estimator": {
+      "maximum_absolute_difference_descriptor_component": 0.0,
+      "maximum_absolute_difference_observed_surface": 0.0,
+      "published_estimator": "residual_mechanism_analysis.grouped_descriptor_decomposition"
+    },
+    "released_ledger": "results/released_pair_geometry_ledger/target_pair_geometry.csv"
+  }
+}

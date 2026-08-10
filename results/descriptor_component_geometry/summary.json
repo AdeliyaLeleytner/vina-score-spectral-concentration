@@ -1,0 +1,235 @@
+{
+  "analysis": "descriptor-mediated versus descriptor-independent target-pair agreement on the fixed common-20 kinase panel",
+  "status": "exploratory_post_hoc_science_only",
+  "question": "Is the agreement between centred Vina target-pair geometry and experimental kinase co-response carried by the part of the residual surface that seven ordinary ligand descriptors can predict out of fold, or by the part they cannot?",
+  "targets": [
+    "ABL1",
+    "AKT1",
+    "AKT2",
+    "CDK2",
+    "CSF1R",
+    "EGFR",
+    "FGFR1",
+    "IGF1R",
+    "JAK2",
+    "KDR",
+    "KIT",
+    "LCK",
+    "MAP2K1",
+    "MAPK1",
+    "MAPK14",
+    "MAPKAPK2",
+    "MET",
+    "PLK1",
+    "ROCK1",
+    "SRC"
+  ],
+  "target_pairs": 190,
+  "surfaces": {
+    "observed_residual": "out-of-fold within-ligand residual surface",
+    "descriptor_component": "out-of-fold prediction of that surface from seven ligand descriptors",
+    "descriptor_removed": "the same surface after subtracting the out-of-fold descriptor prediction"
+  },
+  "descriptors": [
+    "heavy_atoms",
+    "molecular_weight",
+    "labute_asa",
+    "tpsa",
+    "clogp",
+    "rotatable_bonds",
+    "ring_count"
+  ],
+  "decomposition_metrics": {
+    "folds": 5,
+    "chemical_groups": 100040,
+    "strict_fold_local_target_offsets": true,
+    "strict_fold_local_residual_target_scales": true,
+    "strict_fold_local_descriptor_scaling": true,
+    "strict_fold_local_regression_coefficients": true,
+    "mean_out_of_fold_target_r2": 0.10683480232129053,
+    "median_out_of_fold_target_r2": 0.06809323865167355,
+    "minimum_out_of_fold_target_r2": 0.023455939667522796,
+    "maximum_out_of_fold_target_r2": 0.4051405962224739,
+    "out_of_fold_residual_pc1_r2": 0.22913865296975233,
+    "out_of_fold_pr_before_descriptor_removal": 11.614652365481609,
+    "out_of_fold_pr_after_descriptor_removal": 12.87574478731392,
+    "out_of_fold_pr_increase": 1.261092421832311,
+    "out_of_fold_pr_ratio": 1.1085777156430647,
+    "out_of_fold_mean_squared_target_correlation_before_descriptor_removal": 0.037998045239727975,
+    "out_of_fold_mean_squared_target_correlation_after_descriptor_removal": 0.029121484377131007,
+    "out_of_fold_absolute_mean_squared_target_correlation_reduction": 0.008876560862596968,
+    "out_of_fold_relative_mean_squared_target_correlation_reduction": 0.23360572383645373,
+    "descriptor_removal_interpretation": "Removing the group-held-out, fold-locally predicted descriptor component reduces mean squared target correlation; this is a predictive decomposition of score structure, not a causal attribution",
+    "pc1_definition_scope": "PC1 loadings are descriptive loadings of the pooled out-of-fold surface; every ligand-level descriptor prediction is group-held-out"
+  },
+  "released_geometry_reconstruction_spearman": 1.0,
+  "experimental_panel_results": {
+    "DAVIS": {
+      "observed_residual": {
+        "spearman": 0.2797998486617941,
+        "target_label_qap_p_positive": 0.00492,
+        "seed": 20260812
+      },
+      "descriptor_component": {
+        "spearman": 0.2563572981318917,
+        "target_label_qap_p_positive": 0.0086,
+        "seed": 20270812
+      },
+      "descriptor_removed": {
+        "spearman": 0.22092666220525134,
+        "target_label_qap_p_positive": 0.01424,
+        "seed": 20280812
+      },
+      "descriptor_mediated_fraction_of_observed_agreement": 0.9162167147622785,
+      "descriptor_removed_fraction_of_observed_agreement": 0.789588211937508
+    },
+    "PKIS2": {
+      "observed_residual": {
+        "spearman": 0.28717080659764593,
+        "target_label_qap_p_positive": 0.00492,
+        "seed": 21260812
+      },
+      "descriptor_component": {
+        "spearman": 0.21846676026890963,
+        "target_label_qap_p_positive": 0.01666,
+        "seed": 21270812
+      },
+      "descriptor_removed": {
+        "spearman": 0.22406364952520919,
+        "target_label_qap_p_positive": 0.0138,
+        "seed": 21280812
+      },
+      "descriptor_mediated_fraction_of_observed_agreement": 0.760755464168761,
+      "descriptor_removed_fraction_of_observed_agreement": 0.7802452212321986
+    },
+    "PKIS1": {
+      "observed_residual": {
+        "spearman": 0.17364265812874244,
+        "target_label_qap_p_positive": 0.02766,
+        "seed": 22260812
+      },
+      "descriptor_component": {
+        "spearman": 0.09678909315172748,
+        "target_label_qap_p_positive": 0.09548,
+        "seed": 22270812
+      },
+      "descriptor_removed": {
+        "spearman": 0.13461139760395754,
+        "target_label_qap_p_positive": 0.0516,
+        "seed": 22280812
+      },
+      "descriptor_mediated_fraction_of_observed_agreement": 0.5574038902351169,
+      "descriptor_removed_fraction_of_observed_agreement": 0.775220784193212
+    },
+    "KiRHub": {
+      "observed_residual": {
+        "spearman": 0.3215884388108141,
+        "target_label_qap_p_positive": 0.0025,
+        "seed": 23260812
+      },
+      "descriptor_component": {
+        "spearman": 0.2877674115480674,
+        "target_label_qap_p_positive": 0.00716,
+        "seed": 23270812
+      },
+      "descriptor_removed": {
+        "spearman": 0.24617302418349538,
+        "target_label_qap_p_positive": 0.0099,
+        "seed": 23280812
+      },
+      "descriptor_mediated_fraction_of_observed_agreement": 0.8948313335273749,
+      "descriptor_removed_fraction_of_observed_agreement": 0.7654909022656609
+    }
+  },
+  "range_across_panels": {
+    "observed_residual": [
+      0.17364265812874244,
+      0.3215884388108141
+    ],
+    "descriptor_component": [
+      0.09678909315172748,
+      0.2877674115480674
+    ],
+    "descriptor_removed": [
+      0.13461139760395754,
+      0.24617302418349538
+    ]
+  },
+  "configuration": {
+    "folds": 5,
+    "group_definition": "RDKit Bemis-Murcko scaffolds; every acyclic molecule is a singleton",
+    "qap_permutations": 49999,
+    "seed": 20260812,
+    "permutation_unit": "complete target labels",
+    "fixed_endpoint": "two-way-centered experimental target correlation",
+    "experimental_geometry_source": "results/fixed20_centering_panel_sensitivity/target_pair_geometry.csv"
+  },
+  "claim_boundary": "This is a post hoc predictive decomposition on one fixed 20-kinase panel and one ligand support. A descriptor component that agrees with experiment does not show that experimental co-response is caused by ligand size; it shows that the docking geometry's agreement with experiment is reproduced by a surface built only from ligand physicochemistry and target-heterogeneous responses to it. QAP probabilities are conditional on this fixed panel.",
+  "support": {
+    "dockstring_complete_rows_before_exclusion": 260060,
+    "dockstring_reference_rows": 259579,
+    "dockstring_rows_excluded": 481,
+    "excluded_connectivity_blocks": 1050,
+    "positive_score_handling": "clip to zero before centering, as in the primary analysis",
+    "target_columns": [
+      "PPARD",
+      "ABL1",
+      "ADAM17",
+      "ADRB1",
+      "ADRB2",
+      "AKT2",
+      "MAOB",
+      "CASP3",
+      "DHFR",
+      "ESR2",
+      "PTK2",
+      "FGFR1",
+      "HMGCR",
+      "HSP90AA1",
+      "KIT",
+      "MAPKAPK2",
+      "MAP2K1",
+      "NOS1",
+      "PARP1",
+      "PDE5A",
+      "PGR",
+      "PTPN1",
+      "ROCK1",
+      "AKT1",
+      "AR",
+      "CDK2",
+      "CSF1R",
+      "ESR1",
+      "NR3C1",
+      "IGF1R",
+      "JAK2",
+      "LCK",
+      "MET",
+      "MMP13",
+      "PTGS2",
+      "PPARA",
+      "PPARG",
+      "REN",
+      "ADORA2A",
+      "ACHE",
+      "BACE1",
+      "CA2",
+      "CYP2C9",
+      "CYP3A4",
+      "HSD11B1",
+      "DPP4",
+      "DRD2",
+      "DRD3",
+      "EGFR",
+      "F10",
+      "GBA",
+      "MAPK1",
+      "MAPK14",
+      "PLK1",
+      "SRC",
+      "THRB",
+      "F2",
+      "KDR"
+    ]
+  }
+}

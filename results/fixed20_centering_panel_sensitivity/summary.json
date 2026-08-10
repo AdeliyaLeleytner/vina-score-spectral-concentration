@@ -1,0 +1,216 @@
+{
+  "analysis": "strict fixed-common-20 row-centering-panel sensitivity",
+  "status": "exploratory_post_hoc_sensitivity",
+  "question": "With the target identities and centered experimental endpoint fixed, does docking target-pair geometry depend on estimating each ligand's row mean from the 20 validation kinases or all released score columns?",
+  "targets": [
+    "ABL1",
+    "AKT1",
+    "AKT2",
+    "CDK2",
+    "CSF1R",
+    "EGFR",
+    "FGFR1",
+    "IGF1R",
+    "JAK2",
+    "KDR",
+    "KIT",
+    "LCK",
+    "MAP2K1",
+    "MAPK1",
+    "MAPK14",
+    "MAPKAPK2",
+    "MET",
+    "PLK1",
+    "ROCK1",
+    "SRC"
+  ],
+  "target_pairs": 190,
+  "centering_contracts": {
+    "local_20": "extract the same ordered 20 targets for every panel, then remove each reference ligand's mean over those 20 scores",
+    "all_columns_then_extract": "remove each reference ligand's mean over all released score columns, then extract the same ordered 20 targets"
+  },
+  "docking_geometry_agreement": {
+    "targets": 20,
+    "target_pairs": 190,
+    "local_20_correlation_PR": 11.615704722587772,
+    "all_columns_then_extract_correlation_PR": 11.558054640525452,
+    "spearman_of_target_pair_correlations": 0.9733872202320812,
+    "mean_absolute_correlation_difference": 0.07707886908550288,
+    "maximum_absolute_correlation_difference": 0.1698263625397598,
+    "row_only_vs_two_way_max_abs_difference_local_20": 1.6653345369377348e-16,
+    "row_only_vs_two_way_max_abs_difference_all_columns": 1.6653345369377348e-16
+  },
+  "experimental_panel_results": {
+    "DAVIS": {
+      "experimental_ligands": 72,
+      "targets": 20,
+      "target_pairs": 190,
+      "experimental_centered_correlation_PR": 6.8547757186063745,
+      "local_20_centered_concordance_spearman": 0.2797998486617941,
+      "local_20_centered_qap_p_positive": 0.00522,
+      "all_columns_centered_then_extract_concordance_spearman": 0.2612631054074978,
+      "all_columns_centered_then_extract_qap_p_positive": 0.0076,
+      "all_columns_minus_local_20_concordance": -0.018536743254296273,
+      "paired_qap_p_positive_delta": 0.87578,
+      "paired_delta_null_interval_95": [
+        -0.030390111404164852,
+        0.034550599885402856
+      ],
+      "paired_delta_null_median": -0.0005756100548054213,
+      "seeds": {
+        "local_qap": 20260806,
+        "all_columns_qap": 20510806,
+        "paired_qap": 20760806
+      }
+    },
+    "PKIS2": {
+      "experimental_ligands": 645,
+      "targets": 20,
+      "target_pairs": 190,
+      "experimental_centered_correlation_PR": 10.088424567424145,
+      "local_20_centered_concordance_spearman": 0.28717080659764593,
+      "local_20_centered_qap_p_positive": 0.0047,
+      "all_columns_centered_then_extract_concordance_spearman": 0.2744898896455799,
+      "all_columns_centered_then_extract_qap_p_positive": 0.00574,
+      "all_columns_minus_local_20_concordance": -0.012680916952066024,
+      "paired_qap_p_positive_delta": 0.80662,
+      "paired_delta_null_interval_95": [
+        -0.02741600948269452,
+        0.030218915526162675
+      ],
+      "paired_delta_null_median": -0.0005511160099200968,
+      "seeds": {
+        "local_qap": 21260806,
+        "all_columns_qap": 21510806,
+        "paired_qap": 21760806
+      }
+    },
+    "PKIS1": {
+      "experimental_ligands": 360,
+      "targets": 20,
+      "target_pairs": 190,
+      "experimental_centered_correlation_PR": 7.257054603325511,
+      "local_20_centered_concordance_spearman": 0.17364265812874244,
+      "local_20_centered_qap_p_positive": 0.02786,
+      "all_columns_centered_then_extract_concordance_spearman": 0.16575557567566385,
+      "all_columns_centered_then_extract_qap_p_positive": 0.03138,
+      "all_columns_minus_local_20_concordance": -0.007887082453078592,
+      "paired_qap_p_positive_delta": 0.67756,
+      "paired_delta_null_interval_95": [
+        -0.030628490948138232,
+        0.03419377413866253
+      ],
+      "paired_delta_null_median": -0.0005721109055360912,
+      "seeds": {
+        "local_qap": 22260806,
+        "all_columns_qap": 22510806,
+        "paired_qap": 22760806
+      }
+    },
+    "KiRHub": {
+      "experimental_ligands": 92,
+      "targets": 20,
+      "target_pairs": 190,
+      "experimental_centered_correlation_PR": 5.055119279803977,
+      "local_20_centered_concordance_spearman": 0.3215884388108141,
+      "local_20_centered_qap_p_positive": 0.0029,
+      "all_columns_centered_then_extract_concordance_spearman": 0.30243759485974975,
+      "all_columns_centered_then_extract_qap_p_positive": 0.00382,
+      "all_columns_minus_local_20_concordance": -0.019150843951064367,
+      "paired_qap_p_positive_delta": 0.92488,
+      "paired_delta_null_interval_95": [
+        -0.02607426069536844,
+        0.029478757976966835
+      ],
+      "paired_delta_null_median": -0.0005948553757867611,
+      "seeds": {
+        "local_qap": 23260806,
+        "all_columns_qap": 23510806,
+        "paired_qap": 23760806
+      }
+    }
+  },
+  "configuration": {
+    "qap_permutations": 49999,
+    "seed": 20260806,
+    "permutation_unit": "complete target labels",
+    "fixed_endpoint": "two-way-centered experimental target correlation"
+  },
+  "claim_boundary": "This post hoc sensitivity changes only the ligand row-centering panel. It does not estimate transfer to new target identities, and QAP inference is conditional on this fixed 20-target panel.",
+  "support": {
+    "dockstring_complete_rows_before_exclusion": 260060,
+    "dockstring_reference_rows": 259579,
+    "dockstring_rows_excluded": 481,
+    "excluded_connectivity_blocks": 1050,
+    "all_target_count": 58,
+    "all_target_order": [
+      "PPARD",
+      "ABL1",
+      "ADAM17",
+      "ADRB1",
+      "ADRB2",
+      "AKT2",
+      "MAOB",
+      "CASP3",
+      "DHFR",
+      "ESR2",
+      "PTK2",
+      "FGFR1",
+      "HMGCR",
+      "HSP90AA1",
+      "KIT",
+      "MAPKAPK2",
+      "MAP2K1",
+      "NOS1",
+      "PARP1",
+      "PDE5A",
+      "PGR",
+      "PTPN1",
+      "ROCK1",
+      "AKT1",
+      "AR",
+      "CDK2",
+      "CSF1R",
+      "ESR1",
+      "NR3C1",
+      "IGF1R",
+      "JAK2",
+      "LCK",
+      "MET",
+      "MMP13",
+      "PTGS2",
+      "PPARA",
+      "PPARG",
+      "REN",
+      "ADORA2A",
+      "ACHE",
+      "BACE1",
+      "CA2",
+      "CYP2C9",
+      "CYP3A4",
+      "HSD11B1",
+      "DPP4",
+      "DRD2",
+      "DRD3",
+      "EGFR",
+      "F10",
+      "GBA",
+      "MAPK1",
+      "MAPK14",
+      "PLK1",
+      "SRC",
+      "THRB",
+      "F2",
+      "KDR"
+    ],
+    "positive_score_handling": "clip to zero before either centering contract",
+    "reference_exclusion": "union of DAVIS, PKIS2, and PKIS1 Standard-InChI connectivity blocks"
+  },
+  "sources": {
+    "dockstring_sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64",
+    "davis_sha256": "e5614549ec970bf24bd58d04d8a74feb8f8a53806410eaa8d84d24e96a4ff827",
+    "pkis2_sha256": "48ead22a1f860cd0d5096fa87d5acd329f722fe8d65e693bb0be682a333e2a2c",
+    "pkis1_sha256": "1ffbe7fd0b4fc1ef72f2434a2b247d15c0f2b4d3c34668f112f4b4c9e4ead7dc",
+    "kirhub_sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03"
+  }
+}

@@ -1,0 +1,1344 @@
+{
+  "analysis": "residual_mechanism_analysis",
+  "analysis_version": "1.2.0",
+  "claim_boundary": "The descriptor analysis characterizes reproducible score structure. It does not validate docking accuracy or biological specificity.",
+  "config": {
+    "dockstring_sample_seed": 71,
+    "dockstring_sample_size": 15000,
+    "folds": 5,
+    "pocket_bootstrap_replicates": 5000,
+    "pocket_permutations": 100000,
+    "pocket_seed": 20260803,
+    "qap_permutations": 10000,
+    "qap_seed": 20260802
+  },
+  "cross_panel_descriptor_fingerprint": {
+    "analysis_status": "exploratory_replication_with_prespecified_omnibus",
+    "chemical_overlap_audit": {
+      "full_inchikey_overlap_count": 0,
+      "scope": "Docking-44 full 12,651-ligand support versus the fixed seeded 15,000-ligand DOCKSTRING descriptor support; these are not overlap counts against the full 260,060-ligand DOCKSTRING matrix",
+      "shared_connectivity_block_count": 51,
+      "shared_nonempty_murcko_scaffold_count": 437
+    },
+    "claim_boundary": "Concordant score-response fingerprints establish reproducible docking-surface structure, not binding accuracy, causal scoring-function components, or biological specificity.",
+    "different_receptor_structure_mapping_count": 6,
+    "exploratory_target_identity_retrieval": {
+      "analysis_status": "exploratory_post_hoc_operational_consequence",
+      "metric_sensitivity_caveat": "The primary rank-squared-Euclidean rule is aligned with the rank-based omnibus statistic and was not tuned. Alternative reasonable fingerprint distances are reported because recovery is partly metric-dependent.",
+      "primary": {
+        "assigned_pair_costs": [
+          0.14285714285714285,
+          0.2857142857142857,
+          0.14285714285714285,
+          0.7142857142857143,
+          0.7142857142857143,
+          0.2857142857142857,
+          1.5714285714285714,
+          0.7142857142857143,
+          2.2857142857142856
+        ],
+        "assigned_second_indices": [
+          0,
+          2,
+          1,
+          3,
+          4,
+          5,
+          7,
+          6,
+          8
+        ],
+        "correct_fraction": 0.5555555555555556,
+        "correct_target_identities": 5,
+        "distance_definition": "mean squared difference of within-panel target ranks across the included descriptor-response slopes",
+        "distance_metric": "rank_squared_euclidean",
+        "exact_target_label_p_for_at_least_observed_correct": 0.003689925044091711,
+        "exact_target_label_permutations": 362880,
+        "n_descriptor_features": 7,
+        "n_targets": 9,
+        "number_of_cost_optimal_assignments": 1,
+        "second_best_total_assignment_cost": 8.285714285714285,
+        "total_assignment_cost": 6.857142857142857
+      },
+      "selection_caveat": "The retrieval task was formulated after observing cross-panel descriptor-slope concordance. Its exact conditional permutation probability is descriptive and requires external confirmation.",
+      "sensitivities": {
+        "connectivity_disjoint__unscaled_two_way_residual__all_7_descriptors": {
+          "assigned_pair_costs": [
+            0.14285714285714285,
+            0.2857142857142857,
+            0.14285714285714285,
+            0.7142857142857143,
+            0.7142857142857143,
+            0.2857142857142857,
+            1.1428571428571428,
+            0.8571428571428571,
+            2.2857142857142856
+          ],
+          "assigned_second_indices": [
+            0,
+            2,
+            1,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8
+          ],
+          "correct_fraction": 0.5555555555555556,
+          "correct_target_identities": 5,
+          "distance_definition": "mean squared difference of within-panel target ranks across the included descriptor-response slopes",
+          "distance_metric": "rank_squared_euclidean",
+          "exact_target_label_p_for_at_least_observed_correct": 0.003689925044091711,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 7,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 1,
+          "second_best_total_assignment_cost": 7.714285714285714,
+          "total_assignment_cost": 6.571428571428571
+        },
+        "primary_seeded_support__target_standardized_two_way_residual__all_7_descriptors": {
+          "assigned_pair_costs": [
+            0.7142857142857143,
+            0.42857142857142855,
+            0.8571428571428571,
+            0.8571428571428571,
+            1.0,
+            0.5714285714285714,
+            1.0,
+            0.5714285714285714,
+            2.5714285714285716
+          ],
+          "assigned_second_indices": [
+            0,
+            2,
+            1,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8
+          ],
+          "correct_fraction": 0.5555555555555556,
+          "correct_target_identities": 5,
+          "distance_definition": "mean squared difference of within-panel target ranks across the included descriptor-response slopes",
+          "distance_metric": "rank_squared_euclidean",
+          "exact_target_label_p_for_at_least_observed_correct": 0.003689925044091711,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 7,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 1,
+          "second_best_total_assignment_cost": 8.857142857142858,
+          "total_assignment_cost": 8.571428571428571
+        },
+        "primary_seeded_support__unscaled_two_way_residual__all_7_descriptors": {
+          "assigned_pair_costs": [
+            0.14285714285714285,
+            0.2857142857142857,
+            0.14285714285714285,
+            0.7142857142857143,
+            0.7142857142857143,
+            0.2857142857142857,
+            1.5714285714285714,
+            0.7142857142857143,
+            2.2857142857142856
+          ],
+          "assigned_second_indices": [
+            0,
+            2,
+            1,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8
+          ],
+          "correct_fraction": 0.5555555555555556,
+          "correct_target_identities": 5,
+          "distance_definition": "mean squared difference of within-panel target ranks across the included descriptor-response slopes",
+          "distance_metric": "rank_squared_euclidean",
+          "exact_target_label_p_for_at_least_observed_correct": 0.003689925044091711,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 7,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 1,
+          "second_best_total_assignment_cost": 8.285714285714285,
+          "total_assignment_cost": 6.857142857142857
+        },
+        "primary_seeded_support__unscaled_two_way_residual__all_7_descriptors__descriptor_zscore_cosine": {
+          "assigned_pair_costs": [
+            0.019716748654443284,
+            0.006017940615564155,
+            0.005464734336172561,
+            0.24120738615390136,
+            0.008817053230712801,
+            0.013840530199605516,
+            0.10460973215988456,
+            0.00853345262829397,
+            0.23395957241620857
+          ],
+          "assigned_second_indices": [
+            4,
+            2,
+            1,
+            3,
+            0,
+            5,
+            8,
+            7,
+            6
+          ],
+          "correct_fraction": 0.3333333333333333,
+          "correct_target_identities": 3,
+          "distance_definition": "one minus cosine similarity after each descriptor slope is standardized over targets within each panel",
+          "distance_metric": "descriptor_zscore_cosine",
+          "exact_target_label_p_for_at_least_observed_correct": 0.08031029541446208,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 7,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 1,
+          "second_best_total_assignment_cost": 0.6449976442051769,
+          "total_assignment_cost": 0.6421671503947868
+        },
+        "primary_seeded_support__unscaled_two_way_residual__all_7_descriptors__descriptor_zscore_squared_euclidean": {
+          "assigned_pair_costs": [
+            0.05436239624902311,
+            0.013683277543303129,
+            0.0760585897933198,
+            0.08079626441295419,
+            0.29235903442600747,
+            0.2818007392841066,
+            0.08665043890686673,
+            0.10495966944108069,
+            0.0911838419324515
+          ],
+          "assigned_second_indices": [
+            0,
+            2,
+            1,
+            3,
+            4,
+            5,
+            7,
+            8,
+            6
+          ],
+          "correct_fraction": 0.4444444444444444,
+          "correct_target_identities": 4,
+          "distance_definition": "mean squared difference after each descriptor slope is standardized over targets within each panel",
+          "distance_metric": "descriptor_zscore_squared_euclidean",
+          "exact_target_label_p_for_at_least_observed_correct": 0.01896770282186949,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 7,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 1,
+          "second_best_total_assignment_cost": 1.1105412423913443,
+          "total_assignment_cost": 1.0818542519891132
+        },
+        "primary_seeded_support__unscaled_two_way_residual__all_7_descriptors__rank_manhattan": {
+          "assigned_pair_costs": [
+            0.14285714285714285,
+            0.2857142857142857,
+            0.14285714285714285,
+            0.7142857142857143,
+            0.42857142857142855,
+            0.2857142857142857,
+            1.0,
+            0.7142857142857143,
+            1.1428571428571428
+          ],
+          "assigned_second_indices": [
+            0,
+            2,
+            1,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8
+          ],
+          "correct_fraction": 0.5555555555555556,
+          "correct_target_identities": 5,
+          "distance_definition": "mean absolute difference of within-panel target ranks across the included descriptor-response slopes",
+          "distance_metric": "rank_manhattan",
+          "exact_target_label_p_for_at_least_observed_correct": 0.003689925044091711,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 7,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 1,
+          "second_best_total_assignment_cost": 5.142857142857142,
+          "total_assignment_cost": 4.857142857142858
+        },
+        "primary_seeded_support__unscaled_two_way_residual__leave_out_clogp": {
+          "assigned_pair_costs": [
+            0.16666666666666666,
+            0.16666666666666666,
+            0.16666666666666666,
+            0.8333333333333334,
+            0.8333333333333334,
+            0.3333333333333333,
+            1.6666666666666667,
+            0.6666666666666666,
+            2.5
+          ],
+          "assigned_second_indices": [
+            0,
+            2,
+            1,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8
+          ],
+          "correct_fraction": 0.5555555555555556,
+          "correct_target_identities": 5,
+          "distance_definition": "mean squared difference of within-panel target ranks across the included descriptor-response slopes",
+          "distance_metric": "rank_squared_euclidean",
+          "exact_target_label_p_for_at_least_observed_correct": 0.003689925044091711,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 6,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 1,
+          "second_best_total_assignment_cost": 7.666666666666667,
+          "total_assignment_cost": 7.333333333333333
+        },
+        "primary_seeded_support__unscaled_two_way_residual__leave_out_heavy_atoms": {
+          "assigned_pair_costs": [
+            0.16666666666666666,
+            0.3333333333333333,
+            0.16666666666666666,
+            0.6666666666666666,
+            0.8333333333333334,
+            0.3333333333333333,
+            1.8333333333333333,
+            0.6666666666666666,
+            2.6666666666666665
+          ],
+          "assigned_second_indices": [
+            0,
+            2,
+            1,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8
+          ],
+          "correct_fraction": 0.5555555555555556,
+          "correct_target_identities": 5,
+          "distance_definition": "mean squared difference of within-panel target ranks across the included descriptor-response slopes",
+          "distance_metric": "rank_squared_euclidean",
+          "exact_target_label_p_for_at_least_observed_correct": 0.003689925044091711,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 6,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 1,
+          "second_best_total_assignment_cost": 8.666666666666666,
+          "total_assignment_cost": 7.666666666666666
+        },
+        "primary_seeded_support__unscaled_two_way_residual__leave_out_labute_asa": {
+          "assigned_pair_costs": [
+            0.16666666666666666,
+            0.3333333333333333,
+            0.16666666666666666,
+            0.6666666666666666,
+            0.8333333333333334,
+            0.3333333333333333,
+            1.8333333333333333,
+            0.6666666666666666,
+            2.6666666666666665
+          ],
+          "assigned_second_indices": [
+            0,
+            2,
+            1,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8
+          ],
+          "correct_fraction": 0.5555555555555556,
+          "correct_target_identities": 5,
+          "distance_definition": "mean squared difference of within-panel target ranks across the included descriptor-response slopes",
+          "distance_metric": "rank_squared_euclidean",
+          "exact_target_label_p_for_at_least_observed_correct": 0.003689925044091711,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 6,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 1,
+          "second_best_total_assignment_cost": 8.666666666666666,
+          "total_assignment_cost": 7.666666666666666
+        },
+        "primary_seeded_support__unscaled_two_way_residual__leave_out_molecular_weight": {
+          "assigned_pair_costs": [
+            0.16666666666666666,
+            0.3333333333333333,
+            0.16666666666666666,
+            0.6666666666666666,
+            0.8333333333333334,
+            0.3333333333333333,
+            1.6666666666666667,
+            0.6666666666666666,
+            2.5
+          ],
+          "assigned_second_indices": [
+            0,
+            2,
+            1,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8
+          ],
+          "correct_fraction": 0.5555555555555556,
+          "correct_target_identities": 5,
+          "distance_definition": "mean squared difference of within-panel target ranks across the included descriptor-response slopes",
+          "distance_metric": "rank_squared_euclidean",
+          "exact_target_label_p_for_at_least_observed_correct": 0.003689925044091711,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 6,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 1,
+          "second_best_total_assignment_cost": 7.666666666666666,
+          "total_assignment_cost": 7.333333333333333
+        },
+        "primary_seeded_support__unscaled_two_way_residual__leave_out_ring_count": {
+          "assigned_pair_costs": [
+            0.16666666666666666,
+            0.16666666666666666,
+            0.0,
+            0.6666666666666666,
+            0.8333333333333334,
+            0.3333333333333333,
+            1.1666666666666667,
+            0.6666666666666666,
+            2.0
+          ],
+          "assigned_second_indices": [
+            0,
+            2,
+            1,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8
+          ],
+          "correct_fraction": 0.5555555555555556,
+          "correct_target_identities": 5,
+          "distance_definition": "mean squared difference of within-panel target ranks across the included descriptor-response slopes",
+          "distance_metric": "rank_squared_euclidean",
+          "exact_target_label_p_for_at_least_observed_correct": 0.003689925044091711,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 6,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 1,
+          "second_best_total_assignment_cost": 7.333333333333334,
+          "total_assignment_cost": 6.0
+        },
+        "primary_seeded_support__unscaled_two_way_residual__leave_out_rotatable_bonds": {
+          "assigned_pair_costs": [
+            0.0,
+            0.3333333333333333,
+            0.16666666666666666,
+            0.6666666666666666,
+            0.16666666666666666,
+            0.16666666666666666,
+            1.1666666666666667,
+            0.8333333333333334,
+            1.1666666666666667
+          ],
+          "assigned_second_indices": [
+            0,
+            2,
+            1,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8
+          ],
+          "correct_fraction": 0.5555555555555556,
+          "correct_target_identities": 5,
+          "distance_definition": "mean squared difference of within-panel target ranks across the included descriptor-response slopes",
+          "distance_metric": "rank_squared_euclidean",
+          "exact_target_label_p_for_at_least_observed_correct": 0.003689925044091711,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 6,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 1,
+          "second_best_total_assignment_cost": 5.666666666666667,
+          "total_assignment_cost": 4.666666666666667
+        },
+        "primary_seeded_support__unscaled_two_way_residual__leave_out_tpsa": {
+          "assigned_pair_costs": [
+            0.16666666666666666,
+            0.3333333333333333,
+            0.16666666666666666,
+            0.8333333333333334,
+            0.6666666666666666,
+            0.16666666666666666,
+            1.6666666666666667,
+            0.8333333333333334,
+            2.5
+          ],
+          "assigned_second_indices": [
+            0,
+            2,
+            1,
+            3,
+            4,
+            5,
+            7,
+            6,
+            8
+          ],
+          "correct_fraction": 0.5555555555555556,
+          "correct_target_identities": 5,
+          "distance_definition": "mean squared difference of within-panel target ranks across the included descriptor-response slopes",
+          "distance_metric": "rank_squared_euclidean",
+          "exact_target_label_p_for_at_least_observed_correct": 0.003689925044091711,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 6,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 1,
+          "second_best_total_assignment_cost": 8.333333333333332,
+          "total_assignment_cost": 7.333333333333333
+        },
+        "strict_nonempty_murcko_scaffold_disjoint__unscaled_two_way_residual__all_7_descriptors": {
+          "assigned_pair_costs": [
+            0.5714285714285714,
+            0.8571428571428571,
+            0.7142857142857143,
+            1.2857142857142858,
+            0.14285714285714285,
+            0.7142857142857143,
+            1.8571428571428572,
+            1.4285714285714286,
+            2.4285714285714284
+          ],
+          "assigned_second_indices": [
+            5,
+            1,
+            2,
+            3,
+            0,
+            4,
+            7,
+            6,
+            8
+          ],
+          "correct_fraction": 0.4444444444444444,
+          "correct_target_identities": 4,
+          "distance_definition": "mean squared difference of within-panel target ranks across the included descriptor-response slopes",
+          "distance_metric": "rank_squared_euclidean",
+          "exact_target_label_p_for_at_least_observed_correct": 0.01896770282186949,
+          "exact_target_label_permutations": 362880,
+          "n_descriptor_features": 7,
+          "n_targets": 9,
+          "number_of_cost_optimal_assignments": 2,
+          "second_best_total_assignment_cost": 10.571428571428571,
+          "total_assignment_cost": 10.0
+        }
+      }
+    },
+    "human_structure_mapping_count": 7,
+    "interpretation": "The statistic tests whether independently generated panels reproduce the ordering of target-specific score responses to a prespecified set of seven ligand descriptors after the common ligand effect is removed.",
+    "leave_one_target_primary_omnibus": {
+      "ACHE": 0.8809523809523808,
+      "ADORA2A": 0.8401360544217686,
+      "ADRB1": 0.8095238095238095,
+      "ADRB2": 0.8027210884353743,
+      "AR": 0.7517006802721088,
+      "DRD2": 0.8775510204081632,
+      "LCK": 0.8299319727891158,
+      "NR3C1": 0.7448979591836735,
+      "PTGS2": 0.7482993197278912
+    },
+    "leave_one_target_primary_omnibus_range": [
+      0.7448979591836735,
+      0.8809523809523808
+    ],
+    "mapping_count": 9,
+    "omnibus_dependence_handling": "A single target-label permutation is applied jointly to all seven descriptors, preserving their cross-descriptor dependence.",
+    "primary": {
+      "descriptor_spearman_rho": {
+        "clogp": 0.6166666666666667,
+        "heavy_atoms": 0.8666666666666667,
+        "labute_asa": 0.8666666666666667,
+        "molecular_weight": 0.9,
+        "ring_count": 0.7166666666666667,
+        "rotatable_bonds": 0.8333333333333334,
+        "tpsa": 0.9166666666666666
+      },
+      "exact_null_exceedances": 949,
+      "exact_null_mean": -4.6210341060235796e-18,
+      "exact_null_q025": -0.6214285714285713,
+      "exact_null_q975": 0.6238095238095239,
+      "exact_target_label_permutation_two_sided_p": 0.0026151895943562612,
+      "exact_target_label_permutations": 362880,
+      "omnibus_mean_descriptor_spearman_rho": 0.8166666666666665
+    },
+    "selection_and_multiplicity_caveat": "The cross-panel fingerprint hypothesis and target mapping were assembled during exploratory revision. Exact target-label probabilities condition on this mapping and the seven-descriptor set and are not confirmatory.",
+    "sensitivities": {
+      "connectivity_disjoint__all_9_mapped_targets": {
+        "target_standardized_two_way_residual": {
+          "descriptor_spearman_rho": {
+            "clogp": 0.5833333333333334,
+            "heavy_atoms": 0.8833333333333333,
+            "labute_asa": 0.8666666666666667,
+            "molecular_weight": 0.8833333333333333,
+            "ring_count": 0.8333333333333334,
+            "rotatable_bonds": 0.75,
+            "tpsa": 0.9166666666666666
+          },
+          "exact_null_exceedances": 1031,
+          "exact_null_mean": -1.4098070153970242e-18,
+          "exact_null_q025": -0.6238095238095239,
+          "exact_null_q975": 0.6261904761904761,
+          "exact_target_label_permutation_two_sided_p": 0.0028411596119929453,
+          "exact_target_label_permutations": 362880,
+          "omnibus_mean_descriptor_spearman_rho": 0.8166666666666665
+        },
+        "unscaled_two_way_residual": {
+          "descriptor_spearman_rho": {
+            "clogp": 0.6166666666666667,
+            "heavy_atoms": 0.8666666666666667,
+            "labute_asa": 0.8666666666666667,
+            "molecular_weight": 0.9,
+            "ring_count": 0.7166666666666667,
+            "rotatable_bonds": 0.8166666666666667,
+            "tpsa": 0.9166666666666666
+          },
+          "exact_null_exceedances": 875,
+          "exact_null_mean": -7.871422502633384e-18,
+          "exact_null_q025": -0.6142857142857144,
+          "exact_null_q975": 0.6190476190476192,
+          "exact_target_label_permutation_two_sided_p": 0.0024112654320987653,
+          "exact_target_label_permutations": 362880,
+          "omnibus_mean_descriptor_spearman_rho": 0.8142857142857142
+        }
+      },
+      "primary_seeded_support__all_9_mapped_targets": {
+        "target_standardized_two_way_residual": {
+          "descriptor_spearman_rho": {
+            "clogp": 0.5833333333333334,
+            "heavy_atoms": 0.8833333333333333,
+            "labute_asa": 0.85,
+            "molecular_weight": 0.8833333333333333,
+            "ring_count": 0.8333333333333334,
+            "rotatable_bonds": 0.75,
+            "tpsa": 0.9166666666666666
+          },
+          "exact_null_exceedances": 1073,
+          "exact_null_mean": -3.4657755795176843e-18,
+          "exact_null_q025": -0.6238095238095239,
+          "exact_null_q975": 0.6261904761904761,
+          "exact_target_label_permutation_two_sided_p": 0.002956900352733686,
+          "exact_target_label_permutations": 362880,
+          "omnibus_mean_descriptor_spearman_rho": 0.8142857142857142
+        },
+        "unscaled_two_way_residual": {
+          "descriptor_spearman_rho": {
+            "clogp": 0.6166666666666667,
+            "heavy_atoms": 0.8666666666666667,
+            "labute_asa": 0.8666666666666667,
+            "molecular_weight": 0.9,
+            "ring_count": 0.7166666666666667,
+            "rotatable_bonds": 0.8333333333333334,
+            "tpsa": 0.9166666666666666
+          },
+          "exact_null_exceedances": 949,
+          "exact_null_mean": -4.6210341060235796e-18,
+          "exact_null_q025": -0.6214285714285713,
+          "exact_null_q975": 0.6238095238095239,
+          "exact_target_label_permutation_two_sided_p": 0.0026151895943562612,
+          "exact_target_label_permutations": 362880,
+          "omnibus_mean_descriptor_spearman_rho": 0.8166666666666665
+        }
+      },
+      "primary_seeded_support__different_receptor_structure_only_6": {
+        "target_standardized_two_way_residual": {
+          "descriptor_spearman_rho": {
+            "clogp": 0.7142857142857143,
+            "heavy_atoms": 0.8285714285714286,
+            "labute_asa": 0.8285714285714286,
+            "molecular_weight": 0.9428571428571428,
+            "ring_count": 0.8285714285714286,
+            "rotatable_bonds": 0.5428571428571428,
+            "tpsa": 0.9428571428571428
+          },
+          "exact_null_exceedances": 11,
+          "exact_null_mean": 4.934324553889585e-18,
+          "exact_null_q025": -0.7144897959183674,
+          "exact_null_q975": 0.7142857142857143,
+          "exact_target_label_permutation_two_sided_p": 0.015277777777777777,
+          "exact_target_label_permutations": 720,
+          "omnibus_mean_descriptor_spearman_rho": 0.8040816326530612
+        },
+        "unscaled_two_way_residual": {
+          "descriptor_spearman_rho": {
+            "clogp": 0.7142857142857143,
+            "heavy_atoms": 0.8285714285714286,
+            "labute_asa": 0.8285714285714286,
+            "molecular_weight": 0.9428571428571428,
+            "ring_count": 0.7714285714285715,
+            "rotatable_bonds": 0.7714285714285715,
+            "tpsa": 1.0
+          },
+          "exact_null_exceedances": 10,
+          "exact_null_mean": 0.0,
+          "exact_null_q025": -0.7389795918367348,
+          "exact_null_q975": 0.7387755102040817,
+          "exact_target_label_permutation_two_sided_p": 0.013888888888888888,
+          "exact_target_label_permutations": 720,
+          "omnibus_mean_descriptor_spearman_rho": 0.836734693877551
+        }
+      },
+      "primary_seeded_support__human_structure_only_7": {
+        "target_standardized_two_way_residual": {
+          "descriptor_spearman_rho": {
+            "clogp": 0.4642857142857143,
+            "heavy_atoms": 0.75,
+            "labute_asa": 0.75,
+            "molecular_weight": 0.8214285714285714,
+            "ring_count": 0.6428571428571429,
+            "rotatable_bonds": 0.5714285714285714,
+            "tpsa": 0.8571428571428571
+          },
+          "exact_null_exceedances": 251,
+          "exact_null_mean": 2.8196140307940484e-18,
+          "exact_null_q025": -0.6889030612244897,
+          "exact_null_q975": 0.6887755102040816,
+          "exact_target_label_permutation_two_sided_p": 0.0498015873015873,
+          "exact_target_label_permutations": 5040,
+          "omnibus_mean_descriptor_spearman_rho": 0.6938775510204083
+        },
+        "unscaled_two_way_residual": {
+          "descriptor_spearman_rho": {
+            "clogp": 0.5714285714285714,
+            "heavy_atoms": 0.75,
+            "labute_asa": 0.75,
+            "molecular_weight": 0.8214285714285714,
+            "ring_count": 0.5714285714285714,
+            "rotatable_bonds": 0.75,
+            "tpsa": 0.8928571428571429
+          },
+          "exact_null_exceedances": 148,
+          "exact_null_mean": -5.639228061588097e-18,
+          "exact_null_q025": -0.6785714285714285,
+          "exact_null_q975": 0.6785714285714285,
+          "exact_target_label_permutation_two_sided_p": 0.029365079365079365,
+          "exact_target_label_permutations": 5040,
+          "omnibus_mean_descriptor_spearman_rho": 0.7295918367346939
+        }
+      },
+      "strict_nonempty_murcko_scaffold_disjoint__all_9_mapped_targets": {
+        "target_standardized_two_way_residual": {
+          "descriptor_spearman_rho": {
+            "clogp": 0.7333333333333333,
+            "heavy_atoms": 0.8333333333333334,
+            "labute_asa": 0.8666666666666667,
+            "molecular_weight": 0.8666666666666667,
+            "ring_count": 0.8333333333333334,
+            "rotatable_bonds": 0.6,
+            "tpsa": 0.8333333333333334
+          },
+          "exact_null_exceedances": 720,
+          "exact_null_mean": 4.07277582225807e-18,
+          "exact_null_q025": -0.5952380952380952,
+          "exact_null_q975": 0.5952380952380952,
+          "exact_target_label_permutation_two_sided_p": 0.001984126984126984,
+          "exact_target_label_permutations": 362880,
+          "omnibus_mean_descriptor_spearman_rho": 0.7952380952380952
+        },
+        "unscaled_two_way_residual": {
+          "descriptor_spearman_rho": {
+            "clogp": 0.7833333333333333,
+            "heavy_atoms": 0.85,
+            "labute_asa": 0.85,
+            "molecular_weight": 0.9,
+            "ring_count": 0.8166666666666667,
+            "rotatable_bonds": 0.8166666666666667,
+            "tpsa": 0.9
+          },
+          "exact_null_exceedances": 307,
+          "exact_null_mean": -3.132904478660054e-19,
+          "exact_null_q025": -0.6095238095238095,
+          "exact_null_q975": 0.6119047619047618,
+          "exact_target_label_permutation_two_sided_p": 0.0008460097001763669,
+          "exact_target_label_permutations": 362880,
+          "omnibus_mean_descriptor_spearman_rho": 0.8452380952380951
+        }
+      }
+    }
+  },
+  "datasets": {
+    "DOCKSTRING-58": {
+      "column_standardized_orthogonal_two_way_anova": {
+        "combined_ligand_and_target_main_effect_fraction": 0.6219473484242767,
+        "component_fractions": {
+          "ligand_main_effect": 0.6219473484242767,
+          "ligand_target_interaction": 0.37805265157572204,
+          "target_main_effect": 1.3599814593817698e-30
+        },
+        "component_sum_squares": {
+          "ligand_main_effect": 9381094.318064397,
+          "ligand_target_interaction": 5702327.6819355795,
+          "target_main_effect": 2.0513174264031087e-23
+        },
+        "fraction_closure_error": 1.2212453270876722e-15,
+        "interaction_fraction_conditional_on_column_centering": 0.37805265157572254,
+        "ligand_fraction_conditional_on_column_centering": 0.6219473484242775,
+        "maximum_absolute_pairwise_inner_product_fraction": 1.3544356670902933e-17,
+        "maximum_absolute_reconstruction_error": 1.7763568394002505e-15,
+        "pairwise_component_inner_products": {
+          "ligand_main_effect__ligand_target_interaction": 2.04295247385744e-10,
+          "ligand_main_effect__target_main_effect": -2.1232191264023533e-27,
+          "target_main_effect__ligand_target_interaction": -5.816113682013476e-26
+        },
+        "total_grand_centered_sum_squares": 15083421.999999996
+      },
+      "descriptor_decomposition": {
+        "chemical_groups": 11905,
+        "descriptor_removal_interpretation": "Removing the group-held-out, fold-locally predicted descriptor component reduces mean squared target correlation; this is a predictive decomposition of score structure, not a causal attribution",
+        "folds": 5,
+        "maximum_out_of_fold_target_r2": 0.5770167286491896,
+        "mean_out_of_fold_target_r2": 0.16982830943845095,
+        "median_out_of_fold_target_r2": 0.11782603250305007,
+        "minimum_out_of_fold_target_r2": 0.004420101414611466,
+        "out_of_fold_absolute_mean_squared_target_correlation_reduction": 0.021026143904904843,
+        "out_of_fold_mean_squared_target_correlation_after_descriptor_removal": 0.018201556776858613,
+        "out_of_fold_mean_squared_target_correlation_before_descriptor_removal": 0.039227700681763455,
+        "out_of_fold_pr_after_descriptor_removal": 28.46641503690876,
+        "out_of_fold_pr_before_descriptor_removal": 17.923478828457238,
+        "out_of_fold_pr_increase": 10.542936208451522,
+        "out_of_fold_pr_ratio": 1.5882193021430877,
+        "out_of_fold_relative_mean_squared_target_correlation_reduction": 0.5360024559043216,
+        "out_of_fold_residual_pc1_r2": 0.6865082186747423,
+        "pc1_definition_scope": "PC1 loadings are descriptive loadings of the pooled out-of-fold surface; every ligand-level descriptor prediction is group-held-out",
+        "strict_fold_local_descriptor_scaling": true,
+        "strict_fold_local_regression_coefficients": true,
+        "strict_fold_local_residual_target_scales": true,
+        "strict_fold_local_target_offsets": true
+      },
+      "descriptor_support_ligands": 15000,
+      "group_definition": "RDKit Bemis-Murcko scaffolds; every acyclic molecule is a singleton",
+      "n_ligands": 260060,
+      "n_targets": 58,
+      "orthogonal_two_way_anova": {
+        "combined_ligand_and_target_main_effect_fraction": 0.6883058251129175,
+        "component_fractions": {
+          "ligand_main_effect": 0.4390650689605501,
+          "ligand_target_interaction": 0.3116941748870853,
+          "target_main_effect": 0.24924075615236738
+        },
+        "component_sum_squares": {
+          "ligand_main_effect": 10378096.266808696,
+          "ligand_target_interaction": 7367455.034489027,
+          "target_main_effect": 5891255.633442044
+        },
+        "fraction_closure_error": 2.6645352591003757e-15,
+        "interaction_fraction_conditional_on_column_centering": 0.4151719441903306,
+        "ligand_fraction_conditional_on_column_centering": 0.5848280558096693,
+        "maximum_absolute_pairwise_inner_product_fraction": 1.93573899608618e-17,
+        "maximum_absolute_reconstruction_error": 2.6645352591003757e-15,
+        "pairwise_component_inner_products": {
+          "ligand_main_effect__ligand_target_interaction": -4.575468892653589e-10,
+          "ligand_main_effect__target_main_effect": -3.708144902248023e-14,
+          "target_main_effect__ligand_target_interaction": -2.68208566467365e-10
+        },
+        "total_grand_centered_sum_squares": 23636806.9347397
+      },
+      "raw_correlation_moments": {
+        "maximum_absolute_moment_identity_error": 1.1102230246251565e-16,
+        "maximum_absolute_pr_identity_error": 0.0,
+        "mean_offdiagonal_correlation": 0.6153148457650554,
+        "mean_square_plus_variance": 0.431440628912078,
+        "mean_squared_offdiagonal_correlation": 0.43144062891207813,
+        "n_targets": 58,
+        "pairwise_correlation_variance": 0.052828269493204204,
+        "participation_ratio": 2.266322970109516,
+        "participation_ratio_from_correlation_moment_identity": 2.266322970109516
+      },
+      "raw_to_residual_transition": {
+        "common_signed_mean_square_reduction": 0.37860599750643914,
+        "decomposition_closure_error": 4.163336342344337e-17,
+        "fraction_of_net_mean_square_reduction_from_common_signed_mean": 0.9631448240766136,
+        "fraction_of_net_mean_square_reduction_from_pair_dispersion": 0.03685517592338633,
+        "mean_squared_correlation_reduction": 0.3930935286595309,
+        "pairwise_correlation_dispersion_reduction": 0.014487531153091718,
+        "pr_expansion_ratio": 8.033221997816955,
+        "pr_increase": 15.939552567532104
+      },
+      "residual_correlation_moments": {
+        "maximum_absolute_moment_identity_error": 0.0,
+        "maximum_absolute_pr_identity_error": 0.0,
+        "mean_offdiagonal_correlation": -0.002522283178931384,
+        "mean_square_plus_variance": 0.03834710025254721,
+        "mean_squared_offdiagonal_correlation": 0.03834710025254721,
+        "n_targets": 58,
+        "pairwise_correlation_variance": 0.038340738340112486,
+        "participation_ratio": 18.20587553764162,
+        "participation_ratio_from_correlation_moment_identity": 18.20587553764162
+      },
+      "support_rule": "sorted simple random sample without replacement of 15,000 complete ligands; NumPy seed 71",
+      "uniform_axis": {
+        "angle_from_uniform_degrees": 14.27628771052068,
+        "cosine_pc1_with_uniform_vector": 0.969117870818374,
+        "leading_eigenvalue": 38.20446962992899,
+        "n_targets": 58,
+        "negative_pc1_loadings": 1,
+        "pc1_variance_fraction": 0.6586977522401549,
+        "positive_pc1_loadings": 57,
+        "squared_cosine_pc1_with_uniform_vector": 0.9391894475395386,
+        "uniform_rayleigh_as_fraction_of_pc1_eigenvalue": 0.9442074856170488,
+        "uniform_rayleigh_identity_error": 7.105427357601002e-15,
+        "uniform_vector_rayleigh_quotient": 36.07294620860815,
+        "uniform_vector_variance_fraction": 0.6219473484242785
+      },
+      "variance_reweighting": {
+        "correlation_pr_expansion_ratio": 8.033221997816955,
+        "covariance_pr_expansion_ratio": 3.3282318602936605,
+        "raw_correlation_pr": 2.266322970109516,
+        "raw_covariance_pr": 2.47421042334239,
+        "residual_correlation_pr": 18.20587553764162,
+        "residual_correlation_pr_over_covariance_pr": 2.210860617436196,
+        "residual_covariance_pr": 8.234745960038808,
+        "residual_target_sd_coefficient_of_variation": 0.4285911132143455
+      }
+    },
+    "Docking-44": {
+      "column_standardized_orthogonal_two_way_anova": {
+        "combined_ligand_and_target_main_effect_fraction": 0.6921511488919095,
+        "component_fractions": {
+          "ligand_main_effect": 0.6921511488919095,
+          "ligand_target_interaction": 0.307848851108091,
+          "target_main_effect": 1.8701271640507312e-31
+        },
+        "component_sum_squares": {
+          "ligand_main_effect": 385251.32947323675,
+          "ligand_target_interaction": 171348.67052676342,
+          "target_main_effect": 1.0409127795106368e-25
+        },
+        "fraction_closure_error": 6.661338147750939e-16,
+        "interaction_fraction_conditional_on_column_centering": 0.30784885110809085,
+        "ligand_fraction_conditional_on_column_centering": 0.6921511488919091,
+        "maximum_absolute_pairwise_inner_product_fraction": 1.0212615677471799e-18,
+        "maximum_absolute_reconstruction_error": 8.881784197001252e-16,
+        "pairwise_component_inner_products": {
+          "ligand_main_effect__ligand_target_interaction": -5.684341886080801e-13,
+          "ligand_main_effect__target_main_effect": 9.702989134218445e-29,
+          "target_main_effect__ligand_target_interaction": 6.784203784900702e-29
+        },
+        "total_grand_centered_sum_squares": 556599.9999999999
+      },
+      "descriptor_decomposition": {
+        "chemical_groups": 8150,
+        "descriptor_removal_interpretation": "Removing the group-held-out, fold-locally predicted descriptor component reduces mean squared target correlation; this is a predictive decomposition of score structure, not a causal attribution",
+        "folds": 5,
+        "maximum_out_of_fold_target_r2": 0.5736982927002732,
+        "mean_out_of_fold_target_r2": 0.21973852271310992,
+        "median_out_of_fold_target_r2": 0.22162476153684524,
+        "minimum_out_of_fold_target_r2": 0.0174382457922857,
+        "out_of_fold_absolute_mean_squared_target_correlation_reduction": 0.04070649449569183,
+        "out_of_fold_mean_squared_target_correlation_after_descriptor_removal": 0.046134531690476266,
+        "out_of_fold_mean_squared_target_correlation_before_descriptor_removal": 0.0868410261861681,
+        "out_of_fold_pr_after_descriptor_removal": 14.746371479452172,
+        "out_of_fold_pr_before_descriptor_removal": 9.294143343764464,
+        "out_of_fold_pr_increase": 5.452228135687708,
+        "out_of_fold_pr_ratio": 1.5866305192447525,
+        "out_of_fold_relative_mean_squared_target_correlation_reduction": 0.4687472762980258,
+        "out_of_fold_residual_pc1_r2": 0.5857230900670747,
+        "pc1_definition_scope": "PC1 loadings are descriptive loadings of the pooled out-of-fold surface; every ligand-level descriptor prediction is group-held-out",
+        "strict_fold_local_descriptor_scaling": true,
+        "strict_fold_local_regression_coefficients": true,
+        "strict_fold_local_residual_target_scales": true,
+        "strict_fold_local_target_offsets": true
+      },
+      "descriptor_support_ligands": 12651,
+      "group_definition": "frozen source Butina clusters",
+      "n_ligands": 12651,
+      "n_targets": 44,
+      "orthogonal_two_way_anova": {
+        "combined_ligand_and_target_main_effect_fraction": 0.7325354979678034,
+        "component_fractions": {
+          "ligand_main_effect": 0.5381825214570932,
+          "ligand_target_interaction": 0.26746450203219635,
+          "target_main_effect": 0.19435297651071015
+        },
+        "component_sum_squares": {
+          "ligand_main_effect": 745716.9298039238,
+          "ligand_target_interaction": 370604.39411331987,
+          "target_main_effect": 269299.5390289271
+        },
+        "fraction_closure_error": 2.220446049250313e-16,
+        "interaction_fraction_conditional_on_column_centering": 0.3319872031225249,
+        "ligand_fraction_conditional_on_column_centering": 0.6680127968774752,
+        "maximum_absolute_pairwise_inner_product_fraction": 1.009185226182756e-17,
+        "maximum_absolute_reconstruction_error": 1.7763568394002505e-15,
+        "pairwise_component_inner_products": {
+          "ligand_main_effect__ligand_target_interaction": -1.2278178473934531e-11,
+          "ligand_main_effect__target_main_effect": 4.574118861455645e-14,
+          "target_main_effect__ligand_target_interaction": -1.3983481039758772e-11
+        },
+        "total_grand_centered_sum_squares": 1385620.862946171
+      },
+      "raw_correlation_moments": {
+        "maximum_absolute_moment_identity_error": 1.1102230246251565e-16,
+        "maximum_absolute_pr_identity_error": 2.220446049250313e-16,
+        "mean_offdiagonal_correlation": 0.6849918732847443,
+        "mean_square_plus_variance": 0.5346669705261806,
+        "mean_squared_offdiagonal_correlation": 0.5346669705261805,
+        "n_targets": 44,
+        "pairwise_correlation_variance": 0.06545310406003738,
+        "participation_ratio": 1.8340455747972353,
+        "participation_ratio_from_correlation_moment_identity": 1.8340455747972355
+      },
+      "raw_to_residual_transition": {
+        "common_signed_mean_square_reduction": 0.4692051878897101,
+        "decomposition_closure_error": 8.326672684688674e-17,
+        "fraction_of_net_mean_square_reduction_from_common_signed_mean": 1.047497340052799,
+        "fraction_of_net_mean_square_reduction_from_pair_dispersion": -0.04749734005279881,
+        "mean_squared_correlation_reduction": 0.4479297177652593,
+        "pairwise_correlation_dispersion_reduction": -0.02127547012445072,
+        "pr_expansion_ratio": 5.072345022693858,
+        "pr_increase": 7.468866367919217
+      },
+      "residual_correlation_moments": {
+        "maximum_absolute_moment_identity_error": 1.3877787807814457e-17,
+        "maximum_absolute_pr_identity_error": 0.0,
+        "mean_offdiagonal_correlation": 0.0029459423675794556,
+        "mean_square_plus_variance": 0.08673725276092119,
+        "mean_squared_offdiagonal_correlation": 0.0867372527609212,
+        "n_targets": 44,
+        "pairwise_correlation_variance": 0.0867285741844881,
+        "participation_ratio": 9.302911942716452,
+        "participation_ratio_from_correlation_moment_identity": 9.302911942716452
+      },
+      "support_rule": "all 12,651 analyzable ligands",
+      "uniform_axis": {
+        "angle_from_uniform_degrees": 14.112002933227457,
+        "cosine_pc1_with_uniform_vector": 0.9698209589225477,
+        "leading_eigenvalue": 32.249779199308605,
+        "n_targets": 44,
+        "negative_pc1_loadings": 1,
+        "pc1_variance_fraction": 0.7329495272570138,
+        "positive_pc1_loadings": 43,
+        "squared_cosine_pc1_with_uniform_vector": 0.94055269236545,
+        "uniform_rayleigh_as_fraction_of_pc1_eigenvalue": 0.9443367150835226,
+        "uniform_rayleigh_identity_error": 0.0,
+        "uniform_vector_rayleigh_quotient": 30.454650551244004,
+        "uniform_vector_variance_fraction": 0.6921511488919092
+      },
+      "variance_reweighting": {
+        "correlation_pr_expansion_ratio": 5.072345022693858,
+        "covariance_pr_expansion_ratio": 3.6088024723214867,
+        "raw_correlation_pr": 1.8340455747972353,
+        "raw_covariance_pr": 1.9151488500595006,
+        "residual_correlation_pr": 9.302911942716452,
+        "residual_correlation_pr_over_covariance_pr": 1.34602542853799,
+        "residual_covariance_pr": 6.911393904958378,
+        "residual_target_sd_coefficient_of_variation": 0.45762854826267463
+      }
+    }
+  },
+  "descriptor_names": [
+    "heavy_atoms",
+    "molecular_weight",
+    "labute_asa",
+    "tpsa",
+    "clogp",
+    "rotatable_bonds",
+    "ring_count"
+  ],
+  "dockstring_box_size_control": {
+    "configuration_source": "dockstring 0.3.4 packaged target configurations",
+    "interpretation": "Box volume is nearly invariant by design and therefore cannot explain the broad cross-target descriptor-response fingerprint. The single-exception test is included only as an artifact control and has very limited information about geometry.",
+    "official_configuration_pattern": "57 targets use 30 x 30 x 30 A boxes; DRD2 uses 30 x 30 x 32 A",
+    "statistics": [
+      {
+        "descriptor": "heavy_atoms",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.41379310344827586,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "unscaled_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.13846111042157372
+      },
+      {
+        "descriptor": "molecular_weight",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.4482758620689655,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "unscaled_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.13054904696891237
+      },
+      {
+        "descriptor": "labute_asa",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.41379310344827586,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "unscaled_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.13846111042157372
+      },
+      {
+        "descriptor": "tpsa",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.9655172413793104,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "unscaled_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.011868095178992033
+      },
+      {
+        "descriptor": "clogp",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.10344827586206896,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "unscaled_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.20966968149552592
+      },
+      {
+        "descriptor": "rotatable_bonds",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.41379310344827586,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "unscaled_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.13846111042157372
+      },
+      {
+        "descriptor": "ring_count",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.27586206896551724,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "unscaled_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.17010936423221915
+      },
+      {
+        "descriptor": "heavy_atoms",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.41379310344827586,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "target_standardized_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.13846111042157372
+      },
+      {
+        "descriptor": "molecular_weight",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.4482758620689655,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "target_standardized_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.13054904696891237
+      },
+      {
+        "descriptor": "labute_asa",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.41379310344827586,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "target_standardized_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.13846111042157372
+      },
+      {
+        "descriptor": "tpsa",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.9655172413793104,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "target_standardized_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.011868095178992033
+      },
+      {
+        "descriptor": "clogp",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.1724137931034483,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "target_standardized_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.19384555459020322
+      },
+      {
+        "descriptor": "rotatable_bonds",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.4482758620689655,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "target_standardized_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.13054904696891237
+      },
+      {
+        "descriptor": "ring_count",
+        "distinct_target_label_placements": 58,
+        "exact_two_sided_p": 0.3103448275862069,
+        "null_q025": -0.2142191179808062,
+        "null_q975": 0.21421911798080617,
+        "residual_scaling": "target_standardized_two_way_residual",
+        "spearman_rho_box_volume_vs_target_descriptor_slope": -0.16219730077955782
+      }
+    ],
+    "unique_box_volumes": [
+      27000.0,
+      28800.0
+    ]
+  },
+  "exploratory_pocket_volume": {
+    "analysis_status": "exploratory_post_hoc",
+    "directional_interpretation": "Vina scores are negative-favorable; a negative association is consistent with larger pockets assigning a more favorable marginal size slope",
+    "family_rank_residual_correlation": -0.4143916673979419,
+    "leave_one_family_rho_range": [
+      -0.671635150166852,
+      -0.5691844919786097
+    ],
+    "leave_one_target_rho_range": [
+      -0.6677871148459383,
+      -0.5784313725490197
+    ],
+    "maximum_absolute_two_way_slope_identity_error": 3.3306690738754696e-16,
+    "n_targets_with_complete_pocket_volume": 36,
+    "pocket_volume_vs_conditional_mw_slope_spearman_rho": -0.5863577863577865,
+    "pocket_volume_vs_residual_mw_slope_spearman_rho": -0.6126126126126126,
+    "provenance_limitation": "The frozen pocket table is attributed to descriptors derived from wwPDB structures, but the release does not contain an executable, versioned workflow defining the pockets and generating volume/area/depth fields. This analysis is therefore not an independently reproducible structural validation and must remain exploratory until the descriptors are rebuilt with documented software and parameters.",
+    "replication_boundary": "No harmonized DOCKSTRING pocket-volume table is included; independent cross-panel replication is still required.",
+    "selection_and_multiplicity_caveat": "This target-level association was selected after inspection of the descriptor--residual-mode alignment. P values are descriptive and are not adjusted for the broader exploratory hypothesis search.",
+    "target_bootstrap_95_interval": [
+      -0.7880698031842119,
+      -0.3482803824552877
+    ],
+    "target_bootstrap_replicates_finite": 5000,
+    "target_bootstrap_replicates_requested": 5000,
+    "target_label_permutation_two_sided_p": 8.99991000089999e-05,
+    "target_label_permutations": 100000,
+    "within_family_permutation_two_sided_p": 0.0456954304569543,
+    "within_family_permutations": 10000
+  },
+  "input_contracts": {
+    "docking44": {
+      "path": "data/frozen/df_final_v4.csv.gz",
+      "sha256": "25436e49b9fc80421d8499ef289ed8ef00b4ab35b904c7d930fc377f493e1d51"
+    },
+    "dockstring58": {
+      "path": "data/frozen/dockstring-dataset.tsv.gz",
+      "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+    },
+    "pocket_descriptors": {
+      "path": "data/frozen/toxicodynamics/data/44pockets_analysis.csv",
+      "sha256": "23895ada5d71a2121540f9f010c82949000efe2b66a5ef207a067f3bf63d46ec"
+    },
+    "target_families": {
+      "path": "data/target_families.csv",
+      "sha256": "bc313ba0d28d7de7981a67c0088d44cb7cdd86c09e7b319bfb2e609040e3c9a6"
+    }
+  },
+  "output_contracts": {
+    "correlation_moment_decomposition.csv": {
+      "path": "results/residual_mechanism/correlation_moment_decomposition.csv",
+      "rows": 4,
+      "sha256": "4f35eca873cc4a205c14010fe10ff017c924ada78200e725687deecf4bccf103"
+    },
+    "cross_panel_descriptor_concordance.csv": {
+      "path": "results/residual_mechanism/cross_panel_descriptor_concordance.csv",
+      "rows": 80,
+      "sha256": "2801e6c16b84a1f2d06ba3663c80001c8ebfbc135e32862609b5fc3554b49868"
+    },
+    "cross_panel_descriptor_fingerprint.csv": {
+      "path": "results/residual_mechanism/cross_panel_descriptor_fingerprint.csv",
+      "rows": 560,
+      "sha256": "031c1fb442e81c60e30a42f88668370cece3ddc2cf66de191085766e54223d53"
+    },
+    "cross_panel_support_audit.csv": {
+      "path": "results/residual_mechanism/cross_panel_support_audit.csv",
+      "rows": 3,
+      "sha256": "d83348ee09464d73d64f53b55393514d77246c546b20c587d77aeb75fc78a6eb"
+    },
+    "cross_panel_target_identity_assignment.csv": {
+      "path": "results/residual_mechanism/cross_panel_target_identity_assignment.csv",
+      "rows": 9,
+      "sha256": "6c227e01ad91d2f05d265db482f7549621073204bea90d1dfd01487a134d32fb"
+    },
+    "cross_panel_target_identity_retrieval_sensitivity.csv": {
+      "path": "results/residual_mechanism/cross_panel_target_identity_retrieval_sensitivity.csv",
+      "rows": 14,
+      "sha256": "5cf3203b8fbd39ac718c995b7d2f7f1d1e19068f524243269bb7de1d4ebdda40"
+    },
+    "cross_panel_target_mapping.csv": {
+      "path": "results/residual_mechanism/cross_panel_target_mapping.csv",
+      "rows": 9,
+      "sha256": "ccaa1e43369246a333462712ad869d3d52111e3f1bb6a7c18f340ed4903e69d3"
+    },
+    "dataset_metrics.csv": {
+      "path": "results/residual_mechanism/dataset_metrics.csv",
+      "rows": 2,
+      "sha256": "2671aeb9d1da9388bbd1b2e48d7d76075eba45375eeeed56a1d70e5aa9654dc9"
+    },
+    "descriptor_decomposition.csv": {
+      "path": "results/residual_mechanism/descriptor_decomposition.csv",
+      "rows": 2,
+      "sha256": "1ea90221ca13f93074746bbf31ffb8aa4a69b7dc21efadbc83d48e8136ed4119"
+    },
+    "dockstring_box_size_control.csv": {
+      "path": "results/residual_mechanism/dockstring_box_size_control.csv",
+      "rows": 58,
+      "sha256": "664a85505ace6a6d54ab0bd1c7ba70a54ae8aecdd120025f686258da58ffa647"
+    },
+    "dockstring_box_size_control_statistics.csv": {
+      "path": "results/residual_mechanism/dockstring_box_size_control_statistics.csv",
+      "rows": 14,
+      "sha256": "3bffdd8a336f4eeeb387936fc3ec58a1286dfcde221c6ee83a4a44a3314e68c7"
+    },
+    "family_qap.csv": {
+      "path": "results/residual_mechanism/family_qap.csv",
+      "rows": 6,
+      "sha256": "ac6a440a544e895a964cfdb3558fd63de97821ff8de547268649f4267284e976"
+    },
+    "fold_diagnostics.csv": {
+      "path": "results/residual_mechanism/fold_diagnostics.csv",
+      "rows": 10,
+      "sha256": "892205b1fdede97a4c2e251ec2c5e334e7117ec3b38143559d19c808b4d24cde"
+    },
+    "orthogonal_two_way_anova.csv": {
+      "path": "results/residual_mechanism/orthogonal_two_way_anova.csv",
+      "rows": 12,
+      "sha256": "b420162712973771cefabd6c2d3efa39fd2690e68451e2c689144fcc6ce43f0b"
+    },
+    "pocket_volume_exploratory.csv": {
+      "path": "results/residual_mechanism/pocket_volume_exploratory.csv",
+      "rows": 44,
+      "sha256": "ce276752896d3d454d89968b082d7975b5df335f6fc032e44809fb559fe723b0"
+    },
+    "target_descriptor_r2.csv": {
+      "path": "results/residual_mechanism/target_descriptor_r2.csv",
+      "rows": 102,
+      "sha256": "b92e355960700aa9f358eb6a322cda6554a1e0dc6d54d07907d94ae09668aa00"
+    },
+    "uniform_axis_diagnostics.csv": {
+      "path": "results/residual_mechanism/uniform_axis_diagnostics.csv",
+      "rows": 2,
+      "sha256": "2c53d7b5fa42191ea4a7b80bca0db8b82a2ef7caa62513483f6343053fa94f7d"
+    },
+    "variance_reweighting.csv": {
+      "path": "results/residual_mechanism/variance_reweighting.csv",
+      "rows": 2,
+      "sha256": "d000aa91d1e82a938f7ccc60b156211a65226b2db648ab762bdb0b6b27c48c33"
+    }
+  }
+}

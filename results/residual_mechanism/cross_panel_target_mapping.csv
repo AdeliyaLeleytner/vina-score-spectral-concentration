@@ -1,0 +1,10 @@
+docking44_target,dockstring_target,human_uniprot_accession,docking44_structure_uniprot_accession,docking44_structure_species,same_receptor_structure_in_dockstring,docking44_structure_is_human,mapping_basis,target_selection_used_score_outcomes
+1m2z,NR3C1,P04150,P04150,Homo sapiens,False,True,PDB-to-UniProt assignment audited with PDBe/SIFTS v2; DOCKSTRING gene symbol mapped to the reviewed human UniProt entry,False
+2rh1,ADRB2,P07550,P07550,Homo sapiens,False,True,PDB-to-UniProt assignment audited with PDBe/SIFTS v2; DOCKSTRING gene symbol mapped to the reviewed human UniProt entry,False
+2vt4,ADRB1,P08588,P07700,Meleagris gallopavo,True,False,PDB-to-UniProt assignment audited with PDBe/SIFTS v2; DOCKSTRING gene symbol mapped to the reviewed human UniProt entry,False
+2ydo,ADORA2A,P29274,P29274,Homo sapiens,False,True,PDB-to-UniProt assignment audited with PDBe/SIFTS v2; DOCKSTRING gene symbol mapped to the reviewed human UniProt entry,False
+3b66,AR,P10275,P10275,Homo sapiens,False,True,PDB-to-UniProt assignment audited with PDBe/SIFTS v2; DOCKSTRING gene symbol mapped to the reviewed human UniProt entry,False
+3ln1,PTGS2,P35354,Q05769,Mus musculus,True,False,PDB-to-UniProt assignment audited with PDBe/SIFTS v2; DOCKSTRING gene symbol mapped to the reviewed human UniProt entry,False
+4ey7,ACHE,P22303,P22303,Homo sapiens,False,True,PDB-to-UniProt assignment audited with PDBe/SIFTS v2; DOCKSTRING gene symbol mapped to the reviewed human UniProt entry,False
+6cm4,DRD2,P14416,P14416,Homo sapiens,True,True,PDB-to-UniProt assignment audited with PDBe/SIFTS v2; DOCKSTRING gene symbol mapped to the reviewed human UniProt entry,False
+6pdj,LCK,P06239,P06239,Homo sapiens,False,True,PDB-to-UniProt assignment audited with PDBe/SIFTS v2; DOCKSTRING gene symbol mapped to the reviewed human UniProt entry,False

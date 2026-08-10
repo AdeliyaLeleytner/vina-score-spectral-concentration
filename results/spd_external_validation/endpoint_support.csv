@@ -1,0 +1,11 @@
+endpoint,threshold_uM,identity,rows_after_endpoint_filter,compounds,cells,targets_with_data,median_target_coverage,median_compound_degree,qualifier_exact_rows,qualifier_right_censored_rows,min_pair_support
+floor_at_bound,,connectivity_key,11126,1925,10972,12,988.0,6.0,938,10188,40
+floor_at_bound,,full_inchikey,11126,1975,11126,12,997.5,6.0,938,10188,40
+censor_aware_binary,10.0,connectivity_key,11095,1925,10941,12,986.5,6.0,938,10157,40
+censor_aware_binary,10.0,full_inchikey,11095,1975,11095,12,996.0,6.0,938,10157,40
+censor_aware_binary,30.0,connectivity_key,8751,1805,8641,12,865.0,4.0,938,7813,40
+censor_aware_binary,30.0,full_inchikey,8751,1851,8751,12,874.0,4.0,938,7813,40
+exact_only,,connectivity_key,938,565,928,12,83.5,1.0,938,0,5
+exact_only,,full_inchikey,938,579,938,12,84.0,1.0,938,0,5
+exact_only,,connectivity_key,938,565,928,12,83.5,1.0,938,0,10
+exact_only,,full_inchikey,938,579,938,12,84.0,1.0,938,0,10

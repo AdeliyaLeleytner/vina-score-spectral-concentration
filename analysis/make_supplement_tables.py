@@ -1,640 +1,1584 @@
 #!/usr/bin/env python3
-"""Generate LaTeX tables for the supplementary information from frozen evidence."""
+"""Generate JoC supplementary tables from frozen evidence artifacts.
+
+Only analyses used by the estimand-aware manuscript are included. The output is
+deterministic and contains no hand-entered result values.
+"""
 
 from __future__ import annotations
 
+import csv
 import json
 from pathlib import Path
-
-import pandas as pd
+from typing import Any, Iterable
 
 
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"
+OUT = RESULTS / "supplement_tables.tex"
 
 
-def tex(value: object) -> str:
+def load_json(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text())
+
+
+def esc(value: object) -> str:
     text = str(value)
-    replacements = {
-        "\\": r"\textbackslash{}",
-        "&": r"\&",
-        "%": r"\%",
-        "$": r"\$",
-        "#": r"\#",
-        "_": r"\_",
-        "{": r"\{",
-        "}": r"\}",
-    }
-    for old, new in replacements.items():
+    for old, new in (
+        ("\\", r"\textbackslash{}"),
+        ("&", r"\&"),
+        ("%", r"\%"),
+        ("$", r"\$"),
+        ("#", r"\#"),
+        ("_", r"\_"),
+        ("{", r"\{"),
+        ("}", r"\}"),
+    ):
         text = text.replace(old, new)
     return text
 
 
-def main() -> None:
-    evidence = json.loads((RESULTS / "evidence_summary.json").read_text())
-    datasets = pd.read_csv(RESULTS / "dataset_summary.csv")
-    arms = pd.read_csv(RESULTS / "dti_primary_arms.csv")
-    all_arms = pd.read_csv(RESULTS / "dti_all_scorers_sensitivity.csv")
-    lines: list[str] = []
+def f(value: float | int | None, digits: int = 3) -> str:
+    if value is None:
+        return "--"
+    return f"{float(value):.{digits}f}"
 
-    lines.extend([
-        r"\begin{landscape}",
-        r"\begin{table}[p]",
-        r"\centering\scriptsize",
-        r"\setlength{\tabcolsep}{3pt}",
-        r"\caption{\textbf{Dataset and preprocessing summary.} PR denotes participation-ratio effective dimension. Listed procedures quantify sensitivity within the observed chemical and target panels, not superpopulation uncertainty.}",
-        r"\label{tab:s1datasets}",
-        r"\begin{tabular}{p{2.9cm}p{2.3cm}rrrp{4.4cm}rrrp{3.8cm}}",
-        r"\toprule",
-        r"Matrix & scorer / source & $N$ & $P$ & missing & preprocessing & column-standardized PR & residual PR & entropy rank & uncertainty \\",
-        r"\midrule",
-    ])
-    for row in datasets.itertuples(index=False):
-        lines.append(
-            f"{tex(row.dataset)} & {tex(row.score_or_scorer)} & {row.n_ligands:,} & "
-            f"{row.n_targets} & {100 * row.missing_fraction_before_preprocessing:.3f}\\% & "
-            f"{tex(row.preprocessing)} & {row.raw_pr:.3f} & {row.interaction_pr:.3f} & "
-            f"{row.raw_entropy_rank:.3f} & {tex(row.uncertainty)} \\\\"
-        )
-    lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}", r"\end{landscape}", ""])
 
-    prep = evidence["preprocessing_sensitivity"]
-    panel_rigor = evidence["frozen_source_summaries"]["panel_rigor"]
-    zero_sensitivity = panel_rigor["zero_truncation"]
-    raw = prep["raw_participation_ratio"]
-    interaction = prep["interaction_participation_ratio"]
-    prep_rows = [
-        ("Column standardized", "target-mean imputation (primary)", raw["target_mean_imputation_primary"], "same 12,651 ligands"),
-        ("Column standardized", "target-median imputation", raw["target_median_imputation"], "same support"),
-        ("Column standardized", "complete cases", raw["complete_case"], f"{raw['complete_case_n']:,} ligands; support changes"),
-        ("Column standardized", "primary mean-imputed matrix restricted to complete rows", raw["target_mean_imputed_matrix_restricted_to_complete_case_rows"], "same 9,297-row support; equals complete case"),
-        ("Column standardized", "pairwise-complete Pearson correlation", raw["pairwise_complete_correlation"], "no matrix imputation"),
-        ("Column standardized", "pairwise Spearman correlation", raw["spearman_pairwise_correlation"], "rank correlation"),
-        ("Column standardized", "censored zeros treated as missing", zero_sensitivity["T4_censored_as_missing_meanimpute"]["eff_rank"], "111 cells; target-mean imputation"),
-        ("Column standardized", "exclude ligands with censored zeros", zero_sensitivity["T3_nozero_compounds"]["eff_rank"], f"{zero_sensitivity['T3_nozero_compounds']['n']:,} ligands"),
-        ("Column standardized", "exclude four most-censored targets", zero_sensitivity["T2_drop_top_decile_censored"]["eff_rank"], "changes the target estimand"),
-        ("Residual", "center then standardize (primary)", interaction["center_raw_then_standardize_primary"], "closed-form two-way centering"),
-        ("Residual", "standardize then center", interaction["standardize_then_center"], "order sensitivity"),
-        ("Residual", "robust scale then center", interaction["robust_scale_then_center"], "median/IQR scaling"),
-    ]
-    lines.extend([
-        r"\begin{table}[p]",
-        r"\centering\small",
-        r"\setlength{\tabcolsep}{3pt}",
-        r"\caption{\textbf{Docking-44 preprocessing and censoring sensitivity.} Complete-case and target-exclusion results are not directly comparable because they change chemical or target support.}",
-        r"\label{tab:s2preprocessing}",
-        r"\begin{tabular}{p{2.8cm}p{5.0cm}rp{5.8cm}}",
-        r"\toprule Surface & preprocessing & PR & note \\ \midrule",
-    ])
-    for surface, method, rank, note in prep_rows:
-        lines.append(f"{tex(surface)} & {tex(method)} & {rank:.3f} & {tex(note)} \\\\")
-    lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}", ""])
+def p(value: float | None) -> str:
+    if value is None:
+        return "--"
+    if value < 0.001:
+        return f"{value:.1e}"
+    return f"{value:.3f}"
 
-    exp = evidence["experimental_sensitivity"]
-    blocks = exp["curated_assay_blocks"]["blocks"]
-    imp = exp["missing_data_estimators"]
-    noise = exp["reproducibility_calibrated_noise_injection_74x6"]
-    curated = exp["activity_level_curated_matched_blocks"]
-    paired = evidence["matched_raw_and_interaction_bootstrap"]
-    benchmark = evidence["matched_target_preference_benchmark"]
-    primary_mi = benchmark["multiple_imputation"]["participation_ratio"]
-    physchem = exp["matched_physicochemical_residualization"]
-    exp_rows = [
-        ("ChEMBL all endpoints, frozen refetch A", blocks["all_types"]["n_compounds"], blocks["all_types"]["n_targets"], blocks["all_types"]["eff_rank_KNN"], "already human-only; KNN; 52.9% missing"),
-        ("human binding Ki/Kd", blocks["Ki_Kd_human_binding"]["n_compounds"], blocks["Ki_Kd_human_binding"]["n_targets"], blocks["Ki_Kd_human_binding"]["eff_rank_KNN"], "assay type B; KNN"),
-        ("IC50/EC50", blocks["IC50_EC50"]["n_compounds"], blocks["IC50_EC50"]["n_targets"], blocks["IC50_EC50"]["eff_rank_KNN"], "KNN"),
-        ("fully observed sub-block", imp["fully_observed_subblock"]["shape"][0], imp["fully_observed_subblock"]["shape"][1], imp["fully_observed_subblock"]["eff_rank"], "no imputation"),
-        ("matched exact-relation median", curated["all_exact_median"]["n_ligands"], 6, curated["all_exact_median"]["experimental_participation_ratio"], f"same-support docking {curated['all_exact_median']['matched_docking_participation_ratio']:.2f}"),
-        ("matched human binding, all endpoints", curated["human_binding_all_endpoints"]["n_ligands"], 6, curated["human_binding_all_endpoints"]["experimental_participation_ratio"], f"same-support docking {curated['human_binding_all_endpoints']['matched_docking_participation_ratio']:.2f}"),
-        ("matched human binding Ki/Kd", curated["human_binding_Ki_Kd"]["n_ligands"], 6, curated["human_binding_Ki_Kd"]["experimental_participation_ratio"], f"same-support docking {curated['human_binding_Ki_Kd']['matched_docking_participation_ratio']:.2f}"),
-        ("ChEMBL all endpoints, frozen refetch B, KNN5", 212, 22, imp["experimental_eff_rank_by_method"]["knn5"], "different frozen extraction; 52.9% missing"),
-        ("212 x 22, MICE", 212, 22, imp["experimental_eff_rank_by_method"]["multiple_imputation_MICE"]["mean"], "mean across imputations"),
-        ("212 x 22, SoftImpute", 212, 22, imp["experimental_eff_rank_by_method"]["matrix_completion_softimpute"], "low-rank matrix completion"),
-        ("212 x 22, PPCA-EM", 212, 22, imp["experimental_eff_rank_by_method"]["probabilistic_pca_em"], "probabilistic PCA"),
-        ("matched docking + calibrated noise", 74, 6, noise["docking_rank_with_noise_median"], f"95% simulation interval {noise['docking_rank_with_noise_95_interval'][0]:.2f}--{noise['docking_rank_with_noise_95_interval'][1]:.2f}"),
-        ("matched docking + 2.5x calibrated noise", 74, 6, noise["calibrated_noise_multiplier_sweep"]["2.5"]["median_participation_ratio"], "approximately reaches experimental raw PR"),
-        ("matched docking, linear descriptor residual", 74, 6, physchem["linear_residual_participation_ratio"], "seven RDKit descriptors; same support"),
-        ("matched docking, cross-fitted nonlinear residual", 74, 6, physchem["cross_fitted_histgbm_residual_participation_ratio"], "five-fold HistGBM; same support"),
-        ("matched docking residual, exact-relation support", 74, 6, curated["all_exact_median"]["matched_docking_residual_participation_ratio"], "two-way centered"),
-        ("matched experimental residual, exact relation median", 74, 6, curated["all_exact_median"]["experimental_residual_participation_ratio"], "two-way centered; primary curation"),
-        ("matched experimental raw, 100 MICE draws", 74, 6, primary_mi["raw"]["median"], f"95% across imputations {primary_mi['raw']['interval_95'][0]:.2f}--{primary_mi['raw']['interval_95'][1]:.2f}"),
-        ("matched experimental residual, 100 MICE draws", 74, 6, primary_mi["residual"]["median"], f"95% across imputations {primary_mi['residual']['interval_95'][0]:.2f}--{primary_mi['residual']['interval_95'][1]:.2f}"),
-        ("paired raw experiment-docking contrast", 74, 6, paired["raw"]["plugin_difference_experiment_minus_docking"], f"ligand-bootstrap interval {paired['raw']['bootstrap_difference_95_interval'][0]:.2f}--{paired['raw']['bootstrap_difference_95_interval'][1]:.2f}"),
-        ("paired residual experiment-docking contrast", 74, 6, paired["interaction"]["plugin_difference_experiment_minus_docking"], f"ligand-bootstrap interval {paired['interaction']['bootstrap_difference_95_interval'][0]:.2f}--{paired['interaction']['bootstrap_difference_95_interval'][1]:.2f}"),
-    ]
-    exp_groups = [
-        ("assay and complete-support blocks", exp_rows[:7]),
-        ("missing-data and paired-contrast controls", exp_rows[7:11] + exp_rows[17:]),
-        ("noise, descriptor and residual controls", exp_rows[11:17]),
-    ]
-    for group_index, (group_label, group_rows) in enumerate(exp_groups):
-        lines.extend([
-            r"\begin{table}[p]",
-            *([r"\ContinuedFloat"] if group_index else []),
-            r"\centering\small",
+
+def interval(values: Iterable[float], digits: int = 3) -> str:
+    low, high = list(values)
+    return f"{low:.{digits}f}~--~{high:.{digits}f}"
+
+
+def cluster_union(record: dict[str, Any], digits: int = 3) -> str:
+    blocks = []
+    for key in (
+        "scaffold_cluster_bootstrap",
+        "murcko_scaffold_cluster_bootstrap",
+        "murcko_cluster_bootstrap",
+    ):
+        if key in record:
+            blocks.append(record[key]["interval_95"])
+            break
+    if "butina_cluster_bootstrap" in record:
+        blocks.append(record["butina_cluster_bootstrap"]["interval_95"])
+    low = min(block[0] for block in blocks)
+    high = max(block[1] for block in blocks)
+    return interval((low, high), digits)
+
+
+def begin_table(
+    lines: list[str],
+    caption: str,
+    label: str,
+    spec: str,
+    header: str,
+    *,
+    landscape: bool = False,
+    resize: bool = False,
+    size: str = r"\small",
+) -> None:
+    if landscape:
+        lines.append(r"\begin{landscape}")
+    lines.extend(
+        [
+            r"\begin{table}[!htbp]",
+            r"\centering" + size,
+            r"\singlespacing",
             r"\setlength{\tabcolsep}{3pt}",
-            r"\caption{\textbf{Experimental controls: " + group_label
-            + r".} The noise scale was 0.493 pChEMBL, estimated from different-document repeats.}",
-            *([r"\label{tab:s3experiment}"] if group_index == 0 else []),
-            r"\begin{tabular}{p{5.1cm}rrrp{5.7cm}}",
-            r"\toprule Analysis block & $N$ & $P$ & PR & note \\ \midrule",
-        ])
-        for name, n, p, rank, note in group_rows:
-            lines.append(f"{tex(name)} & {n} & {p} & {rank:.3f} & {tex(note)} \\\\")
-        lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}", ""])
+            rf"\caption{{\textbf{{{caption}}}}}",
+            rf"\label{{{label}}}",
+        ]
+    )
+    if resize:
+        # \linewidth expands to the rotated text block inside pdflscape, while
+        # remaining equal to \textwidth for ordinary portrait tables.
+        lines.append(r"\resizebox{\linewidth}{!}{%")
+    lines.extend(
+        [
+            rf"\begin{{tabular}}{{{spec}}}",
+            r"\toprule",
+            header + r" \\",
+            r"\midrule",
+        ]
+    )
 
-    target_uncertainty = evidence["target_panel_uncertainty"]
-    target_rows = []
-    for label, key in [("Docking-44", "docking44_jackknife"),
-                       ("DOCKSTRING-58", "dockstring58_jackknife")]:
-        for surface, surface_label in [("raw", "column-standardized"),
-                                       ("interaction", "two-way-centered residual")]:
-            rec = target_uncertainty[key][surface]
-            target_rows.append((
-                label,
-                surface_label,
-                rec["full_panel_all_ligands"],
-                rec["leave_one_out_min"],
-                rec["leave_one_out_median"],
-                rec["leave_one_out_max"],
-                rec["most_influential_target"],
-            ))
-    parallel = evidence["parallel_analysis_common_protocol"]
-    scaffold = evidence["ligand_sampling_sensitivity"]["dockstring_scaffold_bootstrap"]
-    additive = evidence["additive_main_effect_null"]
-    empirical = evidence["empirical_residual_permutation_null"]
-    row_norm = evidence["row_norm_preserving_residual_null"]
-    lines.extend([
-        r"\begin{table}[htbp]",
-        r"\centering\small",
-        r"\setlength{\tabcolsep}{3pt}",
-        r"\caption{\textbf{Target-panel and chemical-support sensitivities.} Leave-one-target-out values describe composition sensitivity within each observed panel; they are not superpopulation confidence intervals.}",
-        r"\label{tab:s4target}",
-        r"\begin{tabular}{llrrrrl}",
-        r"\toprule Matrix & surface & full PR & LOTO min & LOTO median & LOTO max & target \\ \midrule",
-    ])
-    for label, surface, full, low, median, high, target in target_rows:
-        lines.append(
-            f"{tex(label)} & {tex(surface)} & {full:.3f} & {low:.3f} & {median:.3f} & "
-            f"{high:.3f} & {tex(target)} \\\\"
-        )
-    lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\vspace{5pt}",
-        (r"\parbox{0.94\textwidth}{\footnotesize Family-stratified target subsampling is shown "
-         r"in Fig.~1c,d. The descriptive rank-wise and family-wise-error-controlled simultaneous mode counts "
-         f"were both {parallel['docking44']['raw']['n_modes_above_simultaneous_95pct_envelope']} versus "
-         f"{parallel['docking44']['interaction']['n_modes_above_simultaneous_95pct_envelope']} for Docking-44 and "
-         f"{parallel['dockstring58']['raw']['n_modes_above_simultaneous_95pct_envelope']} versus "
-         f"{parallel['dockstring58']['interaction']['n_modes_above_simultaneous_95pct_envelope']} for DOCKSTRING-58. "
-         f"Across {scaffold['n_supports']} independent {scaffold['support_n']:,}-molecule DOCKSTRING supports, "
-         f"raw point estimates ranged from {scaffold['support_point_estimates']['raw']['minimum']:.3f} to "
-         f"{scaffold['support_point_estimates']['raw']['maximum']:.3f} and residual estimates from "
-         f"{scaffold['support_point_estimates']['residual']['minimum']:.3f} to "
-         f"{scaffold['support_point_estimates']['residual']['maximum']:.3f}; support-specific scaffold intervals "
-         r"are plotted in Fig.~S6. The fitted additive null gave median residual PR dimensions "
-         f"{additive['docking44']['null_residual']['median']:.2f} and "
-         f"{additive['dockstring58']['null_residual']['median']:.2f}, compared with observed values "
-         f"{additive['docking44']['observed']['residual']:.2f} and "
-         f"{additive['dockstring58']['observed']['residual']:.2f}. The empirical residual-permutation null gave "
-         f"medians {empirical['docking44']['null_residual']['median']:.2f} and "
-         f"{empirical['dockstring58']['null_residual']['median']:.2f}. Across 200 matched one-ligand-per-Butina-cluster "
-         f"Docking-44 supports, the observed median was "
-         f"{empirical['docking44']['one_ligand_per_cluster_sensitivity']['observed_residual']['median']:.2f} versus "
-         f"{empirical['docking44']['one_ligand_per_cluster_sensitivity']['matched_empirical_null_residual']['median']:.2f} under permutation. "
-         f"The row-norm-preserving null medians were {row_norm['docking44']['null_residual']['median']:.2f} and "
-         f"{row_norm['dockstring58']['null_residual']['median']:.2f}.}}"),
-        r"\end{table}",
+
+def end_table(
+    lines: list[str], *, landscape: bool = False, resize: bool = False
+) -> None:
+    lines.extend([r"\bottomrule", r"\end{tabular}"])
+    if resize:
+        lines.append("}")
+    lines.append(r"\end{table}")
+    if landscape:
+        lines.append(r"\end{landscape}")
+    lines.append("")
+
+
+def main() -> None:
+    ledger = load_json(RESULTS / "manuscript_evidence.json")
+    legacy = load_json(RESULTS / "evidence_summary.json")
+    descriptor_controls = load_json(
+        RESULTS / "descriptor_rank_matched_controls" / "summary.json"
+    )
+    broad_ranking = load_json(
+        RESULTS / "dockstring_chembl_ranking" / "summary.json"
+    )
+    equivalence_margins = load_json(
+        RESULTS / "equivalence_margin_sensitivity" / "summary.json"
+    )
+    lines: list[str] = [
+        "% Generated by analysis/make_supplement_tables.py; do not edit by hand.",
         "",
-    ])
-
-    expanded = evidence["expanded_target_preference_benchmark"]
-    preference = expanded["primary_all_exact"]
-    dense_preference = evidence["matched_target_preference_benchmark"]
-    pref_rows = [
-        ("absolute Vina", "absolute_vina"),
-        ("docking target prior", "docking_target_prior"),
-        ("external ChEMBL target prior", "experimental_target_prior"),
-        ("cohort experimental target prior (scaffold held out)", "cohort_experimental_target_prior"),
-        ("column-standardized Vina", "column_standardized"),
-        ("two-way residual Vina", "two_way_residual"),
     ]
-    lines.extend([
-        r"\begin{table}[p]",
-        r"\centering\scriptsize",
-        r"\setlength{\tabcolsep}{2pt}",
-        r"\caption{\textbf{Broad-coverage observed-pair ChEMBL target-preference benchmark.} This is reported with the human binding Ki/Kd assay-restricted estimand; both were designated during revision rather than preregistered. Accuracy averages within-ligand pairwise accuracies so that highly profiled ligands do not dominate; predicted score ties receive half credit. Intervals resample Bemis--Murcko scaffold clusters; the cohort experimental prior is fitted with the evaluation ligand's entire scaffold cluster held out. Identity shuffles are reported only for score-based representations.}",
-        r"\label{tab:s5preference}",
-        r"\begin{tabular}{p{3.7cm}>{\centering\arraybackslash}p{1.1cm}>{\centering\arraybackslash}p{1.8cm}>{\centering\arraybackslash}p{1.5cm}>{\centering\arraybackslash}p{1.0cm}>{\centering\arraybackslash}p{3.5cm}}",
-        r"\toprule Representation & accuracy & scaffold 95\% CI & \shortstack{pair-\\weighted} & pairs & identity shuffle: mean / $p$ / cluster median $p$ \\ \midrule",
-    ])
-    for label, key in pref_rows:
-        record = preference["representations"][key]
-        ci = record["scaffold_cluster_bootstrap"]["interval_95"]
-        if "ligand_identity_shuffle_null" in record:
-            shuffled = record["ligand_identity_shuffle_null"]
-            shuffle_text = (
-                f"{shuffled['mean']:.3f} / "
-                f"{shuffled['one_sided_empirical_p_observed_at_least_as_large']:.3f} / "
-                f"{record['one_ligand_per_murcko_cluster_identity_permutation']['one_sided_p_value_across_supports']['median']:.3f}"
+
+    begin_table(
+        lines,
+        "Large-matrix source support, analysis support and spectral summaries. Source missingness is reported before the stated handling; the analyzed matrices are complete after Docking-44 imputation or DOCKSTRING row exclusion.",
+        "tab:s1spectral",
+        r"lrrrrrrrrrr",
+        r"Matrix & source $N$ & analysis $N$ & $P$ & source missing (\%) & raw PR & residual PR & raw PC1 & residual PC1 & raw $\overline{|r|}$ & residual $\overline{|r|}$",
+        landscape=True,
+        size=r"\scriptsize",
+    )
+    for dataset in ("Docking-44", "DOCKSTRING-58"):
+        raw = ledger["spectral"][dataset]["correlation"]["raw"]
+        residual = ledger["spectral"][dataset]["correlation"]["residual"]
+        audit = ledger["large_matrix_input_audits"][dataset]
+        lines.append(
+            f"{dataset} & {audit['release_rows']:,} & {audit['analysis_rows']:,} & "
+            f"{raw['n_targets']} & {100 * audit['source_missing_fraction']:.3f} & "
+            f"{raw['participation_ratio']:.3f} & "
+            f"{residual['participation_ratio']:.3f} & {100 * raw['pc1_fraction']:.1f}\\% & "
+            f"{100 * residual['pc1_fraction']:.1f}\\% & "
+            f"{raw['mean_absolute_offdiagonal_correlation']:.3f} & "
+            f"{residual['mean_absolute_offdiagonal_correlation']:.3f} \\\\"
+        )
+    # Keep the landscape page open so the compact source-support table and the
+    # missing-data table can share one page instead of creating a nearly blank
+    # standalone page.
+    end_table(lines)
+
+    begin_table(
+        lines,
+        "Large-matrix residual-spectrum sensitivity to missing-score and score-clipping handling.",
+        "tab:s2missing",
+        r"p{4.3cm}lrrrp{5.2cm}",
+        r"Method & support & $N$ & $P$ & residual PR & interpretation",
+        size=r"\scriptsize",
+    )
+    for row in ledger["missing_residual_sensitivity"]:
+        support = "all targets" if row["analysis"] == "all_targets" else "without 4mqs"
+        lines.append(
+            f"{esc(row['method'])} & {support} & {row['n_ligands']:,} & {row['n_targets']} & "
+            f"{row['residual_participation_ratio']:.3f} & {esc(row['assumption'])} \\\\"
+        )
+    ds_audit = ledger["large_matrix_input_audits"]["DOCKSTRING-58"]
+    ds_clipping = ds_audit["positive_score_clipping_sensitivity"]
+    lines.append(
+        "retain positive DOCKSTRING scores & complete rows & "
+        f"{ds_audit['analysis_rows']:,} & {ds_audit['targets']} & "
+        f"{ds_clipping['unclipped']['residual_pr']:.3f} & "
+        f"retain {ds_audit['analysis_strictly_positive_cells']:,} positive cells "
+        "instead of clipping them at zero \\\\"
+    )
+    end_table(lines, landscape=True)
+
+    begin_table(
+        lines,
+        "Correlation- and covariance-spectrum sensitivity.",
+        "tab:s3covariance",
+        r"llrrrrrr",
+        r"Matrix & estimand & raw PR & residual PR & raw PC1 (\%) & residual PC1 (\%) & raw PCs$_{90}$ & residual PCs$_{90}$",
+        size=r"\scriptsize",
+    )
+    covariance_rows = ledger["covariance_sensitivity"]
+    for dataset in ("Docking-44", "DOCKSTRING-58"):
+        for estimand in ("correlation", "covariance"):
+            raw = next(
+                x
+                for x in covariance_rows
+                if x["dataset"] == dataset
+                and x["estimand"] == estimand
+                and x["surface"] == "raw"
+            )
+            residual = next(
+                x
+                for x in covariance_rows
+                if x["dataset"] == dataset
+                and x["estimand"] == estimand
+                and x["surface"] == "residual"
+            )
+            lines.append(
+                f"{dataset} & {estimand} & {raw['participation_ratio']:.3f} & "
+                f"{residual['participation_ratio']:.3f} & {100 * raw['pc1_fraction']:.1f} & "
+                f"{100 * residual['pc1_fraction']:.1f} & {raw['pcs_for_90pct']} & "
+                f"{residual['pcs_for_90pct']} \\\\"
+            )
+    end_table(lines)
+
+    begin_table(
+        lines,
+        "Residual null models on fixed 12,000-ligand supports. Within each matrix, all "
+        "three nulls use the identical deterministic ligand support; its SHA-256 row-index "
+        "fingerprint is stored in the machine-readable evidence ledger.",
+        "tab:s4nulls",
+        r"llrrrr",
+        r"Matrix & null & observed residual PR & null median PR & draws & lower-tail $p$",
+        size=r"\scriptsize",
+    )
+    null_specs = (
+        ("additive Gaussian", "additive_main_effect_null"),
+        ("empirical column permutation", "empirical_residual_permutation_null"),
+        ("row-norm preserving", "row_norm_preserving_residual_null"),
+    )
+    for dataset_key, dataset_label in (
+        ("docking44", "Docking-44"),
+        ("dockstring58", "DOCKSTRING-58"),
+    ):
+        for null_label, evidence_key in null_specs:
+            block = legacy[evidence_key][dataset_key]
+            draws = block.get("repeats", block.get("n_repeats", 500))
+            observed = (
+                block["observed"]["residual"]
+                if "observed" in block
+                else block["observed_residual"]
+            )
+            null = block["null_residual"]
+            probability = block["empirical_lower_tail_p_for_residual_pr"]
+            lines.append(
+                f"{dataset_label} & {null_label} & {observed:.3f} & "
+                f"{null['median']:.3f} & {draws} & {p(probability)} \\\\"
+            )
+    end_table(lines)
+
+    target_uncertainty = legacy["target_panel_uncertainty"]
+    begin_table(
+        lines,
+        "Leave-one-target-out spectral composition sensitivity.",
+        "tab:s5target",
+        r"llrrrrl",
+        r"Matrix & surface & full PR & minimum & median & maximum & most influential deletion",
+    )
+    for dataset, key in (
+        ("Docking-44", "docking44_jackknife"),
+        ("DOCKSTRING-58", "dockstring58_jackknife"),
+    ):
+        for surface, label in (("raw", "raw"), ("interaction", "residual")):
+            row = target_uncertainty[key][surface]
+            lines.append(
+                f"{dataset} & {label} & {row['full_panel_all_ligands']:.3f} & "
+                f"{row['leave_one_out_min']:.3f} & {row['leave_one_out_median']:.3f} & "
+                f"{row['leave_one_out_max']:.3f} & {esc(row['most_influential_target'])} \\\\"
+            )
+    end_table(lines)
+
+    begin_table(
+        lines,
+        "Random and family-stratified target-subsampling sensitivity.",
+        "tab:targetSubsampling",
+        r"llrrrrrr",
+        r"Matrix & design & targets & raw median & raw 2.5\% & raw 97.5\% & residual median & residual 2.5--97.5\%",
+        landscape=True,
+        size=r"\scriptsize",
+    )
+    for dataset_key, dataset_label in (
+        ("docking44", "Docking-44"),
+        ("dockstring58", "DOCKSTRING-58"),
+    ):
+        for suffix, design_label in (
+            ("unstratified_subsamples", "random"),
+            ("family_stratified_subsamples", "family-stratified"),
+        ):
+            for row in target_uncertainty[f"{dataset_key}_{suffix}"]:
+                lines.append(
+                    f"{dataset_label} & {design_label} & {row['n_targets']} & "
+                    f"{row['raw']['median']:.3f} & {row['raw']['q025']:.3f} & "
+                    f"{row['raw']['q975']:.3f} & {row['interaction']['median']:.3f} & "
+                    f"{row['interaction']['q025']:.3f}--{row['interaction']['q975']:.3f} \\\\"
+                )
+    end_table(lines, landscape=True)
+
+    fixed = ledger["fixed20_estimand_decomposition"]
+    panel_n = {"DAVIS": 72, "PKIS2": 645, "PKIS1": 360, "KiRHub": 92}
+    begin_table(
+        lines,
+        "Complete docking-by-experimental estimand decomposition on the common 20 kinases. Each $\\Delta_D^{F/M}$ cell gives the full-reference increment followed by the increment on the fixed 15,000-ligand support; $p_L$ denotes the paired target-label QAP for the first and $p_M$ the transformation-matched independent-column null for the second. Differences were calculated from unrounded correlations and can therefore differ slightly from subtraction of the displayed entries.",
+        "tab:s6factorial",
+        r"lrrrrrrrrrrrr",
+        r"Panel & $N$ & $D_R/E_R$ & $D_R/E_C$ & $D_C/E_R$ & $D_C/E_C$ & $\Delta_D^{F/M}\mid E_R$ & $p_L$ & $p_M$ & $\Delta_D^{F/M}\mid E_C$ & $p_L$ & $p_M$ & interaction",
+        resize=True,
+        size=r"\scriptsize",
+    )
+    for panel in ("DAVIS", "PKIS2", "PKIS1", "KiRHub"):
+        row = fixed["panels"][panel]
+        matched = fixed["transformation_matched_independent_column_null"]["panels"][panel]
+        lines.append(
+            f"{panel} & {panel_n[panel]} & {row['docking_raw__experimental_raw']:.3f} & "
+            f"{row['docking_raw__experimental_centered']:.3f} & "
+            f"{row['docking_centered__experimental_raw']:.3f} & "
+            f"{row['docking_centered__experimental_centered']:.3f} & "
+            f"{row['docking_transform_increment_with_raw_experiment']:+.3f}/"
+            f"{matched['raw_experimental_target_geometry']['matched_support_observed_centered_minus_raw_docking']:+.3f} & "
+            f"{row['paired_qap_for_docking_increment_with_raw_experiment']['one_sided_p_positive_delta']:.5f} & "
+            f"{matched['raw_experimental_target_geometry']['p_observed_gain_at_least_as_large']:.5f} & "
+            f"{row['docking_transform_increment_with_centered_experiment']:+.3f}/"
+            f"{matched['two_way_centered_experimental_target_geometry']['matched_support_observed_centered_minus_raw_docking']:+.3f} & "
+            f"{p(row['paired_qap_for_docking_increment']['one_sided_p_positive_delta'])} & "
+            f"{p(matched['two_way_centered_experimental_target_geometry']['p_observed_gain_at_least_as_large'])} & "
+            f"{row['two_factor_interaction_on_spearman_scale']:+.3f} \\\\"
+        )
+    end_table(lines, resize=True)
+
+    begin_table(
+        lines,
+        "Path-dependent allocation of the joint raw/raw-to-centred/centred change.",
+        "tab:s7paths",
+        r"lrrrrrr",
+        r"Panel & joint change & experiment-first $\Delta_E$ & final $\Delta_D$ & sequential $E$ fraction & path-averaged $E$ share & path-averaged $D$ share",
+        size=r"\scriptsize",
+    )
+    for panel in ("DAVIS", "PKIS2", "PKIS1", "KiRHub"):
+        row = fixed["panels"][panel]
+        avg = row["path_averaged_descriptive_attribution"]
+        lines.append(
+            f"{panel} & {row['matched_estimand_total_change']:.3f} & "
+            f"{row['experimental_estimand_increment_with_raw_docking']:.3f} & "
+            f"{row['docking_transform_increment_with_centered_experiment']:.3f} & "
+            f"{100 * row['fraction_of_matched_change_before_docking_centering']:.1f}\\% & "
+            f"{avg['experimental_estimand']:.3f} ({100 * avg['experimental_fraction_of_total']:.1f}\\%) & "
+            f"{avg['docking_transform']:.3f} ({100 * avg['docking_fraction_of_total']:.1f}\\%) \\\\"
+        )
+    end_table(lines)
+
+    reference = ledger["fixed20_reference_sensitivity"]
+    begin_table(
+        lines,
+        "Strict common-20 reference-library sensitivity for centred docking versus centred experiment.",
+        "tab:referenceSupport",
+        r"lrrrr",
+        r"Panel & full 259,579-row reference & same-scaffold-excluded & change & five 15,000-row supports",
+        size=r"\scriptsize",
+    )
+    scaffold_panels = reference["same_cyclic_murcko_exclusion"]["panels"]
+    random_panels = reference["random_reference_supports"]["panels"]
+    for panel in ("DAVIS", "PKIS2", "PKIS1", "KiRHub"):
+        full_value = reference["primary_full_reference"][panel][
+            "centered_docking__centered_experiment"
+        ]
+        support_range = random_panels[panel]["centered_docking__centered_experiment"]
+        if panel in scaffold_panels:
+            scaffold_value = scaffold_panels[panel][
+                "centered_docking__centered_experiment"
+            ]
+            change = scaffold_panels[panel]["centered_delta_from_primary"]
+            scaffold_text = f"{scaffold_value:.3f}"
+            change_text = f"{change:+.4f}"
+        else:
+            scaffold_text = "--"
+            change_text = "--"
+        lines.append(
+            f"{panel} & {full_value:.3f} & {scaffold_text} & {change_text} & "
+            f"{support_range['minimum']:.3f}--{support_range['maximum']:.3f} \\\\"
+        )
+    end_table(lines)
+
+    cross = ledger["experimental_cross_panel"]
+    begin_table(
+        lines,
+        "Four-panel experimental geometry agreement under complementary null models.",
+        "tab:s8experimental",
+        r"p{6.2cm}rrp{5.4cm}",
+        r"Quantity & raw & centred & interpretation",
+        size=r"\scriptsize",
+    )
+    matched_null = cross["transformation_matched_independent_column_null"]
+    lines.append(
+        f"Mean of six pairwise panel concordances & {cross['raw_mean_pairwise_spearman']:.3f} & "
+        f"{cross['centered_mean_pairwise_spearman']:.3f} & "
+        f"absolute centred target-label QAP $p={p(cross['paired_global_network_qap']['centered_global_network_qap_p_positive'])}$; "
+        f"transformation-matched absolute $p={p(matched_null['p_observed_centered_at_least_as_large'])}$ \\\\"
+    )
+    lines.append(
+        f"Centred minus raw & \\multicolumn{{2}}{{c}}{{{cross['centered_minus_raw']:+.3f}}} & "
+        f"global target-label network QAP $p={p(cross['paired_global_network_qap']['paired_global_network_qap_p_positive_gain'])}$; "
+        f"transformation-matched independent-column null $p={p(matched_null['p_observed_gain_at_least_as_large'])}$ \\\\"
+    )
+    lines.append(
+        f"Transformation-matched null mean & {matched_null['null_raw_mean']:.3f} & "
+        f"{matched_null['null_centered_mean']:.3f} & "
+        f"mean mechanical increment {matched_null['null_centered_minus_raw_mean']:+.3f}; "
+        f"its raw baseline is not conditioned on the observed {cross['raw_mean_pairwise_spearman']:.3f} \\\\"
+    )
+    overlap_sensitivity = ledger["kirhub_chemical_overlap_sensitivity"]
+    overlap_count = overlap_sensitivity["overlap_count"]
+    overlap_rho = overlap_sensitivity["after_excluding_overlap"][
+        "geometry_spearman_to_old_three_panel_mean"
+    ]
+    adjusted_rho = overlap_sensitivity["after_excluding_overlap_partial_geometry_qap"][
+        "partial_spearman"
+    ]
+    lines.append(
+        "KiRHub versus mean of DAVIS/PKIS2/PKIS1 & -- & 0.834 & "
+        f"{overlap_rho:.3f} after removing {overlap_count} exact-name overlaps; "
+        f"{adjusted_rho:.3f} after sequence adjustment \\\\"
+    )
+    end_table(lines)
+
+    davis_censoring = ledger["davis_fixed20_censoring_sensitivity"]
+    begin_table(
+        lines,
+        "Censoring-aware DAVIS sensitivity on the fixed kinase panel. Each row compares centred DOCKSTRING target-pair geometry with the stated DAVIS geometry; probabilities use complete target-label permutations. The binary endpoint records whether Kd was measured below the released 10,000-nM limit, not quantitative affinity.",
+        "tab:davisCensoring",
+        r"p{6.1cm}rrr",
+        r"DAVIS representation & targets & Spearman $\rho$ & QAP $p$",
+        size=r"\scriptsize",
+    )
+    continuous = davis_censoring["centered_docking_vs_continuous_davis"]
+    status = davis_censoring["centered_docking_vs_above_floor_status_davis"]
+    lines.append(
+        f"continuous pKd, all targets & {continuous['targets_retained']} & "
+        f"{continuous['spearman']:.3f} & {p(continuous['one_sided_target_label_qap_p_positive'])} \\\\"
+    )
+    lines.append(
+        f"binary above-pKd-5-floor status, all targets & 20 & "
+        f"{status['spearman']:.3f} & {p(status['one_sided_target_label_qap_p_positive'])} \\\\"
+    )
+    for row in davis_censoring["minimum_above_floor_target_sensitivities"]:
+        lines.append(
+            f"continuous pKd; at least {row['minimum_values_above_pkd_floor_per_target']} values above floor per target & "
+            f"{row['targets_retained']} & {row['spearman']:.3f} & "
+            f"{p(row['one_sided_target_label_qap_p_positive'])} \\\\"
+        )
+    end_table(lines)
+
+    locked_pairs_path = RESULTS / "klifs_pocket_control" / "target_pairs.csv"
+    with locked_pairs_path.open(newline="") as handle:
+        locked_pairs = [
+            row
+            for row in csv.DictReader(handle)
+            if row["primary_replicated_positive"] == "True"
+        ]
+    assert len(locked_pairs) == 15
+    begin_table(
+        lines,
+        "Fixed 15-of-190 experimental target-pair endpoint, defined from DAVIS, PKIS2 and PKIS1 before KiRHub inspection; the ordering was not preregistered.",
+        "tab:s9lockedPairs",
+        r"p{1.7cm}p{2.0cm}p{2.5cm}p{1.8cm}p{1.8cm}p{1.8cm}p{1.8cm}",
+        r"Target A & Target B & panels in top decile & DAVIS percentile & PKIS2 percentile & PKIS1 percentile & mean percentile",
+        size=r"\scriptsize",
+    )
+    for row in locked_pairs:
+        lines.append(
+            f"{esc(row['target_a'])} & {esc(row['target_b'])} & "
+            f"{row['number_of_panels_in_top_10_percent']} & "
+            f"{float(row['DAVIS_centered_pair_percentile']):.3f} & "
+            f"{float(row['PKIS2_centered_pair_percentile']):.3f} & "
+            f"{float(row['PKIS1_centered_pair_percentile']):.3f} & "
+            f"{float(row['mean_experimental_centered_pair_percentile']):.3f} \\\\"
+        )
+    end_table(lines)
+
+    structural = ledger["structural_controls"]
+    begin_table(
+        lines,
+        "KiRHub evaluation and structural controls for the fixed 15-of-190 target-pair endpoint. The endpoint was defined before KiRHub inspection but not preregistered. Absolute-predictor rows use target-label QAP. The contrast rows show how the same centred-minus-raw increment is assessed under target-label and transformation-matched nulls; the absolute centred KiRHub predictor also exceeded the transformation-matched null ($p=0.00050$ for both metrics).",
+        "tab:s10structure",
+        r"p{5.3cm}rrrr",
+        r"Quantity & AUROC/value & AUROC null $p$ & AP/value & AP null $p$",
+    )
+    kirhub_metrics = ledger["kirhub_locked_endpoint"]["target_label_qap"]["metrics"]
+    for transform, label in (
+        ("raw", "raw KiRHub experimental geometry"),
+        ("centered", "centred KiRHub experimental geometry"),
+    ):
+        auc = kirhub_metrics["roc_auc"]
+        ap = kirhub_metrics["average_precision"]
+        value_key = f"{transform}_KiRHub_geometry"
+        qap_key = f"{transform}_KiRHub_geometry_target_label_qap_p"
+        lines.append(
+            f"{label} & {auc[value_key]:.3f} & {auc[qap_key]:.5f} & "
+            f"{ap[value_key]:.3f} & {ap[qap_key]:.5f} \\\\"
+        )
+    auc = kirhub_metrics["roc_auc"]
+    ap = kirhub_metrics["average_precision"]
+    holm = ledger["kirhub_locked_endpoint"][
+        "holm_adjusted_centered_minus_raw_gain_p"
+    ]
+    matched_kirhub = matched_null["locked_old_endpoint_validation"]
+    lines.append(
+        f"centred minus raw KiRHub, target-label QAP & "
+        f"{auc['centered_minus_raw_KiRHub_geometry']:+.3f} & "
+        f"{auc['paired_target_label_qap_p_positive_KiRHub_geometry_gain']:.5f} & "
+        f"{ap['centered_minus_raw_KiRHub_geometry']:+.3f} & "
+        f"{ap['paired_target_label_qap_p_positive_KiRHub_geometry_gain']:.5f} \\\\"
+    )
+    lines.append(
+        f"centred minus raw KiRHub, transformation-matched null & "
+        f"{auc['centered_minus_raw_KiRHub_geometry']:+.3f} & "
+        f"{matched_kirhub['roc_auc']['p_observed_gain_at_least_as_large']:.5f} & "
+        f"{ap['centered_minus_raw_KiRHub_geometry']:+.3f} & "
+        f"{matched_kirhub['average_precision']['p_observed_gain_at_least_as_large']:.5f} \\\\"
+    )
+    lines.append(
+        f"Holm-adjusted target-label gain probabilities & -- & {holm['roc_auc']:.5f} & "
+        f"-- & {holm['average_precision']:.5f} \\\\"
+    )
+    for key, label in (
+        ("receptor_domain_sequence_identity", "receptor-domain sequence identity"),
+        ("klifs_pocket_identity", "KLIFS pocket identity"),
+        ("same_klifs_group", "same KLIFS group"),
+        ("same_klifs_family", "same KLIFS family"),
+        ("raw_Vina_target_geometry", "raw Vina geometry"),
+        ("centered_Vina_target_geometry", "centred Vina geometry"),
+    ):
+        row = structural["locked_pair_baselines"][key]
+        lines.append(
+            f"{label} & {row['roc_auc']:.3f} & {p(row['roc_auc_qap_p_positive'])} & "
+            f"{row['average_precision']:.3f} & {p(row['average_precision_qap_p_positive'])} \\\\"
+        )
+    end_table(lines)
+
+    chemical_structure = ledger["exploratory_chemical_domain_structure"]
+    descriptor = chemical_structure["descriptor_residualization"]["datasets"]
+    begin_table(
+        lines,
+        "Chemical-group-held-out predictive decomposition of the residual docking surfaces. Every target offset, residual target scale, descriptor scale and regression coefficient was fitted within the training fold. The seven descriptors were heavy-atom count, molecular weight, Labute ASA, TPSA, cLogP, rotatable-bond count and ring count. The change in mean squared target correlation is predictive, not causal attribution.",
+        "tab:descriptorDecomposition",
+        r"lrrrrrr",
+        r"Matrix & ligands & chemical groups & residual PR before & PR after descriptor removal & mean $r^2$ reduction & residual-PC1 out-of-fold $R^2$",
+        resize=True,
+        size=r"\scriptsize",
+    )
+    for dataset in ("Docking-44", "DOCKSTRING-58"):
+        row = descriptor[dataset]
+        support = row["support"]
+        metrics = row["metrics"]
+        lines.append(
+            f"{dataset} & {support['analysis_ligands']:,} & "
+            f"{support['chemical_groups']:,} & "
+            f"{metrics['out_of_fold_pr_before_descriptor_removal']:.3f} & "
+            f"{metrics['out_of_fold_pr_after_descriptor_removal']:.3f} & "
+            f"{100 * metrics['out_of_fold_relative_mean_squared_target_correlation_reduction']:.1f}\\% & "
+            f"{metrics['out_of_fold_residual_pc1_r2']:.3f} \\\\"
+        )
+    end_table(lines, resize=True)
+
+    transport = ledger["nonvina_scorer_transport"]
+    gauss2 = ledger["vina_fixed_pose_term_attribution"]["term_attribution"][
+        "gauss2"
+    ]
+    begin_table(
+        lines,
+        "Spectral concentration under six non-Vina scoring functions on identical fixed "
+        "DOCKSTRING poses. Every scorer sees the same 2,000-ligand by 9-target pose block; "
+        "only the scoring function changes. The four prediction criteria were fixed before "
+        "the non-Vina scores were inspected: raw PC1 fraction at least 0.50, cosine to the "
+        "uniform target direction at least 0.95 with no negative loading, raw participation "
+        "ratio no greater than half the target count, and a centring-induced participation-"
+        "ratio increase whose 95\\% cluster-bootstrap interval excludes zero. These criteria "
+        "are a weak bar: a one-factor surface with no target identity satisfies all four, so "
+        "meeting them evidences a shared positive ligand axis and nothing finer. Two margins "
+        "sit inside bootstrap noise: released Vina passes the cosine criterion at 0.9501, and "
+        "PLECscore exceeds the participation-ratio threshold at the point estimate with an "
+        "interval that spans it, whereas its PC1 failure holds in every replicate. Scores are "
+        "not clipped, because clipping only the Vina-family columns would be asymmetric. "
+        "On a separate 512-ligand fixed-pose within-Vina attribution, gauss2 supplied "
+        f"{gauss2['shared_row_axis_covariance_share']:.3f} of the shared-axis covariance "
+        f"and {gauss2['residual_frobenius_inner_product_share']:.3f} of the residual "
+        "Frobenius inner product. These are signed arithmetic attributions without "
+        "resampling uncertainty; term deletion on Vina-selected poses is not an "
+        "independent redocking ablation.",
+        "tab:scorerTransport",
+        r"llrrrrrl",
+        r"Scorer & family & raw PC1 & raw PR & centred PR & PR increase & uniform cosine & "
+        r"criteria met",
+        size=r"\scriptsize",
+        resize=True,
+    )
+    for scorer in (
+        "released_vina",
+        "smina_vina",
+        "vinardo",
+        "rfscore_v1",
+        "rfscore_v2",
+        "rfscore_v3",
+        "nnscore",
+        "plecscore_linear",
+    ):
+        record = transport["observed"][scorer]
+        holds = transport["prediction_outcome"][scorer]["prediction_holds"]
+        family = (
+            "Vina family"
+            if scorer in ("released_vina", "smina_vina")
+            else ("empirical" if scorer == "vinardo" else "machine learned")
+        )
+        lines.append(
+            f"{esc(scorer.replace('_', ' '))} & {family} & "
+            f"{100 * record['raw_pc1_fraction']:.1f}\\% & "
+            f"{record['raw_participation_ratio']:.2f} & "
+            f"{record['row_centered_participation_ratio']:.2f} & "
+            f"{record['participation_ratio_increase']:.2f} & "
+            f"{record['pc1_uniform_cosine']:.4f} & "
+            f"{'all four' if holds else 'PC1 fails'} \\\\"
+        )
+    end_table(lines, resize=True)
+
+    descriptor_metrics = descriptor_controls["predictive_metrics"]
+    descriptor_maps = descriptor_controls["panel_geometry_agreement"]
+    descriptor_arm_labels = (
+        ("physicochemical_7", "physicochemical descriptors"),
+        (
+            "morgan_count_plus_size_rp_7_locked_seed_20260910",
+            "count-Morgan random projection (locked seed)",
+        ),
+        ("stable_hash_nuisance_7", "stable ligand-identity hash nuisance"),
+    )
+    begin_table(
+        lines,
+        "Rank-matched ligand-feature controls on the fixed common-20 kinase support. "
+        "Each seven-dimensional basis receives separate target-specific coefficients in "
+        "five chemical-group-held-out folds. Mean out-of-fold target $R^2$ measures "
+        "held-out predictive performance. Operational reduction is $1-\\overline{r^2}_{\\rm error}/"
+        "\\overline{r^2}_{\\rm observed}$; it is non-additive and is not a share of correlation, "
+        "covariance or variance explained. The four final columns are scale-free Spearman "
+        "agreements between the fitted-component target-correlation map and each experimental "
+        "map over the same 190 edges. The hash arm has negligible held-out predictive performance but "
+        "appreciable map agreement, so component-map agreement alone cannot identify a "
+        "feature-specific mechanism or mediation path.",
+        "tab:descriptorRankMatched",
+        r"p{4.1cm}rrrrrr",
+        r"Seven-dimensional basis & mean OOF target $R^2$ & operational reduction & DAVIS $\rho$ & PKIS2 $\rho$ & PKIS1 $\rho$ & KiRHub $\rho$",
+        size=r"\scriptsize",
+        resize=True,
+    )
+    for arm, label in descriptor_arm_labels:
+        metrics = descriptor_metrics[arm]
+        maps = descriptor_maps[arm]
+        mean_r2 = metrics["mean_out_of_fold_target_r2"]
+        mean_r2_text = (
+            f"${mean_r2 * 1e5:.2f}\\times10^{{-5}}$"
+            if abs(mean_r2) < 1e-4
+            else f"{mean_r2:.4f}"
+        )
+        lines.append(
+            f"{label} & {mean_r2_text} & "
+            f"{100 * metrics['relative_reduction_in_mean_squared_offdiagonal_target_correlation']:.3f}\\% & "
+            f"{maps['DAVIS']:.3f} & {maps['PKIS2']:.3f} & "
+            f"{maps['PKIS1']:.3f} & {maps['KiRHub']:.3f} \\\\"
+        )
+    end_table(lines, resize=True)
+
+    morgan_ensemble = descriptor_controls[
+        "morgan_count_plus_size_rp_7_seed_ensemble"
+    ]
+    morgan_members = morgan_ensemble["members_detail"]
+    morgan_algorithmic = morgan_ensemble["algorithmic_distributions"]
+    nuisance_ensemble = descriptor_controls.get(
+        "physicochemical_row_permutation_nuisance_ensemble"
+    )
+    nuisance_algorithmic = (
+        nuisance_ensemble["algorithmic_seed_distributions"]
+        if nuisance_ensemble is not None
+        else None
+    )
+
+    def minmax_text(values: Iterable[float], *, digits: int = 3) -> str:
+        values = list(values)
+        return interval((min(values), max(values)), digits)
+
+    def nuisance_range(
+        key: str, panel: str | None = None, *, digits: int = 3
+    ) -> str:
+        if nuisance_algorithmic is None:
+            return "--"
+        distribution = (
+            nuisance_algorithmic[key]
+            if panel is None
+            else nuisance_algorithmic[key][panel]
+        )
+        return interval(
+            (distribution["minimum"], distribution["maximum"]), digits
+        )
+
+    begin_table(
+        lines,
+        "Algorithmic basis sensitivity for the rank-matched controls. The count-Morgan "
+        "column spans 20 deterministic unnormalised count-fingerprint projections; the "
+        "row-permuted column spans 20 deterministic permutations of the same standardised "
+        "physicochemical feature cloud, which destroy the ligand--feature assignment. "
+        "Ranges are across fixed seeds, not confidence intervals or chemical-space "
+        "uncertainty. A scale-free component map can remain concordant when held-out "
+        "predictive performance is effectively null because every nuisance basis is projected separately onto "
+        "each target and correlation discards component scale. These rows therefore cannot "
+        "be read as mediation or feature-specific biological attribution.",
+        "tab:descriptorAlgorithmicControls",
+        r"p{5.1cm}rrr",
+        r"Quantity & physicochemical point & count-Morgan 20-seed range & row-permuted-physicochemical 20-seed range",
+        size=r"\scriptsize",
+        resize=True,
+    )
+    mean_r2_values = [
+        member["predictive_metrics"]["mean_out_of_fold_target_r2"]
+        for member in morgan_members
+    ]
+    lines.append(
+        "mean OOF target $R^2$ & "
+        f"{descriptor_metrics['physicochemical_7']['mean_out_of_fold_target_r2']:.3f} & "
+        f"{minmax_text(mean_r2_values)} & "
+        f"{nuisance_range('mean_out_of_fold_target_r2', digits=5)} \\\\"
+    )
+    reduction_distribution = morgan_algorithmic[
+        "relative_reduction_in_mean_squared_offdiagonal_target_correlation"
+    ]["count_morgan_seed_distribution"]
+    lines.append(
+        "operational reduction & "
+        f"{descriptor_metrics['physicochemical_7']['relative_reduction_in_mean_squared_offdiagonal_target_correlation']:.3f} & "
+        f"{interval((reduction_distribution['minimum'], reduction_distribution['maximum']))} & "
+        f"{nuisance_range('relative_reduction_in_mean_squared_offdiagonal_target_correlation', digits=5)} \\\\"
+    )
+    for panel in ("DAVIS", "PKIS2", "PKIS1", "KiRHub"):
+        morgan_distribution = morgan_algorithmic["panel_geometry_agreement"][panel][
+            "count_morgan_seed_distribution"
+        ]
+        lines.append(
+            f"component-map agreement: {panel} & "
+            f"{descriptor_maps['physicochemical_7'][panel]:.3f} & "
+            f"{interval((morgan_distribution['minimum'], morgan_distribution['maximum']))} & "
+            f"{nuisance_range('panel_geometry_agreement', panel)} \\\\"
+        )
+    end_table(lines, resize=True)
+
+    mw_domain = chemical_structure[
+        "low_high_molecular_weight_domain_instability"
+    ]["datasets"]
+    begin_table(
+        lines,
+        "Exploratory low- versus high-molecular-weight transfer of the docking target-pair maps. Parenthesized intervals for the cross-band and descriptor-adjusted contrasts are paired chemical-group bootstrap central 95\\% intervals. Within-band controls split the low- and high-MW restrictions separately, keep whole chemical groups disjoint, and report raw/residual means over 200 MW-stratified repeated splits; their full 2.5--97.5\\% composition-sensitivity ranges are in the accompanying machine-readable CSV and are not population confidence intervals. The size-matched control uses random disjoint supports matching the observed low/high row counts; the MW-matched control uses chemically disjoint supports with closely matched molecular-weight distributions. Descriptor adjustment is five-fold group-held-out and fold-local. The final column gives the residual cross-band range over six independently seeded fixed DOCKSTRING supports and is an algorithmic support sensitivity, not an interval.",
+        "tab:dockingChemicalDomain",
+        r"lrrrrrrrr",
+        r"Matrix & raw cross-band $\rho$ (95\%) & residual cross-band $\rho$ (95\%) & within-low raw/residual & within-high raw/residual & size-matched residual & MW-matched residual & adjusted residual $\rho$ (95\%) & six-seed residual range",
+        landscape=True,
+        size=r"\scriptsize",
+        resize=True,
+    )
+    for dataset in ("Docking-44", "DOCKSTRING-58"):
+        row = mw_domain[dataset]
+        raw = row["raw_surface_geometry"]
+        residual = row["row_centered_residual_geometry"]
+        adjusted = row["strict_descriptor_adjusted_residual_sensitivity"]
+        raw_interval = raw["chemical_group_bootstrap"][
+            "central_95_percent_interval"
+        ]
+        residual_interval = residual["chemical_group_bootstrap"][
+            "central_95_percent_interval"
+        ]
+        adjusted_interval = adjusted[
+            "chemical_group_bootstrap_central_95_percent_interval"
+        ]
+        raw_within = raw["restriction_matched_within_band_reproducibility"]
+        residual_within = residual[
+            "restriction_matched_within_band_reproducibility"
+        ]
+
+        def within_mean_pair(band: str) -> str:
+            key = "mw_stratified_chemical_group_disjoint"
+            raw_mean = raw_within[band][key]["geometry_spearman_mean"]
+            residual_mean = residual_within[band][key]["geometry_spearman_mean"]
+            return f"{raw_mean:.3f}/{residual_mean:.3f}"
+
+        seed_range = row.get("support_seed_sensitivity", {}).get(
+            "geometry_spearman_range"
+        )
+        seed_text = (
+            f"{seed_range[0]:.3f}--{seed_range[1]:.3f}" if seed_range else "--"
+        )
+
+        lines.append(
+            f"{dataset} & {raw['spearman']:.3f} "
+            f"({raw_interval[0]:.3f}--{raw_interval[1]:.3f}) & "
+            f"{residual['spearman']:.3f} "
+            f"({residual_interval[0]:.3f}--{residual_interval[1]:.3f}) & "
+            f"{within_mean_pair('low_mw')} & {within_mean_pair('high_mw')} & "
+            f"{residual['random_disjoint_support_control']['mean']:.3f} & "
+            f"{residual['mw_matched_chemical_group_disjoint_control']['mean']:.3f} & "
+            f"{adjusted['geometry_spearman']:.3f} "
+            f"({adjusted_interval[0]:.3f}--{adjusted_interval[1]:.3f}) & "
+            f"{seed_text} \\\\"
+        )
+    end_table(lines, landscape=True, resize=True)
+
+    descriptor_family = chemical_structure[
+        "post_hoc_descriptor_family_stratification"
+    ]
+    descriptor_labels = {
+        "heavy_atoms": "heavy-atom count",
+        "molecular_weight": "molecular weight",
+        "labute_asa": "Labute ASA",
+        "tpsa": "TPSA",
+        "clogp": "cLogP",
+        "rotatable_bonds": "rotatable bonds",
+        "ring_count": "ring count",
+    }
+    family_labels = {
+        "molecular_size": "molecular size",
+        "polarity": "polarity",
+        "lipophilicity": "lipophilicity",
+        "flexibility": "flexibility",
+        "ring_topology": "ring topology",
+    }
+    begin_table(
+        lines,
+        "Post-hoc descriptor-family sensitivity of residual-map transport. Each row "
+        "compares groups at the inclusive 25th- and 75th-percentile thresholds of one of "
+        "the seven already inspected descriptors on the row-centred residual surface; "
+        "all boundary ties are retained. The common within-dataset MW-matched reference is the "
+        "mean agreement between chemically disjoint supports with closely matched "
+        "molecular-weight distributions; it is not separately descriptor-matched. All 14 "
+        "observed agreements are below that dataset-level reference. The molecular-size family supplies the three lowest "
+        "agreements in both panels, but this descriptive ordering neither identifies a "
+        "unique descriptor mechanism nor constitutes multiplicity-adjusted inference.",
+        "tab:descriptorFamilyStratification",
+        r"lllrrrrrr",
+        r"Matrix & stratifier & family & low/high $N$ & residual PR (low) & residual PR (high) & map $\rho$ & sign flips (\%) & MW-matched control $\rho$",
+        landscape=True,
+        size=r"\scriptsize",
+    )
+    for dataset in ("Docking-44", "DOCKSTRING-58"):
+        dataset_record = descriptor_family["datasets"][dataset]
+        control = dataset_record[
+            "mw_matched_chemical_group_disjoint_control"
+        ]["mean"]
+        for descriptor_name in descriptor_family["descriptor_names_in_order"]:
+            row = dataset_record["descriptor_results"][descriptor_name]
+            lines.append(
+                f"{dataset} & {descriptor_labels[descriptor_name]} & "
+                f"{family_labels[row['family']]} & "
+                f"{row['low_ligands']:,}/{row['high_ligands']:,} & "
+                f"{row['low_domain_residual_participation_ratio']:.2f} & "
+                f"{row['high_domain_residual_participation_ratio']:.2f} & "
+                f"{row['residual_map_spearman']:.3f} & "
+                f"{100 * row['target_pair_sign_flip_fraction']:.1f} & "
+                f"{control:.3f} \\\\"
+            )
+    end_table(lines, landscape=True)
+
+    begin_table(
+        lines,
+        "Continuous Vina association after sequence and pocket adjustment.",
+        "tab:s11partial",
+        r"lrrr",
+        r"Experimental endpoint & partial Spearman & unrestricted QAP $p$ & within-KLIFS-group QAP $p$",
+    )
+    for key, label in (
+        ("three_panel_mean", "mean of DAVIS/PKIS2/PKIS1"),
+        ("KiRHub", "KiRHub"),
+    ):
+        unrestricted = structural["unrestricted_partial_qap"][key]
+        restricted = structural["within_KLIFS_group_partial_qap"][key]
+        lines.append(
+            f"{label} & {unrestricted['partial_spearman']:.3f} & "
+            f"{p(unrestricted['target_label_qap_p_positive'])} & "
+            f"{p(restricted['restricted_qap_p_positive'])} \\\\"
+        )
+    end_table(lines)
+
+    begin_table(
+        lines,
+        "Chemical-support and centering-panel sensitivities.",
+        "tab:s12support",
+        r"lrrrrrr",
+        r"Panel & low/high-MW $\rho$ & random mean & matched $p$ & local-20 $\rho$ & all-58 $\rho$ & all-58 minus local",
+    )
+    centering = ledger["centering_panel_sensitivity"]["experimental_panel_results"]
+    for panel in ("DAVIS", "PKIS2", "PKIS1", "KiRHub"):
+        chemistry = ledger["chemical_context"]["panels"].get(panel)
+        if chemistry:
+            chem_values = (
+                f"{chemistry['observed']['geometry_spearman']:.3f}",
+                f"{chemistry['random_disjoint_null']['mean']:.3f}",
+                p(chemistry["random_disjoint_null"]["lower_tail_monte_carlo_p"]),
             )
         else:
-            shuffle_text = "--"
+            chem_values = ("--", "--", "--")
+        row = centering[panel]
         lines.append(
-            f"{tex(label)} & {record['mean_per_ligand_pairwise_accuracy']:.3f} & "
-            f"{ci[0]:.3f}--{ci[1]:.3f} & {record['pair_weighted_accuracy']:.3f} & "
-            f"{record['evaluated_pairs']:,} & "
-            f"{shuffle_text} \\\\"
+            f"{panel} & {chem_values[0]} & {chem_values[1]} & {chem_values[2]} & "
+            f"{row['local_20_centered_concordance_spearman']:.3f} & "
+            f"{row['all_columns_centered_then_extract_concordance_spearman']:.3f} & "
+            f"{row['all_columns_minus_local_20_concordance']:+.3f} \\\\"
         )
-    residual_column = preference["paired_comparisons"][
-        "two_way_residual_minus_column_standardized"
+    end_table(lines)
+
+    begin_table(
+        lines,
+        "Recovery of each full source-library target map from sampled ligands.",
+        "tab:s13recovery",
+        r"lrrrr",
+        r"Matrix & ligands & mean Spearman & 2.5--97.5\% range & chemical-group-held-out mean",
+    )
+    for dataset in ("Docking-44", "DOCKSTRING-58"):
+        block = ledger["probe_panel_recovery"][dataset]
+        for n in (50, 100, 200, 500, 1000, 2000, 5000):
+            row = block[str(n)]
+            held = block.get(f"chemical_group_holdout_{n}")
+            held_value = (
+                held["mean_geometry_spearman_to_held_out_scaffolds"]
+                if held
+                else None
+            )
+            lines.append(
+                f"{dataset} & {n:,} & {row['geometry_spearman_mean']:.3f} & "
+                f"{row['geometry_spearman_q025']:.3f}--{row['geometry_spearman_q975']:.3f} & "
+                f"{f(held_value)} \\\\"
+            )
+    end_table(lines)
+
+    overlap = ledger["cross_panel_overlap"]
+    begin_table(
+        lines,
+        "Overlap between the two independently sourced Vina panels.",
+        "tab:s14overlap",
+        r"p{7.4cm}rp{6.4cm}",
+        r"Overlap definition & count & boundary",
+    )
+    chemical = overlap["chemical_overlap"]
+    target = overlap["target_overlap"]
+    lines.append(
+        f"full Standard InChIKeys & {chemical['shared_full_standard_inchikeys']:,} & exact structure layer \\\\"
+    )
+    lines.append(
+        f"14-character connectivity blocks & {chemical['shared_connectivity_blocks']:,} & merges stereochemical and protonation suffixes \\\\"
+    )
+    lines.append(
+        f"non-empty Bemis--Murcko scaffolds & {chemical['shared_nonempty_murcko_scaffolds']:,} & scaffold-level chemical overlap \\\\"
+    )
+    lines.append(
+        f"mapped protein identities & {target['mapped_target_identities']} & "
+        f"{target['mapped_human_receptor_identities']} map to human receptors \\\\"
+    )
+    lines.append(
+        f"same receptor structures & {target['same_receptor_structure_used']} & exact structure and chain used in both panels \\\\"
+    )
+    end_table(lines)
+
+    experimental_overlap = ledger["experimental_panel_overlap"]
+    experimental_counts = experimental_overlap["structured_panels"]
+    begin_table(
+        lines,
+        "Chemical overlap among the three experimental panels with released structures. Full keys are recomputed Standard InChIKeys; connectivity is the 14-character block; Murcko intersections exclude empty scaffolds.",
+        "tab:experimentalPanelOverlap",
+        r"lrrrrr",
+        r"Panel pair & $N_A$ & $N_B$ & full keys & connectivity & Murcko",
+        size=r"\scriptsize",
+    )
+    for row in experimental_overlap["pairwise_structural_overlap"]:
+        first = row["first_panel"]
+        second = row["second_panel"]
+        lines.append(
+            f"{first}--{second} & {experimental_counts[first]['ligand_rows']} & "
+            f"{experimental_counts[second]['ligand_rows']} & "
+            f"{row['shared_standard_inchikeys']} & "
+            f"{row['shared_connectivity_blocks']} & "
+            f"{row['shared_nonempty_murcko_scaffolds']} \\\\"
+        )
+    triple = experimental_overlap["three_panel_structural_overlap"]
+    kirhub_boundary = experimental_overlap["KiRHub_boundary"]
+    lines.append(r"\midrule")
+    lines.append(
+        "\\multicolumn{6}{p{14.2cm}}{Three-panel intersection: "
+        f"{triple['shared_standard_inchikeys']} full keys, "
+        f"{triple['shared_connectivity_blocks']} connectivity blocks and "
+        f"{triple['shared_nonempty_murcko_scaffolds']} non-empty Murcko scaffolds. "
+        f"KiRHub has {kirhub_boundary['ligand_rows']} rows but no released structures; "
+        f"{kirhub_boundary['exact_normalized_name_overlap_with_DAVIS']} exact normalized-name overlaps with DAVIS were removed in a sensitivity "
+        f"($\\rho={kirhub_boundary['geometry_spearman_to_DAVIS_PKIS2_PKIS1_mean_after_removing_11_DAVIS_names']:.3f}$). "
+        "No PKIS--KiRHub identity claim is made.} \\\\"
+    )
+    end_table(lines)
+
+    matched = legacy["matched_raw_and_interaction_bootstrap"]
+    begin_table(
+        lines,
+        "Matched 74-ligand by 6-target ChEMBL--docking spectral comparison.",
+        "tab:s15matched",
+        r"p{3.0cm}p{2.0cm}p{2.2cm}p{2.6cm}p{4.3cm}",
+        r"Surface & docking PR & experiment PR & experiment minus docking & paired ligand-bootstrap 95\% interval",
+        size=r"\scriptsize",
+    )
+    for key, label in (
+        ("raw", "column-standardized"),
+        ("interaction", "two-way residual"),
+    ):
+        row = matched[key]
+        lines.append(
+            f"{label} & {row['docking_participation_ratio']:.3f} & "
+            f"{row['experimental_participation_ratio']:.3f} & "
+            f"{row['plugin_difference_experiment_minus_docking']:+.3f} & "
+            f"{interval(row['bootstrap_difference_95_interval'])} \\\\"
+        )
+    end_table(lines)
+
+    broad = broad_ranking["benchmark"]
+    broad_representations = broad["representations"]
+    begin_table(
+        lines,
+        "Broad DOCKSTRING--ChEMBL observed-pair benchmark. The 6,557 retained ligands "
+        "provide at least two observed targets; 6,480 have a non-tied pair and enter the "
+        "mean per-ligand endpoint. The docking and external experimental priors are "
+        "ligand-invariant target means fitted after excluding all evaluation ligands. "
+        "The cohort outcome prior is refitted after excluding each evaluated ligand's "
+        "complete Bemis--Murcko scaffold cluster and is a benchmark-fitted, non-deployable "
+        "reference. Chemical intervals are the conservative union of Murcko- and "
+        "Butina-cluster 95\\% intervals. Target-centred and two-way-centred unscaled scores "
+        "are exactly rank-identical because they differ only by a ligand-wise constant. "
+        "The final row is the paired absolute-Vina-minus-docking-prior contrast on the "
+        "same evaluated ligands, not an additional representation.",
+        "tab:broadRanking",
+        r"p{4.4cm}rrrrrr",
+        r"Representation & mean per-ligand concordance & pair-weighted & top-1 & evaluated ligands & pairs & chemical-cluster 95\% interval",
+        size=r"\scriptsize",
+        resize=True,
+    )
+    broad_representation_labels = (
+        ("docking_target_prior", "ligand-invariant docking target prior"),
+        ("experimental_target_prior", "ligand-invariant external experimental prior"),
+        ("cohort_experimental_target_prior", "scaffold-cross-fitted cohort outcome prior"),
+        ("absolute_vina", "absolute Vina"),
+        ("target_centered_unscaled", "target-centred, unscaled"),
+        ("two_way_centered_unscaled", "two-way-centred, unscaled"),
+        ("column_standardized", "column-standardised Vina"),
+        ("target_centered_residual_scaled", "target-centred, residual-SD scaled"),
+        ("two_way_residual", "scaled two-way residual"),
+    )
+    for key, label in broad_representation_labels:
+        row = broad_representations[key]
+        lines.append(
+            f"{label} & {row['mean_per_ligand_pairwise_accuracy']:.3f} & "
+            f"{row['pair_weighted_accuracy']:.3f} & {row['top1_accuracy']:.3f} & "
+            f"{row['evaluated_ligands']:,} & {row['evaluated_pairs']:,} & "
+            f"{cluster_union(row)} \\\\"
+        )
+    broad_absolute_minus_docking_prior = broad["paired_comparisons"][
+        "absolute_vina_minus_docking_target_prior"
     ]
-    residual_absolute = preference["paired_comparisons"][
+    absolute = broad_representations["absolute_vina"]
+    lines.extend(
+        [
+            r"\midrule",
+            "paired: absolute Vina minus docking target prior & "
+            f"{broad_absolute_minus_docking_prior['plugin_mean_difference']:+.3f} & "
+            f"-- & -- & {absolute['evaluated_ligands']:,} & "
+            f"{absolute['evaluated_pairs']:,} & "
+            f"{cluster_union(broad_absolute_minus_docking_prior)} \\\\"
+        ]
+    )
+    end_table(lines, resize=True)
+
+    endpoint_rows: list[dict[str, Any]] = []
+    broad_headline = broad_ranking["headline_contrasts"][
         "two_way_residual_minus_absolute_vina"
     ]
-    residual_cohort_prior = preference["paired_comparisons"][
-        "two_way_residual_minus_cohort_experimental_target_prior"
+    broad_target_jackknife = broad["target_jackknife_paired_contrasts"][
+        "two_way_residual_minus_absolute_vina"
     ]
-    unscaled_identity = preference["paired_comparisons"][
-        "two_way_centered_unscaled_minus_target_centered_unscaled"
+    endpoint_rows.append(
+        {
+            "label": "all exact-relation endpoints (broad primary)",
+            "retained": broad["n_ligands"],
+            "evaluated": broad_representations["absolute_vina"]["evaluated_ligands"],
+            "targets": broad["n_targets"],
+            "cells": broad["observed_experimental_cells"],
+            "pairs": broad_representations["absolute_vina"]["evaluated_pairs"],
+            "scores": {
+                key: broad_representations[key]["mean_per_ligand_pairwise_accuracy"]
+                for key in ("absolute_vina", "column_standardized", "two_way_residual")
+            },
+            "delta": broad_headline["plugin_mean_difference"],
+            "chemical": broad_headline["conservative_cluster_bootstrap_interval_95"],
+            "target": broad_target_jackknife["jackknife_normal_95_interval"],
+        }
+    )
+    clean_endpoint = broad_ranking["sensitivities"]["human_binding_Ki_Kd"]
+    single_endpoints = broad_ranking["sensitivities"]["single_endpoint"]
+
+    def append_endpoint_row(label: str, block: dict[str, Any]) -> None:
+        support = block["support"]
+        contrast = block["contrasts"]["two_way_residual_minus_absolute_vina"]
+        target_block = block.get("target_jackknife_paired_contrasts")
+        target_interval = (
+            target_block["two_way_residual_minus_absolute_vina"][
+                "jackknife_normal_95_interval"
+            ]
+            if target_block
+            else None
+        )
+        endpoint_rows.append(
+            {
+                "label": label,
+                "retained": support["retained_ligands"],
+                "evaluated": support["evaluated_ligands"],
+                "targets": support["targets"],
+                "cells": support["observed_cells"],
+                "pairs": support["non_tied_within_ligand_pairs"],
+                "scores": block["mean_per_ligand_pairwise_accuracy"],
+                "delta": contrast["plugin_mean_difference"],
+                "chemical": contrast["conservative_cluster_bootstrap_interval_95"],
+                "target": target_interval,
+            }
+        )
+
+    append_endpoint_row("human binding Ki/Kd", clean_endpoint)
+    for endpoint in ("Ki", "Kd", "IC50", "EC50"):
+        append_endpoint_row(f"single endpoint: {endpoint}", single_endpoints[endpoint])
+    kikd_mixing = clean_endpoint["endpoint_mixing_diagnostic"]
+    kikd_pair_counts = kikd_mixing["pair_counts"]
+    kikd_all_fractions = kikd_mixing["fractions_of_all_informative_pairs"]
+    kikd_unambiguous_fractions = kikd_mixing[
+        "fractions_among_endpoint_unambiguous_pairs"
     ]
-    residual_scale_only = preference["representations"][
-        "target_centered_residual_scaled"
+
+    lines.extend(
+        [
+            r"\begin{table}[!htbp]",
+            r"\centering\scriptsize",
+            r"\singlespacing",
+            r"\setlength{\tabcolsep}{4pt}",
+            r"\caption{\textbf{Endpoint-restricted DOCKSTRING--ChEMBL ranking arms.} Every row retains the externally fitted docking transformation and changes only the experimental support/endpoint contract. The contrast is scaled two-way residual minus absolute Vina. Chemical 95\% intervals are conservative unions over Murcko and Butina cluster bootstraps and remain conditional on target labels. Target intervals are delete-one-target jackknife normal approximations for the fixed panel; they address panel composition rather than chemical sampling. Separate Ki, Kd, IC50 and EC50 arms are exploratory and unadjusted for multiplicity. Panel c audits endpoint provenance without changing the human binding Ki/Kd estimand: each cell remains the pooled median over all eligible records, and any pair involving a cell with both Ki and Kd records is reported separately rather than assigned an artificial endpoint label.}",
+            r"\label{tab:endpointRanking}",
+            r"\textbf{a. Support and representation estimates}\par\smallskip",
+            r"\resizebox{\textwidth}{!}{%",
+            r"\begin{tabular}{p{4.3cm}rrrrrrrr}",
+            r"\toprule",
+            r"Endpoint contract & retained & evaluated & targets & cells & pairs & absolute & column-standardised & residual \\",
+            r"\midrule",
+        ]
+    )
+    for row in endpoint_rows:
+        scores = row["scores"]
+        lines.append(
+            f"{row['label']} & {row['retained']:,} & {row['evaluated']:,} & "
+            f"{row['targets']} & {row['cells']:,} & {row['pairs']:,} & "
+            f"{scores['absolute_vina']:.3f} & {scores['column_standardized']:.3f} & "
+            f"{scores['two_way_residual']:.3f} \\\\"
+        )
+    lines.extend(
+        [
+            r"\bottomrule",
+            r"\end{tabular}",
+            "}",
+            r"\par\medskip",
+            r"\textbf{b. Paired scaled-residual-minus-absolute contrasts}\par\smallskip",
+            r"\begin{tabular}{p{5.3cm}rrr}",
+            r"\toprule",
+            r"Endpoint contract & point difference & chemical-cluster 95\% & target-jackknife 95\% \\",
+            r"\midrule",
+        ]
+    )
+    for row in endpoint_rows:
+        target_text = interval(row["target"]) if row["target"] is not None else "--"
+        lines.append(
+            f"{row['label']} & {row['delta']:+.3f} & "
+            f"{interval(row['chemical'])} & {target_text} \\\\"
+        )
+    lines.extend(
+        [
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\par\medskip",
+            (
+                "\\textbf{c. Endpoint provenance of the "
+                f"{kikd_mixing['informative_non_tied_pairs']:,} informative human "
+                "binding Ki/Kd comparisons}\\par\\smallskip"
+            ),
+            r"\begin{tabular}{p{7.2cm}rrr}",
+            r"\toprule",
+            r"Pair category & comparisons & fraction of all & fraction of endpoint-unambiguous \\",
+            r"\midrule",
+            (
+                "same endpoint "
+                f"(Ki--Ki: {kikd_pair_counts['same_endpoint_Ki_Ki']:,}; "
+                f"Kd--Kd: {kikd_pair_counts['same_endpoint_Kd_Kd']:,}) & "
+                f"{kikd_pair_counts['same_endpoint']:,} & "
+                f"{100 * kikd_all_fractions['same_endpoint']:.1f}\\% & "
+                f"{100 * kikd_unambiguous_fractions['same_endpoint']:.1f}\\% \\\\"
+            ),
+            (
+                "mixed endpoint (Ki--Kd) & "
+                f"{kikd_pair_counts['mixed_endpoint_Ki_Kd']:,} & "
+                f"{100 * kikd_all_fractions['mixed_endpoint_Ki_Kd']:.1f}\\% & "
+                f"{100 * kikd_unambiguous_fractions['mixed_endpoint_Ki_Kd']:.1f}\\% \\\\"
+            ),
+            (
+                "involves a cell pooled across Ki and Kd records & "
+                f"{kikd_pair_counts['involves_pooled_Ki_Kd_cell']:,} & "
+                f"{100 * kikd_all_fractions['involves_pooled_Ki_Kd_cell']:.1f}\\% & -- \\\\"
+            ),
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\end{table}",
+            "",
+        ]
+    )
+
+    begin_table(
+        lines,
+        "Post-hoc equivalence-margin decision curves for the residual-minus-absolute "
+        "contrast. No margin was preregistered. The rule declares equivalence only when the "
+        "conservative union of the two chemical-cluster 90\\% intervals lies strictly inside "
+        "$(-\\delta,+\\delta)$. Because the decision curve is monotone in $\\delta$, its first "
+        "passing grid value summarises the full 0.010--0.060 grid in 0.005 increments. These "
+        "rows are sensitivity analyses only: passing a chosen margin does not show identical "
+        "rules or transport beyond the observed within-ligand target comparisons.",
+        "tab:postHocEquivalenceMargins",
+        r"lrrrrp{3.0cm}",
+        r"Benchmark/stratum & point difference & conservative 90\% interval & exact minimum symmetric margin & first passing grid margin & status",
+        size=r"\scriptsize",
+        resize=True,
+    )
+    equivalence_rows = [
+        (name, record, "primary")
+        for name, record in equivalence_margins["benchmarks"].items()
+    ] + [
+        (name.replace("_", " "), record, "outcome-conditioned exploratory")
+        for name, record in equivalence_margins[
+            "secondary_outcome_conditioned_strata"
+        ].items()
     ]
-    target_centered = preference["representations"]["target_centered_unscaled"]
-    same_endpoint = expanded["assay_sensitivities"][
+    for label, record, status in equivalence_rows:
+        first_pass = record["smallest_grid_margin_passing"]
+        first_pass_text = f"{first_pass:.3f}" if first_pass is not None else ">0.060"
+        lines.append(
+            f"{esc(label)} & {record['plugin_mean_difference']:+.3f} & "
+            f"{interval(record['conservative_union_interval_90'])} & "
+            f"{record['smallest_supported_symmetric_margin_90_exact']:.3f} & "
+            f"{first_pass_text} & {status} \\\\"
+        )
+    end_table(lines, resize=True)
+
+    ranking = ledger["ligand_wise_ranking_boundary"]
+    begin_table(
+        lines,
+        "Legacy sparse Docking-44--ChEMBL sensitivity (137 ligands, 38 targets, 691 "
+        "observed cells and 2,522 non-tied pairs). This is retained only to show the "
+        "effect of changing the docking matrix and matched chemical support; it is not the "
+        "primary operational benchmark. The docking and external experimental priors are "
+        "ligand-invariant target means fitted after excluding all evaluation ligands. The "
+        "cohort outcome prior is scaffold-cross-fitted but benchmark-fitted and "
+        "non-deployable. Target-centred and two-way-centred unscaled scores are exactly "
+        "rank-identical because they differ only by a ligand-wise constant.",
+        "tab:legacySparseRanking",
+        r"p{4.0cm}p{2.0cm}p{1.6cm}p{1.3cm}p{1.7cm}p{3.2cm}",
+        r"Representation & mean per-ligand accuracy & pair-weighted & top-1 & evaluated ligands & conservative cluster 95\% interval",
+        size=r"\scriptsize",
+    )
+    representation_labels = (
+        ("docking_target_prior", "ligand-invariant docking target-mean prior"),
+        ("experimental_target_prior", "ligand-invariant external experimental target-mean prior"),
+        ("cohort_experimental_target_prior", "scaffold-cross-fitted cohort outcome prior"),
+        ("absolute_vina", "absolute Vina"),
+        ("target_centered_unscaled", "target-centred, unscaled"),
+        ("two_way_centered_unscaled", "two-way-centred, unscaled"),
+        ("column_standardized", "column-standardized Vina"),
+        ("two_way_residual", "scaled two-way residual"),
+    )
+    for key, label in representation_labels:
+        row = ranking["representations"][key]
+        lines.append(
+            f"{label} & {row['mean_per_ligand_pairwise_accuracy']:.3f} & "
+            f"{row['pair_weighted_accuracy']:.3f} & {row['top1_accuracy']:.3f} & "
+            f"{row['evaluated_ligands']} & {cluster_union(row)} \\\\"
+        )
+    end_table(lines)
+
+    dense = ledger["dense_ligand_wise_benchmarks"]
+    # One 13-column table required aggressive resizing.  Two aligned blocks under
+    # one caption keep support, score estimates and paired contrasts readable in
+    # the landscape PDF at the submitted print size.
+    dense_rows: list[dict[str, Any]] = []
+    for panel in ("DAVIS", "PKIS2"):
+        block = dense[panel]
+        residual_contrast = block["paired_comparisons"][
+            "two_way_residual_minus_absolute_vina"
+        ]
+        prior_contrast = block["paired_comparisons"][
+            "absolute_vina_minus_docking_target_prior"
+        ]
+        offset_contrast = block["paired_comparisons"][
+            "target_centered_unscaled_minus_absolute_vina"
+        ]
+        scale_contrast = block["paired_comparisons"][
+            "target_centered_residual_scaled_minus_target_centered_unscaled"
+        ]
+        row_contrast = block["paired_comparisons"][
+            "two_way_residual_minus_target_centered_residual_scaled"
+        ]
+        residual_interval = cluster_union(residual_contrast["uncertainty"])
+        prior_interval = cluster_union(prior_contrast["uncertainty"])
+        offset_interval = cluster_union(offset_contrast["uncertainty"])
+        scale_interval = cluster_union(scale_contrast["uncertainty"])
+        row_interval = cluster_union(row_contrast["uncertainty"])
+        target_interval = block["target_composition_sensitivity"][
+            "jackknife_bias_corrected_normal_95_interval"
+            if panel == "DAVIS"
+            else "jackknife_normal_95_interval"
+        ]
+        reps = block["representations"]
+        dense_rows.append(
+            {
+                "panel": panel,
+                "support": block["support"],
+                "representations": reps,
+                "residual_contrast": residual_contrast,
+                "residual_interval": residual_interval,
+                "prior_contrast": prior_contrast,
+                "prior_interval": prior_interval,
+                "offset_contrast": offset_contrast,
+                "offset_interval": offset_interval,
+                "target_interval": interval(target_interval),
+                "scale_contrast": scale_contrast,
+                "scale_interval": scale_interval,
+                "row_contrast": row_contrast,
+                "row_interval": row_interval,
+            }
+        )
+
+    lines.extend(
+        [
+            r"\begin{landscape}",
+            r"\begin{table}[!htbp]",
+            r"\centering\scriptsize",
+            r"\singlespacing",
+            r"\setlength{\tabcolsep}{4pt}",
+            r"\caption{\textbf{Dense ligand-wise target-preference benchmarks on exact DOCKSTRING structure matches.} DAVIS excludes exact pKd ties and pairs for which both affinities are at the pKd-5 floor; PKIS2 excludes experimental differences of 10 percentage points or less. Each estimate first averages pairwise concordance within ligand. Chemical-cluster intervals are the union of Murcko- and Butina-cluster 95\% intervals. Target-centred/residual-SD scores apply target offsets and residual scales without ligand-row subtraction; scaled two-way residual scores apply row subtraction before target-specific scaling. Target-jackknife intervals refit all transformation parameters after each target deletion and are descriptive for the fixed 21-target panel.}",
+            r"\label{tab:denseRanking}",
+            r"\textbf{a. Support and representation estimates}\par\smallskip",
+            r"\begin{tabular}{lrrrrrrrrrr}",
+            r"\toprule",
+            "Panel & matched $N$ & evaluated $N$ & targets & within-ligand comparisons & target prior & absolute & column-standardized & target-centred & residual-SD scaled & scaled two-way residual \\\\",
+            r"\midrule",
+        ]
+    )
+    for row in dense_rows:
+        support = row["support"]
+        reps = row["representations"]
+        lines.append(
+            f"{row['panel']} & {support['matched_ligands']} & "
+            f"{support['evaluated_ligands']} & {support['targets']} & "
+            f"{support['evaluated_pairs']:,} & "
+            f"{reps['docking_target_prior']['mean_per_ligand_pairwise_concordance']:.3f} & "
+            f"{reps['absolute_vina']['mean_per_ligand_pairwise_concordance']:.3f} & "
+            f"{reps['column_standardized']['mean_per_ligand_pairwise_concordance']:.3f} & "
+            f"{reps['target_centered_unscaled']['mean_per_ligand_pairwise_concordance']:.3f} & "
+            f"{reps['target_centered_residual_scaled']['mean_per_ligand_pairwise_concordance']:.3f} & "
+            f"{reps['two_way_residual']['mean_per_ligand_pairwise_concordance']:.3f} \\\\"
+        )
+    lines.extend(
+        [
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\par\medskip",
+            r"\textbf{b. Baseline and transformation-path contrasts}\par\smallskip",
+            r"\begin{tabular}{l>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{4.0cm}}",
+            r"\toprule",
+            "Panel & absolute minus target prior & target-offset step minus absolute & residual-SD scaling minus unscaled & ligand-row correction under residual SD & net scaled residual minus absolute \\\\",
+            r"\midrule",
+        ]
+    )
+    for row in dense_rows:
+        residual = row["residual_contrast"]
+        prior = row["prior_contrast"]
+        offset = row["offset_contrast"]
+        scale = row["scale_contrast"]
+        correction = row["row_contrast"]
+        lines.append(
+            f"{row['panel']} & {prior['plugin_mean_difference']:+.3f} "
+            f"({row['prior_interval']}) & "
+            f"{offset['plugin_mean_difference']:+.3f} ({row['offset_interval']}) & "
+            f"{scale['plugin_mean_difference']:+.3f} ({row['scale_interval']}) & "
+            f"{correction['plugin_mean_difference']:+.3f} "
+            f"({row['row_interval']}) & {residual['plugin_mean_difference']:+.3f} "
+            f"({row['residual_interval']}; target jackknife {row['target_interval']}) \\\\"
+        )
+    lines.extend(
+        [
+            r"\bottomrule",
+            r"\end{tabular}",
+            r"\end{table}",
+            r"\end{landscape}",
+            "",
+        ]
+    )
+
+    begin_table(
+        lines,
+        "Exploratory outcome-conditioned strata in the dense target-preference benchmarks. DAVIS both-uncensored pairs compare two above-floor measurements, whereas floor-versus-uncensored pairs primarily test detection against the released pKd-5 floor. The primary PKIS2 both-active stratum requires both activities to be at least 65\\% and preserves the aggregate margin of more than 10 percentage points; the secondary row relaxes only that margin to exact non-ties. Stratum membership uses the experimental outcome, and all intervals are unadjusted for multiplicity; these rows generate hypotheses rather than replace the aggregate estimands.",
+        "tab:denseRankingStrata",
+        r"p{4.1cm}rrrrrr",
+        r"Panel and stratum & ligands & within-ligand comparisons & target prior & absolute & scaled residual & residual minus absolute (cluster 95\%)",
+        size=r"\scriptsize",
+        resize=True,
+    )
+    stratum_rows = (
+        (
+            "DAVIS: both uncensored",
+            dense["DAVIS"]["outcome_conditioned_strata"]["both_uncensored"],
+        ),
+        (
+            "DAVIS: floor versus uncensored",
+            dense["DAVIS"]["outcome_conditioned_strata"]["floor_vs_uncensored"],
+        ),
+        (
+            "PKIS2: both at least 65\\%, difference $>10$",
+            dense["PKIS2"]["outcome_conditioned_strata"]["both_active"],
+        ),
+        (
+            "PKIS2: both at least 65\\%, exact non-tie",
+            dense["PKIS2"]["outcome_conditioned_strata"][
+                "secondary_exact_non_tie_both_active"
+            ],
+        ),
+    )
+    for label, block in stratum_rows:
+        representations = block["representations"]
+        contrast = block["paired_comparisons"][
+            "two_way_residual_minus_absolute_vina"
+        ]
+        contrast_interval = cluster_union(contrast["uncertainty"])
+        absolute = representations["absolute_vina"]
+        lines.append(
+            f"{label} & {absolute['evaluated_ligands']} & "
+            f"{absolute['evaluated_pairs']:,} & "
+            f"{representations['docking_target_prior']['mean_per_ligand_pairwise_concordance']:.3f} & "
+            f"{absolute['mean_per_ligand_pairwise_concordance']:.3f} & "
+            f"{representations['two_way_residual']['mean_per_ligand_pairwise_concordance']:.3f} & "
+            f"{contrast['plugin_mean_difference']:+.3f} ({contrast_interval}) \\\\"
+        )
+    end_table(lines, resize=True)
+
+    ranking_panel = ledger["ranking_centering_panel_sensitivity"]["ranking"]
+    begin_table(
+        lines,
+        "Operational sensitivity to the evaluation-ligand row-mean target panel.",
+        "tab:rankingPanelSensitivity",
+        r"p{4.0cm}p{1.5cm}p{2.7cm}p{2.7cm}p{3.5cm}",
+        r"Quantity & estimate & Murcko 95\% interval & Butina 95\% interval & changed support",
+        size=r"\scriptsize",
+    )
+    lines.append(
+        f"all-44 row-mean accuracy & "
+        f"{ranking_panel['all_44_row_mean']['mean_per_ligand_pairwise_accuracy']:.3f} & "
+        "-- & -- & 137 ligands, 2,522 pairs \\\\"
+    )
+    lines.append(
+        f"local-38 row-mean accuracy & "
+        f"{ranking_panel['local_38_row_mean']['mean_per_ligand_pairwise_accuracy']:.3f} & "
+        "-- & -- & 137 ligands, 2,522 pairs \\\\"
+    )
+    for key, label in (
+        ("local_38_minus_all_44", "local-38 minus all-44"),
+        ("local_38_minus_absolute_vina", "local-38 minus absolute Vina"),
+    ):
+        row = ranking_panel[key]
+        murcko = row["scaffold_cluster_bootstrap"]["interval_95"]
+        butina = row["butina_cluster_bootstrap"]["interval_95"]
+        changed = (
+            f"{ranking_panel['changed_pair_predictions']} pair predictions in "
+            f"{ranking_panel['ligands_with_any_changed_pair_prediction']} ligands"
+            if key == "local_38_minus_all_44"
+            else "same fixed evaluation support"
+        )
+        lines.append(
+            f"{label} & {row['plugin_mean_difference']:+.4f} & "
+            f"{murcko[0]:.4f}--{murcko[1]:.4f} & "
+            f"{butina[0]:.4f}--{butina[1]:.4f} & {changed} \\\\"
+        )
+    end_table(lines)
+
+    expanded = legacy["expanded_target_preference_benchmark"]
+    primary = expanded["primary_all_exact"]
+    human = expanded["assay_sensitivities"]["human_binding_Ki_Kd"]
+    same = expanded["assay_sensitivities"][
         "same_endpoint_pairs_on_fixed_primary_support"
     ]
-    coverage_three = preference["coverage_sensitivity"]["3"]
-    human_binding = expanded["assay_sensitivities"]["human_binding_all_endpoints"]
-    human_kikd = expanded["assay_sensitivities"]["human_binding_Ki_Kd"]
-    human_kikd_residual_absolute = human_kikd["paired_comparisons"][
-        "two_way_residual_minus_absolute_vina"
-    ]
-    same_endpoint_residual_absolute = same_endpoint["paired_comparisons"][
-        "two_way_residual_minus_absolute_vina"
-    ]
-
-    def union_cluster_interval(record: dict) -> tuple[float, float]:
-        intervals = [
-            record["scaffold_cluster_bootstrap"]["interval_95"],
-            record["butina_cluster_bootstrap"]["interval_95"],
-        ]
-        return (
-            min(interval[0] for interval in intervals),
-            max(interval[1] for interval in intervals),
-        )
-
-    same_endpoint_residual_absolute_union = union_cluster_interval(
-        same_endpoint_residual_absolute
+    begin_table(
+        lines,
+        "Assay and coverage sensitivities for the legacy sparse Docking-44--ChEMBL "
+        "benchmark. These rows do not replace the broad DOCKSTRING--ChEMBL primary "
+        "benchmark. For the coverage rows, the scaffold-cross-fitted cohort outcome prior "
+        "is fitted once on the full legacy cohort and the same predictions are evaluated on "
+        "each nested stratum; it is a benchmark reference rather than a deployable rule.",
+        "tab:legacySparseRankingSensitivity",
+        r"p{5.0cm}rrrrrrr",
+        r"Analysis & ligands & pairs & docking prior & cohort prior & absolute & column-standardized & scaled residual",
+        resize=True,
     )
-    human_kikd_residual_absolute_union = union_cluster_interval(
-        human_kikd_residual_absolute
-    )
-    residual_column_union = union_cluster_interval(residual_column)
-    residual_absolute_union = union_cluster_interval(residual_absolute)
-    duplicate_collapsed = same_endpoint["duplicate_collapsed_unique_target_pairs"]
-    broad_target_jackknife = preference["target_jackknife_paired_contrasts"][
-        "two_way_residual_minus_absolute_vina"
-    ]
-    kikd_target_jackknife = human_kikd["target_jackknife_paired_contrasts"][
-        "two_way_residual_minus_absolute_vina"
-    ]
-    dense_absolute = dense_preference["representations"]["absolute_vina"]
-    dense_docking_prior = dense_preference["representations"]["docking_target_prior"]
-    dense_experimental_prior = dense_preference["representations"]["experimental_target_prior"]
-    dense_residual = dense_preference["representations"]["two_way_residual"]
-    dense_standard = dense_preference["representations"]["column_standardized"]
-    lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\vspace{4pt}",
-        (r"\parbox{0.94\textwidth}{\footnotesize The residual-minus-column difference was "
-         f"{residual_column['plugin_mean_difference']:+.3f} with a union of cluster-bootstrap intervals "
-         f"{residual_column_union[0]:.3f}--"
-         f"{residual_column_union[1]:.3f}; its conservative Murcko/Butina "
-         f"90\\% interval was {residual_column['post_hoc_equivalence_sensitivity']['conservative_cluster_bootstrap_interval_90'][0]:.3f}--"
-         f"{residual_column['post_hoc_equivalence_sensitivity']['conservative_cluster_bootstrap_interval_90'][1]:.3f}. "
-         f"The residual-minus-absolute difference was {residual_absolute['plugin_mean_difference']:+.3f} "
-         f"({residual_absolute_union[0]:.3f}--"
-         f"{residual_absolute_union[1]:.3f}); its conservative 90\\% interval was "
-         f"{residual_absolute['post_hoc_equivalence_sensitivity']['conservative_cluster_bootstrap_interval_90'][0]:.3f}--"
-         f"{residual_absolute['post_hoc_equivalence_sensitivity']['conservative_cluster_bootstrap_interval_90'][1]:.3f}. "
-         f"Post hoc equivalence was not established at $\\pm0.02$ for either contrast or at $\\pm0.05$ for residual versus absolute; "
-         f"residual versus column-standardized met only the liberal $\\pm0.05$ criterion. Unscaled target-centered and two-way-centered "
-         f"representations were rank-identical at accuracy {target_centered['mean_per_ligand_pairwise_accuracy']:.3f} "
-         f"(difference {unscaled_identity['plugin_mean_difference']:+.3f}); residual-target scaling alone gave "
-         f"{residual_scale_only['mean_per_ligand_pairwise_accuracy']:.3f}. On fixed support and same-endpoint pairs, absolute, "
-         f"column-standardized and residual accuracies were "
-         f"{same_endpoint['representations']['absolute_vina']['mean_per_ligand_pairwise_accuracy']:.3f}, "
-         f"{same_endpoint['representations']['column_standardized']['mean_per_ligand_pairwise_accuracy']:.3f} and "
-         f"{same_endpoint['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f}; the residual-minus-absolute "
-         f"cluster-interval union was {same_endpoint_residual_absolute_union[0]:.3f}--{same_endpoint_residual_absolute_union[1]:.3f}. "
-         f"On human binding Ki/Kd, residual accuracy was {human_kikd['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f} "
-         f"and residual minus absolute was {human_kikd_residual_absolute_union[0]:.3f}--{human_kikd_residual_absolute_union[1]:.3f}. "
-         f"Leave-one-target-out residual-minus-absolute differences ranged from {broad_target_jackknife['minimum']:.3f} to "
-         f"{broad_target_jackknife['maximum']:.3f} on broad support and {kikd_target_jackknife['minimum']:.3f} to "
-         f"{kikd_target_jackknife['maximum']:.3f} on Ki/Kd support. Duplicate-collapsed same-endpoint accuracies were "
-         f"{duplicate_collapsed['representations']['absolute_vina']['mean_per_ligand_pairwise_accuracy']:.3f}, "
-         f"{duplicate_collapsed['representations']['column_standardized']['mean_per_ligand_pairwise_accuracy']:.3f} and "
-         f"{duplicate_collapsed['representations']['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f}.}}"),
-        r"\end{table}",
-        "",
-    ])
-
-    assay_table_rows = [
+    rows = [
+        (
+            "all exact-relation endpoints",
+            primary,
+            primary["n_ligands"],
+            ranking["representations"]["absolute_vina"]["evaluated_pairs"],
+        ),
         (
             "human binding Ki/Kd",
-            human_kikd["representations"]["absolute_vina"]["evaluated_ligands"],
-            human_kikd["representations"]["absolute_vina"]["evaluated_pairs"],
-            human_kikd["representations"],
+            human,
+            human["n_ligands"],
+            human["representations"]["absolute_vina"]["evaluated_pairs"],
         ),
         (
             "same endpoint, equal endpoint weight",
-            same_endpoint["representations"]["absolute_vina"]["evaluated_ligands"],
-            same_endpoint["fixed_support"]["endpoint_specific_pair_instances"],
-            same_endpoint["representations"],
+            same,
+            same["representations"]["absolute_vina"]["evaluated_ligands"],
+            same["fixed_support"]["endpoint_specific_pair_instances"],
         ),
     ]
-    for endpoint, endpoint_block in same_endpoint["by_endpoint"].items():
-        assay_table_rows.append((
-            f"{endpoint} only",
-            endpoint_block["representations"]["absolute_vina"]["evaluated_ligands"],
-            endpoint_block["representations"]["absolute_vina"]["evaluated_pairs"],
-            endpoint_block["representations"],
-        ))
-    assay_table_rows.append((
-        "same endpoint, duplicate-collapsed pairs",
-        duplicate_collapsed["evaluated_ligands"],
-        duplicate_collapsed["unique_ligand_target_pair_instances"],
-        duplicate_collapsed["representations"],
-    ))
-    lines.extend([
-        r"\begin{table}[p]",
-        r"\ContinuedFloat",
-        r"\centering\small",
-        r"\caption{\textbf{Assay-restricted and endpoint-specific operational estimands.} Endpoint-only rows can be very small and are descriptive. The duplicate-collapsed row gives every unique ligand--target-pair one contribution after averaging eligible endpoint strata.}",
-        r"\begin{tabular}{p{5.2cm}rrrrr}",
-        r"\toprule Analysis & ligands & pairs & absolute & column-standardized & residual \\ \midrule",
-    ])
-    for label, n_ligands, n_pairs, representations in assay_table_rows:
-        lines.append(
-            f"{tex(label)} & {n_ligands:,} & {n_pairs:,} & "
-            f"{representations['absolute_vina']['mean_per_ligand_pairwise_accuracy']:.3f} & "
-            f"{representations['column_standardized']['mean_per_ligand_pairwise_accuracy']:.3f} & "
-            f"{representations['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f} \\\\"
+    for label, block, n_ligands, n_pairs in rows:
+        reps = block["representations"]
+        docking_prior = (
+            f"{reps['docking_target_prior']['mean_per_ligand_pairwise_accuracy']:.3f}"
+            if "docking_target_prior" in reps
+            else "--"
         )
-    lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}", ""])
-
-    lines.extend([
-        r"\begin{table}[htbp]",
-        r"\centering\scriptsize",
-        r"\setlength{\tabcolsep}{3pt}",
-        r"\caption{\textbf{All 20 exploratory DTI scorer arms.} Plot IDs identify points in Fig.~S5. The above-chance flag is outcome-related and is not used to define this complete panel.}",
-        r"\label{tab:s6all20}",
-        r"\begin{tabular}{rllrrrrr}",
-        r"\toprule ID & arm & above chance & affinity $r$ & column-standardized PR & residual PR & P@5 & AUPRC \\ \midrule",
-    ])
-    for plot_id, row in enumerate(all_arms.itertuples(index=False), start=1):
-        lines.append(
-            f"{plot_id} & {tex(row.arm)} & {'yes' if row.clears_chance else 'no'} & "
-            f"{row.affinity_pearson:.3f} & {row.raw_effective_rank:.2f} & "
-            f"{row.interaction_effective_rank:.2f} & {row.selectivity_p_at_5:.3f} & "
-            f"{row.selectivity_auprc:.3f} \\\\"
+        cohort_prior = (
+            f"{reps['cohort_experimental_target_prior']['mean_per_ligand_pairwise_accuracy']:.3f}"
+            if "cohort_experimental_target_prior" in reps
+            else "--"
         )
-    lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}", ""])
-
-    arm_to_id = {arm: plot_id for plot_id, arm in enumerate(all_arms.arm, start=1)}
-    lines.extend([
-        r"\begin{landscape}",
-        r"\scriptsize",
-        r"\begin{longtable}{rp{4.5cm}p{5.3cm}p{5.4cm}p{5.0cm}}",
-        r"\caption{\textbf{Provenance for the outcome-restricted 12-arm DTI sensitivity panel.} DAVIS OOF denotes six-fold GroupKFold by target; KIBA transfer denotes zero-shot evaluation on DAVIS after KIBA training. Metrics are listed for all arms in Table~S6.}\label{tab:s7dti}\\",
-        r"\toprule",
-        r"ID & arm & representation / head & training and evaluation & caveat \\",
-        r"\midrule",
-        r"\endfirsthead",
-        r"\multicolumn{5}{l}{\textit{Supplementary Table S7 continued}}\\",
-        r"\toprule",
-        r"ID & arm & representation / head & training and evaluation & caveat \\",
-        r"\midrule",
-        r"\endhead",
-        r"\midrule \multicolumn{5}{r}{\textit{continued on next page}}\\",
-        r"\endfoot",
-        r"\bottomrule",
-        r"\endlastfoot",
-    ])
-    for row in arms.itertuples(index=False):
         lines.append(
-            f"{arm_to_id[row.arm]} & {tex(row.display_name)} & {tex(row.representation_and_head)} & "
-            f"{tex(row.training_data)}; {tex(row.evaluation_regime)} & {tex(row.caveat)} \\\\"
+            f"{label} & {n_ligands} & {n_pairs:,} & "
+            f"{docking_prior} & {cohort_prior} & "
+            f"{reps['absolute_vina']['mean_per_ligand_pairwise_accuracy']:.3f} & "
+            f"{reps['column_standardized']['mean_per_ligand_pairwise_accuracy']:.3f} & "
+            f"{reps['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f} \\\\"
         )
-    lines.extend([r"\end{longtable}", r"\end{landscape}", ""])
-
-    dti = evidence["dti_associations"]
-    all20 = dti["all_20_scorers_sensitivity"]
-    association_rows = [
-        ("12 above-chance", "column-standardized PR", "P@5", dti["raw_rank_vs_selectivity_p_at_5"]),
-        ("12 above-chance", "residual PR", "P@5", dti["interaction_rank_vs_selectivity_p_at_5"]),
-        ("12 above-chance", "column-standardized PR", "AUPRC", dti["raw_rank_vs_selectivity_auprc"]),
-        ("12 above-chance", "residual PR", "AUPRC", dti["interaction_rank_vs_selectivity_auprc"]),
-        ("all 20 scorers", "column-standardized PR", "P@5", all20["raw_rank_vs_selectivity_p_at_5"]),
-        ("all 20 scorers", "residual PR", "P@5", all20["interaction_rank_vs_selectivity_p_at_5"]),
-        ("all 20 scorers", "column-standardized PR", "AUPRC", all20["raw_rank_vs_selectivity_auprc"]),
-        ("all 20 scorers", "residual PR", "AUPRC", all20["interaction_rank_vs_selectivity_auprc"]),
-    ]
-    lines.extend([
-        r"\begin{table}[p]",
-        r"\centering\scriptsize",
-        r"\setlength{\tabcolsep}{3pt}",
-        r"\caption{\textbf{Selection and estimator sensitivity of rank--selectivity associations.} The 12-arm panel excludes eight chance-level arms on an outcome-related criterion. All coefficients are descriptive across dependent model arms.}",
-        r"\label{tab:s8selection}",
-        r"\begin{tabular}{lllrrrrrr}",
-        r"\toprule Model panel & PR variable & endpoint & Pearson $r$ & $p$ & Spearman $\rho$ & $p$ & Kendall $\tau$ & $p$ \\ \midrule",
-    ])
-    for panel, rank_name, endpoint, values in association_rows:
+    for threshold in (3, 5, 6):
+        block = ranking["coverage_sensitivity"][str(threshold)]
+        reps = block["representations"]
         lines.append(
-            f"{tex(panel)} & {tex(rank_name)} & {tex(endpoint)} & "
-            f"{values['pearson_r']:.3f} & {values['pearson_p']:.4f} & "
-            f"{values['spearman_rho']:.3f} & {values['spearman_p']:.4f} & "
-            f"{values['kendall_tau']:.3f} & {values['kendall_p']:.4f} \\\\"
+            f"minimum {threshold} observed targets & {block['n_ligands']} & "
+            f"{reps['absolute_vina']['evaluated_pairs']:,} & "
+            f"{reps['docking_target_prior']['mean_per_ligand_pairwise_accuracy']:.3f} & "
+            f"{reps['cohort_experimental_target_prior']['mean_per_ligand_pairwise_accuracy']:.3f} & "
+            f"{reps['absolute_vina']['mean_per_ligand_pairwise_accuracy']:.3f} & "
+            f"{reps['column_standardized']['mean_per_ligand_pairwise_accuracy']:.3f} & "
+            f"{reps['two_way_residual']['mean_per_ligand_pairwise_accuracy']:.3f} \\\\"
         )
-    lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\vspace{4pt}",
-        (r"\parbox{0.93\textwidth}{\footnotesize For column-standardized PR versus P@5 in the 12-arm "
-         f"subset, the arm-resampling 95\\% interval was {dti['primary_raw_rank_spearman_bootstrap_95_interval'][0]:.2f}--"
-         f"{dti['primary_raw_rank_spearman_bootstrap_95_interval'][1]:.2f}, leave-one-arm-out values ranged from "
-         f"{dti['primary_raw_rank_leave_one_out_range'][0]:.2f} to {dti['primary_raw_rank_leave_one_out_range'][1]:.2f}, "
-         f"and the approximate two-sided 0.05 detectable absolute correlation was {dti['approximate_two_sided_alpha_0.05_detectable_absolute_correlation']:.2f}.}}"),
-        r"\end{table}",
-        "",
-    ])
+    end_table(lines, resize=True)
 
-    protocol_rows = [
-        (1, "Define matrix and preprocessing", "ligands, targets, missingness, clipping and scaling", "verify_inputs.py; spectral_audit.py"),
-        (2, "Separate estimands", "column-standardized and two-way-centered residual surfaces", "centering_ladder"),
-        (3, "Summarize concentration", "PR, entropy rank, PC1 fraction, components for 90% variance", "rank_summary"),
-        (4, "Quantify chemical-support uncertainty", "paired ligand or scaffold-cluster intervals", "surface_bootstrap"),
-        (5, "Probe target composition", "leave-one-target-out and uniform/family-stratified subsampling", "target_jackknife; target_subsampling"),
-        (6, "Use transformation-matched nulls", "parallel analysis, Gaussian additive and empirical residual nulls", "parallel_analysis; additive_main_effect_null; empirical_residual_permutation_null"),
-        (7, "Check ranking invariance", "decompose offsets, row effects and target-specific scales before task claims", "score-representation decomposition"),
-        (8, "Validate operationally", "absolute/transformed scores, target priors, identity/outcome permutations, assay and coverage strata", "expanded operational benchmark"),
-        (9, "State the boundary", "report uncertainty and equivalence status; do not equate dimension with accuracy", "manuscript interpretation rule"),
-    ]
-    lines.extend([
-        r"\begin{landscape}",
-        r"\begin{table}[p]",
-        r"\centering\small",
-        r"\setlength{\tabcolsep}{3pt}",
-        r"\caption{\textbf{Reusable spectral-audit protocol.} Each step has a machine-readable implementation in the release. The generic command-line wrapper is \texttt{analysis/spectral\_audit.py}; task-level validation remains dataset-specific.}",
-        r"\label{tab:s9protocol}",
-        r"\begin{tabular}{r>{\raggedright\arraybackslash}p{4.7cm}>{\raggedright\arraybackslash}p{8.0cm}>{\raggedright\arraybackslash}p{8.2cm}}",
-        r"\toprule Step & question / action & required output & release implementation \\ \midrule",
-    ])
-    for step, action, output, implementation in protocol_rows:
-        lines.append(
-            f"{step} & {tex(action)} & {tex(output)} & {tex(implementation)} \\\\"
-        )
-    lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}",
-        r"\end{landscape}",
-        "",
-    ])
+    # Reviewer m8: the reusable-audit protocol table duplicated main-text Table 3 and
+    # was removed from the Supplement; the main text carries the single copy.
 
-    representation_rows = []
-    for key, record in preference["representations"].items():
-        representation_rows.append({
-            "representation": key,
-            "mean_per_ligand_pairwise_accuracy": record["mean_per_ligand_pairwise_accuracy"],
-            "evaluated_ligands": record["evaluated_ligands"],
-            "evaluated_pairs": record["evaluated_pairs"],
-            "murcko_ci95_low": record["scaffold_cluster_bootstrap"]["interval_95"][0],
-            "murcko_ci95_high": record["scaffold_cluster_bootstrap"]["interval_95"][1],
-            "butina_ci95_low": record["butina_cluster_bootstrap"]["interval_95"][0],
-            "butina_ci95_high": record["butina_cluster_bootstrap"]["interval_95"][1],
-        })
-    pd.DataFrame(representation_rows).to_csv(
-        RESULTS / "operational_benchmark_representations.csv", index=False
-    )
-
-    assay_rows = []
-    for label, block in [
-        ("all exact endpoints", preference),
-        ("human binding all endpoints", human_binding),
-        ("human binding Ki/Kd", human_kikd),
-    ]:
-        for key in ["absolute_vina", "column_standardized", "two_way_residual"]:
-            record = block["representations"][key]
-            murcko = record["scaffold_cluster_bootstrap"]
-            butina = record["butina_cluster_bootstrap"]
-            assay_rows.append({
-                "analysis": label,
-                "representation": key,
-                "n_ligands": block["n_ligands"],
-                "n_targets": block["n_targets"],
-                "evaluated_pairs": record["evaluated_pairs"],
-                "mean_per_ligand_pairwise_accuracy": record["mean_per_ligand_pairwise_accuracy"],
-                "murcko_ci95_low": murcko["interval_95"][0],
-                "murcko_ci95_high": murcko["interval_95"][1],
-                "butina_ci95_low": butina["interval_95"][0],
-                "butina_ci95_high": butina["interval_95"][1],
-            })
-    for key, record in same_endpoint["representations"].items():
-        murcko = record["murcko_scaffold_cluster_bootstrap"]
-        butina = record["butina_cluster_bootstrap"]
-        assay_rows.append({
-            "analysis": "same-endpoint pairs on fixed primary support",
-            "representation": key,
-            "n_ligands": same_endpoint["fixed_support"]["ligands"],
-            "n_targets": same_endpoint["fixed_support"]["targets"],
-            "evaluated_pairs": same_endpoint["fixed_support"]["endpoint_specific_pair_instances"],
-            "mean_per_ligand_pairwise_accuracy": record["mean_per_ligand_pairwise_accuracy"],
-            "murcko_ci95_low": murcko["interval_95"][0],
-            "murcko_ci95_high": murcko["interval_95"][1],
-            "butina_ci95_low": butina["interval_95"][0],
-            "butina_ci95_high": butina["interval_95"][1],
-        })
-    for endpoint, endpoint_block in same_endpoint["by_endpoint"].items():
-        for key, record in endpoint_block["representations"].items():
-            assay_rows.append({
-                "analysis": f"endpoint-specific {endpoint}",
-                "representation": key,
-                "n_ligands": record["evaluated_ligands"],
-                "n_targets": endpoint_block["targets_with_any_observation"],
-                "evaluated_pairs": record["evaluated_pairs"],
-                "mean_per_ligand_pairwise_accuracy": record[
-                    "mean_per_ligand_pairwise_accuracy"
-                ],
-                "murcko_ci95_low": None,
-                "murcko_ci95_high": None,
-                "butina_ci95_low": None,
-                "butina_ci95_high": None,
-            })
-    duplicate = same_endpoint["duplicate_collapsed_unique_target_pairs"]
-    for key, record in duplicate["representations"].items():
-        murcko = record["murcko_scaffold_cluster_bootstrap"]
-        butina = record["butina_cluster_bootstrap"]
-        assay_rows.append({
-            "analysis": "same-endpoint duplicate-collapsed unique target pairs",
-            "representation": key,
-            "n_ligands": duplicate["evaluated_ligands"],
-            "n_targets": same_endpoint["fixed_support"]["targets"],
-            "evaluated_pairs": duplicate["unique_ligand_target_pair_instances"],
-            "mean_per_ligand_pairwise_accuracy": record[
-                "mean_per_ligand_pairwise_accuracy"
-            ],
-            "murcko_ci95_low": murcko["interval_95"][0],
-            "murcko_ci95_high": murcko["interval_95"][1],
-            "butina_ci95_low": butina["interval_95"][0],
-            "butina_ci95_high": butina["interval_95"][1],
-        })
-    pd.DataFrame(assay_rows).to_csv(
-        RESULTS / "operational_assay_sensitivities.csv", index=False
-    )
-
-    contrast_rows = []
-    for label, block in [
-        ("all exact endpoints", preference),
-        ("human binding all endpoints", human_binding),
-        ("human binding Ki/Kd", human_kikd),
-        ("same-endpoint pairs on fixed primary support", same_endpoint),
-    ]:
-        for contrast in [
-            "two_way_residual_minus_absolute_vina",
-            "two_way_residual_minus_column_standardized",
-        ]:
-            record = block["paired_comparisons"][contrast]
-            equivalence = record["post_hoc_equivalence_sensitivity"]
-            contrast_rows.append({
-                "analysis": label,
-                "contrast": contrast,
-                "plugin_mean_difference": record["plugin_mean_difference"],
-                "murcko_ci95_low": record["scaffold_cluster_bootstrap"]["interval_95"][0],
-                "murcko_ci95_high": record["scaffold_cluster_bootstrap"]["interval_95"][1],
-                "butina_ci95_low": record["butina_cluster_bootstrap"]["interval_95"][0],
-                "butina_ci95_high": record["butina_cluster_bootstrap"]["interval_95"][1],
-                "conservative_cluster_ci90_low": equivalence["conservative_cluster_bootstrap_interval_90"][0],
-                "conservative_cluster_ci90_high": equivalence["conservative_cluster_bootstrap_interval_90"][1],
-                "equivalent_at_post_hoc_margin_0.02": equivalence["margins"]["0.02"]["equivalence_established"],
-                "equivalent_at_post_hoc_margin_0.05": equivalence["margins"]["0.05"]["equivalence_established"],
-                "normal_approximation_mde_80pct_power": record.get(
-                    "normal_approx_80pct_power_mde_two_sided_alpha_0.05"
-                ),
-            })
-    pd.DataFrame(contrast_rows).to_csv(
-        RESULTS / "operational_benchmark_contrasts.csv", index=False
-    )
-    pd.DataFrame(
-        protocol_rows,
-        columns=["step", "action", "required_output", "release_implementation"],
-    ).to_csv(RESULTS / "spectral_audit_protocol.csv", index=False)
-    (RESULTS / "supplement_tables.tex").write_text("\n".join(lines))
-    print(f"Wrote {RESULTS / 'supplement_tables.tex'}")
+    OUT.write_text("\n".join(lines).rstrip() + "\n")
+    print(f"Wrote {OUT.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

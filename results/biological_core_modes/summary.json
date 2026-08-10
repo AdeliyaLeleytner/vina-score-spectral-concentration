@@ -1,0 +1,463 @@
+{
+  "analysis": "post-hoc low-order biological core in residual docking geometry",
+  "analysis_status": "exploratory_post_hoc_with_locked_no_retuning_evaluation; not_prospective_confirmation",
+  "discovery_validation_boundary": {
+    "DAVIS": "locked_no_retuning_evaluation",
+    "KiRHub": "locked_no_retuning_evaluation",
+    "PKIS1": "post_hoc_discovery",
+    "PKIS2": "locked_no_retuning_evaluation",
+    "qualification": "locked means no tuning after the rule was frozen in this script; these are not uninspected prospective datasets"
+  },
+  "inference": {
+    "multiplicity": "Holm correction is reported within each representation and across both representations; omnibus mean-delta QAPs are corrected across their three metrics and across both representations",
+    "qap_permutations": 50000,
+    "random_subspace_definition": "Haar-random k-frame inside the estimable non-null target subspace, with the observed leading k eigenvalues preserved exactly in the kernel; every random kernel is additionally unit-diagonal-normalized for the representation-matched primary null",
+    "random_subspaces": 20000,
+    "seed": 20260808
+  },
+  "outputs": {
+    "eigenvalue_matched_random_subspace_null": {
+      "path": "eigenvalue_matched_random_subspace_null.csv",
+      "sha256": "38013676fd8e3aae8786ecb027fde7fae73615a7cd9618c433fbf84b38371e50"
+    },
+    "omnibus_validation_qap": {
+      "path": "omnibus_validation_qap.csv",
+      "sha256": "445da70189174f7489140f2a1deffc00ba22baf6abf1df2a8697113b4d1bb5f6"
+    },
+    "paired_target_qap": {
+      "path": "paired_target_qap.csv",
+      "sha256": "2d50b6b93dd7b6d60766772f2995a0e395cf3a3254de4d640310ccda7e291cb1"
+    },
+    "panel_metrics": {
+      "path": "panel_metrics.csv",
+      "sha256": "437ed94fafce16b40a7cb088c357ce8758bf7f68a3661fb67fa12412d4c9e5c3"
+    },
+    "retained_eigenvalue_spectrum": {
+      "path": "retained_eigenvalue_spectrum.csv",
+      "sha256": "43f1115986342b878b50261b8b1bf3e0dce3ffed4646b877f957007cf647ae0f"
+    },
+    "scaffold_support_pairwise_stability": {
+      "path": "scaffold_support_pairwise_stability.csv",
+      "sha256": "0a66c07b915101d7d43586fd3f90761424133b6b087ebd7cc6b44163dde738d4"
+    },
+    "scaffold_support_panel_metrics": {
+      "path": "scaffold_support_panel_metrics.csv",
+      "sha256": "beb7da5216a377191f98eb5b7f82ce2531070baa7a4299c39e249fe29df714ff"
+    },
+    "scaffold_support_stability": {
+      "path": "scaffold_support_stability.csv",
+      "sha256": "44b75bdc02e87f428c466ee177c596066093f094b39a4c7501af0d7887737e0b"
+    },
+    "target_jackknife": {
+      "path": "target_jackknife.csv",
+      "sha256": "2db2d25109cc41624053a269f24ef493f94e0a71f9365e16804aca1f8264a303"
+    },
+    "target_pair_geometries": {
+      "path": "target_pair_geometries.csv",
+      "sha256": "914a255ccfc331820c8080d82af778e9d0e964bfdea953b24b4c504f55142d07"
+    }
+  },
+  "primary_panel_metrics": {
+    "DAVIS": {
+      "full_average_precision": 0.34040170362451294,
+      "full_continuous_spearman": 0.27979984866179414,
+      "full_roc_auc": 0.755001538935057,
+      "normalized_low_mode_average_precision": 0.37490026891979517,
+      "normalized_low_mode_continuous_spearman": 0.3255144842910068,
+      "normalized_low_mode_minus_full_average_precision": 0.034498565295282224,
+      "normalized_low_mode_minus_full_continuous_spearman": 0.045714635629212685,
+      "normalized_low_mode_minus_full_roc_auc": 0.03601108033240996,
+      "normalized_low_mode_roc_auc": 0.7910126192674669,
+      "positive_pairs": 19,
+      "selected_cumulative_variance_fraction": 0.5167626346873122,
+      "selected_k": 5,
+      "spectral_kernel_average_precision": 0.34576992261493006,
+      "spectral_kernel_continuous_spearman": 0.29455751070520986,
+      "spectral_kernel_minus_full_average_precision": 0.005368218990417117,
+      "spectral_kernel_minus_full_continuous_spearman": 0.01475766204341572,
+      "spectral_kernel_minus_full_roc_auc": 0.020006155740227793,
+      "spectral_kernel_roc_auc": 0.7750076946752847,
+      "total_pairs": 190
+    },
+    "KiRHub": {
+      "full_average_precision": 0.28948469418136796,
+      "full_continuous_spearman": 0.32158843881081417,
+      "full_roc_auc": 0.7436134195136965,
+      "normalized_low_mode_average_precision": 0.33325539535568,
+      "normalized_low_mode_continuous_spearman": 0.3791022057762207,
+      "normalized_low_mode_minus_full_average_precision": 0.04377070117431203,
+      "normalized_low_mode_minus_full_continuous_spearman": 0.057513766965406554,
+      "normalized_low_mode_minus_full_roc_auc": 0.06309633733456443,
+      "normalized_low_mode_roc_auc": 0.806709756848261,
+      "positive_pairs": 19,
+      "selected_cumulative_variance_fraction": 0.5167626346873122,
+      "selected_k": 5,
+      "spectral_kernel_average_precision": 0.32421610043567,
+      "spectral_kernel_continuous_spearman": 0.34883981332038655,
+      "spectral_kernel_minus_full_average_precision": 0.034731406254302044,
+      "spectral_kernel_minus_full_continuous_spearman": 0.02725137450957238,
+      "spectral_kernel_minus_full_roc_auc": 0.043705755617112985,
+      "spectral_kernel_roc_auc": 0.7873191751308095,
+      "total_pairs": 190
+    },
+    "PKIS1": {
+      "full_average_precision": 0.30010988790036075,
+      "full_continuous_spearman": 0.1736426581287425,
+      "full_roc_auc": 0.6635887965527855,
+      "normalized_low_mode_average_precision": 0.2654678733869961,
+      "normalized_low_mode_continuous_spearman": 0.20972413581947894,
+      "normalized_low_mode_minus_full_average_precision": -0.03464201451336463,
+      "normalized_low_mode_minus_full_continuous_spearman": 0.03608147769073644,
+      "normalized_low_mode_minus_full_roc_auc": 0.013850415512465353,
+      "normalized_low_mode_roc_auc": 0.6774392120652508,
+      "positive_pairs": 19,
+      "selected_cumulative_variance_fraction": 0.5167626346873122,
+      "selected_k": 5,
+      "spectral_kernel_average_precision": 0.3121615164974724,
+      "spectral_kernel_continuous_spearman": 0.1968052767170982,
+      "spectral_kernel_minus_full_average_precision": 0.012051628597111674,
+      "spectral_kernel_minus_full_continuous_spearman": 0.023162618588355693,
+      "spectral_kernel_minus_full_roc_auc": 0.012927054478301003,
+      "spectral_kernel_roc_auc": 0.6765158510310865,
+      "total_pairs": 190
+    },
+    "PKIS2": {
+      "full_average_precision": 0.29486704145230797,
+      "full_continuous_spearman": 0.287170806597646,
+      "full_roc_auc": 0.7131425053862727,
+      "normalized_low_mode_average_precision": 0.2677490498430404,
+      "normalized_low_mode_continuous_spearman": 0.320318247626046,
+      "normalized_low_mode_minus_full_average_precision": -0.02711799160926759,
+      "normalized_low_mode_minus_full_continuous_spearman": 0.033147441028400004,
+      "normalized_low_mode_minus_full_roc_auc": 0.016620498614958512,
+      "normalized_low_mode_roc_auc": 0.7297630040012312,
+      "positive_pairs": 19,
+      "selected_cumulative_variance_fraction": 0.5167626346873122,
+      "selected_k": 5,
+      "spectral_kernel_average_precision": 0.30603800137659737,
+      "spectral_kernel_continuous_spearman": 0.2942618325919511,
+      "spectral_kernel_minus_full_average_precision": 0.011170959924289403,
+      "spectral_kernel_minus_full_continuous_spearman": 0.007091025994305111,
+      "spectral_kernel_minus_full_roc_auc": 0.010464758387196071,
+      "spectral_kernel_roc_auc": 0.7236072637734687,
+      "total_pairs": 190
+    }
+  },
+  "provenance": {
+    "davis": {
+      "path": "data/frozen/project_clean/data/processed/davis_boltz2/davis_complete.tab.gz",
+      "sha256": "e5614549ec970bf24bd58d04d8a74feb8f8a53806410eaa8d84d24e96a4ff827"
+    },
+    "dockstring": {
+      "path": "data/frozen/dockstring-dataset.tsv.gz",
+      "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+    },
+    "kirhub": {
+      "expected_sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03",
+      "license": "Creative Commons Attribution-NonCommercial-NoDerivatives 4.0",
+      "local_filename": "kirhub_supp_tables.xlsx",
+      "sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03"
+    },
+    "pkis1": {
+      "local_filename": "pkis1_supplement.zip",
+      "sha256": "1ffbe7fd0b4fc1ef72f2434a2b247d15c0f2b4d3c34668f112f4b4c9e4ead7dc"
+    },
+    "pkis2": {
+      "path": "data/frozen/pkis2_s4.xlsx",
+      "sha256": "48ead22a1f860cd0d5096fa87d5acd329f722fe8d65e693bb0be682a333e2a2c"
+    },
+    "target_order_sha256": "9e698986ee2d6efbd055e041fde451d01375e2658eb40d90a98f959eaf89ce39",
+    "targets": [
+      "ABL1",
+      "AKT1",
+      "AKT2",
+      "CDK2",
+      "CSF1R",
+      "EGFR",
+      "FGFR1",
+      "IGF1R",
+      "JAK2",
+      "KDR",
+      "KIT",
+      "LCK",
+      "MAP2K1",
+      "MAPK1",
+      "MAPK14",
+      "MAPKAPK2",
+      "MET",
+      "PLK1",
+      "ROCK1",
+      "SRC"
+    ]
+  },
+  "representation_estimands": {
+    "primary": {
+      "definition": "rank-k spectral reconstruction divided by the square root of its diagonal outer product; unit diagonal",
+      "mixed_not_general": "average_precision",
+      "name": "normalized_low_mode_correlation",
+      "primary_metric": "continuous_spearman",
+      "secondary_metric": "roc_auc"
+    },
+    "secondary": {
+      "definition": "unnormalized rank-k reconstruction; its diagonal is the target-specific variance captured by the retained modes",
+      "interpretation_boundary": "a retrieval score that combines angular similarity with target communality, not a correlation matrix",
+      "name": "communality_weighted_spectral_kernel"
+    }
+  },
+  "scaffold_disjoint_stability": {
+    "assignment": "SHA256 assignment of whole nonempty Bemis-Murcko groups; acyclic molecules grouped by recomputed InChIKey connectivity block",
+    "folds": 5,
+    "mean_squared_canonical_correlation_range": [
+      0.9957224847801583,
+      0.9983906445327853
+    ],
+    "pairwise_mean_squared_canonical_correlation_range": [
+      0.9861086756676926,
+      0.9959478686757606
+    ],
+    "selected_k_values": [
+      5
+    ]
+  },
+  "selection_rule": {
+    "conservative_same_scaffold_exclusion_cumulative_fraction": 0.5165905195362532,
+    "conservative_same_scaffold_exclusion_selected_k": 5,
+    "definition": "smallest k whose leading docking residual-correlation eigenvalues explain at least the fixed trace fraction",
+    "endpoint_access_by_selection_function": "none",
+    "full_eigenvalues": [
+      4.130198898203738,
+      2.132660191884788,
+      1.7318854443059672,
+      1.2009387479134623,
+      1.1395694114382864,
+      1.0208759656466733,
+      0.9633694745755875,
+      0.8872452225449508,
+      0.7904405866543625,
+      0.7496188872130348,
+      0.7076947049174066,
+      0.6953984426242904,
+      0.6736882613018449,
+      0.6164000399677334,
+      0.598735930265856,
+      0.543104953878797,
+      0.5128277423631821,
+      0.46637411498025344,
+      0.43897297931977863,
+      0.0
+    ],
+    "historical_status": "50% convention fixed for this artifact but chosen post hoc after prior project-wide data inspection",
+    "positive_eigenvalues": 19,
+    "previous_cumulative_variance_fraction": 0.45978416411539785,
+    "selected_cumulative_variance_fraction": 0.5167626346873122,
+    "selected_k": 5,
+    "variance_threshold": 0.5
+  },
+  "strongest_honest_claim": "Under an algorithmically outcome-blind 50%-trace truncation, leading residual DOCKSTRING modes, renormalized to a unit-diagonal target correlation, show higher continuous experimental-geometry concordance and target-pair AUROC than the complete residual correlation on all four examined kinase panels. Average-precision effects are mixed across panels and are not a general result. Because the hypothesis and cutoff were formulated after prior data inspection, this is a replicated exploratory result that requires a new external panel for confirmation.",
+  "support": {
+    "complete_dockstring_rows": 260060,
+    "conservative_reference_rows": 256540,
+    "dockstring_inchikey_boundary": "DOCKSTRING supplied keys systematically use a different suffix from current RDKit Standard InChIKeys; identity exclusion and acyclic grouping use the recomputed 14-character connectivity block.",
+    "exact_connectivity_excluded_rows": 481,
+    "exact_reference_rows": 259579,
+    "experimental_cyclic_murcko_scaffolds": 575,
+    "kirhub_chemical_exclusion_boundary": "KiRHub provides compound names but no structures; exact or scaffold exclusion against KiRHub was impossible.",
+    "positive_scores_clipped_to_zero": 22,
+    "reference_acyclic_connectivity_groups": 751,
+    "reference_cyclic_murcko_groups": 99234,
+    "reference_scaffold_groups": 99985,
+    "reported_vs_recomputed_connectivity_block_mismatches": 1031,
+    "reported_vs_recomputed_full_inchikey_string_differences": 260060,
+    "same_cyclic_murcko_additionally_excluded_rows": 3039
+  },
+  "target_jackknife": {
+    "DAVIS": {
+      "normalized_low_mode_minus_full_average_precision": {
+        "maximum": 0.08090757193962878,
+        "median": 0.04339830634741329,
+        "minimum": -0.03523889142990955,
+        "positive_drops": 16,
+        "total_drops": 20
+      },
+      "normalized_low_mode_minus_full_continuous_spearman": {
+        "maximum": 0.06298509611923103,
+        "median": 0.04321765425876595,
+        "minimum": -0.006667146662826695,
+        "positive_drops": 19,
+        "total_drops": 20
+      },
+      "normalized_low_mode_minus_full_roc_auc": {
+        "maximum": 0.06245461147421927,
+        "median": 0.03721859114015974,
+        "minimum": 0.004720406681191003,
+        "positive_drops": 20,
+        "total_drops": 20
+      },
+      "selected_k_values": [
+        5
+      ],
+      "spectral_kernel_minus_full_average_precision": {
+        "maximum": 0.030496686403564455,
+        "median": 0.008360231278084884,
+        "minimum": -0.02139339447475269,
+        "positive_drops": 15,
+        "total_drops": 20
+      },
+      "spectral_kernel_minus_full_continuous_spearman": {
+        "maximum": 0.031869345045239666,
+        "median": 0.015363477092183275,
+        "minimum": -0.015650274797801678,
+        "positive_drops": 17,
+        "total_drops": 20
+      },
+      "spectral_kernel_minus_full_roc_auc": {
+        "maximum": 0.03667392883079157,
+        "median": 0.020515613652868525,
+        "minimum": -0.007625272331154731,
+        "positive_drops": 17,
+        "total_drops": 20
+      }
+    },
+    "KiRHub": {
+      "normalized_low_mode_minus_full_average_precision": {
+        "maximum": 0.10354249481689715,
+        "median": 0.047392648973974605,
+        "minimum": -0.04723838244193734,
+        "positive_drops": 18,
+        "total_drops": 20
+      },
+      "normalized_low_mode_minus_full_continuous_spearman": {
+        "maximum": 0.0729186166510668,
+        "median": 0.05458036335709315,
+        "minimum": -0.0038111695106439747,
+        "positive_drops": 19,
+        "total_drops": 20
+      },
+      "normalized_low_mode_minus_full_roc_auc": {
+        "maximum": 0.08097312999273776,
+        "median": 0.051561365286855454,
+        "minimum": -0.010167029774872938,
+        "positive_drops": 18,
+        "total_drops": 20
+      },
+      "selected_k_values": [
+        5
+      ],
+      "spectral_kernel_minus_full_average_precision": {
+        "maximum": 0.0401508566217223,
+        "median": 0.021459995078583344,
+        "minimum": -0.026197081125938326,
+        "positive_drops": 19,
+        "total_drops": 20
+      },
+      "spectral_kernel_minus_full_continuous_spearman": {
+        "maximum": 0.03845249238006099,
+        "median": 0.026452588379292957,
+        "minimum": -0.009609523123815134,
+        "positive_drops": 19,
+        "total_drops": 20
+      },
+      "spectral_kernel_minus_full_roc_auc": {
+        "maximum": 0.0562817719680464,
+        "median": 0.031408859840232395,
+        "minimum": -0.002904865649963728,
+        "positive_drops": 18,
+        "total_drops": 20
+      }
+    },
+    "PKIS1": {
+      "normalized_low_mode_minus_full_average_precision": {
+        "maximum": 0.027116467899469365,
+        "median": -0.0016449241764309175,
+        "minimum": -0.04711270899426678,
+        "positive_drops": 8,
+        "total_drops": 20
+      },
+      "normalized_low_mode_minus_full_continuous_spearman": {
+        "maximum": 0.04839801281589748,
+        "median": 0.036858905128759,
+        "minimum": -0.022305421556627625,
+        "positive_drops": 18,
+        "total_drops": 20
+      },
+      "normalized_low_mode_minus_full_roc_auc": {
+        "maximum": 0.035584604212055226,
+        "median": 0.017792302106027613,
+        "minimum": -0.020334059549745764,
+        "positive_drops": 18,
+        "total_drops": 20
+      },
+      "selected_k_values": [
+        5
+      ],
+      "spectral_kernel_minus_full_average_precision": {
+        "maximum": 0.06355590540526185,
+        "median": 0.016335797883409692,
+        "minimum": -0.005569209889017712,
+        "positive_drops": 19,
+        "total_drops": 20
+      },
+      "spectral_kernel_minus_full_continuous_spearman": {
+        "maximum": 0.026421388628890985,
+        "median": 0.01920344637242903,
+        "minimum": -0.015767873857009174,
+        "positive_drops": 18,
+        "total_drops": 20
+      },
+      "spectral_kernel_minus_full_roc_auc": {
+        "maximum": 0.027233115468409563,
+        "median": 0.01434277414669577,
+        "minimum": -0.013071895424836555,
+        "positive_drops": 17,
+        "total_drops": 20
+      }
+    },
+    "PKIS2": {
+      "normalized_low_mode_minus_full_average_precision": {
+        "maximum": 0.01613315936638826,
+        "median": -0.01392541685706955,
+        "minimum": -0.043176583564399434,
+        "positive_drops": 5,
+        "total_drops": 20
+      },
+      "normalized_low_mode_minus_full_continuous_spearman": {
+        "maximum": 0.05253797969616247,
+        "median": 0.03406532747738017,
+        "minimum": -0.011728706170350656,
+        "positive_drops": 19,
+        "total_drops": 20
+      },
+      "normalized_low_mode_minus_full_roc_auc": {
+        "maximum": 0.043209876543209846,
+        "median": 0.019426289034132127,
+        "minimum": 0.002904865649963728,
+        "positive_drops": 20,
+        "total_drops": 20
+      },
+      "selected_k_values": [
+        5
+      ],
+      "spectral_kernel_minus_full_average_precision": {
+        "maximum": 0.02729138316656865,
+        "median": 0.009578529444627532,
+        "minimum": -0.007215413565543449,
+        "positive_drops": 18,
+        "total_drops": 20
+      },
+      "spectral_kernel_minus_full_continuous_spearman": {
+        "maximum": 0.025552595579235338,
+        "median": 0.007916336669306634,
+        "minimum": -0.01606547147622822,
+        "positive_drops": 16,
+        "total_drops": 20
+      },
+      "spectral_kernel_minus_full_roc_auc": {
+        "maximum": 0.030864197530864224,
+        "median": 0.012164124909222918,
+        "minimum": 0.004720406681191003,
+        "positive_drops": 20,
+        "total_drops": 20
+      }
+    }
+  }
+}

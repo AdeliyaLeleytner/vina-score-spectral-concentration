@@ -1,0 +1,440 @@
+{
+  "status": "exploratory_fixed_collection_audit",
+  "data_audit": {
+    "sha256": {
+      "table1": "9c13b2c95e2cd31de46b74fc9ecc25a2f3c72e0b101d0720bd6e917c3cecf5bb",
+      "table2": "aa62105218abe10c6c1eb3584a13a87769c4dd1d96cd9cc496cf6c2743d36606"
+    },
+    "n_compounds": 1183,
+    "n_direct_protein_or_lipid_kinases_with_nanomolar_call": 236,
+    "n_direct_protein_or_lipid_kinases_with_any_call": 249,
+    "group_sizes": {
+      "KCGS": 187,
+      "PKIS_exclusive": 299,
+      "PKIS2_exclusive": 470,
+      "Roche": 222
+    },
+    "semantics": "One for a classifier-called direct protein/lipid-kinase interaction reported in the selected affinity sheet; zero means no reported target call in this Kinobeads assay, not proven absence of biochemical binding."
+  },
+  "primary_support": {
+    "definition": "direct protein/lipid kinases with >=5 nanomolar calls and >=5 non-calls in every disjoint library group",
+    "n_targets": 26,
+    "residual_correlation_pr": {
+      "KCGS": 15.70101071399479,
+      "PKIS_exclusive": 13.898413522283304,
+      "PKIS2_exclusive": 13.392694715312283,
+      "Roche": 11.253590345201923
+    },
+    "residual_covariance_pr": {
+      "KCGS": 14.290692384262462,
+      "PKIS_exclusive": 10.986416599390033,
+      "PKIS2_exclusive": 11.992772004707865,
+      "Roche": 7.538600405592217
+    }
+  },
+  "configuration_normalized_primary": [
+    {
+      "matrix": "nanomolar",
+      "minimum_hits_per_library": 5,
+      "n_targets": 26,
+      "group": "KCGS",
+      "n_compounds": 187,
+      "metric": "residual_correlation_pr",
+      "observed": 15.70101071399479,
+      "null_mean": 20.69802768444585,
+      "null_sd": 0.29176233544787994,
+      "null_q025": 20.060257405166077,
+      "null_q975": 21.281796547204394,
+      "observed_over_null_mean": 0.7585752108058964,
+      "lower_tail_probability": 0.004975124378109453
+    },
+    {
+      "matrix": "nanomolar",
+      "minimum_hits_per_library": 5,
+      "n_targets": 26,
+      "group": "KCGS",
+      "n_compounds": 187,
+      "metric": "residual_covariance_pr",
+      "observed": 14.290692384262462,
+      "null_mean": 18.658416720428214,
+      "null_sd": 0.25915469918587963,
+      "null_q025": 18.14941238764435,
+      "null_q975": 19.186863105785484,
+      "observed_over_null_mean": 0.7659113095387274,
+      "lower_tail_probability": 0.004975124378109453
+    },
+    {
+      "matrix": "nanomolar",
+      "minimum_hits_per_library": 5,
+      "n_targets": 26,
+      "group": "PKIS_exclusive",
+      "n_compounds": 299,
+      "metric": "residual_correlation_pr",
+      "observed": 13.898413522283304,
+      "null_mean": 21.294077888491064,
+      "null_sd": 0.2278732001369405,
+      "null_q025": 20.829133061778563,
+      "null_q975": 21.720004184382265,
+      "observed_over_null_mean": 0.6526891464877689,
+      "lower_tail_probability": 0.004975124378109453
+    },
+    {
+      "matrix": "nanomolar",
+      "minimum_hits_per_library": 5,
+      "n_targets": 26,
+      "group": "PKIS_exclusive",
+      "n_compounds": 299,
+      "metric": "residual_covariance_pr",
+      "observed": 10.986416599390033,
+      "null_mean": 18.66717499307044,
+      "null_sd": 0.21300850505785654,
+      "null_q025": 18.261206421928343,
+      "null_q975": 19.06704774738327,
+      "observed_over_null_mean": 0.5885420050687032,
+      "lower_tail_probability": 0.004975124378109453
+    },
+    {
+      "matrix": "nanomolar",
+      "minimum_hits_per_library": 5,
+      "n_targets": 26,
+      "group": "PKIS2_exclusive",
+      "n_compounds": 470,
+      "metric": "residual_correlation_pr",
+      "observed": 13.392694715312283,
+      "null_mean": 21.68983511971672,
+      "null_sd": 0.22717404151585058,
+      "null_q025": 21.232647569898432,
+      "null_q975": 22.19635877473978,
+      "observed_over_null_mean": 0.6174641089428069,
+      "lower_tail_probability": 0.004975124378109453
+    },
+    {
+      "matrix": "nanomolar",
+      "minimum_hits_per_library": 5,
+      "n_targets": 26,
+      "group": "PKIS2_exclusive",
+      "n_compounds": 470,
+      "metric": "residual_covariance_pr",
+      "observed": 11.992772004707865,
+      "null_mean": 19.340868421267995,
+      "null_sd": 0.19298576585054641,
+      "null_q025": 19.026234447789744,
+      "null_q975": 19.72027066261206,
+      "observed_over_null_mean": 0.6200741219830714,
+      "lower_tail_probability": 0.004975124378109453
+    },
+    {
+      "matrix": "nanomolar",
+      "minimum_hits_per_library": 5,
+      "n_targets": 26,
+      "group": "Roche",
+      "n_compounds": 222,
+      "metric": "residual_correlation_pr",
+      "observed": 11.253590345201923,
+      "null_mean": 19.208826939283952,
+      "null_sd": 0.33158449115727073,
+      "null_q025": 18.535856742076838,
+      "null_q975": 19.78086979207963,
+      "observed_over_null_mean": 0.5858551581922589,
+      "lower_tail_probability": 0.004975124378109453
+    },
+    {
+      "matrix": "nanomolar",
+      "minimum_hits_per_library": 5,
+      "n_targets": 26,
+      "group": "Roche",
+      "n_compounds": 222,
+      "metric": "residual_covariance_pr",
+      "observed": 7.538600405592217,
+      "null_mean": 15.916907119270531,
+      "null_sd": 0.19429276810071056,
+      "null_q025": 15.483201357309376,
+      "null_q975": 16.27531089533403,
+      "observed_over_null_mean": 0.47362218985780635,
+      "lower_tail_probability": 0.004975124378109453
+    }
+  ],
+  "all_classifier_called_interactions_sensitivity": {
+    "n_targets": 56,
+    "residual_correlation_pr": {
+      "KCGS": 27.321307269050216,
+      "PKIS_exclusive": 22.179153599710276,
+      "PKIS2_exclusive": 23.353824764294917,
+      "Roche": 17.33000591916056
+    }
+  },
+  "size_matched_primary": [
+    {
+      "group": "PKIS_exclusive",
+      "metric": "residual_correlation_pr",
+      "n_targets": 26,
+      "reference_n_compounds": 187,
+      "valid_repetitions": 1996,
+      "KCGS_observed": 15.70101071399479,
+      "comparator_mean": 13.222562710161624,
+      "comparator_q025": 12.227529539262864,
+      "comparator_q975": 14.292876271059477,
+      "probability_comparator_at_least_KCGS": 0.000500751126690035
+    },
+    {
+      "group": "PKIS_exclusive",
+      "metric": "residual_covariance_pr",
+      "n_targets": 26,
+      "reference_n_compounds": 187,
+      "valid_repetitions": 1996,
+      "KCGS_observed": 14.290692384262462,
+      "comparator_mean": 10.529806089067884,
+      "comparator_q025": 9.335635542835186,
+      "comparator_q975": 11.84575436488193,
+      "probability_comparator_at_least_KCGS": 0.000500751126690035
+    },
+    {
+      "group": "PKIS2_exclusive",
+      "metric": "residual_correlation_pr",
+      "n_targets": 26,
+      "reference_n_compounds": 187,
+      "valid_repetitions": 1973,
+      "KCGS_observed": 15.70101071399479,
+      "comparator_mean": 12.079695270168818,
+      "comparator_q025": 10.747104876803139,
+      "comparator_q975": 13.422171820395294,
+      "probability_comparator_at_least_KCGS": 0.0005065856129685917
+    },
+    {
+      "group": "PKIS2_exclusive",
+      "metric": "residual_covariance_pr",
+      "n_targets": 26,
+      "reference_n_compounds": 187,
+      "valid_repetitions": 1973,
+      "KCGS_observed": 14.290692384262462,
+      "comparator_mean": 10.966203464651368,
+      "comparator_q025": 9.660529207604077,
+      "comparator_q975": 12.147037167520109,
+      "probability_comparator_at_least_KCGS": 0.0005065856129685917
+    },
+    {
+      "group": "Roche",
+      "metric": "residual_correlation_pr",
+      "n_targets": 26,
+      "reference_n_compounds": 187,
+      "valid_repetitions": 2000,
+      "KCGS_observed": 15.70101071399479,
+      "comparator_mean": 11.022828773657801,
+      "comparator_q025": 10.53545648776083,
+      "comparator_q975": 11.537939118056732,
+      "probability_comparator_at_least_KCGS": 0.0004997501249375312
+    },
+    {
+      "group": "Roche",
+      "metric": "residual_covariance_pr",
+      "n_targets": 26,
+      "reference_n_compounds": 187,
+      "valid_repetitions": 2000,
+      "KCGS_observed": 14.290692384262462,
+      "comparator_mean": 7.463819328593052,
+      "comparator_q025": 7.03018512307679,
+      "comparator_q975": 7.861150132517541,
+      "probability_comparator_at_least_KCGS": 0.0004997501249375312
+    }
+  ],
+  "promiscuity_reweighted_primary": [
+    {
+      "group": "KCGS",
+      "n_targets": 26,
+      "n_compounds": 187,
+      "effective_sample_size": 186.99999999999997,
+      "weighted_mean_hits": 1.1764705882352942,
+      "raw_correlation_pr": 16.70487433495646,
+      "residual_correlation_pr": 15.701010713994796,
+      "z_then_row_correlation_pr": 15.695954010976537,
+      "raw_covariance_pr": 14.883172751402451,
+      "residual_covariance_pr": 14.290692384262455,
+      "z_then_row_covariance_pr": 16.030340680325786,
+      "mean_hits_per_compound": 1.1764705882352942
+    },
+    {
+      "group": "PKIS_exclusive",
+      "n_targets": 26,
+      "n_compounds": 299,
+      "effective_sample_size": 279.1966685599667,
+      "weighted_mean_hits": 1.1841948900772428,
+      "raw_correlation_pr": 17.208538373069263,
+      "residual_correlation_pr": 15.723871940179324,
+      "z_then_row_correlation_pr": 16.294458193426735,
+      "raw_covariance_pr": 12.530121826136705,
+      "residual_covariance_pr": 12.234399760797254,
+      "z_then_row_covariance_pr": 16.43411521136822,
+      "mean_hits_per_compound": 1.4983277591973243
+    },
+    {
+      "group": "PKIS2_exclusive",
+      "n_targets": 26,
+      "n_compounds": 470,
+      "effective_sample_size": 415.4230103730105,
+      "weighted_mean_hits": 1.205042016806722,
+      "raw_correlation_pr": 16.586407406091745,
+      "residual_correlation_pr": 15.76962301867785,
+      "z_then_row_correlation_pr": 16.165076218243787,
+      "raw_covariance_pr": 12.395297730907373,
+      "residual_covariance_pr": 11.919751400310924,
+      "z_then_row_covariance_pr": 15.225820932234809,
+      "mean_hits_per_compound": 1.6191489361702127
+    },
+    {
+      "group": "Roche",
+      "n_targets": 26,
+      "n_compounds": 222,
+      "effective_sample_size": 172.08058316413138,
+      "weighted_mean_hits": 1.200089126559715,
+      "raw_correlation_pr": 15.031497311029007,
+      "residual_correlation_pr": 13.189801374929493,
+      "z_then_row_correlation_pr": 14.706957603918779,
+      "raw_covariance_pr": 7.852376626306619,
+      "residual_covariance_pr": 7.481523849322847,
+      "z_then_row_covariance_pr": 12.937331756669822,
+      "mean_hits_per_compound": 2.2567567567567566
+    }
+  ],
+  "full_target_profile_summary": [
+    {
+      "group": "KCGS",
+      "n_compounds": 187,
+      "n_chemotypes": 87,
+      "n_target_calls": 558,
+      "n_targets_covered": 164,
+      "target_entropy_effective_number": 117.45708727774692,
+      "n_nonzero_compounds": 149,
+      "n_unique_binary_profiles": 137
+    },
+    {
+      "group": "PKIS_exclusive",
+      "n_compounds": 299,
+      "n_chemotypes": 30,
+      "n_target_calls": 1121,
+      "n_targets_covered": 172,
+      "target_entropy_effective_number": 111.85015341705441,
+      "n_nonzero_compounds": 233,
+      "n_unique_binary_profiles": 179
+    },
+    {
+      "group": "PKIS2_exclusive",
+      "n_compounds": 470,
+      "n_chemotypes": 53,
+      "n_target_calls": 2683,
+      "n_targets_covered": 223,
+      "target_entropy_effective_number": 150.10263404638897,
+      "n_nonzero_compounds": 318,
+      "n_unique_binary_profiles": 255
+    },
+    {
+      "group": "Roche",
+      "n_compounds": 222,
+      "n_chemotypes": 16,
+      "n_target_calls": 1227,
+      "n_targets_covered": 163,
+      "target_entropy_effective_number": 95.74767934904773,
+      "n_nonzero_compounds": 168,
+      "n_unique_binary_profiles": 124
+    }
+  ],
+  "cross_chemotype_degree_standardized_profile_collision": [
+    {
+      "pair_type": "cross_chemotype",
+      "comparator": "PKIS_exclusive",
+      "common_positive_hit_degrees": "1,2,3,4,5,6,7,10,11",
+      "KCGS_degree_standardized_collision": 0.00493629745548741,
+      "comparator_degree_standardized_collision": 0.018661074538118497,
+      "comparator_over_KCGS_collision": 3.780378858120474
+    },
+    {
+      "pair_type": "cross_chemotype",
+      "comparator": "PKIS2_exclusive",
+      "common_positive_hit_degrees": "1,2,3,4,5,6,7,8,9,10,11",
+      "KCGS_degree_standardized_collision": 0.004629906578939915,
+      "comparator_degree_standardized_collision": 0.018467488378350782,
+      "comparator_over_KCGS_collision": 3.988738879171766
+    },
+    {
+      "pair_type": "cross_chemotype",
+      "comparator": "Roche",
+      "common_positive_hit_degrees": "1,2,3,4,5,6,7,8,9,10,11",
+      "KCGS_degree_standardized_collision": 0.004629906578939915,
+      "comparator_degree_standardized_collision": 0.03269465480479376,
+      "comparator_over_KCGS_collision": 7.061623004125428
+    }
+  ],
+  "chemotype_cluster_bootstrap": [
+    {
+      "comparison": "KCGS",
+      "estimate_type": "library",
+      "median": 14.386517448360243,
+      "q025": 11.879812241208054,
+      "q975": 16.10447525058492,
+      "probability_above_zero": NaN,
+      "rejected_degenerate_draws": 844
+    },
+    {
+      "comparison": "PKIS_exclusive",
+      "estimate_type": "library",
+      "median": 12.431684879832588,
+      "q025": 9.601604272922874,
+      "q975": 15.076507257186828,
+      "probability_above_zero": NaN,
+      "rejected_degenerate_draws": 386
+    },
+    {
+      "comparison": "PKIS2_exclusive",
+      "estimate_type": "library",
+      "median": 12.340161549641689,
+      "q025": 10.753034213029279,
+      "q975": 13.933713943689561,
+      "probability_above_zero": NaN,
+      "rejected_degenerate_draws": 10
+    },
+    {
+      "comparison": "Roche",
+      "estimate_type": "library",
+      "median": 9.481178299640387,
+      "q025": 6.751847839576729,
+      "q975": 11.178710891533946,
+      "probability_above_zero": NaN,
+      "rejected_degenerate_draws": 857
+    },
+    {
+      "comparison": "KCGS_minus_PKIS_exclusive",
+      "estimate_type": "difference",
+      "median": 1.9559476383345258,
+      "q025": -1.4692160470513131,
+      "q975": 5.2928403123483,
+      "probability_above_zero": 0.8625,
+      "rejected_degenerate_draws": 1230
+    },
+    {
+      "comparison": "KCGS_minus_PKIS2_exclusive",
+      "estimate_type": "difference",
+      "median": 1.9744160757089926,
+      "q025": -0.7506182563812961,
+      "q975": 4.413789865468975,
+      "probability_above_zero": 0.9215,
+      "rejected_degenerate_draws": 854
+    },
+    {
+      "comparison": "KCGS_minus_Roche",
+      "estimate_type": "difference",
+      "median": 4.930751864694482,
+      "q025": 1.8508694193376705,
+      "q975": 7.907434169018491,
+      "probability_above_zero": 0.999,
+      "rejected_degenerate_draws": 1701
+    }
+  ],
+  "repetitions": {
+    "configuration_null": 200,
+    "size_matched_and_chemotype_bootstrap": 2000
+  },
+  "interpretation": {
+    "positive": "KCGS has the least redundant kinase target-call geometry among the four fixed collections. The ordering survives sample-size control, correlation/covariance estimands, target-support thresholds, and a configuration null preserving every compound and target degree.",
+    "boundary": "After matching only the per-compound hit-count distribution, KCGS is nearly tied with PKIS/PKIS2 in residual correlation PR. Therefore raw PR is partly a selectivity/promiscuity statistic; the stronger library-design result is the degree-and-margin-normalized redundancy audit and the lower target-profile collision rate.",
+    "not_claimed": "This post hoc fixed-collection comparison does not establish a population-level advantage, biochemical completeness, or causal superiority of KCGS design. Kinobeads cannot assay every kinase."
+  }
+}

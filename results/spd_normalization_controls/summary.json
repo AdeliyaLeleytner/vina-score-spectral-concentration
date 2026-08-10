@@ -1,0 +1,260 @@
+{
+  "analysis_status": "exploratory_post_hoc_hostile_control",
+  "docking_rows": 258770,
+  "interpretation_boundary": "If ordinal or ligand-efficiency geometry matches or exceeds standard centering, the positive SPD alignment supports within-ligand normalization generally, not a unique advantage of two-way centering.",
+  "ligand_efficiency_definition": "clipped Vina kcal/mol divided by RDKit heavy-atom count; column standardized before target correlation",
+  "parameters": {
+    "permutations": 10000,
+    "seed": 20260803
+  },
+  "qap": [
+    {
+      "contrast": "alignment",
+      "endpoint": "floor_at_bound",
+      "observed": 0.14880187025131505,
+      "p_positive": 0.1728827117288271,
+      "permutations": 10000,
+      "representation": "raw"
+    },
+    {
+      "contrast": "minus_standard_centered",
+      "endpoint": "floor_at_bound",
+      "observed": -0.18421975452951492,
+      "p_positive": 0.9542045795420458,
+      "permutations": 10000,
+      "representation": "raw"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "floor_at_bound",
+      "observed": 0.33302162478083,
+      "p_positive": 0.022097790220977902,
+      "permutations": 10000,
+      "representation": "standard_centered"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "floor_at_bound",
+      "observed": 0.3662770309760375,
+      "p_positive": 0.007899210078992101,
+      "permutations": 10000,
+      "representation": "within_ligand_ordinal"
+    },
+    {
+      "contrast": "minus_standard_centered",
+      "endpoint": "floor_at_bound",
+      "observed": 0.033255406195207504,
+      "p_positive": 0.3106689331066893,
+      "permutations": 10000,
+      "representation": "within_ligand_ordinal"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "floor_at_bound",
+      "observed": 0.2848626534190532,
+      "p_positive": 0.033896610338966106,
+      "permutations": 10000,
+      "representation": "ligand_efficiency_raw"
+    },
+    {
+      "contrast": "minus_standard_centered",
+      "endpoint": "floor_at_bound",
+      "observed": -0.04815897136177677,
+      "p_positive": 0.6961303869613039,
+      "permutations": 10000,
+      "representation": "ligand_efficiency_raw"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "floor_at_bound",
+      "observed": 0.44938632378725896,
+      "p_positive": 0.0016998300169983002,
+      "permutations": 10000,
+      "representation": "ligand_efficiency_centered"
+    },
+    {
+      "contrast": "minus_standard_centered",
+      "endpoint": "floor_at_bound",
+      "observed": 0.11636469900642898,
+      "p_positive": 0.05629437056294371,
+      "permutations": 10000,
+      "representation": "ligand_efficiency_centered"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "censor_aware_binary_10uM",
+      "observed": 0.34792518994739924,
+      "p_positive": 0.05019498050194981,
+      "permutations": 10000,
+      "representation": "raw"
+    },
+    {
+      "contrast": "minus_standard_centered",
+      "endpoint": "censor_aware_binary_10uM",
+      "observed": -0.046873173582700156,
+      "p_positive": 0.6527347265273473,
+      "permutations": 10000,
+      "representation": "raw"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "censor_aware_binary_10uM",
+      "observed": 0.3947983635300994,
+      "p_positive": 0.005099490050994901,
+      "permutations": 10000,
+      "representation": "standard_centered"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "censor_aware_binary_10uM",
+      "observed": 0.2876680303915839,
+      "p_positive": 0.0156984301569843,
+      "permutations": 10000,
+      "representation": "within_ligand_ordinal"
+    },
+    {
+      "contrast": "minus_standard_centered",
+      "endpoint": "censor_aware_binary_10uM",
+      "observed": -0.1071303331385155,
+      "p_positive": 0.9287071292870713,
+      "permutations": 10000,
+      "representation": "within_ligand_ordinal"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "censor_aware_binary_10uM",
+      "observed": 0.2932787843366453,
+      "p_positive": 0.03899610038996101,
+      "permutations": 10000,
+      "representation": "ligand_efficiency_raw"
+    },
+    {
+      "contrast": "minus_standard_centered",
+      "endpoint": "censor_aware_binary_10uM",
+      "observed": -0.10151957919345411,
+      "p_positive": 0.8253174682531746,
+      "permutations": 10000,
+      "representation": "ligand_efficiency_raw"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "censor_aware_binary_10uM",
+      "observed": 0.28275862068965524,
+      "p_positive": 0.013898610138986101,
+      "permutations": 10000,
+      "representation": "ligand_efficiency_centered"
+    },
+    {
+      "contrast": "minus_standard_centered",
+      "endpoint": "censor_aware_binary_10uM",
+      "observed": -0.11203974284044416,
+      "p_positive": 0.9182081791820818,
+      "permutations": 10000,
+      "representation": "ligand_efficiency_centered"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "censor_aware_binary_30uM",
+      "observed": 0.18036236119228521,
+      "p_positive": 0.1498850114988501,
+      "permutations": 10000,
+      "representation": "raw"
+    },
+    {
+      "contrast": "minus_standard_centered",
+      "endpoint": "censor_aware_binary_30uM",
+      "observed": -0.22881355932203395,
+      "p_positive": 0.9803019698030196,
+      "permutations": 10000,
+      "representation": "raw"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "censor_aware_binary_30uM",
+      "observed": 0.40917592051431917,
+      "p_positive": 0.011898810118988102,
+      "permutations": 10000,
+      "representation": "standard_centered"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "censor_aware_binary_30uM",
+      "observed": 0.3632963179427236,
+      "p_positive": 0.009499050094990502,
+      "permutations": 10000,
+      "representation": "within_ligand_ordinal"
+    },
+    {
+      "contrast": "minus_standard_centered",
+      "endpoint": "censor_aware_binary_30uM",
+      "observed": -0.04587960257159557,
+      "p_positive": 0.7607239276072393,
+      "permutations": 10000,
+      "representation": "within_ligand_ordinal"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "censor_aware_binary_30uM",
+      "observed": 0.2642314436002338,
+      "p_positive": 0.05599440055994401,
+      "permutations": 10000,
+      "representation": "ligand_efficiency_raw"
+    },
+    {
+      "contrast": "minus_standard_centered",
+      "endpoint": "censor_aware_binary_30uM",
+      "observed": -0.14494447691408535,
+      "p_positive": 0.9359064093590641,
+      "permutations": 10000,
+      "representation": "ligand_efficiency_raw"
+    },
+    {
+      "contrast": "alignment",
+      "endpoint": "censor_aware_binary_30uM",
+      "observed": 0.4445353594389247,
+      "p_positive": 0.0016998300169983002,
+      "permutations": 10000,
+      "representation": "ligand_efficiency_centered"
+    },
+    {
+      "contrast": "minus_standard_centered",
+      "endpoint": "censor_aware_binary_30uM",
+      "observed": 0.035359438924605524,
+      "p_positive": 0.32656734326567344,
+      "permutations": 10000,
+      "representation": "ligand_efficiency_centered"
+    }
+  ],
+  "results": {
+    "ligand_efficiency_centered": {
+      "censor_aware_binary_10uM": 0.28275862068965524,
+      "censor_aware_binary_30uM": 0.4445353594389247,
+      "floor_at_bound": 0.44938632378725896
+    },
+    "ligand_efficiency_raw": {
+      "censor_aware_binary_10uM": 0.2932787843366453,
+      "censor_aware_binary_30uM": 0.2642314436002338,
+      "floor_at_bound": 0.2848626534190532
+    },
+    "raw": {
+      "censor_aware_binary_10uM": 0.34792518994739924,
+      "censor_aware_binary_30uM": 0.18036236119228521,
+      "floor_at_bound": 0.14880187025131505
+    },
+    "standard_centered": {
+      "censor_aware_binary_10uM": 0.3947983635300994,
+      "censor_aware_binary_30uM": 0.40917592051431917,
+      "floor_at_bound": 0.33302162478083
+    },
+    "within_ligand_ordinal": {
+      "censor_aware_binary_10uM": 0.2876680303915839,
+      "censor_aware_binary_30uM": 0.3632963179427236,
+      "floor_at_bound": 0.3662770309760375
+    }
+  },
+  "sources": {
+    "dockstring_sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64",
+    "spd_sha256": "7132723f85e746de2f8387d01dcde6ffff703c92561fda9751cbd6753e900240"
+  },
+  "spd_connectivity_blocks_excluded": 1925
+}

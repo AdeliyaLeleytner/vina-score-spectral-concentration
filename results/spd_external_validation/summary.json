@@ -1,0 +1,644 @@
+{
+  "analysis_status": "exploratory_post_hoc_external_validation",
+  "interpretation": "Residual Vina target geometry aligns with a censored/binary experimental co-response network, including on a fixed common-support rectangle. This can motivate counterscreen prioritization, but it is not evidence of quantitative affinity recovery or ligand-level target ranking.",
+  "key_results": {
+    "censor_aware_binary": {
+      "10_uM": {
+        "pairs": 59,
+        "raw_spearman": 0.34792518994739924,
+        "residual_minus_raw": 0.046873173582700156,
+        "residual_spearman": 0.3947983635300994
+      },
+      "30_uM": {
+        "pairs": 59,
+        "raw_spearman": 0.18036236119228521,
+        "residual_minus_raw": 0.22881355932203395,
+        "residual_spearman": 0.40917592051431917
+      }
+    },
+    "common_support_rectangle": {
+      "compounds_complete_for_all_targets": 102,
+      "controls": [
+        "full_sequence_identity",
+        "same_family",
+        "pair_support",
+        "pair_target_coverage_geomean",
+        "pair_target_coverage_similarity"
+      ],
+      "pairs": 55,
+      "raw_partial_rank": -0.22006607159624003,
+      "raw_spearman": 0.055194805194805206,
+      "residual_minus_raw": 0.45281385281385295,
+      "residual_partial_rank": 0.3172479578349004,
+      "residual_spearman": 0.5080086580086581,
+      "targets": [
+        "ADORA2A",
+        "ADRB1",
+        "ADRB2",
+        "AR",
+        "DRD2",
+        "ESR1",
+        "ESR2",
+        "F2",
+        "NR3C1",
+        "PGR",
+        "PTGS2"
+      ]
+    },
+    "exact_only_instability": {
+      "10": {
+        "pairs": 16,
+        "raw_spearman": -0.2207506116394726,
+        "residual_spearman": 0.0
+      },
+      "5": {
+        "pairs": 28,
+        "raw_spearman": 0.39052453353851474,
+        "residual_spearman": 0.4455704179994133
+      }
+    },
+    "operational_best_partner_retrieval": [
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "mean_reciprocal_rank": 0.4763888888888889,
+        "predictor": "raw",
+        "query_targets": 12,
+        "top1_hit_rate": 0.3333333333333333,
+        "top3_hit_rate": 0.5
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "mean_reciprocal_rank": 0.49454365079365076,
+        "predictor": "residual",
+        "query_targets": 12,
+        "top1_hit_rate": 0.3333333333333333,
+        "top3_hit_rate": 0.6666666666666666
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "mean_reciprocal_rank": 0.5444444444444444,
+        "predictor": "sequence",
+        "query_targets": 12,
+        "top1_hit_rate": 0.3333333333333333,
+        "top3_hit_rate": 0.6666666666666666
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "mean_reciprocal_rank": 0.5333333333333333,
+        "predictor": "sequence_residual_equal_rank",
+        "query_targets": 12,
+        "top1_hit_rate": 0.3333333333333333,
+        "top3_hit_rate": 0.5833333333333334
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "mean_reciprocal_rank": 0.5031084656084656,
+        "predictor": "raw",
+        "query_targets": 12,
+        "top1_hit_rate": 0.3333333333333333,
+        "top3_hit_rate": 0.5833333333333334
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "mean_reciprocal_rank": 0.5327380952380952,
+        "predictor": "residual",
+        "query_targets": 12,
+        "top1_hit_rate": 0.3333333333333333,
+        "top3_hit_rate": 0.75
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "mean_reciprocal_rank": 0.5466269841269841,
+        "predictor": "sequence",
+        "query_targets": 12,
+        "top1_hit_rate": 0.3333333333333333,
+        "top3_hit_rate": 0.6666666666666666
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "mean_reciprocal_rank": 0.5548611111111111,
+        "predictor": "sequence_residual_equal_rank",
+        "query_targets": 12,
+        "top1_hit_rate": 0.3333333333333333,
+        "top3_hit_rate": 0.6666666666666666
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "mean_reciprocal_rank": 0.7896825396825397,
+        "predictor": "raw",
+        "query_targets": 12,
+        "top1_hit_rate": 0.75,
+        "top3_hit_rate": 0.75
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "mean_reciprocal_rank": 0.7291666666666666,
+        "predictor": "residual",
+        "query_targets": 12,
+        "top1_hit_rate": 0.6666666666666666,
+        "top3_hit_rate": 0.75
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "mean_reciprocal_rank": 0.7041666666666666,
+        "predictor": "sequence",
+        "query_targets": 12,
+        "top1_hit_rate": 0.5833333333333334,
+        "top3_hit_rate": 0.6666666666666666
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "mean_reciprocal_rank": 0.748611111111111,
+        "predictor": "sequence_residual_equal_rank",
+        "query_targets": 12,
+        "top1_hit_rate": 0.6666666666666666,
+        "top3_hit_rate": 0.75
+      }
+    ],
+    "primary_floor_at_bound": {
+      "controls": [
+        "full_sequence_identity",
+        "same_family",
+        "pair_support",
+        "pair_target_coverage_geomean",
+        "pair_target_coverage_similarity"
+      ],
+      "pairs": 59,
+      "raw_partial_rank": 0.09647964432933596,
+      "raw_spearman": 0.14880187025131505,
+      "residual_minus_raw": 0.18421975452951492,
+      "residual_partial_rank": 0.22614025895195242,
+      "residual_spearman": 0.33302162478083
+    },
+    "qap": [
+      {
+        "endpoint": "floor_at_bound",
+        "metric": "raw_spearman",
+        "null_mean": -0.0003492308591466973,
+        "null_q025": -0.3098787258912916,
+        "null_q975": 0.36026154295733515,
+        "observed": 0.14880187025131505,
+        "p_positive": 0.1740165196696066,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "metric": "residual_spearman",
+        "null_mean": 0.0001588568088836937,
+        "null_q025": -0.2002936879018118,
+        "null_q975": 0.3161937463471657,
+        "observed": 0.33302162478083,
+        "p_positive": 0.022299554008919822,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "metric": "residual_minus_raw",
+        "null_mean": 0.0005080876680303909,
+        "null_q025": -0.17942723553477496,
+        "null_q975": 0.21648158971361764,
+        "observed": 0.18421975452951492,
+        "p_positive": 0.04603907921841563,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "metric": "raw_partial_rank",
+        "null_mean": -0.00074606709665048,
+        "null_q025": -0.25350489262772763,
+        "null_q975": 0.3383475855416959,
+        "observed": 0.09647964432933596,
+        "p_positive": 0.2242755144897102,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "metric": "residual_partial_rank",
+        "null_mean": -0.0004524559745126545,
+        "null_q025": -0.21894429513302013,
+        "null_q975": 0.3333140601651268,
+        "observed": 0.22614025895195242,
+        "p_positive": 0.0635787284254315,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "metric": "residual_minus_raw_partial_rank",
+        "null_mean": 0.00029361112213782583,
+        "null_q025": -0.1614666323264384,
+        "null_q975": 0.19175218474307504,
+        "observed": 0.12966061462261647,
+        "p_positive": 0.08189836203275934,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "metric": "raw_spearman",
+        "null_mean": -0.06648481355932205,
+        "null_q025": -0.24424313267095263,
+        "null_q975": 0.11104617182933957,
+        "observed": 0.14880187025131505,
+        "p_positive": 0.004779904401911962,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "metric": "residual_spearman",
+        "null_mean": 0.17133710929281118,
+        "null_q025": 0.059146697837521904,
+        "null_q975": 0.3237989479836359,
+        "observed": 0.33302162478083,
+        "p_positive": 0.01503969920601588,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "metric": "residual_minus_raw",
+        "null_mean": 0.23782192285213322,
+        "null_q025": 0.11315020455873753,
+        "null_q975": 0.37609585037989474,
+        "observed": 0.18421975452951492,
+        "p_positive": 0.7286254274914502,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "metric": "raw_partial_rank",
+        "null_mean": -0.04275942554961961,
+        "null_q025": -0.20546062678383634,
+        "null_q975": 0.09616972441422622,
+        "observed": 0.09647964432933596,
+        "p_positive": 0.024519509609807803,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "metric": "residual_partial_rank",
+        "null_mean": 0.06763708299286886,
+        "null_q025": -0.07911929130254412,
+        "null_q975": 0.2558554649545061,
+        "observed": 0.22614025895195242,
+        "p_positive": 0.06993860122797545,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "floor_at_bound",
+        "metric": "residual_minus_raw_partial_rank",
+        "null_mean": 0.11039650854248845,
+        "null_q025": -0.00653303751729347,
+        "null_q975": 0.25946861666601156,
+        "observed": 0.12966061462261647,
+        "p_positive": 0.36309273814523707,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "metric": "raw_spearman",
+        "null_mean": -0.0007216154295733489,
+        "null_q025": -0.3395675043834015,
+        "null_q975": 0.400470485096435,
+        "observed": 0.34792518994739924,
+        "p_positive": 0.04735905281894362,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "metric": "residual_spearman",
+        "null_mean": -0.00011664289888953802,
+        "null_q025": -0.19894798363530097,
+        "null_q975": 0.29281122150789,
+        "observed": 0.3947983635300994,
+        "p_positive": 0.005619887602247955,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "metric": "residual_minus_raw",
+        "null_mean": 0.0006049725306838107,
+        "null_q025": -0.21753360607831668,
+        "null_q975": 0.2268264172998246,
+        "observed": 0.046873173582700156,
+        "p_positive": 0.3469530609387812,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "metric": "raw_partial_rank",
+        "null_mean": -0.000678178433848598,
+        "null_q025": -0.3465678890985624,
+        "null_q975": 0.4045180524289033,
+        "observed": 0.24637034096005297,
+        "p_positive": 0.124917501649967,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "metric": "residual_partial_rank",
+        "null_mean": -0.0007691867666546267,
+        "null_q025": -0.2419634948097075,
+        "null_q975": 0.27551233191201036,
+        "observed": 0.22952852802901855,
+        "p_positive": 0.0496990060198796,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "metric": "residual_minus_raw_partial_rank",
+        "null_mean": -9.100833280602869e-05,
+        "null_q025": -0.22682543355631832,
+        "null_q975": 0.23211563750412015,
+        "observed": -0.016841812931034428,
+        "p_positive": 0.5469090618187636,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "metric": "raw_spearman",
+        "null_mean": -0.020305090590298093,
+        "null_q025": -0.29959088252483923,
+        "null_q975": 0.33623611922852126,
+        "observed": 0.34792518994739924,
+        "p_positive": 0.010519789604207916,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "metric": "residual_spearman",
+        "null_mean": 0.16311846639392166,
+        "null_q025": -0.009760374050262996,
+        "null_q975": 0.36031560490940967,
+        "observed": 0.3947983635300994,
+        "p_positive": 0.001499970000599988,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "metric": "residual_minus_raw",
+        "null_mean": 0.18342355698421975,
+        "null_q025": 0.020806545879602567,
+        "null_q975": 0.32986557568673297,
+        "observed": 0.046873173582700156,
+        "p_positive": 0.9390612187756245,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "metric": "raw_partial_rank",
+        "null_mean": -0.032041757614832495,
+        "null_q025": -0.25637760628216205,
+        "null_q975": 0.23595409724826433,
+        "observed": 0.24637034096005297,
+        "p_positive": 0.016639667206655866,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "metric": "residual_partial_rank",
+        "null_mean": 0.03159690876805748,
+        "null_q025": -0.1278961001061665,
+        "null_q975": 0.174443905351585,
+        "observed": 0.22952852802901855,
+        "p_positive": 0.004579908401831963,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_10uM",
+        "metric": "residual_minus_raw_partial_rank",
+        "null_mean": 0.06363866638288997,
+        "null_q025": -0.06831690377731856,
+        "null_q975": 0.19630329564780813,
+        "observed": -0.016841812931034428,
+        "p_positive": 0.868022639547209,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "metric": "raw_spearman",
+        "null_mean": -0.0007232402104032728,
+        "null_q025": -0.2741101694915254,
+        "null_q975": 0.4181180596142605,
+        "observed": 0.18036236119228521,
+        "p_positive": 0.14803703925921483,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "metric": "residual_spearman",
+        "null_mean": 3.425715955581509e-05,
+        "null_q025": -0.18281706604324952,
+        "null_q975": 0.3295762711864408,
+        "observed": 0.40917592051431917,
+        "p_positive": 0.012319753604927902,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "metric": "residual_minus_raw",
+        "null_mean": 0.0007574973699590882,
+        "null_q025": -0.19345558153126827,
+        "null_q975": 0.2184117475160725,
+        "observed": 0.22881355932203395,
+        "p_positive": 0.020319593608127837,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "metric": "raw_partial_rank",
+        "null_mean": -0.0021740593420783855,
+        "null_q025": -0.29346697437882735,
+        "null_q975": 0.42763489403626936,
+        "observed": 0.016645451094203748,
+        "p_positive": 0.4099518009639807,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "metric": "residual_partial_rank",
+        "null_mean": -0.0008391764481191118,
+        "null_q025": -0.23360830076826725,
+        "null_q975": 0.3134777793463844,
+        "observed": 0.2160022458116264,
+        "p_positive": 0.0625587488250235,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "metric": "residual_minus_raw_partial_rank",
+        "null_mean": 0.0013348828939592735,
+        "null_q025": -0.21087379210406085,
+        "null_q975": 0.22341048583786774,
+        "observed": 0.19935679471742263,
+        "p_positive": 0.04061918761624767,
+        "permutation_scheme": "unrestricted",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "metric": "raw_spearman",
+        "null_mean": -0.020819177089421406,
+        "null_q025": -0.16236119228521337,
+        "null_q975": 0.15049678550555223,
+        "observed": 0.18036236119228521,
+        "p_positive": 0.0023399532009359815,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "metric": "residual_spearman",
+        "null_mean": 0.23978233664523668,
+        "null_q025": 0.14120105201636468,
+        "null_q975": 0.35604909409701924,
+        "observed": 0.40917592051431917,
+        "p_positive": 0.0031599368012639748,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "metric": "residual_minus_raw",
+        "null_mean": 0.2606015137346581,
+        "null_q025": 0.15774400935125663,
+        "null_q975": 0.36271186440677966,
+        "observed": 0.22881355932203395,
+        "p_positive": 0.7142657146857063,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "metric": "raw_partial_rank",
+        "null_mean": -0.064831826609514,
+        "null_q025": -0.15900266779695318,
+        "null_q975": 0.023998878715705878,
+        "observed": 0.016645451094203748,
+        "p_positive": 0.042979140417191655,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "metric": "residual_partial_rank",
+        "null_mean": 0.10470906722048849,
+        "null_q025": -0.006227281586322186,
+        "null_q975": 0.2277333031049267,
+        "observed": 0.2160022458116264,
+        "p_positive": 0.049559008819823606,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      },
+      {
+        "endpoint": "censor_aware_binary_30uM",
+        "metric": "residual_minus_raw_partial_rank",
+        "null_mean": 0.1695408938300025,
+        "null_q025": 0.0864473990585648,
+        "null_q975": 0.2645405892163318,
+        "observed": 0.19935679471742263,
+        "p_positive": 0.2574548509029819,
+        "permutation_scheme": "family_preserving",
+        "permutations": 50000
+      }
+    ]
+  },
+  "limitations": [
+    "More than ninety percent of selected SPD rows are right-censored.",
+    "Exact-only estimates are sparse and change sharply with minimum pair support.",
+    "Assay campaigns and observation masks are target-specific; unrestricted QAP target-label exchangeability is imperfect.",
+    "Family-preserving QAP has limited permutations because four families are singletons.",
+    "Connectivity matching merges stereoisomers/protonation states and is not exact chemical identity.",
+    "No compound identifiers or raw SPD rows are redistributed; the open CC BY 4.0 source is fetched directly from Zenodo and checksum-validated."
+  ],
+  "parameters": {
+    "qap_permutations": 50000,
+    "seed": 20260803
+  },
+  "primary_contract": {
+    "assays": {
+      "ADORA2A": 3177,
+      "ADRB1": 3086,
+      "ADRB2": 3087,
+      "AR": 41629,
+      "DRD2": 3157,
+      "EGFR": 32018,
+      "ESR1": 3199,
+      "ESR2": 3217,
+      "F2": 3662,
+      "NR3C1": 3218,
+      "PGR": 41630,
+      "PTGS2": 3198
+    },
+    "censoring_warning": "right-censored bounds are not exact IC50 values; binary and exact-only analyses define distinct estimands",
+    "compound_identity": "first 14 characters of Standard InChIKey",
+    "docking_predictor": "DOCKSTRING rows outside all SPD connectivity blocks; positive scores clipped to zero; 12-target column-z and row-centering",
+    "experimental_endpoint": "reported IC50 bound converted to pIC50, column-standardized on observed cells, then ligand-row-centered; pairwise Spearman; min 40"
+  },
+  "selection_boundary": "candidate direct human binding/inhibition groups and the largest-coverage rule were fixed without inspecting target-pair outcomes; endpoint and all sensitivities remain post hoc",
+  "software": {
+    "numpy": "1.26.4",
+    "pandas": "2.3.2",
+    "python": "3.12.11",
+    "scipy": "1.16.2"
+  },
+  "sources": {
+    "dockstring": {
+      "path": "data/frozen/dockstring-dataset.tsv.gz",
+      "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+    },
+    "spd": {
+      "official_article": "https://www.nature.com/articles/s41467-023-40064-9",
+      "official_data": "https://zenodo.org/records/8103950",
+      "license": "CC BY 4.0",
+      "redistributed": false,
+      "sha256": "7132723f85e746de2f8387d01dcde6ffff703c92561fda9751cbd6753e900240"
+    },
+    "uniprot": {
+      "alignment": "global BLOSUM62; gap-open -10; gap-extend -0.5",
+      "biopython_version": "1.87",
+      "identity_denominator": "all alignment columns including gaps",
+      "sha256": "26ebfda18fabdbaf605f14329f2c439e47427ff315f4160f3a68439ae7bf1729",
+      "source": "UniProt reviewed human proteins; exact primary gene labels"
+    }
+  },
+  "support": {
+    "connectivity_block_overlap": 932,
+    "dockstring_connectivity_blocks": 250689,
+    "dockstring_full_inchikeys": 260155,
+    "dockstring_rows_in_overlapping_blocks": 1364,
+    "exact_full_inchikey_overlap": 0,
+    "exact_rows": 938,
+    "right_censored_fraction": 0.9156929714182995,
+    "right_censored_rows": 10188,
+    "selected_rows": 11126,
+    "spd_connectivity_blocks": 1925,
+    "spd_full_inchikeys": 1975
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "analysis_status": "post_hoc_exploratory_science_only",
+  "cid_match_method_counts_on_dense_support": {
+    "exact_inchi_connectivity_block": 10,
+    "exact_standard_inchikey": 46,
+    "explicit_upstream_name_salt_or_variant_override": 3
+  },
+  "claim_boundary": "DAVIS is the evaluation surface and may overlap Boltz-2 training; this is not independent external validation. Geometry metrics do not establish ligand-level target retrieval.",
+  "comparisons": {
+    "Boltz_head_consensus_minus_Boltz_mean_head": {
+      "delta_continuous_spearman": 0.002561525530790587,
+      "delta_top10_auc": -0.014991181657848407,
+      "paired_qap_p_positive_continuous": 0.39233038348082594,
+      "paired_qap_p_positive_top10_auc": 0.920153992300385
+    },
+    "Vina_Boltz_consensus_minus_Boltz_mean_head": {
+      "delta_continuous_spearman": -0.16629404525531877,
+      "delta_top10_auc": -0.11829176114890405,
+      "paired_qap_p_positive_continuous": 0.999750012499375,
+      "paired_qap_p_positive_top10_auc": 0.9944502774861257
+    }
+  },
+  "ligands": 59,
+  "positive_target_pairs": 21,
+  "target_count": 21,
+  "targets": [
+    "ABL1",
+    "AKT1",
+    "AKT2",
+    "CDK2",
+    "CSF1R",
+    "EGFR",
+    "FGFR1",
+    "IGF1R",
+    "JAK2",
+    "KDR",
+    "KIT",
+    "LCK",
+    "MAP2K1",
+    "MAPK1",
+    "MAPK14",
+    "MAPKAPK2",
+    "MET",
+    "PLK1",
+    "PTK2",
+    "ROCK1",
+    "SRC"
+  ]
+}

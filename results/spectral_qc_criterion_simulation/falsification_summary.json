@@ -1,0 +1,65 @@
+{
+  "claim_boundary": "No statistic computed only from a score matrix and replicate seeds can distinguish the good surface from an identical surface assigned to the wrong target labels. The proposed gate can establish reproducible, non-independent residual structure, not docking accuracy.",
+  "counterexamples": {
+    "accurate_high_dimensional_false_negative": {
+      "coherence_gate_pass_rate": 0.0,
+      "median_preference_accuracy": 0.9370504385964913,
+      "median_residual_pr_null_ratio": 0.9992885530119469,
+      "regime": "good_high_dimensional_interactions"
+    },
+    "expansion_without_information": {
+      "fraction_E_exceeding_good_correlated": 1.0,
+      "fraction_with_E_at_least_one": 1.0,
+      "median_preference_accuracy": 0.5005811403508772,
+      "regime": "generic_ligand_effect_independent_noise"
+    },
+    "reproducible_correlated_artifact": {
+      "coherence_gate_pass_rate": 1.0,
+      "median_preference_accuracy": 0.5004166666666667,
+      "regime": "target_correlated_artifact"
+    },
+    "target_label_permutation_invariance": {
+      "coherence_gate_pass_rate": 1.0,
+      "maximum_absolute_observable_metric_difference_from_good": {
+        "coherence_composite_score": 8.881784197001252e-16,
+        "expansion_log2": 2.4424906541753444e-15,
+        "raw_pr": 1.3322676295501878e-15,
+        "raw_seed_spearman": 0.0,
+        "residual_pr": 2.6645352591003757e-15,
+        "residual_pr_null_ratio": 1.3877787807814457e-16,
+        "residual_seed_spearman": 0.0
+      },
+      "median_good_preference_accuracy": 0.9243201754385965,
+      "median_shuffled_preference_accuracy": 0.48194078947368424,
+      "regime": "shuffled_box_labels"
+    }
+  },
+  "recommended_interpretation": {
+    "E": "Magnitude of ligand-main-effect removal relative to residual dimension.",
+    "coherence_gate": "Use only to flag reproducible correlated residual structure. Require external pose/site controls or affinity/preference truth for quality.",
+    "external_evidence_required_for_accuracy": [
+      "box containment and intended-site identity",
+      "cognate-pose recovery or pocket-occupancy controls",
+      "receptor/box label integrity",
+      "experimental affinity or target-preference concordance"
+    ],
+    "residual_pr_null_ratio": "Evidence for correlated residual directions relative to a row-norm null; lower is more structured, not necessarily more correct.",
+    "residual_seed_spearman": "Technical reproducibility of the residual score field; raw seed stability can be inflated by the ligand main effect."
+  },
+  "rule_comparison_against_simulated_truth": {
+    "expansion_only": {
+      "balanced_accuracy": 0.5,
+      "false_positive_rate": 1.0,
+      "sensitivity_across_the_two_informative_regimes": 1.0,
+      "specificity_across_the_four_noninformative_regimes": 0.0,
+      "warning": "These rates summarize deliberately selected falsification regimes, not a prevalence-weighted estimate for real docking campaigns."
+    },
+    "two_axis_coherence_gate": {
+      "balanced_accuracy": 0.5,
+      "false_positive_rate": 0.5,
+      "sensitivity_across_the_two_informative_regimes": 0.5,
+      "specificity_across_the_four_noninformative_regimes": 0.5,
+      "warning": "These rates summarize deliberately selected falsification regimes, not a prevalence-weighted estimate for real docking campaigns."
+    }
+  }
+}

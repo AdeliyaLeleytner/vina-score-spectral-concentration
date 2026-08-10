@@ -1,0 +1,233 @@
+{
+  "analysis": "strict within-KLIFS-group target-label QAP sensitivity",
+  "analysis_status": "exploratory_conditional_sensitivity",
+  "claim_boundary": "A small conditional p-value would show that the observed continuous association is unusual under coarse-group-preserving relabellings; it would not show independence from all kinase biology, superiority to sequence or pocket baselines, pose correctness, or validity beyond this fixed 20-target panel.",
+  "configuration": {
+    "alternative": "positive association, one-sided",
+    "exact_p_rule": "exceedance fraction over the complete enumeration",
+    "monte_carlo_p_correction": "plus one",
+    "monte_carlo_permutations": 100000,
+    "seed": 20260805
+  },
+  "estimand": "Spearman or rank-linear partial association between the fixed centered-Vina target-pair geometry and an experimental target-pair geometry, conditional on complete predictor-node relabellings within KLIFS groups",
+  "exchangeability_diagnostics": {
+    "TK_involving_pair_fraction": 0.8105263157894737,
+    "TK_involving_pair_positions": 154,
+    "effective_exchangeable_units": {
+      "block_size_vector": [
+        11,
+        3,
+        3
+      ],
+      "fixed_singletons": 3,
+      "movable_blocks": 3,
+      "movable_target_labels": 17,
+      "randomization_unit": "complete target labels within KLIFS-group blocks",
+      "reason_no_scalar_effective_sample_size": "A block-restricted node-label randomization has no defensible conversion to an equivalent number of independent target-pair observations: all 190 edges are functions of 20 nodes, relabellings are coupled within blocks, and the 11-target TK block dominates the accessible null. Resolution is therefore reported empirically from the randomization distribution instead.",
+      "scalar_effective_sample_size": null
+    },
+    "exact_KLIFS_family_relabellings": 16,
+    "exact_KLIFS_group_relabellings": 1437004800,
+    "fixed_singleton_targets": 3,
+    "fixed_singleton_to_singleton_pair_positions": 3,
+    "minimum_exact_one_sided_family_p": 0.0625,
+    "movable_pair_positions": 187,
+    "movable_target_block_sizes": [
+      11,
+      3,
+      3
+    ],
+    "movable_target_blocks": 3,
+    "movable_targets": 17,
+    "non_singleton_families": {
+      "Akt": [
+        "AKT1",
+        "AKT2"
+      ],
+      "MAPK": [
+        "MAPK1",
+        "MAPK14"
+      ],
+      "PDGFR": [
+        "CSF1R",
+        "KIT"
+      ],
+      "Src": [
+        "LCK",
+        "SRC"
+      ]
+    }
+  },
+  "fixed_target_panel": [
+    "ABL1",
+    "AKT1",
+    "AKT2",
+    "CDK2",
+    "CSF1R",
+    "EGFR",
+    "FGFR1",
+    "IGF1R",
+    "JAK2",
+    "KDR",
+    "KIT",
+    "LCK",
+    "MAP2K1",
+    "MAPK1",
+    "MAPK14",
+    "MAPKAPK2",
+    "MET",
+    "PLK1",
+    "ROCK1",
+    "SRC"
+  ],
+  "output_files": {
+    "exchangeability_blocks.csv": {
+      "rows": 6,
+      "sha256": "74d0384ce75d4afaecd5070ba4cdd4872db5f8263dbd0241e482eef10a03b04a"
+    },
+    "pair_strata.csv": {
+      "rows": 18,
+      "sha256": "bfd92beabc32d3c339b940f0b8e0decea102c7cc93c4a88965146f55e0e1123b"
+    },
+    "restricted_partial_qap.csv": {
+      "rows": 12,
+      "sha256": "c77a74f49b273874cd795fbd42abc73b59ce845ce1fda60ccdabcd951b8932bc"
+    }
+  },
+  "permutation_rule": "Every draw is a complete bijection of all 20 predictor target labels. Labels may exchange only with targets in the same KLIFS group; the experimental endpoint and structural controls remain fixed.",
+  "permutation_schemes": {
+    "AGC_plus_CMGC_only": {
+      "description": "diagnostic exact enumeration of the two three-target blocks",
+      "exact_enumeration": true,
+      "identity_orders": 1,
+      "permutations": 36,
+      "seed": null,
+      "unique_sampled_target_orders": 36
+    },
+    "TK_only": {
+      "description": "diagnostic: only the 11-target TK block is relabelled",
+      "exact_enumeration": false,
+      "identity_orders": 0,
+      "permutations": 100000,
+      "seed": 20260806,
+      "unique_sampled_target_orders": 99892
+    },
+    "all_non_singleton_KLIFS_groups": {
+      "description": "primary strict group-restricted null",
+      "exact_enumeration": false,
+      "identity_orders": 0,
+      "permutations": 100000,
+      "seed": 20260805,
+      "unique_sampled_target_orders": 99997
+    }
+  },
+  "primary_results": {
+    "KiRHub": {
+      "sequence_plus_KLIFS_pocket_adjusted": {
+        "additional_partial_spearman_needed_to_cross_one_sided_critical": 0.09648423397777206,
+        "empirical_one_sided_alpha_0_05_critical_partial_spearman": 0.3763791118465858,
+        "empirical_two_sided_alpha_0_05_null_deviation_bound": 0.22160642960819646,
+        "monte_carlo_standard_error": 0.0011764129483995234,
+        "null_interval_95": [
+          -0.019044202537734874,
+          0.4188712133262814
+        ],
+        "null_median": 0.1613957629244802,
+        "observed_minus_null_median": 0.11849911494433352,
+        "observed_minus_one_sided_alpha_0_05_critical": -0.09648423397777206,
+        "one_sided_null_interval_90": [
+          0.003979538713603528,
+          0.3763791118465858
+        ],
+        "partial_spearman": 0.27989487786881373,
+        "restricted_qap_p_positive": 0.16592834071659282
+      },
+      "unadjusted": {
+        "additional_partial_spearman_needed_to_cross_one_sided_critical": 0.06048865619546234,
+        "empirical_one_sided_alpha_0_05_critical_partial_spearman": 0.38207709500627646,
+        "empirical_two_sided_alpha_0_05_null_deviation_bound": 0.1968813832137061,
+        "monte_carlo_standard_error": 0.0010173895995347884,
+        "null_interval_95": [
+          0.034512940291391674,
+          0.4220852742676934
+        ],
+        "null_median": 0.18665774383602987,
+        "observed_minus_null_median": 0.13493069497478424,
+        "observed_minus_one_sided_alpha_0_05_critical": -0.06048865619546234,
+        "one_sided_null_interval_90": [
+          0.053366225336465074,
+          0.38207709500627646
+        ],
+        "partial_spearman": 0.3215884388108141,
+        "restricted_qap_p_positive": 0.11725882741172589
+      }
+    },
+    "old_three_panel_mean": {
+      "sequence_plus_KLIFS_pocket_adjusted": {
+        "additional_partial_spearman_needed_to_cross_one_sided_critical": 0.13566443335675235,
+        "empirical_one_sided_alpha_0_05_critical_partial_spearman": 0.3603647286755315,
+        "empirical_two_sided_alpha_0_05_null_deviation_bound": 0.257343146349811,
+        "monte_carlo_standard_error": 0.001258138362884194,
+        "null_interval_95": [
+          -0.06313803924819729,
+          0.4148646203516721
+        ],
+        "null_median": 0.10302636435287396,
+        "observed_minus_null_median": 0.12167393096590517,
+        "observed_minus_one_sided_alpha_0_05_critical": -0.13566443335675235,
+        "one_sided_null_interval_90": [
+          -0.043816225538150885,
+          0.3603647286755315
+        ],
+        "partial_spearman": 0.22470029531877914,
+        "restricted_qap_p_positive": 0.1971680283197168
+      },
+      "unadjusted": {
+        "additional_partial_spearman_needed_to_cross_one_sided_critical": 0.11394044370775869,
+        "empirical_one_sided_alpha_0_05_critical_partial_spearman": 0.3815413955118877,
+        "empirical_two_sided_alpha_0_05_null_deviation_bound": 0.24696234868106975,
+        "monte_carlo_standard_error": 0.0011795273439136381,
+        "null_interval_95": [
+          -0.018536527225334408,
+          0.43415940587403573
+        ],
+        "null_median": 0.13457904683081795,
+        "observed_minus_null_median": 0.13302190497331107,
+        "observed_minus_one_sided_alpha_0_05_critical": -0.11394044370775869,
+        "one_sided_null_interval_90": [
+          -0.0019473458606197578,
+          0.3815413955118877
+        ],
+        "partial_spearman": 0.267600951804129,
+        "restricted_qap_p_positive": 0.16702832971670284
+      }
+    }
+  },
+  "resolution_boundary": "The empirical critical values are randomization-resolution diagnostics for the observed fixed matrices, not power-based minimum detectable effects and not confidence intervals for a target population. A single effective target count is intentionally not reported because node-label permutations couple all incident edges and are restricted to blocks of sizes 11, 3 and 3, with three fixed singleton targets. The 95th percentile is calibrated to the primary one-sided positive alternative; the absolute-deviation bound around the null median is descriptive and is not reported as a two-sided p-value.",
+  "small_group_boundary": "AGC and CMGC each contain only three targets (six label orders each), and three groups are singletons. An exact AGC+CMGC-only null has just 36 orders. A stricter within-KLIFS-family null has only 16 total orders and cannot attain a one-sided p below 0.0625, so it is not used for significance claims.",
+  "software": {
+    "numpy": "1.26.4",
+    "pandas": "2.3.2",
+    "python": "3.12.11",
+    "scipy": "1.16.2",
+    "script_sha256": "ade6d3084f7d817deeda373784c06719b4bbab5d4fd84203399bb80c7cefb20d"
+  },
+  "sources": {
+    "KiRHub": {
+      "derived_pair_values_redistributed": false,
+      "doi": "10.1038/s41587-026-03090-8",
+      "sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03",
+      "source_activity_rows_redistributed": false,
+      "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41587-026-03090-8/MediaObjects/41587_2026_3090_MOESM4_ESM.xlsx"
+    },
+    "target_annotations": {
+      "path": "results/klifs_pocket_control/target_annotations.csv",
+      "sha256": "005d118db9510f59355330afeda0280f40041c8d53bbeb41a41eb3c6aaf4847a"
+    },
+    "target_pairs": {
+      "path": "results/klifs_pocket_control/target_pairs.csv",
+      "sha256": "08238b207ac4f9f991193db0d0e03063403727f98aa1230cbfe636eeb6501a23"
+    }
+  },
+  "validity_boundary": "This is a conditional randomization sensitivity under within-group target exchangeability, not a proof of exchangeability or a causal test. Unequal group sizes make the null predominantly a TK-block test. Rank-linear sequence and pocket adjustment reduces measured continuous structural similarity but cannot repair violations of the exchangeability assumption."
+}

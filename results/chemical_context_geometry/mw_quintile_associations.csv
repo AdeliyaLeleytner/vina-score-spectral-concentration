@@ -1,0 +1,7 @@
+dataset,transformation,mw_quintiles,spearman_median_mw_vs_target_correlation_pr,analysis_status,spearman_target_correlation_pr_vs_fixed_endpoint_roc_auc,spearman_target_correlation_pr_vs_fixed_endpoint_average_precision
+DOCKSTRING-58,group_heldout_descriptor_adjusted_residual,5,0.9999999999999999,descriptive_post_hoc_five_bins,-0.6,-0.9999999999999999
+DOCKSTRING-58,raw,5,0.9999999999999999,descriptive_post_hoc_five_bins,0.7,-0.09999999999999999
+DOCKSTRING-58,row_centered_residual,5,0.9999999999999999,descriptive_post_hoc_five_bins,-0.7,-0.8999999999999998
+Docking-44,group_heldout_descriptor_adjusted_residual,5,0.09999999999999999,descriptive_post_hoc_five_bins,,
+Docking-44,raw,5,0.9999999999999999,descriptive_post_hoc_five_bins,,
+Docking-44,row_centered_residual,5,-0.39999999999999997,descriptive_post_hoc_five_bins,,

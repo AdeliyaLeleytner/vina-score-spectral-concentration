@@ -1,0 +1,13 @@
+panel,docking_surface,spearman,target_label_qap_p_positive
+DAVIS,observed_residual,0.2797998486617941,0.00492
+DAVIS,descriptor_component,0.2563572981318917,0.0086
+DAVIS,descriptor_removed,0.22092666220525134,0.01424
+PKIS2,observed_residual,0.28717080659764593,0.00492
+PKIS2,descriptor_component,0.21846676026890963,0.01666
+PKIS2,descriptor_removed,0.22406364952520919,0.0138
+PKIS1,observed_residual,0.17364265812874244,0.02766
+PKIS1,descriptor_component,0.09678909315172748,0.09548
+PKIS1,descriptor_removed,0.13461139760395754,0.0516
+KiRHub,observed_residual,0.3215884388108141,0.0025
+KiRHub,descriptor_component,0.2877674115480674,0.00716
+KiRHub,descriptor_removed,0.24617302418349538,0.0099

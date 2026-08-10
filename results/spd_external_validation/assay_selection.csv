@@ -1,0 +1,16 @@
+gene,assay_group_id,assay_group_name,full_inchikey_coverage,selected_primary,selection_rule
+ADORA2A,3177,ADORA2A Binding,1216,True,largest full-InChIKey coverage; tie -> smallest group ID
+ADRB1,3086,ADRB1 inhibition,1206,True,largest full-InChIKey coverage; tie -> smallest group ID
+ADRB2,3087,ADRB2 Binding,959,True,largest full-InChIKey coverage; tie -> smallest group ID
+AR,41629,AR Binding (agonist),933,True,largest full-InChIKey coverage; tie -> smallest group ID
+DRD2,3157,DRD2 Binding,1244,True,largest full-InChIKey coverage; tie -> smallest group ID
+EGFR,32018,EGFR inhibition,86,True,largest full-InChIKey coverage; tie -> smallest group ID
+ESR1,3199,ESR1 Binding (NIBR assay),1036,True,largest full-InChIKey coverage; tie -> smallest group ID
+ESR1,31453,ESR1 Binding (CRO assay),933,False,largest full-InChIKey coverage; tie -> smallest group ID
+ESR2,3217,ESR2 Binding,287,True,largest full-InChIKey coverage; tie -> smallest group ID
+F2,3662,F2 inhibition,933,True,largest full-InChIKey coverage; tie -> smallest group ID
+NR3C1,3218,NR3C1 Binding,1100,True,largest full-InChIKey coverage; tie -> smallest group ID
+PGR,3279,PGR Binding,357,False,largest full-InChIKey coverage; tie -> smallest group ID
+PGR,41630,PGR Binding (agonist),933,True,largest full-InChIKey coverage; tie -> smallest group ID
+PTGS2,3198,PTGS2 inhibition (NIBR assay),1193,True,largest full-InChIKey coverage; tie -> smallest group ID
+PTGS2,41633,PTGS2 inhibition (CRO assay),930,False,largest full-InChIKey coverage; tie -> smallest group ID

@@ -1,0 +1,37 @@
+transform,description,panel_a,panel_b,spearman,mean_across_six_panel_pairs
+raw,no explicit preprocessing before target correlation,DAVIS,PKIS2,0.5773570050781404,0.6318061004751554
+raw,no explicit preprocessing before target correlation,DAVIS,PKIS1,0.6721454596351263,0.6318061004751554
+raw,no explicit preprocessing before target correlation,DAVIS,KiRHub,0.5751787846579801,0.6318061004751554
+raw,no explicit preprocessing before target correlation,PKIS2,PKIS1,0.6542997983615234,0.6318061004751554
+raw,no explicit preprocessing before target correlation,PKIS2,KiRHub,0.7123769283592928,0.6318061004751554
+raw,no explicit preprocessing before target correlation,PKIS1,KiRHub,0.5994786267588694,0.6318061004751554
+column_center_only,remove target offsets only; correlation is mathematically invariant,DAVIS,PKIS2,0.5773570050781404,0.6318061004751554
+column_center_only,remove target offsets only; correlation is mathematically invariant,DAVIS,PKIS1,0.6721454596351263,0.6318061004751554
+column_center_only,remove target offsets only; correlation is mathematically invariant,DAVIS,KiRHub,0.5751787846579801,0.6318061004751554
+column_center_only,remove target offsets only; correlation is mathematically invariant,PKIS2,PKIS1,0.6542997983615234,0.6318061004751554
+column_center_only,remove target offsets only; correlation is mathematically invariant,PKIS2,KiRHub,0.7123769283592928,0.6318061004751554
+column_center_only,remove target offsets only; correlation is mathematically invariant,PKIS1,KiRHub,0.5994786267588694,0.6318061004751554
+row_center_only,remove the per-ligand mean; target offsets are left to correlation,DAVIS,PKIS2,0.8611362612464846,0.7627658442207905
+row_center_only,remove the per-ligand mean; target offsets are left to correlation,DAVIS,PKIS1,0.6546357166913794,0.7627658442207905
+row_center_only,remove the per-ligand mean; target offsets are left to correlation,DAVIS,KiRHub,0.8485480717500559,0.7627658442207905
+row_center_only,remove the per-ligand mean; target offsets are left to correlation,PKIS2,PKIS1,0.7567601376915238,0.7627658442207905
+row_center_only,remove the per-ligand mean; target offsets are left to correlation,PKIS2,KiRHub,0.8049749154736755,0.7627658442207905
+row_center_only,remove the per-ligand mean; target offsets are left to correlation,PKIS1,KiRHub,0.6505399624716242,0.7627658442207905
+two_way_center,remove ligand and target additive effects,DAVIS,PKIS2,0.8611362612464846,0.7627658442207905
+two_way_center,remove ligand and target additive effects,DAVIS,PKIS1,0.6546357166913794,0.7627658442207905
+two_way_center,remove ligand and target additive effects,DAVIS,KiRHub,0.8485480717500559,0.7627658442207905
+two_way_center,remove ligand and target additive effects,PKIS2,PKIS1,0.7567601376915238,0.7627658442207905
+two_way_center,remove ligand and target additive effects,PKIS2,KiRHub,0.8049749154736755,0.7627658442207905
+two_way_center,remove ligand and target additive effects,PKIS1,KiRHub,0.6505399624716242,0.7627658442207905
+z_before_center,"column z-score, then remove ligand and target additive effects",DAVIS,PKIS2,0.7176396488603708,0.6880502594473387
+z_before_center,"column z-score, then remove ligand and target additive effects",DAVIS,PKIS1,0.5936822859942178,0.6880502594473387
+z_before_center,"column z-score, then remove ligand and target additive effects",DAVIS,KiRHub,0.7769887196175431,0.6880502594473387
+z_before_center,"column z-score, then remove ligand and target additive effects",PKIS2,PKIS1,0.664944210438837,0.6880502594473387
+z_before_center,"column z-score, then remove ligand and target additive effects",PKIS2,KiRHub,0.7162277421301946,0.6880502594473387
+z_before_center,"column z-score, then remove ligand and target additive effects",PKIS1,KiRHub,0.6588189496428682,0.6880502594473387
+rank_normal_before_center,"column inverse-normal ranks, then remove additive effects",DAVIS,PKIS2,0.6863520056686219,0.65419919782003
+rank_normal_before_center,"column inverse-normal ranks, then remove additive effects",DAVIS,PKIS1,0.6088493485021454,0.65419919782003
+rank_normal_before_center,"column inverse-normal ranks, then remove additive effects",DAVIS,KiRHub,0.7801484514077516,0.65419919782003
+rank_normal_before_center,"column inverse-normal ranks, then remove additive effects",PKIS2,PKIS1,0.6085449225157135,0.65419919782003
+rank_normal_before_center,"column inverse-normal ranks, then remove additive effects",PKIS2,KiRHub,0.6195095067511712,0.65419919782003
+rank_normal_before_center,"column inverse-normal ranks, then remove additive effects",PKIS1,KiRHub,0.6217909520747769,0.65419919782003

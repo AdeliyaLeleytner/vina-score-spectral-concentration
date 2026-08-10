@@ -1,0 +1,534 @@
+{
+  "KiRHub_PR_boundary": {
+    "interpretation": "KiRHub cross-panel agreement rises even though its PR dimension falls. Two-way centering changes the scientific estimand; it is not a generic rank-inflation or dimension-maximization operation.",
+    "raw_correlation_PR_dimension": 7.502947049135988,
+    "two_way_centered_correlation_PR_dimension": 5.055119279803977
+  },
+  "KiRHub_measurement_audit": {
+    "cells": 1840,
+    "drugs": 92,
+    "exact_0_floor_cells": 9,
+    "exact_0_floor_fraction": 0.004891304347826087,
+    "exact_100_ceiling_cells": 372,
+    "exact_100_ceiling_fraction": 0.20217391304347826,
+    "measurement_boundary": "Residual activity was measured at a single 1-uM drug concentration and Km ATP; exact 100 values create substantial ceiling ties.",
+    "missing_cells": 0,
+    "targets": 20,
+    "targetwise_exact_100_fraction_median": 0.18478260869565216,
+    "targetwise_exact_100_fraction_range": [
+      0.07608695652173914,
+      0.5108695652173914
+    ]
+  },
+  "KiRHub_specific_top10_boundary": {
+    "definition": "upper 10% of centered KiRHub target-pair correlations",
+    "interpretation": "Centered DOCKSTRING does not outperform raw DOCKSTRING on this KiRHub-only endpoint; this limits any universal gain claim.",
+    "metrics": {
+      "centered_docking": {
+        "average_precision": 0.28948469418136796,
+        "roc_auc": 0.7436134195136965
+      },
+      "centered_minus_raw": {
+        "average_precision": -0.04170564814566047,
+        "roc_auc": -0.007386888273314907
+      },
+      "positive_pairs": 19,
+      "prevalence": 0.1,
+      "raw_docking": {
+        "average_precision": 0.33119034232702843,
+        "roc_auc": 0.7510003077870114
+      },
+      "total_pairs": 190
+    },
+    "status": "exploratory_nonreplication_of_centered_minus_raw_gain",
+    "target_label_qap": {
+      "metrics": {
+        "average_precision": {
+          "centered_docking": 0.28948469418136796,
+          "centered_minus_raw": -0.04170564814566047,
+          "centered_target_label_qap_p": 0.00236,
+          "paired_delta_null_interval_95": [
+            -0.06596726253581474,
+            0.062313963031447386
+          ],
+          "paired_target_label_qap_p_positive_gain": 0.91704,
+          "raw_docking": 0.33119034232702843,
+          "raw_target_label_qap_p": 0.0024
+        },
+        "roc_auc": {
+          "centered_docking": 0.7436134195136965,
+          "centered_minus_raw": -0.007386888273314907,
+          "centered_target_label_qap_p": 0.0024,
+          "paired_delta_null_interval_95": [
+            -0.1064943059402893,
+            0.12557710064635275
+          ],
+          "paired_target_label_qap_p_positive_gain": 0.53344,
+          "raw_docking": 0.7510003077870114,
+          "raw_target_label_qap_p": 0.00626
+        }
+      },
+      "permutations": 49999,
+      "seed": 20760804
+    }
+  },
+  "analysis_status": "exploratory_external_validation_integrated_with_explicit_nonpreregistered_status",
+  "chemical_independence_audit": {
+    "after_excluding_overlap": {
+      "geometry_spearman_to_old_three_panel_mean": 0.8165798649269518,
+      "retrieval": {
+        "centered_KiRHub_geometry": {
+          "average_precision": 0.7352859197540049,
+          "roc_auc": 0.9699047619047619
+        },
+        "centered_minus_raw_KiRHub_geometry": {
+          "average_precision": 0.1274487433254784,
+          "roc_auc": 0.17219047619047623
+        },
+        "positive_pairs": 15,
+        "prevalence": 0.07894736842105263,
+        "raw_KiRHub_geometry": {
+          "average_precision": 0.6078371764285265,
+          "roc_auc": 0.7977142857142857
+        },
+        "total_pairs": 190
+      }
+    },
+    "after_excluding_overlap_partial_geometry_qap": {
+      "null_interval_95": [
+        -0.09636896577854669,
+        0.18300823001327754
+      ],
+      "partial_spearman": 0.8024601234524071,
+      "seed": 20660804,
+      "target_label_qap_p_positive": 2e-05,
+      "target_label_qap_permutations": 49999
+    },
+    "after_excluding_overlap_target_label_qap": {
+      "metrics": {
+        "average_precision": {
+          "centered_KiRHub_geometry": 0.7352859197540049,
+          "centered_KiRHub_geometry_target_label_qap_p": 2e-05,
+          "centered_minus_raw_KiRHub_geometry": 0.1274487433254784,
+          "paired_delta_null_interval_95": [
+            -0.08195642274446133,
+            0.08768142339169198
+          ],
+          "paired_target_label_qap_p_positive_KiRHub_geometry_gain": 0.00642,
+          "raw_KiRHub_geometry": 0.6078371764285265,
+          "raw_KiRHub_geometry_target_label_qap_p": 2e-05
+        },
+        "roc_auc": {
+          "centered_KiRHub_geometry": 0.9699047619047619,
+          "centered_KiRHub_geometry_target_label_qap_p": 2e-05,
+          "centered_minus_raw_KiRHub_geometry": 0.17219047619047623,
+          "paired_delta_null_interval_95": [
+            -0.16190476190476194,
+            0.19466666666666665
+          ],
+          "paired_target_label_qap_p_positive_KiRHub_geometry_gain": 0.04136,
+          "raw_KiRHub_geometry": 0.7977142857142857,
+          "raw_KiRHub_geometry_target_label_qap_p": 0.00028
+        }
+      },
+      "permutations": 49999,
+      "seed": 20560804
+    },
+    "comparison": "exact normalized drug name against the DAVIS 72-drug panel",
+    "no_structure_claim": "KiRHub Table S4/Table S1 do not provide structures. PKIS1/PKIS2 release identifiers are not comparable drug-name namespaces, so full InChIKey/connectivity/scaffold overlap with all three panels was not asserted.",
+    "overlap_count": 11,
+    "overlap_names": [
+      "Crizotinib",
+      "Dasatinib",
+      "Erlotinib",
+      "Gefitinib",
+      "Imatinib",
+      "Lapatinib",
+      "Nilotinib",
+      "Pazopanib",
+      "Sorafenib",
+      "Sunitinib",
+      "Vandetanib"
+    ]
+  },
+  "experimental_cross_panel_agreement": {
+    "centered_mean_pairwise_spearman": 0.7627658442207905,
+    "centered_minus_raw": 0.13095974374563524,
+    "interpretation": "Across the four separately published experimental panels, the centered target co-response geometry is strongly aligned beyond a target-marginal-preserving null. The observed centered-minus-raw increase itself is not larger than the null's mechanical centering gain, so it cannot be claimed as independent evidence that centering improves biological transferability.",
+    "ligand_bootstrap": {
+      "attempts": 2374,
+      "centered_minus_raw_interval_95": [
+        0.0754508070641992,
+        0.2630028386848446
+      ],
+      "centered_minus_raw_mean": 0.1665314352021814,
+      "cluster_boundary": "KiRHub supplies no molecular structures, so a chemically clustered four-panel bootstrap was not possible; this is a ligand-level, not scaffold-level, uncertainty interval.",
+      "fraction_positive": 1.0,
+      "rejected_constant_target_draws": 374,
+      "repeats": 2000,
+      "resampling_unit": "ligands independently within each panel; the same sampled rows are used for raw and centered estimands in each panel",
+      "seed": 20335804
+    },
+    "paired_global_network_qap": {
+      "centered_global_network_qap_p_positive": 2e-05,
+      "centered_mean_pairwise_spearman": 0.7627658442207905,
+      "centered_minus_raw": 0.13095974374563524,
+      "null": "DAVIS labels fixed; independent whole-target permutations for PKIS2, PKIS1, and KiRHub; identical panel permutations used for raw and centered geometries within each draw",
+      "paired_delta_null_interval_95": [
+        -0.10098554997149653,
+        0.09110646015854061
+      ],
+      "paired_global_network_qap_p_positive_gain": 0.00204,
+      "panel_pairs": 6,
+      "panels": [
+        "DAVIS",
+        "PKIS2",
+        "PKIS1",
+        "KiRHub"
+      ],
+      "permutations": 49999,
+      "raw_global_network_qap_p_positive": 2e-05,
+      "raw_mean_pairwise_spearman": 0.6318061004751553,
+      "seed": 20310804
+    },
+    "panel_pairs_improved": 5,
+    "panel_pairs_total": 6,
+    "raw_mean_pairwise_spearman": 0.6318061004751553,
+    "status": "absolute_centered_alignment_positive_incremental_gain_not_supported_by_matched_null",
+    "target_jackknife_centered_minus_raw_range": [
+      0.06035071719426244,
+      0.1848041215670273
+    ],
+    "transformation_matched_independent_column_null": {
+      "gain_boundary": "A significant centered predictor can coexist with a centered-minus-raw gain that is not larger than the mechanical gain induced by row centering target-marginal-preserving independent columns.",
+      "locked_old_endpoint_validation": {
+        "average_precision": {
+          "null_centered_interval_95": [
+            0.24120018102611548,
+            0.46230708669388887
+          ],
+          "null_centered_mean": 0.3501565728512148,
+          "null_centered_minus_raw_mean": 0.24707220004549715,
+          "null_gain_interval_95": [
+            0.14685127935377548,
+            0.3527087161187178
+          ],
+          "null_raw_mean": 0.10308437280571774,
+          "observed_centered": 0.6937444511224998,
+          "observed_centered_minus_raw": 0.09666298708871357,
+          "observed_raw": 0.5970814640337863,
+          "p_observed_centered_at_least_as_large": 0.0004997501249375312,
+          "p_observed_gain_at_least_as_large": 0.9965017491254373
+        },
+        "roc_auc": {
+          "null_centered_interval_95": [
+            0.5878095238095238,
+            0.7885714285714286
+          ],
+          "null_centered_mean": 0.6898851428571429,
+          "null_centered_minus_raw_mean": 0.1929104761904762,
+          "null_gain_interval_95": [
+            0.0902857142857143,
+            0.29219047619047617
+          ],
+          "null_raw_mean": 0.4969746666666666,
+          "observed_centered": 0.9634285714285714,
+          "observed_centered_minus_raw": 0.16000000000000003,
+          "observed_raw": 0.8034285714285714,
+          "p_observed_centered_at_least_as_large": 0.0004997501249375312,
+          "p_observed_gain_at_least_as_large": 0.7476261869065467
+        }
+      },
+      "null": "independently permute ligand identities within every target column of every experimental panel; preserve target marginals, variances, ties and ceiling patterns; apply raw and two-way-centered estimands to the identical permuted matrices",
+      "null_centered_interval_95": [
+        0.11601176443143929,
+        0.24894186455084777
+      ],
+      "null_centered_mean": 0.17920081821773748,
+      "null_centered_minus_raw_interval_95": [
+        0.12074160094826947,
+        0.2392206592688819
+      ],
+      "null_centered_minus_raw_mean": 0.17942817471252306,
+      "null_raw_interval_95": [
+        -0.05388417232726961,
+        0.05781394294345516
+      ],
+      "null_raw_mean": -0.00022735649478553853,
+      "observed_centered_mean_pairwise_spearman": 0.7627658442207905,
+      "observed_centered_minus_raw": 0.13095974374563513,
+      "observed_raw_mean_pairwise_spearman": 0.6318061004751554,
+      "p_observed_centered_at_least_as_large": 0.0004997501249375312,
+      "p_observed_gain_at_least_as_large": 0.9465267366316842,
+      "repeats": 2000,
+      "seed": 20350804
+    }
+  },
+  "exploratory_four_panel_consensus": {
+    "definition": "upper 10% in at least two of DAVIS, PKIS2, PKIS1, and KiRHub",
+    "holm_adjusted_gain_p": {
+      "average_precision": 0.04308,
+      "roc_auc": 0.05042
+    },
+    "metrics": {
+      "centered_docking": {
+        "average_precision": 0.3216850106444428,
+        "roc_auc": 0.7441860465116279
+      },
+      "centered_minus_raw": {
+        "average_precision": 0.06099122970823412,
+        "roc_auc": 0.0965762273901809
+      },
+      "positive_pairs": 18,
+      "prevalence": 0.09473684210526316,
+      "raw_docking": {
+        "average_precision": 0.2606937809362087,
+        "roc_auc": 0.647609819121447
+      },
+      "total_pairs": 190
+    },
+    "panel_specific_positive_pairs": {
+      "DAVIS": 19,
+      "KiRHub": 19,
+      "PKIS1": 19,
+      "PKIS2": 19
+    },
+    "positive_pairs": 18,
+    "target_label_qap": {
+      "metrics": {
+        "average_precision": {
+          "centered_docking": 0.3216850106444428,
+          "centered_minus_raw": 0.06099122970823412,
+          "centered_target_label_qap_p": 0.00064,
+          "paired_delta_null_interval_95": [
+            -0.05661160580130674,
+            0.057897033758741945
+          ],
+          "paired_target_label_qap_p_positive_gain": 0.02154,
+          "raw_docking": 0.2606937809362087,
+          "raw_target_label_qap_p": 0.00826
+        },
+        "roc_auc": {
+          "centered_docking": 0.7441860465116279,
+          "centered_minus_raw": 0.0965762273901809,
+          "centered_target_label_qap_p": 0.0009,
+          "paired_delta_null_interval_95": [
+            -0.10109819121447033,
+            0.11757105943152457
+          ],
+          "paired_target_label_qap_p_positive_gain": 0.05042,
+          "raw_docking": 0.647609819121447,
+          "raw_target_label_qap_p": 0.05118
+        }
+      },
+      "permutations": 49999,
+      "seed": 20860804
+    },
+    "threshold_warning": "The 10% and at-least-two-of-four rule was not a locked external endpoint; threshold-family rows are descriptive and no threshold was selected by its docking performance."
+  },
+  "inference": {
+    "confirmatory_status": "KiRHub is temporally external to the locked three-panel endpoint, but this analysis remains exploratory because it was not prospectively registered.",
+    "p_value_resolution": 2e-05,
+    "qap_unit": "whole target labels are permuted jointly; the 190 target pairs are never treated as independent",
+    "seed": 20260804,
+    "target_label_qap_permutations": 49999
+  },
+  "locked_primary_endpoint": {
+    "KiRHub_validation": {
+      "centered_KiRHub_geometry": {
+        "average_precision": 0.6937444511224998,
+        "roc_auc": 0.9634285714285714
+      },
+      "centered_minus_raw_KiRHub_geometry": {
+        "average_precision": 0.09666298708871357,
+        "roc_auc": 0.16000000000000003
+      },
+      "positive_pairs": 15,
+      "prevalence": 0.07894736842105263,
+      "raw_KiRHub_geometry": {
+        "average_precision": 0.5970814640337863,
+        "roc_auc": 0.8034285714285714
+      },
+      "total_pairs": 190
+    },
+    "definition": "target pair in the centered upper 10% in at least two of DAVIS, PKIS2, and PKIS1; fixed before KiRHub was inspected",
+    "geometry_concordance": {
+      "DAVIS": {
+        "partial_spearman_controlling_receptor_sequence_identity": 0.8369353818711289,
+        "partial_target_label_qap_p_positive": 2e-05,
+        "spearman": 0.8485480717500558,
+        "target_label_qap_p_positive": 2e-05
+      },
+      "PKIS1": {
+        "partial_spearman_controlling_receptor_sequence_identity": 0.6266964464757228,
+        "partial_target_label_qap_p_positive": 2e-05,
+        "spearman": 0.650539962471624,
+        "target_label_qap_p_positive": 2e-05
+      },
+      "PKIS2": {
+        "partial_spearman_controlling_receptor_sequence_identity": 0.787346592046126,
+        "partial_target_label_qap_p_positive": 2e-05,
+        "spearman": 0.8049749154736755,
+        "target_label_qap_p_positive": 2e-05
+      },
+      "old_three_panel_mean_rank": {
+        "partial_spearman_controlling_receptor_sequence_identity": 0.8208674870893515,
+        "partial_target_label_qap_p_positive": 2e-05,
+        "spearman": 0.8340198308460515,
+        "target_label_qap_p_positive": 2e-05
+      }
+    },
+    "holm_adjusted_centered_minus_raw_gain_p": {
+      "average_precision": 0.04612,
+      "roc_auc": 0.04928
+    },
+    "holm_adjusted_centered_predictor_p": {
+      "average_precision": 4e-05,
+      "roc_auc": 4e-05
+    },
+    "panel_specific_positive_pairs": {
+      "DAVIS": 19,
+      "PKIS1": 19,
+      "PKIS2": 19
+    },
+    "positive_pairs": 15,
+    "target_label_qap": {
+      "metrics": {
+        "average_precision": {
+          "centered_KiRHub_geometry": 0.6937444511224998,
+          "centered_KiRHub_geometry_target_label_qap_p": 2e-05,
+          "centered_minus_raw_KiRHub_geometry": 0.09666298708871357,
+          "paired_delta_null_interval_95": [
+            -0.08688543351700077,
+            0.09375026722669236
+          ],
+          "paired_target_label_qap_p_positive_KiRHub_geometry_gain": 0.02306,
+          "raw_KiRHub_geometry": 0.5970814640337863,
+          "raw_KiRHub_geometry_target_label_qap_p": 2e-05
+        },
+        "roc_auc": {
+          "centered_KiRHub_geometry": 0.9634285714285714,
+          "centered_KiRHub_geometry_target_label_qap_p": 2e-05,
+          "centered_minus_raw_KiRHub_geometry": 0.16000000000000003,
+          "paired_delta_null_interval_95": [
+            -0.16228571428571426,
+            0.19087619047618884
+          ],
+          "paired_target_label_qap_p_positive_KiRHub_geometry_gain": 0.04928,
+          "raw_KiRHub_geometry": 0.8034285714285714,
+          "raw_KiRHub_geometry_target_label_qap_p": 0.00014
+        }
+      },
+      "permutations": 49999,
+      "seed": 20260804
+    },
+    "total_pairs": 190
+  },
+  "provenance": {
+    "DOCKSTRING_reference": {
+      "complete_dockstring_rows_before_exclusion": 260060,
+      "excluded_connectivity_blocks": 1050,
+      "kirhub_exclusion_boundary": "The KiRHub supplement provides names but no structures; its remaining compounds could not be excluded by molecular identity.",
+      "kirhub_rows_excluded_from_reference": null,
+      "positive_scores_clipped_to_zero_primary": true,
+      "reference_rows_after_old_panel_connectivity_exclusion": 259579
+    },
+    "KiRHub": {
+      "article_license": "Creative Commons Attribution-NonCommercial-NoDerivatives 4.0",
+      "article_license_url": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "data_rights_boundary": "The article is CC BY-NC-ND 4.0, but this analysis does not interpret that article license as a separate license for the underlying inhibition data. The official KIRHub portal identifies those data as the property of Reaction Biology Corporation and requires proper acknowledgement. The workbook is fetched only from the publisher and is not vendored; downstream users must independently confirm that their intended reuse is permitted.",
+      "header_row_one_based": 9,
+      "official_supplement_url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41587-026-03090-8/MediaObjects/41587_2026_3090_MOESM4_ESM.xlsx",
+      "paper_doi": "10.1038/s41587-026-03090-8",
+      "portal_rights_notice": "Kinase inhibition data are the property of Reaction Biology Corporation; proper acknowledgement is required for download, use or publication.",
+      "portal_url": "https://kirhub.fredhutch.org/",
+      "redistribution": "source workbook intentionally omitted; only aggregate analytical summaries are written, not compound-by-target activity rows, per-compound profiles or a full KiRHub target-pair vector",
+      "sheet": "Table S4",
+      "structure_and_portal_boundary": "Tables S1 and S4 and the interactive portal do not provide a frozen, machine-readable structure mapping for these 92 names. Chemical independence was therefore audited only by exact normalized names against DAVIS, not by InChIKey or scaffold.",
+      "workbook_sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03"
+    },
+    "cdk2_primary": "CDK2_CYCLIN_A",
+    "cdk2_sensitivity": "CDK2_CYCLIN_E",
+    "receptor_sequence_identity": {
+      "alignment": "global BLOSUM62; gap-open -10; gap-extend -0.5",
+      "biopython_version": "1.87",
+      "identity_denominator": "all alignment columns, including gaps",
+      "individual_resource_sha256": {
+        "ABL1": "2e31e2f3b3aba4bb5ee038d7bc3573c7864a8fface7741dea3de1effc0c1d2bc",
+        "AKT1": "8ed6762318dc8c64f96808a2a0a8eda412ea911db1dc4c9e367be8450bdd84a2",
+        "AKT2": "0bcf560f7c384624ee58faefce7c679bcd64e0839841088da78a0a0da6fa0f87",
+        "CDK2": "903526461510e29a4bfc6ee15d53eac3ca8a12710c70aed5c7f70fbf982b236e",
+        "CSF1R": "1ca29060b270de19a737711f557ef47fe817e62b459122bc9610dde5df79f74e",
+        "EGFR": "be850f92b01f264a648a8fb31b101953ef49b95f0a7e5cd16fd4a13c68366ec3",
+        "FGFR1": "7eb86a9d88565aedf2616255056294fed96144078e95812ae0a415ee0a2bcff4",
+        "IGF1R": "811403cca533df633ddfc71e3cf1514fff1d81998a06203792bb4e398dfd4257",
+        "JAK2": "5680c53d20bfce420edd86d35703658eba4c8c041d9102372a8e990cddeb49a7",
+        "KDR": "0efb7d7b2fe9c96ca682cb7f24d7132d59fb036529cacb21af295bdddcc54e41",
+        "KIT": "e630debb3871f13d56a0e552bf27944365ed3928a7c83ae39ae8acdbee88f18d",
+        "LCK": "365c5594742e5691dff7ea1ea9aa5b0fb3d25c5011fe5b0044865573b97cb4d0",
+        "MAP2K1": "ace85697090c6c264c747464679041eb5178b67e3be745cdff3d8e0a45a04382",
+        "MAPK1": "281e0d89e8d4fa170a8606372091b6d352c7a9fb72dd6f07334b1b5d54ff4fff",
+        "MAPK14": "e11275b647ac846e7e63af2e8d8d7482ef9da7f768b8223a2d49c8168ceca66c",
+        "MAPKAPK2": "75c4d143cddd6259a6030621df3f8a9d8739cb53e9ad9417534048e81738d0c2",
+        "MET": "daa7a604ee86ab376cf3bb71e647d90f4537b34cf68adf9118f91a9b2ca8e9f6",
+        "PLK1": "ae55f32fb7a7f1e7a2911d6611882de030176fd2d4787bfb776c786ed74f73f3",
+        "ROCK1": "e6e8b75ec312e47b481cac962c10723235085a611b5a7f15f5aa2fdacd975c62",
+        "SRC": "5fc235fc051e6da3d6fdfe8cbb95988438c486e44abca43deb517490f47bdb75"
+      },
+      "nonstandard_residue_handling": "map to X",
+      "resource_aggregate_sha256": "730581e1eef1b4720326a9c7933dd87d0f64cb894ed780597c5f811b562292bb",
+      "sequence_length_range": [
+        233,
+        339
+      ],
+      "source": "DOCKSTRING receptor PDBQT CA sequences",
+      "source_paper_doi": "10.1021/acs.jcim.1c01334",
+      "source_repository": "https://github.com/dockstring/dockstring"
+    },
+    "target_map": {
+      "ABL1": "ABL1",
+      "AKT1": "AKT1",
+      "AKT2": "AKT2",
+      "CDK2": "CDK2_CYCLIN_A",
+      "CSF1R": "FMS",
+      "EGFR": "EGFR",
+      "FGFR1": "FGFR1",
+      "IGF1R": "IGF1R",
+      "JAK2": "JAK2",
+      "KDR": "KDR_VEGFR2",
+      "KIT": "C_KIT",
+      "LCK": "LCK",
+      "MAP2K1": "MEK1",
+      "MAPK1": "ERK2_MAPK1",
+      "MAPK14": "P38A_MAPK14",
+      "MAPKAPK2": "MAPKAPK2",
+      "MET": "C_MET",
+      "PLK1": "PLK1",
+      "ROCK1": "ROCK1",
+      "SRC": "C_SRC"
+    }
+  },
+  "strongest_honest_claim": "Centered target co-response geometry shows strong agreement across four separately published kinase panels beyond target-marginal and receptor-sequence controls, and KiRHub recovers the pre-existing three-panel co-selective-pair endpoint after exact-name DAVIS overlaps are removed. The incremental centered-minus-raw gain is not beyond the transformation-matched null, and KiRHub does not validate a universal centered-over-raw docking advantage.",
+  "target_jackknife_ranges": {
+    "four_panel_centered_minus_raw_docking_average_precision": [
+      0.00847630419669182,
+      0.10068406512729933
+    ],
+    "four_panel_centered_minus_raw_docking_roc_auc": [
+      0.029059829059829068,
+      0.1437670609645132
+    ],
+    "kirhub_centered_vs_old_mean_geometry_spearman": [
+      0.8070805126344246,
+      0.8772942675431833
+    ],
+    "kirhub_old_endpoint_centered_average_precision": [
+      0.5747409488121562,
+      0.8792151221562986
+    ],
+    "kirhub_old_endpoint_centered_roc_auc": [
+      0.9534090909090909,
+      0.9782051282051282
+    ]
+  }
+}

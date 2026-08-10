@@ -1,0 +1,492 @@
+{
+  "analysis_question": "Does the frozen fixed-pose term-by-term rescoring of released DOCKSTRING poses support the claim that the spectral concentration of a Vina docking panel depends on which energy term dominates the score, and what exactly should a supplementary table print for it?",
+  "claim_assessment": {
+    "causal_reading": "not supported. The ablations remove a term from a fixed weighted sum without refitting the remaining weights, and the poses are the published Vina poses rather than re-docked ones, so nothing here is a scoring-function redesign. The direct test contradicts the strong reading: Vinardo, which drops gauss2 and reweights repulsion with refitted weights, gives raw PR 2.81 against Vina's 2.74 on the same targets and poses, a shift far smaller than the +1.89 the arithmetic gauss2 ablation predicts. A function that removes the dominant term and refits does not decongest.",
+    "causal_reading_supported": false,
+    "claim_under_test": "spectral concentration of a docking panel depends on which energy term dominates the score",
+    "descriptive_reading": "supported as a decomposition of the released Vina sum: individual weighted terms span raw PR 2.27 (hydrophobic) to 6.90 (repulsion) and raw PC1 fraction 0.271 to 0.646 on the same poses and the same nine targets, so concentration is a property of the term and not of the panel alone. One attractive term, gauss2, carries 0.715 of the shared row-axis covariance, and removing it from the sum moves raw PR by +1.89 from 2.65.",
+    "descriptive_reading_supported": true,
+    "recommended_manuscript_wording": "The term attribution should be reported as an exploratory attribution of the released Vina sum: which terms carry the shared ligand-wide axis (gauss2 dominant, repulsion opposing), not as evidence that changing the dominant term would change a panel's dimensionality. If the manuscript is unwilling to carry that qualification, the Methods subsection should be deleted rather than promoted."
+  },
+  "claim_boundary": "This is an attribution of retained poses, not a causal re-docking ablation: the original docked torsion trees were never published, poses are held fixed at the released Vina optimum, and every term matrix is an arithmetic piece of one already-computed score. It therefore does not show that a scoring function built around a different dominant term would produce a differently concentrated panel; the Vinardo cross-check argues the opposite. It is a nine-target, 512-ligand block of the DOCKSTRING support with no experimental endpoint attached, so it says nothing about binding accuracy, target selectivity or ranking performance, and the term-share intervals come from a single scaffold-cluster bootstrap that is weaker than the package's 5,000-replicate two-scheme contract.",
+  "concentration_spread": {
+    "largest_leave_one_out_raw_pr_shift": 1.8892687855618422,
+    "largest_leave_one_out_raw_pr_shift_term": "gauss2",
+    "largest_shared_row_axis_share_term": "gauss2",
+    "least_concentrated_term": "repulsion",
+    "leave_one_term_out_raw_pr": {
+      "gauss1": 3.001530703241512,
+      "gauss2": 4.53879678724258,
+      "hydrogen": 2.7046191751675557,
+      "hydrophobic": 2.9248630223859267,
+      "repulsion": 3.0222569376147757
+    },
+    "leave_one_term_out_raw_pr_shift": {
+      "gauss1": 0.35200270156077407,
+      "gauss2": 1.8892687855618422,
+      "hydrogen": 0.0550911734868178,
+      "hydrophobic": 0.2753350207051888,
+      "repulsion": 0.3727289359340378
+    },
+    "most_concentrated_term": "hydrophobic",
+    "per_term_raw_pc1_fraction": {
+      "gauss1": 0.37587256914716954,
+      "gauss2": 0.6203949570760481,
+      "hydrogen": 0.43862729213936613,
+      "hydrophobic": 0.6456493575136398,
+      "repulsion": 0.2706579749423024
+    },
+    "per_term_raw_pr": {
+      "gauss1": 4.980576712554207,
+      "gauss2": 2.4235127794431626,
+      "hydrogen": 4.2818433589897635,
+      "hydrophobic": 2.274752419844371,
+      "repulsion": 6.900465980411691
+    },
+    "raw_pc1_fraction_range_across_terms": [
+      0.2706579749423024,
+      0.6456493575136398
+    ],
+    "raw_pr_range_across_terms": [
+      2.274752419844371,
+      6.900465980411691
+    ],
+    "raw_pr_ratio_across_terms": 3.033501984749528,
+    "shared_row_axis_covariance_share_sum": 1.0,
+    "shared_row_axis_covariance_shares": {
+      "gauss1": 0.2733346569510844,
+      "gauss2": 0.7153277445056864,
+      "hydrogen": -0.0006037516461258981,
+      "hydrophobic": 0.29770950690418446,
+      "repulsion": -0.28576815671482936
+    },
+    "total_released_sum_raw_pr": 2.649528001680738
+  },
+  "provenance": {
+    "results/dockstring_vina_terms/analysis_summary.json": {
+      "bytes": 44826,
+      "sha256": "280d6d6cc212fa66046edc54ecffcc9637c4e07ee0ea74e4e3277e25c1e77a05"
+    },
+    "results/dockstring_vina_terms/fixed_pose_term_ablations.csv": {
+      "bytes": 1091,
+      "sha256": "03407639b33516d7e53ad355768a774c83cb70fc5e79872eab68bfb57e54ff45"
+    },
+    "results/dockstring_vina_terms/term_attribution.csv": {
+      "bytes": 576,
+      "sha256": "43dc39f483519e5a1c9e60fe162bde11b3770846eeaa8640297f53378754dab6"
+    },
+    "results/dockstring_vina_terms/term_spectral_metrics.csv": {
+      "bytes": 2595,
+      "sha256": "aa98f35f474f0ef4ad20c71a35d5db047a671e3a4d99bd65fe8f1ada0f7eec56"
+    },
+    "results/nonvina_scorer_transport/summary.json": {
+      "bytes": 57395,
+      "sha256": "b0291d92b90fcc52924da2ccfe54d05f8cdf2cf0d489e569cb9a7813501f4ad6"
+    }
+  },
+  "purpose": "report layer only: it reads the frozen artifacts of analysis/dockstring_vina_term_decomposition.py, re-runs no docking, no rescoring and no resampling, and writes nothing under results/dockstring_vina_terms/",
+  "reference_constructions": [
+    {
+      "component": "released_score",
+      "label": "released DOCKSTRING score",
+      "pr_increase": 2.2575000122115334,
+      "raw_mean_correlation": 0.48504557957696914,
+      "raw_pc1_fraction": 0.5833274056006245,
+      "raw_pr": 2.6544188032771032,
+      "residual_mean_absolute_correlation": 0.2821880177527786,
+      "residual_pc1_fraction": 0.3694471436891063,
+      "residual_pr": 4.911918815488637
+    },
+    {
+      "component": "rescored_post_total",
+      "label": "rescored total, after torsional normalisation",
+      "pr_increase": 2.2623480712322883,
+      "raw_mean_correlation": 0.486053549899879,
+      "raw_pc1_fraction": 0.5840426349700731,
+      "raw_pr": 2.649528001680738,
+      "residual_mean_absolute_correlation": 0.28251800555727774,
+      "residual_pc1_fraction": 0.3695179041185967,
+      "residual_pr": 4.911876072913026
+    },
+    {
+      "component": "zero_rot_pre_total",
+      "label": "rescored total, before torsional normalisation",
+      "pr_increase": 3.0149883806952693,
+      "raw_mean_correlation": 0.7088314732390849,
+      "raw_pc1_fraction": 0.7538235844870557,
+      "raw_pr": 1.7166996796360583,
+      "residual_mean_absolute_correlation": 0.2831986669948235,
+      "residual_pc1_fraction": 0.3796577827280093,
+      "residual_pr": 4.731688060331328
+    }
+  ],
+  "refit_scorer_cross_check": {
+    "arithmetic_gauss2_ablation_raw_pr_shift": 1.8892687855618422,
+    "released_vina_raw_pc1_fraction": 0.5731439853187308,
+    "released_vina_raw_pr": 2.739619141220106,
+    "source": "results/nonvina_scorer_transport/summary.json",
+    "support_note": "the transport block uses 2000 ligands on the same 9 targets and the same released poses, a different and larger ligand subset than the 512-ligand term block, so the comparison is between supports and not within one",
+    "vinardo_minus_vina_raw_pr": 0.06657990251908696,
+    "vinardo_raw_pc1_fraction": 0.5670775771558391,
+    "vinardo_raw_pr": 2.806199043739193,
+    "why": "the leave-one-term-out numbers drop a term from a fixed weighted sum without refitting the remaining weights; Vinardo is a scoring function that drops Vina's gauss2 and reweights repulsion with refitted weights, so it tests whether the arithmetic ablation generalises"
+  },
+  "score_reproduction": {
+    "cells_reproduced_within_0.10_kcal_mol": 4590,
+    "fraction_cells_reproduced_within_0.10_kcal_mol": 0.99609375,
+    "ligands_reproduced_within_0.10_kcal_mol_on_all_targets": 497,
+    "n_cells": 4608,
+    "quality_support_repeat": {
+      "excluded_ligands": 15,
+      "n_ligands": 497,
+      "rule": "maximum absolute rescored-minus-released score across targets must be <=0.10 kcal/mol; released scores are displayed to 0.1 kcal/mol"
+    },
+    "rescored_minus_released_mae": 0.025932714843749982,
+    "rescored_minus_released_max_abs": 1.0589499999999994,
+    "rescored_minus_released_mean": -0.0007248068576388969,
+    "rescored_vs_released_cell_pearson": 0.999572091791779,
+    "term_sum_max_abs_reconstruction_error": 5.329070518200751e-15
+  },
+  "seeds": {
+    "primary_dockstring_support": 71,
+    "scaffold_cluster_bootstrap": 20260803,
+    "term_subset_sample": 20260802,
+    "this_script": "none; the script is a deterministic read-and-tabulate over frozen artifacts and draws no random numbers",
+    "torsional_factor_permutation": 20260804
+  },
+  "status": "orphaned_methods_section_reported",
+  "supplementary_table": {
+    "caption_facts": "Fixed-pose Vina term attribution on 512 DOCKSTRING ligands x 9 targets (4608 cells). Rows are the three reference score constructions and the five weighted Vina terms after torsional normalisation. Shared row-axis covariance shares are exploratory and carry scaffold-cluster bootstrap intervals from 1000 replicates only.",
+    "column_headers": [
+      "component",
+      "raw PR",
+      "residual PR",
+      "raw PC1 fraction",
+      "raw mean correlation",
+      "share of shared row-axis covariance"
+    ],
+    "columns": [
+      "component",
+      "raw_pr",
+      "residual_pr",
+      "raw_pc1_fraction",
+      "raw_mean_correlation",
+      "shared_row_axis_covariance_share"
+    ],
+    "rows": [
+      {
+        "component": "released DOCKSTRING score",
+        "raw_mean_correlation": "0.485",
+        "raw_pc1_fraction": "0.583",
+        "raw_pr": "2.65",
+        "residual_pr": "4.91",
+        "shared_row_axis_covariance_share": ""
+      },
+      {
+        "component": "rescored total, after torsional normalisation",
+        "raw_mean_correlation": "0.486",
+        "raw_pc1_fraction": "0.584",
+        "raw_pr": "2.65",
+        "residual_pr": "4.91",
+        "shared_row_axis_covariance_share": ""
+      },
+      {
+        "component": "rescored total, before torsional normalisation",
+        "raw_mean_correlation": "0.709",
+        "raw_pc1_fraction": "0.754",
+        "raw_pr": "1.72",
+        "residual_pr": "4.73",
+        "shared_row_axis_covariance_share": ""
+      },
+      {
+        "component": "gauss1",
+        "raw_mean_correlation": "0.249",
+        "raw_pc1_fraction": "0.376",
+        "raw_pr": "4.98",
+        "residual_pr": "6.38",
+        "shared_row_axis_covariance_share": "0.273"
+      },
+      {
+        "component": "gauss2",
+        "raw_mean_correlation": "0.506",
+        "raw_pc1_fraction": "0.620",
+        "raw_pr": "2.42",
+        "residual_pr": "5.91",
+        "shared_row_axis_covariance_share": "0.715"
+      },
+      {
+        "component": "repulsion",
+        "raw_mean_correlation": "0.124",
+        "raw_pc1_fraction": "0.271",
+        "raw_pr": "6.90",
+        "residual_pr": "6.35",
+        "shared_row_axis_covariance_share": "-0.286"
+      },
+      {
+        "component": "hydrophobic",
+        "raw_mean_correlation": "0.578",
+        "raw_pc1_fraction": "0.646",
+        "raw_pr": "2.27",
+        "residual_pr": "6.47",
+        "shared_row_axis_covariance_share": "0.298"
+      },
+      {
+        "component": "hydrogen",
+        "raw_mean_correlation": "0.367",
+        "raw_pc1_fraction": "0.439",
+        "raw_pr": "4.28",
+        "residual_pr": "7.66",
+        "shared_row_axis_covariance_share": "-0.001"
+      }
+    ]
+  },
+  "support": {
+    "bootstrap_clusters": 497,
+    "bootstrap_replicates": 1000,
+    "bootstrap_resampling_unit": "RDKit Bemis-Murcko scaffold; each acyclic ligand is a singleton",
+    "ligand_conversion": "Published top-pose SDF converted to PDBQT with Open Babel 3.1.0, Gasteiger charges, and explicit hydrogens added to the archived prepared graph, without a second pH-dependent protonation step",
+    "ligand_sample_rule": "simple random subset (seed 20260802) of the frozen 15,000-ligand DOCKSTRING support selected with NumPy seed 71",
+    "n_cells": 4608,
+    "n_ligands": 512,
+    "n_targets": 9,
+    "pose_source": "published DOCKSTRING top poses, Figshare DOI 10.6084/m9.figshare.16511577.v1",
+    "targets": [
+      "NR3C1",
+      "ADRB2",
+      "ADRB1",
+      "ADORA2A",
+      "AR",
+      "PTGS2",
+      "ACHE",
+      "DRD2",
+      "LCK"
+    ]
+  },
+  "terms": [
+    {
+      "leave_this_term_out_of_the_sum": {
+        "pr_increase": 2.3843009300116798,
+        "raw_mean_correlation": 0.4152894294369497,
+        "raw_pc1_fraction": 0.5418625870237272,
+        "raw_pr": 3.001530703241512,
+        "residual_mean_absolute_correlation": 0.2476806495249107,
+        "residual_pc1_fraction": 0.333285876799358,
+        "residual_pr": 5.385831633253192
+      },
+      "published_weight": -0.035579,
+      "raw_pc1_bilinear_share": 0.2585688181450693,
+      "residual_frobenius_inner_product_share": 0.28181391622777496,
+      "residual_frobenius_inner_product_share_ci95": [
+        0.26291189183595814,
+        0.3017025284717514
+      ],
+      "residual_pc1_bilinear_share": 0.2747463258419287,
+      "shared_row_axis_covariance_share": 0.2733346569510844,
+      "shared_row_axis_covariance_share_ci95": [
+        0.2558983052096845,
+        0.2906384162076788
+      ],
+      "sign": "attractive",
+      "term": "gauss1",
+      "weighted_term_after_torsional_normalisation": {
+        "pr_increase": 1.3996347622114476,
+        "raw_mean_correlation": 0.24891443014907397,
+        "raw_pc1_fraction": 0.37587256914716954,
+        "raw_pr": 4.980576712554207,
+        "residual_mean_absolute_correlation": 0.1893303117575764,
+        "residual_pc1_fraction": 0.2765263469287495,
+        "residual_pr": 6.380211474765654
+      },
+      "weighted_term_before_torsional_normalisation": {
+        "pr_increase": 3.6819016985948645,
+        "raw_mean_correlation": 0.505211298544878,
+        "raw_pc1_fraction": 0.5801439093795958,
+        "raw_pr": 2.723811629392448,
+        "residual_mean_absolute_correlation": 0.18736682234918323,
+        "residual_pc1_fraction": 0.27067746110306373,
+        "residual_pr": 6.405713327987312
+      }
+    },
+    {
+      "leave_this_term_out_of_the_sum": {
+        "pr_increase": 1.619760838657129,
+        "raw_mean_correlation": 0.28304745517627217,
+        "raw_pc1_fraction": 0.40617574217884816,
+        "raw_pr": 4.53879678724258,
+        "residual_mean_absolute_correlation": 0.20788904912624984,
+        "residual_pc1_fraction": 0.2843819763636024,
+        "residual_pr": 6.158557625899709
+      },
+      "published_weight": -0.005156,
+      "raw_pc1_bilinear_share": 0.7127815116829779,
+      "residual_frobenius_inner_product_share": 0.5252048479896845,
+      "residual_frobenius_inner_product_share_ci95": [
+        0.4887655220214381,
+        0.5614352700843143
+      ],
+      "residual_pc1_bilinear_share": 0.5545663104542826,
+      "shared_row_axis_covariance_share": 0.7153277445056864,
+      "shared_row_axis_covariance_share_ci95": [
+        0.6717127521294417,
+        0.7598474430130021
+      ],
+      "sign": "attractive",
+      "term": "gauss2",
+      "weighted_term_after_torsional_normalisation": {
+        "pr_increase": 3.4906027289686503,
+        "raw_mean_correlation": 0.5055315650279643,
+        "raw_pc1_fraction": 0.6203949570760481,
+        "raw_pr": 2.4235127794431626,
+        "residual_mean_absolute_correlation": 0.20496346269561885,
+        "residual_pc1_fraction": 0.29589763970863536,
+        "residual_pr": 5.914115508411813
+      },
+      "weighted_term_before_torsional_normalisation": {
+        "pr_increase": 4.081712929794271,
+        "raw_mean_correlation": 0.6591641591383312,
+        "raw_pc1_fraction": 0.7314684632475538,
+        "raw_pr": 1.8109095640968138,
+        "residual_mean_absolute_correlation": 0.20673543308005426,
+        "residual_pc1_fraction": 0.29576665562357435,
+        "residual_pr": 5.892622493891085
+      }
+    },
+    {
+      "leave_this_term_out_of_the_sum": {
+        "pr_increase": 2.9004899274727336,
+        "raw_mean_correlation": 0.42295014388386637,
+        "raw_pc1_fraction": 0.5416182003061636,
+        "raw_pr": 3.0222569376147757,
+        "residual_mean_absolute_correlation": 0.21319255582865382,
+        "residual_pc1_fraction": 0.3033940665592817,
+        "residual_pr": 5.922746865087509
+      },
+      "published_weight": 0.840245,
+      "raw_pc1_bilinear_share": -0.2443242966715254,
+      "residual_frobenius_inner_product_share": -0.06467279850851583,
+      "residual_frobenius_inner_product_share_ci95": [
+        -0.13085681042249736,
+        0.001633467443362667
+      ],
+      "residual_pc1_bilinear_share": -0.037377704750809676,
+      "shared_row_axis_covariance_share": -0.28576815671482936,
+      "shared_row_axis_covariance_share_ci95": [
+        -0.3296895347761442,
+        -0.24003741012415342
+      ],
+      "sign": "repulsive",
+      "term": "repulsion",
+      "weighted_term_after_torsional_normalisation": {
+        "pr_increase": -0.5457960687520504,
+        "raw_mean_correlation": 0.12414072779179114,
+        "raw_pc1_fraction": 0.2706579749423024,
+        "raw_pr": 6.900465980411691,
+        "residual_mean_absolute_correlation": 0.1964777445135964,
+        "residual_pc1_fraction": 0.2667822198649641,
+        "residual_pr": 6.354669911659641
+      },
+      "weighted_term_before_torsional_normalisation": {
+        "pr_increase": 0.10747677650326182,
+        "raw_mean_correlation": 0.1903478988295665,
+        "raw_pc1_fraction": 0.31887625920650287,
+        "raw_pr": 6.037960019821791,
+        "residual_mean_absolute_correlation": 0.20611411189918713,
+        "residual_pc1_fraction": 0.2754298867885097,
+        "residual_pr": 6.145436796325053
+      }
+    },
+    {
+      "leave_this_term_out_of_the_sum": {
+        "pr_increase": 2.6304361813776205,
+        "raw_mean_correlation": 0.44886807635377174,
+        "raw_pc1_fraction": 0.5520282109695974,
+        "raw_pr": 2.9248630223859267,
+        "residual_mean_absolute_correlation": 0.23847709210157442,
+        "residual_pc1_fraction": 0.32333673163281396,
+        "residual_pr": 5.555299203763547
+      },
+      "published_weight": -0.035069,
+      "raw_pc1_bilinear_share": 0.2869650276127051,
+      "residual_frobenius_inner_product_share": 0.22796092350052122,
+      "residual_frobenius_inner_product_share_ci95": [
+        0.21353540615124147,
+        0.24154781957452778
+      ],
+      "residual_pc1_bilinear_share": 0.25539552895064355,
+      "shared_row_axis_covariance_share": 0.29770950690418446,
+      "shared_row_axis_covariance_share_ci95": [
+        0.2665888346311814,
+        0.3285321226332551
+      ],
+      "sign": "attractive",
+      "term": "hydrophobic",
+      "weighted_term_after_torsional_normalisation": {
+        "pr_increase": 4.193727514468258,
+        "raw_mean_correlation": 0.5777515932086716,
+        "raw_pc1_fraction": 0.6456493575136398,
+        "raw_pr": 2.274752419844371,
+        "residual_mean_absolute_correlation": 0.17561630390349137,
+        "residual_pc1_fraction": 0.26890094021805644,
+        "residual_pr": 6.468479934312629
+      },
+      "weighted_term_before_torsional_normalisation": {
+        "pr_increase": 4.024885526411939,
+        "raw_mean_correlation": 0.5777340402699941,
+        "raw_pc1_fraction": 0.6500268912208808,
+        "raw_pr": 2.243717281565796,
+        "residual_mean_absolute_correlation": 0.18487640736158617,
+        "residual_pc1_fraction": 0.28159283085149006,
+        "residual_pr": 6.268602807977736
+      }
+    },
+    {
+      "leave_this_term_out_of_the_sum": {
+        "pr_increase": 2.3323508619491453,
+        "raw_mean_correlation": 0.4761466530288867,
+        "raw_pc1_fraction": 0.5769607230618843,
+        "raw_pr": 2.7046191751675557,
+        "residual_mean_absolute_correlation": 0.2741948275978665,
+        "residual_pc1_fraction": 0.3641312575419321,
+        "residual_pr": 5.036970037116701
+      },
+      "published_weight": -0.587439,
+      "raw_pc1_bilinear_share": -0.013991060769226892,
+      "residual_frobenius_inner_product_share": 0.029693110790535247,
+      "residual_frobenius_inner_product_share_ci95": [
+        0.01486123048509063,
+        0.04552111032111634
+      ],
+      "residual_pc1_bilinear_share": -0.04733046049604475,
+      "shared_row_axis_covariance_share": -0.0006037516461258981,
+      "shared_row_axis_covariance_share_ci95": [
+        -0.04551405766100911,
+        0.04251356873273561
+      ],
+      "sign": "attractive",
+      "term": "hydrogen",
+      "weighted_term_after_torsional_normalisation": {
+        "pr_increase": 3.375030605634808,
+        "raw_mean_correlation": 0.3670837005810317,
+        "raw_pc1_fraction": 0.43862729213936613,
+        "raw_pr": 4.2818433589897635,
+        "residual_mean_absolute_correlation": 0.12758734266027466,
+        "residual_pc1_fraction": 0.16830787246042345,
+        "residual_pr": 7.656873964624571
+      },
+      "weighted_term_before_torsional_normalisation": {
+        "pr_increase": 4.060949401797442,
+        "raw_mean_correlation": 0.42998949417710725,
+        "raw_pc1_fraction": 0.4944824392261978,
+        "raw_pr": 3.5983789917173943,
+        "residual_mean_absolute_correlation": 0.12609233278866158,
+        "residual_pc1_fraction": 0.16875769778295185,
+        "residual_pr": 7.659328393514837
+      }
+    }
+  ],
+  "uncertainty_contract_deviation": {
+    "consequence": "the term-share intervals below are narrower than a package-contract interval would be and must be reported as exploratory; the supplementary table should say so in its caption",
+    "package_contract": "5,000 replicates and a conservative union of Murcko and Butina chemical-cluster intervals",
+    "what_this_analysis_used": "1000 replicates over 497 Bemis-Murcko scaffold clusters only; no Butina scheme and no conservative union were computed, and only 95% intervals were stored"
+  }
+}

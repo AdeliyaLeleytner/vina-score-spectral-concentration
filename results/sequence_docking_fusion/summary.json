@@ -1,0 +1,196 @@
+{
+  "all_four_panels_fusion_continuous_rho_exceeds_both_components": true,
+  "analysis": "incremental target-geometry information beyond sequence identity",
+  "analysis_status": "post_hoc_exploratory_with_outcome_blind_fixed_fusion",
+  "average_precision_boundary": "Average precision does not improve consistently and is not a positive claim.",
+  "claim_boundary": "The result concerns target-pair geometry on a fixed 20-kinase panel. It is not ligand-level target retrieval, and historically inspected panels are not independent prospective confirmation.",
+  "inference": {
+    "locked_panels": [
+      "DAVIS",
+      "PKIS2",
+      "KiRHub"
+    ],
+    "null": "target-label permutations of Vina geometry with sequence and experimental endpoints held fixed",
+    "permutations": 50000,
+    "seed": 20260814
+  },
+  "locked_panel_omnibus": {
+    "average_precision": {
+      "holm_p_across_3_omnibus_metrics": 1.0,
+      "observed_mean_fusion_improves_sequence": false,
+      "observed_mean_fusion_minus_sequence": -0.027691642958664293,
+      "target_label_qap_p_positive_mean_increment": 1.0
+    },
+    "continuous_spearman": {
+      "holm_p_across_3_omnibus_metrics": 0.017839643207135856,
+      "observed_mean_fusion_improves_sequence": true,
+      "observed_mean_fusion_minus_sequence": 0.07540806613992139,
+      "target_label_qap_p_positive_mean_increment": 0.008919821603567928
+    },
+    "roc_auc": {
+      "holm_p_across_3_omnibus_metrics": 0.012959740805183896,
+      "observed_mean_fusion_improves_sequence": true,
+      "observed_mean_fusion_minus_sequence": 0.06602031394275161,
+      "target_label_qap_p_positive_mean_increment": 0.004319913601727965
+    }
+  },
+  "outputs": {
+    "incremental_target_label_qap": {
+      "path": "incremental_target_label_qap.csv",
+      "sha256": "dcb917cbefc626fcd6e5074842e1ab7e24937494cc824e87127a11382dbe9114"
+    },
+    "omnibus_incremental_qap": {
+      "path": "omnibus_incremental_qap.csv",
+      "sha256": "f286a9d71ae049b4f8ea7a426c5513996fbe8faaec5122e4bbba2fd9123922f3"
+    },
+    "panel_metrics": {
+      "path": "panel_metrics.csv",
+      "sha256": "f79a7fe4e3ce10bb6f673401f6d3f67ff0d0a885aaf740d95a5d1e098edf1eae"
+    },
+    "target_jackknife": {
+      "path": "target_jackknife.csv",
+      "sha256": "77450b013bbbce48b298c3469425e24e9ac70f8ce7a95be6bdff44ea121d615f"
+    }
+  },
+  "predictor": "equal mean of pairwise percentile ranks from receptor-domain sequence identity and two-way-centered Vina target geometry; no fitted weight",
+  "primary_metric": "continuous target-geometry Spearman concordance",
+  "primary_panel_metrics": {
+    "DAVIS": {
+      "centered_Vina_target_geometry": {
+        "average_precision": 0.34040170362451294,
+        "continuous_spearman": 0.27979984866179414,
+        "roc_auc": 0.755001538935057
+      },
+      "equal_rank_sequence_plus_Vina": {
+        "average_precision": 0.4040919449574187,
+        "continuous_spearman": 0.3371976451016806,
+        "roc_auc": 0.7713142505386272
+      },
+      "receptor_domain_sequence_identity": {
+        "average_precision": 0.4215039001412804,
+        "continuous_spearman": 0.2605823299505445,
+        "roc_auc": 0.6989843028624192
+      }
+    },
+    "KiRHub": {
+      "centered_Vina_target_geometry": {
+        "average_precision": 0.28948469418136796,
+        "continuous_spearman": 0.32158843881081417,
+        "roc_auc": 0.7436134195136965
+      },
+      "equal_rank_sequence_plus_Vina": {
+        "average_precision": 0.32711225105307573,
+        "continuous_spearman": 0.4145191627344001,
+        "roc_auc": 0.7514619883040936
+      },
+      "receptor_domain_sequence_identity": {
+        "average_precision": 0.3452119229688825,
+        "continuous_spearman": 0.3378043830470408,
+        "roc_auc": 0.6740535549399815
+      }
+    },
+    "PKIS1": {
+      "centered_Vina_target_geometry": {
+        "average_precision": 0.30010988790036075,
+        "continuous_spearman": 0.1736426581287425,
+        "roc_auc": 0.6635887965527855
+      },
+      "equal_rank_sequence_plus_Vina": {
+        "average_precision": 0.27771121837323887,
+        "continuous_spearman": 0.2375160746253042,
+        "roc_auc": 0.7082179132040628
+      },
+      "receptor_domain_sequence_identity": {
+        "average_precision": 0.3178191673572116,
+        "continuous_spearman": 0.2240178737021463,
+        "roc_auc": 0.6772853185595568
+      }
+    },
+    "PKIS2": {
+      "centered_Vina_target_geometry": {
+        "average_precision": 0.29486704145230797,
+        "continuous_spearman": 0.287170806597646,
+        "roc_auc": 0.7131425053862727
+      },
+      "equal_rank_sequence_plus_Vina": {
+        "average_precision": 0.32901673292194983,
+        "continuous_spearman": 0.3446509960495662,
+        "roc_auc": 0.7211449676823638
+      },
+      "receptor_domain_sequence_identity": {
+        "average_precision": 0.3765800346982742,
+        "continuous_spearman": 0.2717568924682975,
+        "roc_auc": 0.6728224068944291
+      }
+    }
+  },
+  "provenance": {
+    "kirhub": {
+      "expected_sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03",
+      "license": "Creative Commons Attribution-NonCommercial-NoDerivatives 4.0",
+      "local_filename": "kirhub_supp_tables.xlsx",
+      "sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03"
+    },
+    "target_order": [
+      "ABL1",
+      "AKT1",
+      "AKT2",
+      "CDK2",
+      "CSF1R",
+      "EGFR",
+      "FGFR1",
+      "IGF1R",
+      "JAK2",
+      "KDR",
+      "KIT",
+      "LCK",
+      "MAP2K1",
+      "MAPK1",
+      "MAPK14",
+      "MAPKAPK2",
+      "MET",
+      "PLK1",
+      "ROCK1",
+      "SRC"
+    ],
+    "target_pairs": {
+      "path": "results/klifs_pocket_control/target_pairs.csv",
+      "sha256": "08238b207ac4f9f991193db0d0e03063403727f98aa1230cbfe636eeb6501a23"
+    }
+  },
+  "secondary_metric": "upper-10%-pair ROC AUROC",
+  "target_jackknife": {
+    "DAVIS": {
+      "drops": 20,
+      "fusion_rho_exceeds_Vina_drops": 19,
+      "fusion_rho_exceeds_sequence_drops": 20,
+      "median_fusion_minus_sequence_rho": 0.07082393542428557,
+      "minimum_fusion_minus_Vina_rho": -0.0006510169138833621,
+      "minimum_fusion_minus_sequence_rho": 0.030475899707232024
+    },
+    "KiRHub": {
+      "drops": 20,
+      "fusion_rho_exceeds_Vina_drops": 20,
+      "fusion_rho_exceeds_sequence_drops": 20,
+      "median_fusion_minus_sequence_rho": 0.07495358576016184,
+      "minimum_fusion_minus_Vina_rho": 0.019580599374693475,
+      "minimum_fusion_minus_sequence_rho": 0.036864598371598334
+    },
+    "PKIS1": {
+      "drops": 20,
+      "fusion_rho_exceeds_Vina_drops": 20,
+      "fusion_rho_exceeds_sequence_drops": 13,
+      "median_fusion_minus_sequence_rho": 0.0054279788740236035,
+      "minimum_fusion_minus_Vina_rho": 0.001725204370185529,
+      "minimum_fusion_minus_sequence_rho": -0.035670850803907306
+    },
+    "PKIS2": {
+      "drops": 20,
+      "fusion_rho_exceeds_Vina_drops": 19,
+      "fusion_rho_exceeds_sequence_drops": 20,
+      "median_fusion_minus_sequence_rho": 0.06996646744268897,
+      "minimum_fusion_minus_Vina_rho": -0.009246139351761218,
+      "minimum_fusion_minus_sequence_rho": 0.0127814170167721
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "analysis_status": "exploratory_science_only",
+  "claim_boundary": "The calibration panel estimates Vina residual geometry for a representative source library. It does not reconstruct ligand-level scores, validate poses, or guarantee transfer to a chemically shifted deployment library.",
+  "cost_examples": {
+    "DOCKSTRING-58": {
+      "200": {
+        "cell_reduction_fraction": 0.9992309467046067,
+        "fold_reduction": 1300.3,
+        "full_cells": 15083480,
+        "pilot_cells": 11600
+      },
+      "500": {
+        "cell_reduction_fraction": 0.9980773667615166,
+        "fold_reduction": 520.12,
+        "full_cells": 15083480,
+        "pilot_cells": 29000
+      }
+    },
+    "Docking-44": {
+      "200": {
+        "cell_reduction_fraction": 0.9841909730456091,
+        "fold_reduction": 63.255,
+        "full_cells": 556644,
+        "pilot_cells": 8800
+      },
+      "500": {
+        "cell_reduction_fraction": 0.9604774326140226,
+        "fold_reduction": 25.302,
+        "full_cells": 556644,
+        "pilot_cells": 22000
+      }
+    }
+  },
+  "datasets": [
+    {
+      "dataset": "DOCKSTRING-58",
+      "full_ligands": 260060,
+      "reference_experimental_pair_metrics": {
+        "average_precision": 0.3014656490938134,
+        "roc_auc": 0.7104761904761905
+      },
+      "reference_residual_pr": 18.20587553764161,
+      "repetitions_per_size": 100,
+      "sampling": "simple random without replacement; outcome-blind",
+      "seed": 20260803,
+      "targets": 58
+    },
+    {
+      "dataset": "Docking-44",
+      "full_ligands": 12651,
+      "reference_experimental_pair_metrics": null,
+      "reference_residual_pr": 9.302911942716452,
+      "repetitions_per_size": 100,
+      "sampling": "simple random without replacement; outcome-blind",
+      "seed": 20260804,
+      "targets": 44
+    }
+  ],
+  "estimand": "recovery of the full-matrix two-way-centered target-correlation geometry",
+  "finite_sample_correction": "Oracle Approximating Shrinkage (OAS)",
+  "scaffold_holdout_sensitivity": {
+    "DOCKSTRING_support": "fixed simple-random 15,000-ligand support, seed 71; Murcko groups",
+    "calibration_sizes": [
+      200,
+      500
+    ],
+    "repetitions_per_fold": 25,
+    "split": "five-fold GroupKFold by the frozen dataset-specific chemical groups"
+  }
+}

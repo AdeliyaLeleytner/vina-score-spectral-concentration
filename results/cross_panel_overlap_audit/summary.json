@@ -1,0 +1,115 @@
+{
+  "analysis": "cross-panel chemical and target-support overlap audit",
+  "support": {
+    "docking44_ligands": 12651,
+    "dockstring_complete_ligands": 260060,
+    "docking44_targets": 44,
+    "dockstring_targets": 58
+  },
+  "chemical_overlap": {
+    "shared_full_standard_inchikeys": 582,
+    "shared_connectivity_blocks": 804,
+    "docking44_rows_in_shared_connectivity_blocks": 804,
+    "dockstring_rows_in_shared_connectivity_blocks": 1014,
+    "shared_nonempty_murcko_scaffolds": 1340,
+    "docking44_rows_in_shared_nonempty_murcko_scaffolds": 7529,
+    "dockstring_rows_in_shared_nonempty_murcko_scaffolds": 25614,
+    "identity_note": "Standard InChIKeys were recomputed from Docking-44 analysis SMILES; DOCKSTRING raw Standard InChIKeys and Murcko scaffolds come from the frozen identity contract. Connectivity blocks merge stereoisomers and protonation-state suffixes."
+  },
+  "target_overlap": {
+    "mapped_target_identities": 9,
+    "mapped_human_receptor_identities": 7,
+    "same_receptor_structure_used": 3,
+    "mapped_pairs": [
+      {
+        "docking44_target": "1m2z",
+        "dockstring_target": "NR3C1",
+        "human_uniprot_accession": "P04150"
+      },
+      {
+        "docking44_target": "2rh1",
+        "dockstring_target": "ADRB2",
+        "human_uniprot_accession": "P07550"
+      },
+      {
+        "docking44_target": "2vt4",
+        "dockstring_target": "ADRB1",
+        "human_uniprot_accession": "P08588"
+      },
+      {
+        "docking44_target": "2ydo",
+        "dockstring_target": "ADORA2A",
+        "human_uniprot_accession": "P29274"
+      },
+      {
+        "docking44_target": "3b66",
+        "dockstring_target": "AR",
+        "human_uniprot_accession": "P10275"
+      },
+      {
+        "docking44_target": "3ln1",
+        "dockstring_target": "PTGS2",
+        "human_uniprot_accession": "P35354"
+      },
+      {
+        "docking44_target": "4ey7",
+        "dockstring_target": "ACHE",
+        "human_uniprot_accession": "P22303"
+      },
+      {
+        "docking44_target": "6cm4",
+        "dockstring_target": "DRD2",
+        "human_uniprot_accession": "P14416"
+      },
+      {
+        "docking44_target": "6pdj",
+        "dockstring_target": "LCK",
+        "human_uniprot_accession": "P06239"
+      }
+    ],
+    "broad_family_labels_docking44": [
+      "Adrenergic GPCR",
+      "Cannabinoid GPCR",
+      "Dopamine GPCR",
+      "Enzyme",
+      "Histamine GPCR",
+      "Ion channel",
+      "Muscarinic GPCR",
+      "Nuclear receptor",
+      "Opioid GPCR",
+      "Peptide GPCR",
+      "Serotonin GPCR",
+      "Transporter"
+    ],
+    "broad_family_labels_dockstring": [
+      "Chaperone",
+      "GPCR",
+      "Kinase",
+      "Nuclear receptor",
+      "Other enzyme",
+      "Protease"
+    ],
+    "shared_broad_family_labels": [
+      "Nuclear receptor"
+    ]
+  },
+  "interpretation": "The panels were generated from different ligand collections and target lists, but they are not disjoint biological or chemical samples. Replication therefore means agreement across independently sourced matrices, not formal statistical independence.",
+  "sources": {
+    "docking44": {
+      "path": "data/frozen/df_final_v4.csv.gz",
+      "sha256": "25436e49b9fc80421d8499ef289ed8ef00b4ab35b904c7d930fc377f493e1d51"
+    },
+    "dockstring_identity_contract": {
+      "path": "data/frozen/dockstring_identity_contract_2026-08-03.csv.gz",
+      "sha256": "5c5d06635cb276f543f9744487d6b8d4015432087e5f87b7875628973b8f32b3"
+    },
+    "target_mapping": {
+      "path": "results/residual_mechanism/cross_panel_target_mapping.csv",
+      "sha256": "ccaa1e43369246a333462712ad869d3d52111e3f1bb6a7c18f340ed4903e69d3"
+    },
+    "target_families": {
+      "path": "data/target_families.csv",
+      "sha256": "bc313ba0d28d7de7981a67c0088d44cb7cdd86c09e7b319bfb2e609040e3c9a6"
+    }
+  }
+}

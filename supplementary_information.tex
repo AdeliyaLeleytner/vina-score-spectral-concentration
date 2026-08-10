@@ -14,253 +14,638 @@
 \usepackage[a4paper,margin=2.5cm]{geometry}
 \usepackage[font=small,labelfont=bf]{caption}
 \usepackage[hidelinks]{hyperref}
+\hypersetup{
+  pdftitle={Supplementary information: Target-correlation maps are library-conditional but recoverable from a few hundred ligands in two large Vina panels},
+  pdfauthor={Adeliya Leleytner, Victor Safronov, Maxim Fedorov}
+}
 \renewcommand{\thefigure}{S\arabic{figure}}
 \renewcommand{\thetable}{S\arabic{table}}
 
 \doublespacing
 
-\title{Supplementary information\\[4pt]\large Spectral concentration in two large Vina
-docking-score matrices: two-way centering reveals correlated residual variation without a
-resolved target-ranking gain}
+\title{Supplementary information\\[4pt]\large Target-correlation maps are library-conditional
+but recoverable from a few hundred ligands in two large Vina panels}
 \author{Adeliya Leleytner, Victor Safronov, Maxim Fedorov}
 \date{}
 
 \begin{document}
 \maketitle
+\input{results/evidence_macros.tex}
 
-\section*{Supplementary figures}
+\section*{S1. Scope, data and estimand contracts}
 
-\begin{figure}[htbp]
+This Supplement follows the audit stages in the main Results: how concentrated the two
+large Vina matrices are; what remains after removal of additive ligand and target effects;
+what target-specific ligand-feature fits can and cannot identify, and how the map transports
+across chemical domains;
+whether the target-pair geometry agrees with experimental co-response; how that agreement
+depends on protein and target support; and whether the transformation improves within-ligand
+target ranking. The two score matrices are independently sourced rather than
+statistically independent samples. Their exact chemical and target overlaps are reported in
+Table~\ref{tab:s14overlap}.
+
+For a ligand-by-target score matrix $X$, ``column-standardized'' denotes target-wise
+mean-zero, unit-variance scores. ``Two-way residual'' denotes the residual from the additive
+model
+\[
+X_{ij}=\mu+a_i+b_j+\Gamma_{ij},
+\]
+followed by target-wise standardization when a correlation spectrum or scaled residual score
+is required. Correlation spectra therefore give each target equal marginal variance;
+covariance spectra retain target-specific variance. These are different estimands, and both
+are reported in Table~\ref{tab:s3covariance}. A target-pair geometry is the vector of unique
+off-diagonal correlations of the specified transformed matrix.
+
+The external geometry analysis used the same 20 kinases and the same 190 target pairs in
+DAVIS, PKIS2, PKIS1 and KiRHub. Experimental matrices were represented both before and after
+two-way centring, giving the complete $2\times2$ docking-by-experiment comparison in
+Table~\ref{tab:s6factorial}. The fixed 15-pair endpoint was defined as pairs in the top decile
+of centred experimental correlation in at least two of DAVIS, PKIS2 and PKIS1; the complete
+locked set is given in Table~\ref{tab:s9lockedPairs}. KiRHub was inspected only after this
+endpoint was fixed, and no KiRHub result was used to alter it. This ordering was not
+preregistered. Because the endpoint is defined from centred experimental geometry,
+raw-versus-centred retrieval gaps against it are conditional on the endpoint construction and
+cannot be interpreted as a causal or transformation-neutral benefit of centring. Across the
+declared 5--25\% threshold family,
+the mean centred-minus-raw gain was unresolved (target-label QAP $p=0.061$ for AUROC and
+$p=0.076$ for average precision).
+For the three panels with released structures, identity and scaffold intersections are
+reported in Table~\ref{tab:experimentalPanelOverlap}. KiRHub provides compound names without
+a frozen molecular-structure mapping, so only exact normalized-name overlap with DAVIS was
+auditable.
+
+The operational ChEMBL benchmark is a distinct estimand. It scores only experimentally
+co-observed target pairs within each ligand and does not impute unmeasured activities or test
+retrieval of an unmeasured target. The broad primary benchmark matches ChEMBL to
+DOCKSTRING and contains \BroadRankingRetainedLigands{} retained ligands,
+\BroadRankingTargets{} targets, \BroadRankingCells{} observed cells and
+\BroadRankingPairs{} non-tied within-ligand target comparisons among
+\BroadRankingEvaluatedLigands{} evaluated ligands. Chemical
+cluster intervals condition on the fixed target labels; delete-one-target jackknife intervals
+are reported separately as panel-composition sensitivities. The endpoint-restricted, less
+heterogeneous human binding Ki/Kd arm and the separate Ki, Kd, IC50 and EC50 arms alter the
+experimental endpoint contract but retain the externally fitted docking transformation.
+
+The earlier Docking-44--ChEMBL benchmark contains 137 ligands, 38 targets, 691 observed
+cells and 2,522 non-tied comparisons. It is retained only as a legacy sparse sensitivity and
+does not contribute the primary operational estimate.
+
+Two dense ligand-wise checks use exact molecular-structure matches to released DOCKSTRING
+profiles. DAVIS and PKIS2 contain 59 and 154 matched ligands across 21 shared kinases; the
+extra target relative to the fixed-20 geometry analysis is PTK2/FAK. These analyses evaluate
+target order for observed ligand--target cells, not the correlation structure across a
+different chemical library and not retrieval of an unmeasured target.
+
+\section*{S2. Spectral concentration and residual dependence}
+
+For a $P$-target correlation matrix $C$ with eigenvalues $\lambda_k$, the participation-ratio
+(PR) effective dimension is
+\[
+r_{\mathrm{PR}}=\frac{(\sum_k\lambda_k)^2}{\sum_k\lambda_k^2}
+=\frac{P}{1+(P-1)\overline{r_{ij}^{\,2}}}.
+\]
+The final equality holds for a correlation matrix. PR is therefore an interpretable
+re-expression of mean-squared inter-target correlation, not a new estimator or an algebraic
+rank. Complementary scalar summaries are collected in Table~\ref{tab:s1spectral}; the full
+spectrum (Fig.~\ref{fig:s1}), signed correlation distributions and heatmaps
+(Fig.~\ref{fig:s3}) retain information that PR discards.
+
+Docking-44 increased from PR \DffRawPR{} to \DffResidualPR{} after two-way centring;
+DOCKSTRING-58 increased from \DsRawPR{} to \DsResidualPR{}. The last residual eigenvalue is
+zero by construction because every residual row sums to zero. The same qualitative increase
+held for covariance spectra, although the residual values were lower than for correlation
+spectra (Table~\ref{tab:s3covariance}; Fig.~\ref{fig:s4}c,d). Thus the conclusion is not
+created by unit-variance scaling, while its magnitude depends on whether target variances are
+retained.
+
+The concentration was also observed when the tested functions rescored the same
+Vina-selected poses. On a fixed \TransportLigands{}-ligand by
+\TransportTargets{}-target block of released DOCKSTRING poses, with only the scorer changed,
+\TransportSupportingScorers{} of \TransportNonVinaScorers{}
+non-Vina functions met all four stated criteria; smina's re-implementation of Vina
+reproduced the released scores at Pearson $\ge\TransportSminaReproduction{}$ per target
+(Table~\ref{tab:scorerTransport}). PLECscore is the least concentrated function tested (raw
+PC1 \TransportPlecRawPCOne{}, raw PR \TransportPlecRawPR{}) and simultaneously the one whose
+leading axis is closest to uniform (cosine \TransportPlecUniformCosine{}); its PR also rises
+under centring.
+
+Three qualifications belong with that table. First, the four criteria are a weak bar: a
+one-factor surface carrying no target identity satisfies all of them across a wide noise
+range, and Perron--Frobenius makes the near-uniform leading eigenvector close to automatic
+for an all-positive correlation matrix, so passing the set evidences a shared positive
+ligand axis and nothing finer. The discriminating quantity is instead the centred PR, which
+reaches only 5.12--7.47 here against roughly 7.9--8.0 for that null, so every scorer retains
+genuine residual cross-target correlation; standardizing columns before centring moves
+centred PR by at most 0.4, so the rise is not a column-scale artefact. Second, two margins
+sit inside bootstrap noise and are reported as point-estimate calls rather than decisions:
+Vina's own uniform cosine is 0.95007 against a 0.95 threshold, and PLECscore's raw PR
+exceeds the 4.5 threshold at the point estimate with an interval that spans it, whereas its
+PC1 failure is decisive in every replicate. Third, the six non-Vina functions are four
+independent lineages: RF-Score v1, v2 and v3 share one PDBbind-2016 training table and
+correlate at 0.89--0.94 at cell level, v3 additionally consumes Vina terms as features, and
+all the machine-learned scorers are trained on crystal complexes but applied to docked poses.
+Rescoring a retained pose is in any case an upper bound on the agreement a full re-docking
+run would show.
+
+Only 1.466\% of Docking-44 cells were missing, but they occurred in 3,354 ligands; target
+4mqs accounted for 3,352 missing cells. Mean, median and observed-cell additive
+least-squares imputations gave residual PR values of 9.303, 9.528 and 9.663. Complete-case
+deletion gave 13.970 on 9,297 chemically selected ligands, and deletion of 4mqs gave 9.433
+under mean imputation (Table~\ref{tab:s2missing}; Fig.~\ref{fig:s4}a,b). Complete rows had
+median molecular weight 249 Da and 17 heavy atoms, whereas incomplete rows had medians 399
+Da and 28 heavy atoms. Complete-case analysis therefore changes chemical support rather than
+providing a like-for-like missing-value correction.
+
+DOCKSTRING v1 contained 260,155 rows, of which 95 had at least one of 339 missing
+scores. Listwise deletion therefore removed only 0.0365\% of molecules, leaving the
+260,060-row primary matrix. Repeating the analysis on all released rows after target-mean
+imputation gave raw and residual PR values of \DsMeanImputedRawPR{} and
+\DsMeanImputedResidualPR{}; target-median imputation gave \DsMedianImputedRawPR{} and
+\DsMedianImputedResidualPR{}. These values were effectively unchanged from
+\DsRawPR{} and \DsResidualPR{} on complete rows, unlike the chemically selective
+Docking-44 complete-case analysis.
+
+Target composition was examined by leave-one-target-out deletion (Fig.~\ref{fig:s2};
+Table~\ref{tab:s5target}), random and family-stratified target subsampling
+(Table~\ref{tab:targetSubsampling}), and chemical-
+support resampling. Five independently seeded 15,000-molecule DOCKSTRING supports gave raw
+PR 2.252--2.294 and residual PR 18.161--18.322 (Fig.~\ref{fig:s6}). Their intervals resample
+entire Bemis--Murcko scaffold groups. These ranges describe the observed panel and source
+library; they are not confidence intervals for all proteins or all chemical space.
+
+Four matched nulls addressed different mechanical explanations. Independent column
+permutation supplied the transformation-matched parallel-analysis null. On a common
+12,000-row support, the descriptive numbers above the rank-wise 95th-percentile null were
+3 versus 7 for Docking-44 and 4 versus 11 for DOCKSTRING-58 before versus after centring. A
+studentized maximum-deviation envelope controlling family-wise error across eigenvalue ranks
+retained 3 versus 7 and 4 versus 10 modes. Mode counts are sample-size-dependent descriptive
+summaries and are not used as the primary measure of practical dimension.
+
+The fitted additive Gaussian null retained estimated ligand and target effects and
+target-specific residual variances. The empirical column-permutation null retained every
+target's non-Gaussian residual marginal. The row-norm-preserving null drew an independent
+random direction in the target-zero-sum subspace for each ligand and rescaled it to the
+observed residual row norm. Observed residual PR values were far below all three matched
+nulls (Table~\ref{tab:s4nulls}); under the row-norm null they were
+\DffCommonNullObservedPR{} versus a median of \DffRowNull{} and
+\DsCommonNullObservedPR{} versus \DsRowNull{} ($p=1/501=0.002$ for each). No single null preserves
+all empirical structure. The row-norm null medians lie near the residual algebraic ceilings
+of 43 and 57, so this comparison establishes structured dependence beyond the matched
+zero-sum and row-norm constraints rather than
+its origin or biological validity; agreement across differently matched nulls is the
+relevant result.
+
+\begin{figure}[p]
 \centering
-\includegraphics{figures/figS1_full_spectra.pdf}
+\includegraphics[width=\textwidth]{figures/figS1_full_spectra.pdf}
 \caption{\textbf{Full correlation-spectrum scree plots.}
-\textbf{a,b}, Docking-44 column-standardized and two-way-centered residual spectra.
-\textbf{c,d}, DOCKSTRING-58 column-standardized and residual spectra. Eigenvalues are divided by the
-number of targets so that each spectrum sums to one. The ordinate is logarithmic. Double
-centering imposes one exact zero eigenvalue; values at zero fall below the plotting range.}
+\textbf{a,b}, Docking-44 column-standardized and two-way-residual spectra.
+\textbf{c,d}, DOCKSTRING-58 column-standardized and two-way-residual spectra. Eigenvalues
+are divided by the number of targets so each spectrum sums to one. The ordinate is
+logarithmic. Two-way centring imposes one exact zero residual eigenvalue.}
 \label{fig:s1}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[p]
 \centering
-\includegraphics{figures/figS2_target_jackknife.pdf}
-\caption{\textbf{Leave-one-target-out composition sensitivity.}
+\includegraphics[width=\textwidth]{figures/figS2_target_jackknife.pdf}
+\caption{\textbf{Leave-one-target-out spectral composition sensitivity.}
 Each point is the PR effective dimension after deleting one target; targets are ordered by
-the resulting value within each panel. Dashed lines mark the complete-panel estimate on the
-same ligand support. Labels identify the most influential deletion. These ranges describe
-the two observed target panels and are not confidence intervals for a target superpopulation.}
+the resulting value. Dashed lines mark the complete-panel estimate on the same ligand
+support. Labels identify the most influential deletion. These are fixed-panel sensitivity
+ranges rather than intervals for a target superpopulation.}
 \label{fig:s2}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[p]
 \centering
-\includegraphics{figures/figS3_scoring_controls.pdf}
-\caption{\textbf{Illustrative scoring-function and target-expansion sensitivities.}
-PR effective dimensions and source-analysis bootstrap intervals are shown for the two large
-Vina panels, RF-Score v1 on Vina poses, RF-Score v1 on Vinardo poses and the Docking-47
-expansion. Point labels report ligand and target counts. The 47-target expansion is a
-deterministic sensitivity and is shown without an interval. The RF-Score blocks contain only
-35--41 ligands and are not large independent replications.}
+\includegraphics[width=\textwidth]{figures/figS7_residual_correlations.pdf}
+\caption{\textbf{Centring exposes signed residual target dependence.}
+\textbf{a,b}, Two-way-residual target correlations ordered by average-linkage clustering of
+$1-r$. A subset of labels is printed for legibility; complete matrices and target order are
+machine-readable. \textbf{c,d}, Distributions of off-diagonal correlations before and after
+centring, on fixed 12,000-ligand Docking-44 and 15,000-ligand DOCKSTRING supports. Mean
+absolute correlation fell from 0.694 to 0.245 and from 0.624 to 0.157, respectively.
+These support-specific values differ slightly from the full-support summaries in
+Table~\ref{tab:s1spectral}.
+Broad-family label permutations did not resolve the small
+within-minus-between-family differences ($p=0.073$ and 0.067).}
 \label{fig:s3}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[p]
 \centering
-\includegraphics{figures/figS4_learned_affinity.pdf}
-\caption{\textbf{Contextual centering ladder across score and affinity surfaces.}
-\textbf{a}, Column-standardized and two-way-centered residual PR effective dimensions for
-the two Vina matrices, two small RF-Score blocks, experimental DAVIS affinity and Boltz-2.
-Lines connect the same matrix under the two transformations. \textbf{b}, Each value divided
-by its algebraic maximum, $P$ before and $P-1$ after centering. The learned-affinity examples
-are contextual sensitivities, not docking replications or accuracy benchmarks.}
+\includegraphics[width=\textwidth]{figures/figS8_spectral_estimand_sensitivities.pdf}
+\caption{\textbf{Missing-value and spectrum-estimand sensitivities.}
+\textbf{a}, Docking-44 PR under four missing-score strategies.
+\textbf{b}, Residual PR before and after deletion of 4mqs, the target with most missing
+scores. \textbf{c,d}, Correlation- and covariance-spectrum PR before and after two-way
+centring. Complete-case values are not directly comparable with full-support imputations
+because the chemical support changes.}
 \label{fig:s4}
 \end{figure}
 
-\begin{figure}[htbp]
+\section*{S3. Ligand-feature interpretation and rank-matched controls}
+
+Raw PC1 loadings were oriented to have positive sum. Their cosine similarities with the
+uniform target vector were \DffUniformCosine{} and \DsUniformCosine{} (Fig.~\ref{fig:s5}a,b),
+and the corresponding ligand scores correlated 0.998 and 0.997 with the mean
+column-standardized score. This identifies the leading component as nearly, but not exactly,
+the uniform ligand-mean direction.
+
+For each target, ordinary least squares fitted
+\[
+\text{Vina score}=\beta_0+\beta_{\mathrm{MW}}(\mathrm{MW}/100)
++\beta_{\mathrm{rot}}N_{\mathrm{rot}}.
+\]
+Docking-44 used all 12,651 mean-imputed rows. DOCKSTRING-58 used a fixed score-blind random
+sample of 15,000 from 260,060 ligands (seed 71), because descriptor generation for the full
+matrix was not required for this interpretation. Median conditional molecular-weight slopes
+were \DffConditionalMWSlope{} and \DsConditionalMWSlope{} kcal/mol per 100 Da, while median
+RDKit rotatable-bond slopes were +\DffConditionalRotSlope{} and
++\DsConditionalRotSlope{} kcal/mol per bond. The flexibility slope was positive for
+\DffPositiveRotTargets{}/44 and \DsPositiveRotTargets{}/58 targets
+(Fig.~\ref{fig:s5}c,d).
+
+Two-way centring converts a descriptor's target-specific raw slope vector into its
+mean-centred slope vector. The molecular-weight residual-correlation vector aligned with the
+residual PC1 loading vector at cosines \DffMWResidualLoadingCosine{} and
+\DsMWResidualLoadingCosine{}; absolute correlations between molecular weight and residual
+PC1 ligand scores were \DffMWResidualScoreCorrelation{} and
+\DsMWResidualScoreCorrelation{} (Fig.~\ref{fig:s5}e,f). Removing 4mqs from Docking-44 left
+the two values at 0.960 and 0.647. These results support target-dependent physicochemical
+slopes as one source of the leading residual mode. RDKit rotatable-bond count is a proxy,
+not Vina's internal torsion term, so this analysis is not a decomposition of the Vina score.
+
+We next fitted seven ligand descriptors---heavy-atom count, molecular weight, Labute ASA,
+TPSA, cLogP, RDKit rotatable-bond count and ring count---to each residual target column in
+five chemical-group-held-out folds. Every target offset, residual target scale, descriptor
+scale and coefficient was estimated on the training fold; pooled errors were strictly
+out-of-fold. On the full matrices, subtracting this prediction reduced mean squared target
+correlation by \DffDescriptorCorrelationReduction{} and
+\DsDescriptorCorrelationReduction{}, while PR increased from \DffDescriptorPRBefore{} to
+\DffDescriptorPRAfter{} and from \DsDescriptorPRBefore{} to
+\DsDescriptorPRAfter{} (Table~\ref{tab:descriptorDecomposition}). These are predictive
+contrasts, not causal or feature-specific attributions.
+
+The fixed common-20 kinase support allowed rank-matched controls using the same folds and
+259,579 DOCKSTRING ligands after excluding structural overlaps with DAVIS, PKIS2 and PKIS1
+(Table~\ref{tab:descriptorRankMatched}). The
+physicochemical basis had mean out-of-fold target $R^2=0.107$ and reduced the operational
+mean-$r^2$ contrast by 0.234. A seven-dimensional unnormalised count-Morgan random projection
+gave 0.090 and 0.238 for the locked seed. Across 20 count-Morgan seeds, operational reduction
+ranged from 0.176 to 0.260; at least 17 of 20 component maps equalled or exceeded the
+physicochemical map's experimental agreement in every panel. The fixed basis therefore does
+not distinguish a privileged physicochemical explanation from a more generic
+target-indexed ligand-feature basis.
+
+The negative controls show why the scale-free map statistic cannot repair that
+identifiability problem. A stable seven-dimensional ligand-identity hash had mean
+out-of-fold target $R^2$ effectively zero and changed the operational contrast by only
+0.00002, yet its fitted-component map correlated 0.103--0.348 with the four experimental
+maps. Twenty row permutations of the same standardised physicochemical feature cloud also
+had effectively zero held-out predictive performance, while their scale-free component-map agreements
+spanned $-0.072$ to 0.564 depending on panel and seed
+(Table~\ref{tab:descriptorAlgorithmicControls}). Each basis is fitted separately to every
+target, and the subsequent target--target correlation discards component amplitude. A
+random or nonpredictive sketch can therefore inherit target covariance from its fitted
+coefficient matrix. This is a scale-free random-sketch artefact of target-specific fitting
+followed by correlation. Component-map concordance is not a mediation estimate, a share of
+experimental structure, or evidence that the named ligand features orient biological
+selectivity.
+
+\begin{figure}[p]
 \centering
-\includegraphics{figures/figS5_dti_all20.pdf}
-\caption{\textbf{Exploratory DTI association on the complete 20-arm panel.}
-Selectivity precision at five is plotted against the column-standardized PR effective
-dimension (\textbf{a}) and the two-way-centered residual PR effective dimension (\textbf{b}).
-Numbers identify arms in Table~S6; blue denotes arms above the outcome-related chance
-criterion and grey denotes arms at chance. Correlations are descriptive because the arms
-share data, architectures and representations.}
+\includegraphics[width=\textwidth]{figures/figS9_physicochemical_target_slopes.pdf}
+\caption{\textbf{The shared axis is nearly uniform, whereas the leading residual mode
+tracks target-specific size dependence.}
+\textbf{a,b}, Sorted raw PC1 target loadings and the uniform-loading reference.
+\textbf{c,d}, Conditional molecular-weight and RDKit rotatable-bond slopes for each target.
+\textbf{e,f}, Alignment of target-wise residual molecular-weight correlations with residual
+PC1 target loadings. Component signs are oriented by the molecular-weight vector and have no
+intrinsic meaning.}
 \label{fig:s5}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[p]
 \centering
-\includegraphics{figures/figS6_dockstring_supports.pdf}
-\caption{\textbf{DOCKSTRING chemical-support and scaffold sensitivity.}
-Each row is an independently seeded 15,000-molecule support. Points are support-specific PR
-dimensions and horizontal intervals are 95\% Bemis--Murcko scaffold-cluster bootstrap
-intervals from 100 replicates. \textbf{a}, Column-standardized surface; \textbf{b}, two-way-
-centered residual. All estimates are conditional on the same 58 targets.}
+\includegraphics[width=0.94\textwidth]{figures/figS6_dockstring_supports.pdf}
+\caption{\textbf{DOCKSTRING chemical-support sensitivity.}
+Each row is an independently seeded, score-blind 15,000-molecule support. Points are
+support-specific PR dimensions; intervals are 95\% Bemis--Murcko scaffold-cluster bootstrap
+intervals from 100 replicates. \textbf{a}, Column-standardized surface.
+\textbf{b}, Two-way-residual surface. All estimates are conditional on the same 58 targets.}
 \label{fig:s6}
 \end{figure}
 
-\begin{figure}[htbp]
-\centering
-\includegraphics{figures/figS7_residual_correlations.pdf}
-\caption{\textbf{Residual target-correlation structure.}
-\textbf{a,b}, Two-way-centered residual target correlations ordered by average-linkage
-clustering of $1-r$. A subset of target labels is printed for legibility; the complete order
-and family mapping are supplied in \texttt{results/residual\_target\_order.csv}.
-\textbf{c,d}, Distributions of all off-diagonal correlations before and after centering.
-Annotations give mean absolute correlation and the within-family minus between-family mean
-absolute-correlation difference with a one-sided 5,000-label-permutation probability. The
-broad-family associations are weak and do not establish biological specificity.}
-\label{fig:s7}
-\end{figure}
+\clearpage
 
-\input{results/supplement_tables.tex}
+\section*{S4. Experimental target-pair geometry}
+
+The complete factorial comparison prevents a joint change of predictor and endpoint from
+being attributed to one side. Against the fixed centred experimental geometry, changing
+raw to centred docking geometry increased Spearman concordance by only 0.001--0.045 across
+the four panels, with paired target-label QAP probabilities 0.126--0.462
+and transformation-matched probabilities 0.073--0.690
+(Table~\ref{tab:s6factorial}). Against the fixed uncentred experimental geometry, the same
+docking transformation gave increments of 0.168, 0.249, 0.218 and 0.264 for DAVIS, PKIS2,
+PKIS1 and KiRHub, with target-label probabilities 0.01512, 0.00152, 0.00536 and 0.00008
+and transformation-matched probabilities 0.00300, 0.00050, 0.00050 and 0.00050. Thus the
+apparent docking-side gain is conditional on the experimental endpoint. The matched null
+begins at near-zero docking--experiment concordance rather than the already positive raw
+agreement with centred experiment, so its gain comparison is unconditional; Table
+\ref{tab:s6factorial} therefore prints both the full-reference and matched-support
+increments. Sequential
+percentages depend on transformation order;
+path-averaged experimental shares were 55.8--70.9\% and are reported only descriptively
+(Table~\ref{tab:s7paths}). These shares also depend on the Spearman-correlation scale; a
+nonlinear transform such as Fisher's $z$ changes the allocation without changing the four
+underlying comparisons. The negative interaction terms show why no unique attribution of
+the joint raw/raw-to-centred/centred change is available.
+
+The four experimental centred geometries showed strong cross-panel agreement on the shared
+target support: mean pairwise Spearman concordance was \CrossPanelCentered{}, compared with
+\CrossPanelRaw{} for the uncentred geometries (Table~\ref{tab:s8experimental}). A global
+target-label network QAP supported the centred-minus-raw cross-panel increment
+($p=\CrossPanelGlobalGainP{}$) because it asks whether corresponding target labels align
+across panels. A transformation-matched independent-column null instead gave
+$p=\CrossPanelMatchedNullP{}$ because it asks whether the observed increment exceeds the
+correlation change mechanically induced by centring. The two probabilities therefore answer
+different questions. In particular, the matched null starts at mean raw agreement
+\CrossPanelMatchedRawNullMean{}, rather than the observed \CrossPanelRaw{}, and has mean
+centred agreement \CrossPanelMatchedCenteredNullMean{}; its increment is therefore not
+conditioned on the already strong observed raw agreement. The absolute centred agreement
+nevertheless exceeded the same matched null
+($p=\CrossPanelMatchedAbsoluteCenteredP{}$). Thus the centred geometries agree, whereas
+whether their increment is exceptional depends on the null hypothesis.
+
+DAVIS has an important measurement boundary. Of its 1,440 fixed-panel cells,
+\DavisFloorCells{} (\DavisFloorPercent{}) are at the released 10,000-nM Kd upper bound,
+which becomes a pKd floor of 5; target-wise fractions range from \DavisFloorRange{}, and
+\DavisHighFloorTargets{} targets exceed 90\%. The continuous and binary
+above-floor-status target geometries nevertheless correlated at
+$\rho=\DavisStatusGeometryRho{}$. Centred DOCKSTRING agreed with the binary geometry at
+$\rho=\DavisStatusDockingRho{}$ ($p=\DavisStatusDockingP{}$), and the association
+remained positive when targets were required to have at least 5, 10 or 15 values above
+the floor (Table~\ref{tab:davisCensoring}). Replacing DAVIS continuous correlations by
+the binary-status geometry retained \DavisCensorAltShared{} of the 15 fixed pairs,
+defined \DavisCensorAltTotal{} positives, and was recovered by centred KiRHub geometry
+with AUROC \DavisCensorAltAUROC{} and AP \DavisCensorAltAP{}. This supports a coarse
+co-response or measurement-limit-status geometry, not a finely resolved quantitative
+DAVIS affinity geometry.
+
+The earlier 74-ligand by 6-target ChEMBL comparison remains a matched-support spectral
+control (Table~\ref{tab:s15matched}). Before two-way centring, experimental PR exceeded
+docking PR by 2.006 (paired ligand-bootstrap 95\% interval 1.174--2.673). After centring,
+the difference was 0.483 and its interval included zero ($-0.071$--0.921). This small panel
+does not support a general claim about the dimension of experimental affinity surfaces.
+
+\section*{S5. Structural interpretation boundary}
+
+Sequence identity, KLIFS pocket identity, raw Vina geometry and centred Vina geometry were
+evaluated against the same locked 15-of-190 pair endpoint. Sequence and pocket similarity
+gave AUROC 0.718 and 0.708, compared with 0.597 and 0.710 for raw and centred Vina
+(Table~\ref{tab:s10structure}). These point estimates make protein similarity an essential
+baseline; they do not identify a docking-specific mechanism.
+
+Because the endpoint was fixed from DAVIS, PKIS2 and PKIS1 before KiRHub was inspected,
+KiRHub supplied a temporally ordered external-panel check, although it was not preregistered.
+Raw and centred KiRHub experimental geometries retrieved the 15 pairs with AUROC 0.803 and
+0.963 and average precision 0.597 and 0.694, respectively. Each centred absolute metric had
+target-label QAP $p=2\times10^{-5}$. Paired target-label relabelling supported the
+centred-minus-raw gains (AUROC $\Delta=\KiRHubGainAUROC{}$,
+$p=\KiRHubGainAUCLabelP{}$; AP $\Delta=\KiRHubGainAP{}$,
+$p=\KiRHubGainAPLabelP{}$; Holm-adjusted $p=\KiRHubGainAUCHolmP{}$ and
+\KiRHubGainAPHolmP{}). Under the independent-column transformation-matched null, those
+gains did not exceed the mechanical centring gain
+($p=\KiRHubGainAUCMatchedP{}$ and \KiRHubGainAPMatchedP{}), although each absolute
+centred metric exceeded that null ($p=\KiRHubAbsoluteMatchedP{}$;
+Table~\ref{tab:s10structure}).
+The matched raw AUROC and AP baselines were near chance rather than the much higher
+observed raw metrics, so these gain probabilities do not condition on the already aligned
+raw endpoint.
+
+Continuous partial-rank models adjusted centred Vina geometry for receptor-domain sequence
+identity and KLIFS pocket identity. Unrestricted target-label QAP gave partial Spearman
+0.225 for the three-panel mean and 0.280 for KiRHub. When labels were permuted only within
+KLIFS groups, the corresponding probabilities were 0.197 and 0.166
+(Table~\ref{tab:s11partial}). Coarse kinase organization is compatible with the observed
+map, while an additional within-group Vina component was not resolved.
+
+As an orthogonal, heavily censored check, the Secondary Pharmacology Database release
+supplied 59 of 66 possible pairs among 12 mapped target groups for the primary
+right-censored endpoint; 91.6\% of cells were censored. Centred Vina improved the released-
+bound point estimate from 0.149 to 0.333 ($p=0.046$), and the 30-$\mu$M sensitivity from
+0.180 to 0.409 ($p=0.020$), but not the 10-$\mu$M analysis (0.348 to 0.395; $p=0.347$).
+Family-preserving tests were unresolved. Specifically, family-preserving QAP for the
+centred-minus-raw gain gave one-sided $p=0.729$, 0.939 and 0.714 for the released-bound,
+10-$\mu$M and 30-$\mu$M endpoints, respectively. This result is a censoring sensitivity,
+not an independent quantitative-affinity validation.
+
+\section*{S6. Chemical and target support}
+
+For DAVIS, PKIS2 and PKIS1, all experimental Standard-InChI connectivity blocks were
+excluded from the 20-target DOCKSTRING reference. The union contained 1,050 blocks and
+removed 481 rows, leaving 259,579 reference ligands. Excluding an additional
+\FixedTwentyScaffoldRowsExcluded{} rows that shared one of 575 cyclic Murcko scaffolds with
+these panels changed centred geometry concordance by at most
+\FixedTwentyMaxScaffoldDelta{}. KiRHub compound structures were unavailable, so this
+exclusion could not be performed for KiRHub. Five score-blind 15,000-row reference supports
+reproduced each full-reference centred concordance within narrow ranges
+(Table~\ref{tab:referenceSupport}).
+
+Chemical context nevertheless matters. Target maps from the lower and upper molecular-
+weight quartiles had Spearman concordance 0.333 for PKIS2 and 0.547 for PKIS1, below matched
+random disjoint splits ($p=0.001$ for each); the smaller DAVIS split was unresolved
+(Table~\ref{tab:s12support}). Changing the row-mean centring panel from the local 20 targets
+to all 58 DOCKSTRING targets changed experimental concordance by $-0.008$ to $-0.019$, with
+paired QAP probabilities 0.678--0.925. The two resulting docking maps themselves correlated
+0.973.
+
+The same post-hoc split was more severe on the full Docking-44 support and a fixed,
+score-blind 15,000-ligand DOCKSTRING support. The low/high-MW residual maps correlated
+\DffMWDomainRho{} and \DsMWDomainRho{}, with paired chemical-group bootstrap intervals
+\DffMWDomainLow{}--\DffMWDomainHigh{} and
+\DsMWDomainLow{}--\DsMWDomainHigh{} (Table~\ref{tab:dockingChemicalDomain}). By
+contrast, chemically disjoint supports constructed to have closely matched MW distributions
+correlated \DffMWDomainControl{} and \DsMWDomainControl{}. The observed splits changed
+the signs of \DffMWDomainSignFlip{} and \DsMWDomainSignFlip{} of target-pair edges.
+The cross-band effect did not depend on row centring: raw-map concordances were
+\DffMWRawDomainRho{} (cluster-bootstrap interval
+\DffMWRawDomainLow{}--\DffMWRawDomainHigh{}) and \DsMWRawDomainRho{}
+(\DsMWRawDomainLow{}--\DsMWRawDomainHigh{}), versus raw MW-matched-control means of
+\DffMWRawDomainControl{} and \DsMWRawDomainControl{}.
+
+We also calibrated the consequence of imposing either MW restriction without crossing the
+domain boundary. MW-stratified whole-chemical-group-disjoint halves within the low and high
+bands gave residual-map means of \DffMWWithinLowResidualGroupDisjointMean{}
+(repeated-split range \DffMWWithinLowResidualGroupDisjointLow{}--
+\DffMWWithinLowResidualGroupDisjointHigh{}) and
+\DffMWWithinHighResidualGroupDisjointMean{}
+(\DffMWWithinHighResidualGroupDisjointLow{}--
+\DffMWWithinHighResidualGroupDisjointHigh{}) for Docking-44. DOCKSTRING-58 gave
+\DsMWWithinLowResidualGroupDisjointMean{}
+(\DsMWWithinLowResidualGroupDisjointLow{}--
+\DsMWWithinLowResidualGroupDisjointHigh{}) and
+\DsMWWithinHighResidualGroupDisjointMean{}
+(\DsMWWithinHighResidualGroupDisjointLow{}--
+\DsMWWithinHighResidualGroupDisjointHigh{}). Corresponding raw means were
+\DffMWWithinLowRawGroupDisjointMean{}/\DffMWWithinHighRawGroupDisjointMean{} and
+\DsMWWithinLowRawGroupDisjointMean{}/\DsMWWithinHighRawGroupDisjointMean{}.
+These central 95\% repeated-split ranges quantify composition sensitivity rather than
+population uncertainty. Both restricted-domain maps were internally reproducible; the
+low/high contrast is not a generic consequence of estimating correlations after truncating
+an MW distribution.
+
+Size-matched random disjoint supports correlated \DffMWDomainRandomControl{} and
+\DsMWDomainRandomControl{}, excluding quartile sample size as the main explanation.
+Strict group-held-out descriptor removal raised the low/high-MW agreement to
+\DffMWDomainAdjusted{} and \DsMWDomainAdjusted{} but did not restore matched-domain
+agreement. The DOCKSTRING result was stable across six independently seeded 15,000-ligand
+supports (\DsMWDomainSeedLow{}--\DsMWDomainSeedHigh{}). Molecular weight was selected after preliminary inspection, so
+these analyses define a transport boundary rather than a confirmatory descriptor-specific
+effect.
+
+As a post-hoc family sensitivity, we repeated the inclusive 25th/75th-percentile-threshold
+comparison for every descriptor in the already inspected seven-descriptor set
+(Table~\ref{tab:descriptorFamilyStratification}); all observations tied at either boundary
+were retained. The three lowest residual-map agreements
+in both matrices were the correlated molecular-size descriptors: Labute ASA, molecular
+weight and heavy-atom count. The remaining TPSA, cLogP, rotatable-bond and ring-count splits
+also produced agreements below the same dataset-level MW-matched chemical-group-disjoint
+reference, not descriptor-matched nulls; thus the ordering does not isolate molecular weight
+or any other unique mechanism.
+For the molecular-weight split, residual PR changed from \DffMWLowDomainResidualPR{} to
+\DffMWHighDomainResidualPR{} between the low- and high-MW Docking-44 domains, but from
+\DsMWLowDomainResidualPR{} to \DsMWHighDomainResidualPR{} in DOCKSTRING-58. This opposite direction
+precludes a common monotone interpretation of effective dimension as a function of
+molecular size or as a docking-quality signal.
+
+Sampling recovery asks a narrower question: how many ligands are needed to reconstruct the
+target map of the same source library? At 200 ligands, mean recovery Spearman was 0.942 for
+Docking-44 and 0.918 for DOCKSTRING-58; at 500 it was 0.976 and 0.965
+(Table~\ref{tab:s13recovery}). Chemical-group-held-out recovery at 200 ligands remained
+0.927 for Docking-44 and 0.916 for DOCKSTRING-58. These results support efficient estimation of an existing source-library
+map, not transfer to a new chemical distribution or biological validation.
+The 200-ligand 2.5--97.5\% replicate ranges were 0.064 wide for Docking-44 and 0.053 for
+DOCKSTRING-58. Because that sample-to-sample spread is comparable to or larger than the
+0.001--0.045 docking-side increments against the fixed centred endpoints, this sampling
+result does not support fine discrimination of small map or method differences.
+
+Murcko clustering used canonical non-empty cyclic Bemis--Murcko scaffolds; acyclic compounds
+were grouped by connectivity identity. Butina clustering used RDKit Morgan radius-2,
+2,048-bit fingerprints with Tanimoto similarity at least 0.65 (distance at most 0.35).
+Singletons remained one-member clusters. Cluster bootstraps sampled clusters with
+replacement and included every ligand in each selected cluster; clusters were not reduced
+to representatives. The broad primary benchmark contained 2,815 Murcko and 2,312 Butina
+clusters; the legacy 137-ligand Docking-44 sensitivity contained 95 and 121, respectively.
+
+\section*{S7. Ligand-wise observed-pair ranking}
+
+Subtracting the same ligand row mean from every target leaves all within-ligand target
+differences unchanged:
+\[
+(x_{ij}-\bar{x}_{i\cdot})-(x_{ik}-\bar{x}_{i\cdot})=x_{ij}-x_{ik}.
+\]
+Target centring can change rankings through target-specific offsets, and subsequent
+target-specific residual scaling can change them further. In the broad primary benchmark,
+target-centred and two-way-centred unscaled scores both gave mean observed-pair concordance
+0.533 (Table~\ref{tab:broadRanking}); the equality is algebraic, not an empirical null
+result.
+
+The broad DOCKSTRING--ChEMBL benchmark retained \BroadRankingRetainedLigands{} ligands over
+\BroadRankingTargets{} targets and \BroadRankingCells{} observed cells;
+\BroadRankingEvaluatedLigands{} ligands contributed \BroadRankingPairs{} non-tied
+comparisons. Absolute Vina,
+column-standardised Vina and scaled two-way residual scores gave mean per-ligand
+concordances 0.537, 0.530 and 0.529. Residual minus absolute was $-0.008$, with a conservative
+chemical-cluster 95\% interval of $-0.022$ to 0.006 and a delete-one-target jackknife
+interval of $-0.056$ to 0.030 (Tables~\ref{tab:broadRanking} and
+\ref{tab:endpointRanking}). The scaffold-cross-fitted cohort outcome prior scored 0.604,
+above every docking representation, but is fitted to the benchmark outcomes and is not a
+deployable predictor. Absolute Vina was the highest of the docking-derived representations;
+the data did not resolve a scaled-residual advantage.
+
+Restricting the endpoint exposed heterogeneity rather than a common transformation effect
+(Table~\ref{tab:endpointRanking}). The human binding Ki/Kd arm retained 1,056 ligands and
+gave absolute and residual concordances 0.559 and 0.520; residual minus absolute was
+$-0.040$ (chemical-cluster 95\% interval $-0.091$ to 0.003; target-jackknife interval
+$-0.133$ to 0.029). Each cell in this arm remains the median over all eligible Ki and Kd
+records. Of its \BroadHumanKiKdPairs{} informative comparisons,
+\BroadHumanKiKdSameEndpointPairs{} (\BroadHumanKiKdSameEndpointPercent{}) linked two
+unambiguous cells of the same endpoint type, \BroadHumanKiKdMixedEndpointPairs{}
+(\BroadHumanKiKdMixedEndpointPercent{}) linked an unambiguous Ki cell to an unambiguous Kd
+cell, and \BroadHumanKiKdPooledCellPairs{} (\BroadHumanKiKdPooledCellPercent{}) involved at
+least one cell pooled across both record types. Thus
+\BroadHumanKiKdSameAmongUnambiguousPercent{} of the
+\BroadHumanKiKdEndpointUnambiguousPairs{} endpoint-unambiguous comparisons were
+same-endpoint; dual-type cells were not forced into either category. The single-Ki arm gave
+$\BroadSingleKiDelta{}$ ($\BroadSingleKiLow{}$ to $\BroadSingleKiHigh{}$).
+Absolute Vina scored \BroadSingleKdAbsolute{} in the smaller Kd arm, whose residual-minus-absolute contrast was
+$\BroadSingleKdDelta{}$ ($\BroadSingleKdLow{}$ to $\BroadSingleKdHigh{}$). IC50 and EC50
+contrasts were $\BroadSingleICFiftyDelta{}$ and $\BroadSingleECFiftyDelta{}$, with both
+intervals spanning zero. The Ki interval excludes zero only for
+chemical resampling conditional on its fixed 31-target panel; no endpoint-specific target
+jackknife was run for the four single-endpoint arms, which are exploratory and unadjusted
+for multiplicity.
+
+Dense exact-structure checks led to the same aggregate boundary
+(Table~\ref{tab:denseRanking}). DAVIS retained \DenseDavisEvaluatedLigands{} of
+\DenseDavisMatchedLigands{} matched ligands and \DenseDavisPairs{} informative comparisons;
+PKIS2 retained all \DensePkisTwoMatchedLigands{} ligands and \DensePkisTwoPairs{}
+comparisons after its 10-percentage-point margin. Residual-minus-absolute differences were
+\DenseDavisDelta{} and \DensePkisTwoDelta{}; both chemical-cluster and delete-one-target
+intervals included zero. Absolute-minus-target-prior increments were also unresolved.
+Path decomposition showed why the net contrast is small: residual-SD scaling reduced
+concordance, while adding the ligand-row term under unequal target scales increased it. The
+individual path intervals are correlated and unadjusted for multiplicity, so they localise
+the cancellation rather than establish independent effects.
+
+Outcome-conditioned dense strata were not uniform (Table~\ref{tab:denseRankingStrata}).
+DAVIS both-uncensored and PKIS2 both-active comparisons favoured the residual rule by
+\DenseDavisBinderDelta{} and \DensePkisTwoBothActiveDelta{}, whereas DAVIS
+floor-versus-uncensored comparisons gave \DenseDavisFloorDetectionDelta{}. These strata use
+the outcomes to define membership and are exploratory. In the DAVIS both-uncensored stratum,
+absolute Vina was below chance (\DenseDavisBinderAbsolute{}) and the residual rule was near
+chance (\DenseDavisBinderResidual{}), so the positive difference is not evidence of useful
+discrimination.
+
+The equivalence-margin curves are retained only as post-hoc Supplementary sensitivity
+analyses (Table~\ref{tab:postHocEquivalenceMargins}). No margin was preregistered. A margin
+of 0.03 contains the conservative 90\% chemical-cluster intervals for the three aggregate
+benchmarks, but the outcome-conditioned DAVIS both-uncensored and PKIS2 both-active strata
+do not pass any margin on the 0.010--0.060 grid. These curves neither establish global
+equivalence nor alter the primary ``no resolved advantage'' interpretation.
+
+Finally, the 137-ligand by 38-target Docking-44--ChEMBL analysis is a legacy sparse
+sensitivity (Table~\ref{tab:legacySparseRanking}). It gave 0.566, 0.546 and 0.564 for
+absolute, column-standardised and scaled residual Vina on 2,522 comparisons. Its median
+co-observation support was three ligands per target pair, and 44 ligands had exactly two
+measured targets. Changing only the ligand-row mean from all 44 Docking-44 targets to the
+local 38-target subset altered 31 predictions in 19 ligands
+(Table~\ref{tab:rankingPanelSensitivity}); the associated coverage and assay sensitivities
+are in Table~\ref{tab:legacySparseRankingSensitivity}. This small support is not used as the
+primary operational estimate.
+
+\section*{S8. Reusable audit and reproducibility}
+
+The reusable output of this study is the decision-oriented audit stated in the main text:
+separate redundancy, matched nulls, panel composition, experimental target-pair geometry and
+ligand-wise ranking, and report each with its own boundary. The command-line tool computes
+the spectral portion for a generic ligand-by-target matrix. Dataset-specific scripts reproduce the external geometry,
+structural controls, support recovery and ranking analyses from their frozen or
+checksum-verified inputs.
+
+All numerical tables below are generated by
+\path{analysis/make_supplement_tables.py}. Headline values in both PDFs are generated from
+\path{results/manuscript_evidence.json} through
+\path{analysis/make_reported_results.py}; the source hashes and analysis contracts are stored
+in the same ledger. Randomized analyses use fixed recorded seeds. Frozen redistributable
+inputs are covered by \path{data_manifest.csv}; non-redistributable source files have
+checksum-verified retrieval instructions and contribute only derived, non-row-level
+artifacts to the release.
 
 \clearpage
-\section*{Additional methodological notes}
-
-\begingroup
-\hfuzz=13pt
-\subsubsection*{Interpreting PR}
-For a $P$-column standardized matrix with target correlation matrix $C$,
-\[
-\begin{aligned}
-r_{\mathrm{PR}}&=\frac{P^2}{\operatorname{tr}(C^2)}\\
-&=\frac{P}{1+(P-1)\overline{r_{ij}^{\,2}}}.
-\end{aligned}
-\]
-The mean is over unique off-diagonal target correlations. The PR effective dimension therefore
-is a one-to-one re-expression of mean-squared inter-target correlation and adds no
-independent statistical information to it. Its scale is interpretable as effective
-components; mean absolute correlation, signed distributions, heatmaps and the full spectrum
-retain information that PR discards.
-\endgroup
-
-\paragraph{Complete-case chemical support.}
-Only 1.466\% of Docking-44 cells were missing, but they occurred in 3,354 ligands. Target
-4mqs accounted for 3,352 missing cells, and the median incomplete row lacked one target.
-Incomplete ligands had median molecular weight 399 Da and 28 heavy atoms, compared with 249
-Da and 17 heavy atoms among complete cases. Standardized mean differences were 1.86 and
-2.03. Thus the complete-case PR of 1.320 describes a chemically shifted support; full
-descriptor results are in \path{results/complete_case_chemical_support.csv}.
-
-\paragraph{Limits of the experimental-noise calibration.}
-The different-document repeatability scale includes technical variation, laboratory
-differences and assay-condition variation. It is deliberately conservative for a technical
-noise control, but it cannot represent target-specific systematic bias or all biological
-heterogeneity. The simulation therefore asks whether noise at the observed repeatability
-scale is sufficient to reproduce the experimental PR effective dimension; it is not a
-measurement-error correction of ChEMBL.
-
-\paragraph{DTI model-panel interpretation.}
-All 20 scorer arms are the primary exploratory panel in Table~\ref{tab:s6all20} and
-Fig.~\ref{fig:s5}. The 12 arms in Table~\ref{tab:s7dti} share data, architectures and
-representations and were retained only as an explicitly outcome-restricted sensitivity.
-Table~\ref{tab:s8selection} compares both panels. The positive column-standardized-PR
-association in the all-20 panel and its absence in the restricted 12-arm panel show
-that the conclusion is selection- and estimator-dependent. In particular,
-\path{transformer_cnn_kiba2davis} had column-standardized PR dimension 8.21 at chance-level
-retrieval, while \path{morgan_cnn_kiba2davis} had residual PR dimension 31.75 at chance.
-High dimension is therefore not sufficient for useful selectivity, just as low dimension is
-not sufficient to diagnose failure. Reported correlations and nominal probabilities describe
-these panels only; they are not estimates of a population-level causal effect of
-dimensionality on selectivity.
-
-For precision at five, we applied 20 iterations of Tukey-style median polish separately to
-predicted and experimental floor-excluded DAVIS matrices. Ligands with fewer than 12
-co-observed targets were omitted. Experimental residuals at or above the within-ligand top
-decile, including ties, were labelled relevant; precision among the five largest predicted
-residuals was averaged over 68 eligible ligands. Eligible ligands had 13--402 measured
-targets (median 106), and 61 of 68 had an attainable precision ceiling of one.
-
-\paragraph{Common-protocol parallel analysis.}
-For each large docking matrix, the column-standardized and residual spectra were computed on
-the same 12,000-row subsample. Five hundred null spectra independently permuted each target
-column and then applied the corresponding transformation. The descriptive counts above the
-rank-wise 95th-percentile null were 3 versus 7 for Docking-44 and 4 versus 10 for
-DOCKSTRING-58. A studentized maximum-deviation envelope controlling the family-wise error
-rate over eigenvalue ranks retained the same counts. Each result was unchanged in five
-independent 100-permutation series. Because centering changes the estimand and creates one
-exact linear constraint, each surface is compared with its own transformed null.
-
-\paragraph{Fitted additive null.}
-The null retained the fitted grand, ligand and target effects and the observed target-specific
-residual variances, but independently sampled Gaussian residuals. On common 12,000-row
-supports, median residual PR dimensions were 42.40 and 56.48, compared with observed 9.29
-and 18.16. The observed value was below all 500 realizations for each matrix (finite-
-simulation one-sided $p=0.002$). This null shows that the empirical residual concentration is
-not a mechanical consequence of two-way centering.
-
-\paragraph{Empirical residual-permutation null.}
-Independently permuting every observed residual target column sampled exactly from each
-target's non-Gaussian empirical residual values, after which transformation-matched two-way
-centering and standardization were repeated. The latter step can slightly modify the
-marginals. Median residual PR dimensions were 42.40
-for Docking-44 and 56.48 for DOCKSTRING-58; both observed values were below all 500
-realizations ($p=0.002$). Across 200 supports containing one ligand from each of 8,150
-Docking-44 Butina clusters, observed residual PR had median 9.43 and the matched empirical
-null median 42.33. The empirical null does not retain ligand-specific residual scale, but the
-cluster-representative result shows that ordinary chemical redundancy does not explain the
-separation.
-
-\paragraph{Row-norm-preserving residual null.}
-Independent Gaussian directions were projected into the target-zero-sum subspace and then
-rescaled so that each simulated row had exactly the observed residual Euclidean norm. Median
-PR dimensions were 42.63 and 56.62; the observed 9.27 and 18.19 on the matched supports fell
-below all 500 realizations ($p=0.002$). The null retains ligand-specific residual scale but
-not target-specific marginals, complementing rather than replacing the empirical column-
-permutation null.
-
-\paragraph{Residual modes and target families.}
-Mean absolute target correlation fell from 0.694 to 0.245 in Docking-44 and from 0.624 to
-0.157 in DOCKSTRING on the fixed characterization supports. Within-family values exceeded
-between-family values by 0.030 and 0.017, but neither broad-family label permutation was
-resolved at 0.05 ($p=0.073$ and 0.067). Residual PC1 retained strong correlations with ligand
-size (absolute Spearman $|\rho|=0.72$ with molecular weight in Docking-44 and 0.77 with
-heavy-atom count in DOCKSTRING; component signs are arbitrary). The residual covariance
-therefore has interpretable target-specific physicochemical structure without establishing
-a protein-family or specificity mechanism.
-
-\paragraph{DOCKSTRING clipping and chemical support.}
-The complete DOCKSTRING block contained 5,393 positive scores (0.0358\%). Retaining rather
-than clipping them changed the column-standardized PR dimension from 2.266 to 2.275 and the
-residual value from 18.206 to 18.362. Across five independent 15,000-molecule supports, raw
-point estimates ranged from 2.252 to 2.294 and residual estimates from 18.161 to 18.322
-(Fig.~\ref{fig:s6}).
-
-\paragraph{Matched target-preference sensitivities.}
-The expanded primary analysis evaluated 2,522 non-tied observed target pairs from 137
-ligands and 38 targets without imputing unobserved activities. At experimental margins of
-0.10, 0.50 and 1.00 pChEMBL, 2,348, 1,779 and 1,178 pairs remained; residual Vina accuracies
-were 0.570, 0.569 and 0.586. Fifty-four absolute-Vina score ties received half credit.
-Across 38 leave-one-target-out deletions, residual accuracy ranged from 0.535 to 0.584 and
-the scaffold-held-out cohort prior from 0.583 to 0.627. Removing cells whose repeated values
-spanned more than one pChEMBL unit retained 118 ligands and 1,912 pairs, with residual
-accuracy 0.560. Human binding and human binding Ki/Kd restrictions gave 0.581 and 0.579.
-Before target-specific scaling, target-centered and two-way-centered scores differed by a
-constant within ligand and consequently produced exactly identical target rankings and
-accuracy 0.556. The fully residual-scaled score reached 0.564, so its operational difference
-is attributable to target-specific scale and its interaction with the ligand offset.
-
-Both Murcko- and Butina-cluster intervals included zero for residual minus absolute and
-residual minus column-standardized scores. Conservative unions of the cluster-bootstrap 90\%
-intervals were $-0.056$--0.051 and $-0.015$--0.049, respectively. Neither comparison met a
-post hoc $\pm0.02$ equivalence margin; residual minus absolute also failed $\pm0.05$.
-Holding the broad docking support fixed but comparing only within identical endpoint type
-retained 132 evaluable ligands and 4,330 endpoint-specific pair instances; absolute,
-column-standardized and residual accuracies were 0.553, 0.538 and 0.555. On human binding
-Ki/Kd measurements, 107 ligands supplied 2,224 pairs and the same accuracies were 0.565,
-0.554 and 0.579. The residual-minus-absolute cluster intervals were $-0.060$--0.064 and
-$-0.051$--0.085. These sensitivities remain observational and precision limited:
-target-pair co-observation had median support three, equivalence is not established, and no
-result demonstrates retrieval on unmeasured targets.
-
-Ordinary identity-shuffle probabilities for absolute and residual Vina were 0.014 and 0.024,
-but median probabilities across 25 one-ligand-per-Murcko-cluster supports were 0.134 and
-0.284. Leave-one-target-out residual-minus-absolute differences ranged from $-0.030$ to
-0.010 in the broad benchmark and from $-0.027$ to 0.031 in human binding Ki/Kd. Finally,
-collapsing repeated endpoint strata to 2,460 unique ligand--target-pair instances gave
-absolute, column-standardized and residual accuracies 0.567, 0.541 and 0.562. These controls
-reinforce the conclusion that neither score association nor representation differences are
-precisely determined on the available support.
+\input{results/supplement_tables.tex}
 
 \end{document}

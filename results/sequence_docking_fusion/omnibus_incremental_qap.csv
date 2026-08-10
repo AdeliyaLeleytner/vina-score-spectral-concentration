@@ -1,0 +1,4 @@
+metric,locked_panels,observed_mean_fusion_minus_sequence,observed_mean_fusion_improves_sequence,target_label_qap_p_aligned_Vina_at_least_observed_mean_delta,target_label_qap_p_positive_mean_increment,null_interval_95_low,null_interval_95_high,permutations,seed,holm_p_across_3_omnibus_metrics
+continuous_spearman,"DAVIS,PKIS2,KiRHub",0.0754080661399214,True,0.00891982160356793,0.00891982160356793,-0.15935374273403,0.0298342284117127,50000,20260814,0.0178396432071359
+roc_auc,"DAVIS,PKIS2,KiRHub",0.0660203139427516,True,0.00431991360172797,0.00431991360172797,-0.132862675695086,0.0321637426900585,50000,20260814,0.0129597408051839
+average_precision,"DAVIS,PKIS2,KiRHub",-0.0276916429586643,False,0.0118197636047279,1,-0.249270849649529,-0.0529761852843203,50000,20260814,1

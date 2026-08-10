@@ -1,0 +1,323 @@
+{
+  "analysis": "experimental_chemical_context_geometry",
+  "chemical_group_bootstraps": 1000,
+  "experimental_cross_panel_direction": [
+    {
+      "direction_spearman": 0.06025622520524698,
+      "first_panel": "PKIS2",
+      "holm_p_across_three_panel_pairs": 0.36496350364963503,
+      "qap_null_interval_95": [
+        -0.13478928560493733,
+        0.1259131686108814
+      ],
+      "qap_permutations": 10000,
+      "second_panel": "PKIS1",
+      "sign_agreement_fraction": 0.5105263157894737,
+      "target_label_qap_p_positive": 0.18248175182481752
+    },
+    {
+      "direction_spearman": 0.1694699226250618,
+      "first_panel": "PKIS2",
+      "holm_p_across_three_panel_pairs": 0.035096490350964904,
+      "qap_null_interval_95": [
+        -0.138009640156237,
+        0.1420996645190638
+      ],
+      "qap_permutations": 10000,
+      "second_panel": "DAVIS",
+      "sign_agreement_fraction": 0.5736842105263158,
+      "target_label_qap_p_positive": 0.011698830116988301
+    },
+    {
+      "direction_spearman": -0.0010191272246934965,
+      "first_panel": "PKIS1",
+      "holm_p_across_three_panel_pairs": 0.4901509849015098,
+      "qap_null_interval_95": [
+        -0.14413315137757135,
+        0.1658639180849155
+      ],
+      "qap_permutations": 10000,
+      "second_panel": "DAVIS",
+      "sign_agreement_fraction": 0.5052631578947369,
+      "target_label_qap_p_positive": 0.4901509849015098
+    }
+  ],
+  "extreme_fraction": 0.25,
+  "fixed_target_support": [
+    "ABL1",
+    "AKT1",
+    "AKT2",
+    "CDK2",
+    "CSF1R",
+    "EGFR",
+    "FGFR1",
+    "IGF1R",
+    "JAK2",
+    "KDR",
+    "KIT",
+    "LCK",
+    "MAP2K1",
+    "MAPK1",
+    "MAPK14",
+    "MAPKAPK2",
+    "MET",
+    "PLK1",
+    "ROCK1",
+    "SRC"
+  ],
+  "limitations": [
+    "Molecular weight and this entire analysis are post hoc.",
+    "The panels use different assay modalities and ligand libraries; cross-panel equality is not assumed.",
+    "DAVIS has only 72 ligands and 18 ligands per extreme quartile.",
+    "Intervals are chemical-support sensitivities conditional on each fixed 20-target panel.",
+    "Cluster bootstrap independently resamples chemical groups within each MW extreme and is not a target-population interval.",
+    "Matched DOCKSTRING comparisons reuse previously inspected resources and test network-change direction, not causal biology or ligand-level retrieval.",
+    "A low experimental low--high geometry correlation is evidence of context dependence only relative to the finite-sample null, not evidence that MW is causal."
+  ],
+  "matched_direction_qap_permutations": 10000,
+  "matched_dockstring_direction": [
+    {
+      "direction_spearman": 0.06450944114212233,
+      "high_quartile_ligands": 39,
+      "low_quartile_ligands": 39,
+      "matched_ligands": 154,
+      "panel": "PKIS2",
+      "qap_null_interval_95": [
+        -0.14116189251488231,
+        0.14282932462045156
+      ],
+      "qap_permutations": 10000,
+      "score_preprocessing": "positive_scores_clipped_to_zero_primary",
+      "sign_agreement_fraction": 0.5368421052631579,
+      "target_label_qap_p_positive": 0.17888211178882113,
+      "targets": 20
+    },
+    {
+      "direction_spearman": 0.06450944114212233,
+      "high_quartile_ligands": 39,
+      "low_quartile_ligands": 39,
+      "matched_ligands": 154,
+      "panel": "PKIS2",
+      "qap_null_interval_95": [
+        -0.14210132661496674,
+        0.1425287476982158
+      ],
+      "qap_permutations": 10000,
+      "score_preprocessing": "released_scores_unclipped_sensitivity",
+      "sign_agreement_fraction": 0.5368421052631579,
+      "target_label_qap_p_positive": 0.18548145185481452,
+      "targets": 20
+    },
+    {
+      "direction_spearman": -0.08435836537241884,
+      "high_quartile_ligands": 15,
+      "low_quartile_ligands": 15,
+      "matched_ligands": 59,
+      "panel": "DAVIS",
+      "qap_null_interval_95": [
+        -0.1395156302623925,
+        0.13960551465924848
+      ],
+      "qap_permutations": 10000,
+      "score_preprocessing": "positive_scores_clipped_to_zero_primary",
+      "sign_agreement_fraction": 0.47368421052631576,
+      "target_label_qap_p_positive": 0.8819118088191181,
+      "targets": 20
+    },
+    {
+      "direction_spearman": -0.08435836537241884,
+      "high_quartile_ligands": 15,
+      "low_quartile_ligands": 15,
+      "matched_ligands": 59,
+      "panel": "DAVIS",
+      "qap_null_interval_95": [
+        -0.13719171401453023,
+        0.1353446005939805
+      ],
+      "qap_permutations": 10000,
+      "score_preprocessing": "released_scores_unclipped_sensitivity",
+      "sign_agreement_fraction": 0.47368421052631576,
+      "target_label_qap_p_positive": 0.8823117688231177,
+      "targets": 20
+    }
+  ],
+  "panels": {
+    "DAVIS": {
+      "chemical_group_bootstrap": {
+        "butina_0.65": {
+          "chemical_groups_total": 69,
+          "high_groups": 18,
+          "low_groups": 18,
+          "mean": 0.3636965909646982,
+          "median": 0.37314394071712875,
+          "q025": 0.11998092131290229,
+          "q975": 0.5681911398231043,
+          "sd": 0.11578354596444487
+        },
+        "murcko": {
+          "chemical_groups_total": 72,
+          "high_groups": 18,
+          "low_groups": 18,
+          "mean": 0.3667634523801144,
+          "median": 0.37653749607871867,
+          "q025": 0.12482333901448864,
+          "q975": 0.5589709313119677,
+          "sd": 0.11221557252487831
+        }
+      },
+      "high_mw_cut": 514.1410000000003,
+      "high_quartile_ligands": 18,
+      "ligands": 72,
+      "low_mw_cut": 381.8230000000001,
+      "low_quartile_ligands": 18,
+      "mw_post_hoc": true,
+      "observed": {
+        "first_mean_absolute_correlation": 0.3093715333800037,
+        "first_pr": 5.5665691296048525,
+        "geometry_dissimilarity": 0.46936120775942447,
+        "geometry_spearman": 0.5306387922405755,
+        "second_mean_absolute_correlation": 0.28290525324785815,
+        "second_pr": 5.857988179621135,
+        "sign_flip_fraction": 0.2789473684210526,
+        "top_positive_10pct_pair_jaccard": 0.3103448275862069
+      },
+      "quintile_separation_dissimilarity_spearman": 0.6363636363636362,
+      "random_disjoint_null": {
+        "lower_tail_monte_carlo_p": 0.17282717282717283,
+        "mean": 0.619026934930117,
+        "median": 0.626427262875819,
+        "q025": 0.42474196910168804,
+        "q975": 0.7791135990454172,
+        "repetitions": 1000,
+        "sd": 0.09212681891385413
+      },
+      "target_jackknife_geometry_spearman_range": [
+        0.4854321165430677,
+        0.6053725318510617
+      ],
+      "targets": 20
+    },
+    "PKIS1": {
+      "chemical_group_bootstrap": {
+        "butina_0.65": {
+          "chemical_groups_total": 181,
+          "high_groups": 52,
+          "low_groups": 58,
+          "mean": 0.49721278239228095,
+          "median": 0.49947731457789324,
+          "q025": 0.29951038153848847,
+          "q975": 0.6650336137026686,
+          "sd": 0.08987257202687031
+        },
+        "murcko": {
+          "chemical_groups_total": 189,
+          "high_groups": 62,
+          "low_groups": 53,
+          "mean": 0.5028558219282937,
+          "median": 0.5052552848088809,
+          "q025": 0.3145317482187143,
+          "q975": 0.6806958933109389,
+          "sd": 0.09412162967727163
+        }
+      },
+      "high_mw_cut": 487.93275000000017,
+      "high_quartile_ligands": 90,
+      "ligands": 360,
+      "low_mw_cut": 346.9665000000001,
+      "low_quartile_ligands": 90,
+      "mw_post_hoc": true,
+      "observed": {
+        "first_mean_absolute_correlation": 0.38793294761425473,
+        "first_pr": 4.2042884970807926,
+        "geometry_dissimilarity": 0.45254847415222166,
+        "geometry_spearman": 0.5474515258477783,
+        "second_mean_absolute_correlation": 0.2871082055922271,
+        "second_pr": 6.088763970692812,
+        "sign_flip_fraction": 0.33157894736842103,
+        "top_positive_10pct_pair_jaccard": 0.1875
+      },
+      "quintile_separation_dissimilarity_spearman": 0.9030303030303028,
+      "random_disjoint_null": {
+        "lower_tail_monte_carlo_p": 0.000999000999000999,
+        "mean": 0.8327331697481051,
+        "median": 0.8381853411889235,
+        "q025": 0.715424512415419,
+        "q975": 0.9141761034348526,
+        "repetitions": 1000,
+        "sd": 0.04988474232021128
+      },
+      "target_jackknife_geometry_spearman_range": [
+        0.4789593683250535,
+        0.6727122183022537
+      ],
+      "targets": 20
+    },
+    "PKIS2": {
+      "chemical_group_bootstrap": {
+        "butina_0.65": {
+          "chemical_groups_total": 338,
+          "high_groups": 95,
+          "low_groups": 100,
+          "mean": 0.2528213798020357,
+          "median": 0.2549725098085528,
+          "q025": 0.1189214309770937,
+          "q975": 0.3803786079509419,
+          "sd": 0.07064709070739189
+        },
+        "murcko": {
+          "chemical_groups_total": 369,
+          "high_groups": 115,
+          "low_groups": 91,
+          "mean": 0.2585999991252127,
+          "median": 0.2611441343323405,
+          "q025": 0.1185087937995075,
+          "q975": 0.3872061042659004,
+          "sd": 0.07002292482179195
+        }
+      },
+      "high_mw_cut": 478.664,
+      "high_quartile_ligands": 162,
+      "ligands": 645,
+      "low_mw_cut": 340.4040000000001,
+      "low_quartile_ligands": 162,
+      "mw_post_hoc": true,
+      "observed": {
+        "first_mean_absolute_correlation": 0.13055003918842445,
+        "first_pr": 13.63979239337456,
+        "geometry_dissimilarity": 0.6665371981437013,
+        "geometry_spearman": 0.33346280185629873,
+        "second_mean_absolute_correlation": 0.20286052443186137,
+        "second_pr": 9.142033805096519,
+        "sign_flip_fraction": 0.34210526315789475,
+        "top_positive_10pct_pair_jaccard": 0.22580645161290322
+      },
+      "quintile_separation_dissimilarity_spearman": 0.709090909090909,
+      "random_disjoint_null": {
+        "lower_tail_monte_carlo_p": 0.000999000999000999,
+        "mean": 0.8447718003560385,
+        "median": 0.8482051551216612,
+        "q025": 0.7680329094988783,
+        "q975": 0.9004729537631163,
+        "repetitions": 1000,
+        "sd": 0.033791222576029956
+      },
+      "target_jackknife_geometry_spearman_range": [
+        0.2706458348333214,
+        0.38620011039911684
+      ],
+      "targets": 20
+    }
+  },
+  "primary_stratifier": "RDKit molecular weight",
+  "random_disjoint_repetitions": 1000,
+  "seed": 20260815,
+  "source_sha256": {
+    "DAVIS": "e5614549ec970bf24bd58d04d8a74feb8f8a53806410eaa8d84d24e96a4ff827",
+    "DAVIS_mapping": "8182a2d2f651673f55dfad39dd605304febcf810c25a7658b8b02f9dd85b69fa",
+    "DOCKSTRING": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64",
+    "PKIS1": "1ffbe7fd0b4fc1ef72f2434a2b247d15c0f2b4d3c34668f112f4b4c9e4ead7dc",
+    "PKIS2": "48ead22a1f860cd0d5096fa87d5acd329f722fe8d65e693bb0be682a333e2a2c",
+    "PKIS2_mapping": "fe27f150c60c02243d66fd5b237e5c67851e155e6b92ced0736df8ce745d9cbb"
+  },
+  "status": "exploratory_post_hoc"
+}

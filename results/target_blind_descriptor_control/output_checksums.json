@@ -1,0 +1,39 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "coefficient_rank_ladder.csv": {
+      "bytes": 1211,
+      "sha256": "02832aa76ffb20a8ce8cb8d7894962d43e403e534e8e6bba073fe0e08f2ba133"
+    },
+    "coefficient_spread.csv": {
+      "bytes": 1589,
+      "sha256": "80375d756bc3a079703e0e5eb857824a84545641e602497d99dbaa32503dc70d"
+    },
+    "fold_target_coefficients.csv": {
+      "bytes": 18760,
+      "sha256": "5cebff399ccc42f8e8986c6fb3551cedcd03e989a78fcfe71f699c13037e4cf6"
+    },
+    "panel_agreement.csv": {
+      "bytes": 2065,
+      "sha256": "e188c3dd4853ebbe614c39df6d9d49a10ff8d6387ab59ce821b64f49416aa0c4"
+    },
+    "slope_permutation_null.csv": {
+      "bytes": 1370,
+      "sha256": "d0bca6605a12fca746afa5812fe04787604eff0b754913836aac5f80746e9417"
+    },
+    "summary.json": {
+      "bytes": 43369,
+      "sha256": "88e127ea74d4abac7a8acc0bffe409f18a118e1afc9d4d0510ffe1361a8e2352"
+    },
+    "target_pair_geometry.csv": {
+      "bytes": 26248,
+      "sha256": "cece4b9c8f57582381563e3a2527ef0912a0450bfc729745e77e7b57c2f9be07"
+    },
+    "target_predictive_r2.csv": {
+      "bytes": 1438,
+      "sha256": "adf017bc5dbf36e161df10f83cf542b9d7183b8384ec9501a1a74bee419e9e98"
+    }
+  },
+  "schema_version": "1.0.0",
+  "scope": "all regular files in this result directory except this manifest"
+}

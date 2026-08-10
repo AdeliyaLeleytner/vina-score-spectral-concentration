@@ -1,0 +1,4 @@
+swapped_gene,primary_group,alternative_group,compounds,cells,pairs,raw_spearman,residual_spearman,residual_minus_raw,raw_partial_rank,residual_partial_rank,controls
+ESR1,3199,31453,1925,10865,59,0.13646990064289893,0.3497954412624197,0.21332554061952075,0.06385235300814003,0.24727790648831266,"['full_sequence_identity', 'same_family', 'pair_support', 'pair_target_coverage_geomean', 'pair_target_coverage_similarity']"
+PGR,41630,3279,1925,10408,59,0.006545879602571596,0.2523670368205728,0.2458211572180012,-0.08200122044864974,0.08076953916663569,"['full_sequence_identity', 'same_family', 'pair_support', 'pair_target_coverage_geomean', 'pair_target_coverage_similarity']"
+PTGS2,3198,41633,1922,10715,58,0.043710972346119537,0.21449444769140855,0.170783475345289,-0.03788692629238307,0.011284973699801349,"['full_sequence_identity', 'same_family', 'pair_support', 'pair_target_coverage_geomean', 'pair_target_coverage_similarity']"

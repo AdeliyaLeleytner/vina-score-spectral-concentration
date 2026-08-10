@@ -1,0 +1,3 @@
+discovery,validation,shared_dockstring_rows,discovery_ligands_after_exclusion,validation_ligands_after_exclusion,rule_minus_absolute,rule_minus_residual,rule_minus_global_alpha_mixture,normalization_gain_spearman
+PKIS2,DAVIS,2,152,57,0.046408582089552286,0.036147388059701524,0.0387126865671642,0.6196454596110426
+DAVIS,PKIS2,2,57,152,0.025327323459969908,0.02203620233240322,0.021463833440652502,0.6196454596110426

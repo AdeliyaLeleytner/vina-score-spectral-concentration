@@ -1,0 +1,185 @@
+{
+  "additive_factor_toy": {
+    "centered_correlation_pr_after_factor": 1.0000000000000049,
+    "centered_numerical_rank_after_factor": 1,
+    "leading_singular_values_after_factor": [
+      81.2119922280397,
+      1.8307770253590468e-11,
+      6.266613835762602e-13,
+      8.656557164845707e-14,
+      5.1913938671313885e-14
+    ],
+    "maximum_absolute_centered_value_before_factor": 3.552713678800501e-14,
+    "rank_bound": "For E=a1^T+1b^T+Gamma and S=DE, H_N S H_P=H_N D Gamma H_P+(H_N D1)(b^T H_P). Row scaling therefore adds at most one centered algebraic mode to a k-mode Gamma."
+  },
+  "analysis": "Docking-44 Vina intermolecular numerator and torsion audit",
+  "equations": {
+    "centering_identity": "H_N D E H_P = H_N D Gamma H_P + (H_N D 1)(b^T H_P)",
+    "score_reconstruction": "S_ij approximately E_ij / q_i",
+    "vina_factor": "q_i approximately 1 + 0.05846 N_rot,i"
+  },
+  "factor_diagnostics": {
+    "circularity_caveat": "The inferred q uses the scalar score being reconstructed. The rotatable-bond q surface is the independent descriptor sensitivity.",
+    "definition": "q_i = median_j(E_ij / S_ij) on finite S_ij < 0 cells",
+    "fraction_nearest_integer_torsions_equal_frozen_rotatable_bonds": 0.5196427159908308,
+    "q_quantiles": {
+      "0.0": 0.9954457142857144,
+      "0.01": 0.9990839134163958,
+      "0.25": 1.173783991333654,
+      "0.5": 1.288790508474576,
+      "0.75": 1.4103673038251365,
+      "0.99": 2.154269716180372,
+      "1.0": 3.6959385811965815
+    },
+    "q_vs_rotatable_bonds_pearson": 0.9709878323883719,
+    "q_vs_rotatable_bonds_spearman": 0.9563481290558387,
+    "vina_rot_weight": 0.05846
+  },
+  "headline": {
+    "descriptive_fraction_of_inferred_q_pr_increase_due_to_amplification": 0.27074800470008176,
+    "inferred_q_score_raw_pr": 1.8379539753458534,
+    "inferred_q_score_residual_pr": 9.28305210140205,
+    "interpretation": "Most of the centred effective dimension is already present in the matched intermolecular numerator. Ligand-specific torsional normalisation amplifies the residual PR but is not its sole origin. The fraction is descriptive rather than an additive causal variance decomposition.",
+    "normalized_score_raw_pr": 1.8387965916347,
+    "normalized_score_residual_pr": 9.314271976451064,
+    "numerator_raw_pr": 1.70007585586861,
+    "numerator_residual_pr": 7.129428519498774,
+    "pr_increase_amplification_by_inferred_q": 2.0157454624260334,
+    "residual_pr_amplification_by_inferred_q": 2.153623581903277,
+    "rotatable_bond_q_score_raw_pr": 1.8481852936083396,
+    "rotatable_bond_q_score_residual_pr": 8.870434143645982
+  },
+  "outputs": {
+    "input_manifest": "input_manifest.csv",
+    "leave_one_target_out_reconstruction": "target_reconstruction_leave_one_out.csv",
+    "q_factors": "q_factors.csv",
+    "q_shuffle_null": "q_shuffle_null.csv",
+    "surface_metrics": "surface_metrics.csv",
+    "target_reconstruction": "target_reconstruction.csv"
+  },
+  "q_shuffle_sensitivity": {
+    "global": {
+      "raw_pr": {
+        "interval_95": [
+          1.5013412459886208,
+          1.5166011882548696
+        ],
+        "maximum": 1.518619608372857,
+        "mean": 1.5086551325261865,
+        "median": 1.5086345223837971,
+        "minimum": 1.4990002394898165,
+        "standard_deviation": 0.00373558337580198
+      },
+      "residual_pr": {
+        "interval_95": [
+          6.8478867155318515,
+          7.044271507398607
+        ],
+        "maximum": 7.087507731582349,
+        "mean": 6.946904945342128,
+        "median": 6.9451343620999655,
+        "minimum": 6.7806200990890275,
+        "standard_deviation": 0.055313962546864125
+      }
+    },
+    "interpretation": "These are descriptive ligand-factor permutation sensitivities, not calibrated biological nulls or inferential p-values. The exact-heavy-atom scheme preserves molecular-size composition while disrupting factor alignment within each size stratum. If only the global shuffle lowers residual PR, the apparent amplification should be attributed primarily to factor--molecular-size association rather than a finer within-size alignment with residual target patterns.",
+    "observed_inferred_q_residual_pr": 9.28305210140205,
+    "observed_minus_exact_heavy_atom_shuffle_median_residual_pr": -0.1833721434976905,
+    "observed_minus_shuffle_median_residual_pr": 2.3379177393020854,
+    "repeats": 200,
+    "seed": 0,
+    "within_exact_heavy_atom_count": {
+      "raw_pr": {
+        "interval_95": [
+          1.6422351464593263,
+          1.6556651933823616
+        ],
+        "maximum": 1.6582492560251485,
+        "mean": 1.6486757781350057,
+        "median": 1.6489885422870896,
+        "minimum": 1.6389559963869593,
+        "standard_deviation": 0.003691328202199603
+      },
+      "residual_pr": {
+        "interval_95": [
+          9.389943941519373,
+          9.56158287865236
+        ],
+        "maximum": 9.595595051941507,
+        "mean": 9.469800390191644,
+        "median": 9.466424244899741,
+        "minimum": 9.369723371318397,
+        "standard_deviation": 0.04204116521062693
+      }
+    }
+  },
+  "support": {
+    "complete_case_rows": 9297,
+    "exact_numerator_overlap_targets": 43,
+    "excluded_target": "V1A",
+    "excluded_target_reason": "No exact V1A_residue_matrix.csv exists; 9uwl is not substituted.",
+    "included_targets": [
+      "1m2z",
+      "1pbq",
+      "1xoq",
+      "2rh1",
+      "2vt4",
+      "2ydo",
+      "2z5x",
+      "3b66",
+      "3kk6",
+      "3ln1",
+      "3rze",
+      "4djh",
+      "4ey7",
+      "4iar",
+      "4mqs",
+      "4n6h",
+      "5cxv",
+      "5i71",
+      "5tvn",
+      "5u09",
+      "5va1",
+      "6cm4",
+      "6kpf",
+      "6kux",
+      "6lqa",
+      "6pdj",
+      "6x3x",
+      "6y1z",
+      "7f8y",
+      "7kwe",
+      "7ljd",
+      "7wc9",
+      "7xnk",
+      "7ym8",
+      "8e9y",
+      "8ef6",
+      "8fhs",
+      "8pjk",
+      "8st0",
+      "8wty",
+      "8xvk",
+      "8yn3",
+      "9eo4"
+    ],
+    "missing_scalar_cells": 8159,
+    "n_ligands": 12651,
+    "positive_numerator_but_negative_scalar_cells": 3,
+    "positive_numerator_cells_before_mask_or_clip": 8218,
+    "primary_scalar_targets": 44,
+    "rows_with_any_missing_scalar_score": 3354,
+    "support_caveat": "The numerator analysis is conditional on the exact 43-target overlap. V1A is excluded because no exact V1A residue matrix exists. The available 9uwl residue matrix is not substituted because the frozen scalar table has no 9uwl score column. Residue row sums are derived upstream values rather than a lossless pose-level decomposition; the scalar observation/censoring mask is therefore preserved before every matched comparison.",
+    "zero_censored_scalar_cells": 111
+  },
+  "target_reconstruction": {
+    "leave_one_target_out_definition": "For target j, each ligand q_i is the median E_ik/S_ik over k != j; the held-out target cell is never used to estimate its factor",
+    "leave_one_target_out_median_mae_kcal_mol": 0.02665446956950385,
+    "leave_one_target_out_median_pearson": 0.9996466020089493,
+    "leave_one_target_out_minimum_pearson": 0.9989528825016071,
+    "maximum_target_pearson": 0.9997633224892294,
+    "median_target_mae_kcal_mol": 0.025496365991665503,
+    "median_target_pearson": 0.999665203294393,
+    "minimum_target_pearson": 0.9989652655420316
+  }
+}

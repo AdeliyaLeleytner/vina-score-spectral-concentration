@@ -1,0 +1,11 @@
+{
+  "README.md": "ffeb7b38bda93ad9486c277c66552d99e792320a6c56332603aff24d22469440",
+  "chemical_group_bootstrap.csv": "a369cf08f94b30938aa66ec9f7914fdd294ade5ce36a559a4b851aa5253f8926",
+  "experimental_cross_panel_direction.csv": "83bba20e060f660af10036d237c9a2378f1d5fb0fa9f84a97c5abbf08a6d2348",
+  "matched_dockstring_direction.csv": "baaac853dc7aa203669af46bb512479c3245092f87c8d569c6c53b782030c056",
+  "mw_quintile_metrics.csv": "0553bdcf18c3aa96c6bfb960973544d6ccfcc41d0d73c4b0d5cd54d8ff7ef6c8",
+  "mw_quintile_pair_geometry.csv": "0b3799200c84be722f702700c5f3f3a162da4eb77f08b6eb1fe2e332f47699fe",
+  "random_disjoint_null.csv": "390d8355a8a5c56f7646be3b89965b7fd7749fffd06f056a2109fa65837b192e",
+  "summary.json": "0aa7f96f58899f99e5c29d8b75e3883dc326efe36d8ae6cd7ac853092add20c5",
+  "target_jackknife.csv": "c125964d37ff596c6066f99bbfa1906a5ddb489fdb6aa8333281f6cfb4ece975"
+}

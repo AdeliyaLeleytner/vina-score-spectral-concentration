@@ -1,0 +1,71 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "README.md": {
+      "bytes": 3329,
+      "sha256": "f14e5af0f2357b4eff333b7b0adf77751e83ff1c75fe715aab5550d0f5b4b678"
+    },
+    "chemical_group_bootstrap.csv": {
+      "bytes": 449983,
+      "sha256": "8a8dd2323c531365c018369f9ef5b2737c9d16235e359730b989e30e0ec935f1"
+    },
+    "descriptor_correlations.csv": {
+      "bytes": 2314,
+      "sha256": "c115be9d56c7601494f848f7182d59df259ed44d9b7c2d32546868507bf3ca41"
+    },
+    "descriptor_extremes.csv": {
+      "bytes": 9937,
+      "sha256": "f8dc7c8848a6c5a2ded6d9aefa01e4b2cf8d5c80ab0b4d39959138c8e178f42a"
+    },
+    "dockstring_support_seed_sensitivity.csv": {
+      "bytes": 3811,
+      "sha256": "eb8c43d2968185dc9561fc949996e1341e139bfba85e64239b0c67cc9e6e9d6f"
+    },
+    "mw_extreme_target_pairs.csv": {
+      "bytes": 969641,
+      "sha256": "9ca4e98e7656d77fe3d120691a49ba6995f492a0cf0cfeb8604ebefeee94b615"
+    },
+    "mw_quintile_associations.csv": {
+      "bytes": 829,
+      "sha256": "13a876dcdb7a6ebc27193d45bc160d13cfb513e4e6c43771d68d861f04b0e256"
+    },
+    "mw_quintile_metrics.csv": {
+      "bytes": 5512,
+      "sha256": "29b82f83faf0e01bd30e00a807becbcac7ad0518b8b66317d4de7941fe51aa92"
+    },
+    "mw_quintile_pair_geometry.csv": {
+      "bytes": 17353,
+      "sha256": "e91a47e85ca74ce2e4f9c5a5fde11d02fa92f6fda297be461956d51923f1db94"
+    },
+    "mw_quintile_trends.csv": {
+      "bytes": 584,
+      "sha256": "3a384c020c08ea0c2fbf5550aebb0b6ee6e83b3045758309dddc91951996173d"
+    },
+    "mw_stratified_group_disjoint_control.csv": {
+      "bytes": 394819,
+      "sha256": "1401461e2f28235af4a1f8b84cc47b3456820c4caa6cfc9621832da2d25fbd03"
+    },
+    "primary_mw_contrasts.csv": {
+      "bytes": 4840,
+      "sha256": "31ab2c3693fe98d2be5866cc8ad587ab2bf2ac56b3046d68aade0a64c1aa3b4f"
+    },
+    "random_disjoint_null.csv": {
+      "bytes": 738642,
+      "sha256": "89c80a11b615a2a315af1e700a32bedecdd99364fe7a9ea82c0aab9dd8837a01"
+    },
+    "summary.json": {
+      "bytes": 54587,
+      "sha256": "1a8472369493859538044a7fb1c6dd479a2f7d3798ab5c09f1711a9212bec11e"
+    },
+    "within_mw_band_control_summary.csv": {
+      "bytes": 5139,
+      "sha256": "c57471f565fe087826894745f4292a218ad965e97d8fce0489cce47bee594b96"
+    },
+    "within_mw_band_reproducibility_controls.csv": {
+      "bytes": 2001590,
+      "sha256": "dc06fb766a54e15de54cf0e7b142bc96b5114b8ece046b4534ca913dd76fcbcf"
+    }
+  },
+  "schema_version": "1.0.0",
+  "scope": "all regular files in this result directory except this manifest"
+}

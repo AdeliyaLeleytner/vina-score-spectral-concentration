@@ -1,0 +1,513 @@
+{
+  "analysis": "replicated experimental co-selective target-pair retrieval",
+  "status": "exploratory extension; manuscript unchanged",
+  "claim_boundary": "The endpoint concerns co-selective target pairs on a fixed 20-kinase panel. It does not test ligand-level target retrieval, docking pose quality, or universal affinity accuracy.",
+  "primary_endpoint": {
+    "definition": "target pair is in the upper 10% of the two-way-centered target-correlation geometry in at least two of DAVIS, PKIS2, and PKIS1",
+    "experimental_preprocessing": "two-way center raw endpoint values, then correlate target columns",
+    "positive_pairs": 15,
+    "unanimous_positive_pairs": 7,
+    "total_pairs": 190,
+    "point_estimates": {
+      "positive_pairs": 15,
+      "total_pairs": 190,
+      "prevalence": 0.07894736842105263,
+      "raw_docking": {
+        "roc_auc": 0.5965714285714285,
+        "average_precision": 0.2355064642070323
+      },
+      "centered_docking": {
+        "roc_auc": 0.7104761904761905,
+        "average_precision": 0.3014656490938134
+      },
+      "centered_minus_raw": {
+        "roc_auc": 0.11390476190476195,
+        "average_precision": 0.0659591848867811
+      }
+    },
+    "target_label_qap": {
+      "permutations": 50000,
+      "seed": 20260803,
+      "metrics": {
+        "roc_auc": {
+          "raw_docking": 0.5965714285714285,
+          "raw_target_label_qap_p": 0.15495690086198277,
+          "centered_docking": 0.7104761904761905,
+          "centered_target_label_qap_p": 0.0068598628027439455,
+          "centered_minus_raw": 0.11390476190476195,
+          "paired_target_label_qap_p_positive_gain": 0.033419331613367735,
+          "paired_delta_null_interval_95": [
+            -0.10819047619047617,
+            0.12304761904761902
+          ]
+        },
+        "average_precision": {
+          "raw_docking": 0.2355064642070323,
+          "raw_target_label_qap_p": 0.011319773604527909,
+          "centered_docking": 0.3014656490938134,
+          "centered_target_label_qap_p": 0.0013999720005599889,
+          "centered_minus_raw": 0.0659591848867811,
+          "paired_target_label_qap_p_positive_gain": 0.016639667206655866,
+          "paired_delta_null_interval_95": [
+            -0.05434482873101707,
+            0.05769170149601986
+          ]
+        }
+      }
+    },
+    "holm_adjusted_paired_gain_p_across_auc_and_ap": {
+      "average_precision": 0.03327933441331173,
+      "roc_auc": 0.033419331613367735
+    }
+  },
+  "relation_to_rank_increase": {
+    "raw_docking_correlation_pr": 1.8045478333799114,
+    "centered_docking_correlation_pr": 11.615704722587768,
+    "interpretation": "The PR increase and retrieval contrast occur on the same fixed 20-target docking surface. Association does not establish that higher PR itself causes better retrieval.",
+    "full_centered_vs_leading_centered_mode": {
+      "leading_mode_definition": "unrenormalized off-diagonal reconstruction lambda_1 v_1 v_1^T",
+      "comparison_is_exploratory": true,
+      "leading_mode_only": {
+        "roc_auc": 0.6392380952380953,
+        "average_precision": 0.1744687761368205
+      },
+      "full_centered_geometry": {
+        "roc_auc": 0.7104761904761905,
+        "average_precision": 0.3014656490938134
+      },
+      "full_minus_leading_mode": {
+        "roc_auc": 0.07123809523809521,
+        "average_precision": 0.1269968729569929
+      },
+      "paired_target_label_qap": {
+        "roc_auc": {
+          "paired_p_positive_full_geometry_gain": 0.04335913281734365,
+          "paired_delta_null_interval_95": [
+            -0.07352380952380949,
+            0.0822857142857143
+          ]
+        },
+        "average_precision": {
+          "paired_p_positive_full_geometry_gain": 0.0022999540009199814,
+          "paired_delta_null_interval_95": [
+            -0.06732313299587872,
+            0.07295192445152646
+          ]
+        }
+      },
+      "target_delete_one_full_minus_leading_mode": {
+        "roc_auc": {
+          "minimum": 0.04527750730282376,
+          "maximum": 0.11111111111111105
+        },
+        "average_precision": {
+          "minimum": 0.06784397389839056,
+          "maximum": 0.17825129772787135
+        }
+      }
+    }
+  },
+  "experimental_transform_sensitivity": {
+    "center_then_correlation": {
+      "endpoint": {
+        "positive_pairs": 15,
+        "total_pairs": 190,
+        "prevalence": 0.07894736842105263,
+        "raw_docking": {
+          "roc_auc": 0.5965714285714285,
+          "average_precision": 0.2355064642070323
+        },
+        "centered_docking": {
+          "roc_auc": 0.7104761904761905,
+          "average_precision": 0.3014656490938134
+        },
+        "centered_minus_raw": {
+          "roc_auc": 0.11390476190476195,
+          "average_precision": 0.0659591848867811
+        }
+      },
+      "target_label_qap": {
+        "permutations": 50000,
+        "seed": 20460803,
+        "metrics": {
+          "roc_auc": {
+            "raw_docking": 0.5965714285714285,
+            "raw_target_label_qap_p": 0.15905681886362272,
+            "centered_docking": 0.7104761904761905,
+            "centered_target_label_qap_p": 0.006939861202775945,
+            "centered_minus_raw": 0.11390476190476195,
+            "paired_target_label_qap_p_positive_gain": 0.034439311213775727,
+            "paired_delta_null_interval_95": [
+              -0.10704761904761906,
+              0.12342857142857144
+            ]
+          },
+          "average_precision": {
+            "raw_docking": 0.2355064642070323,
+            "raw_target_label_qap_p": 0.011299774004519909,
+            "centered_docking": 0.3014656490938134,
+            "centered_target_label_qap_p": 0.0012799744005119898,
+            "centered_minus_raw": 0.0659591848867811,
+            "paired_target_label_qap_p_positive_gain": 0.017079658406831864,
+            "paired_delta_null_interval_95": [
+              -0.05348676438883357,
+              0.05794330940402905
+            ]
+          }
+        }
+      },
+      "jaccard_with_primary_labels": 1.0
+    },
+    "z_before_center": {
+      "endpoint": {
+        "positive_pairs": 15,
+        "total_pairs": 190,
+        "prevalence": 0.07894736842105263,
+        "raw_docking": {
+          "roc_auc": 0.5169523809523809,
+          "average_precision": 0.22327731926205138
+        },
+        "centered_docking": {
+          "roc_auc": 0.768,
+          "average_precision": 0.39936808084276093
+        },
+        "centered_minus_raw": {
+          "roc_auc": 0.2510476190476191,
+          "average_precision": 0.17609076158070955
+        }
+      },
+      "target_label_qap": {
+        "permutations": 50000,
+        "seed": 20560803,
+        "metrics": {
+          "roc_auc": {
+            "raw_docking": 0.5169523809523809,
+            "raw_target_label_qap_p": 0.4152716945661087,
+            "centered_docking": 0.768,
+            "centered_target_label_qap_p": 0.001139977200455991,
+            "centered_minus_raw": 0.2510476190476191,
+            "paired_target_label_qap_p_positive_gain": 0.00033999320013599726,
+            "paired_delta_null_interval_95": [
+              -0.11542857142857144,
+              0.13790476190476186
+            ]
+          },
+          "average_precision": {
+            "raw_docking": 0.22327731926205138,
+            "raw_target_label_qap_p": 0.02131957360852783,
+            "centered_docking": 0.39936808084276093,
+            "centered_target_label_qap_p": 5.999880002399952e-05,
+            "centered_minus_raw": 0.17609076158070955,
+            "paired_target_label_qap_p_positive_gain": 0.00031999360012799745,
+            "paired_delta_null_interval_95": [
+              -0.06350869487699125,
+              0.06026302364605876
+            ]
+          }
+        }
+      },
+      "jaccard_with_primary_labels": 0.42857142857142855
+    },
+    "rank_normal_before_center": {
+      "endpoint": {
+        "positive_pairs": 18,
+        "total_pairs": 190,
+        "prevalence": 0.09473684210526316,
+        "raw_docking": {
+          "roc_auc": 0.5345607235142119,
+          "average_precision": 0.1575889263231275
+        },
+        "centered_docking": {
+          "roc_auc": 0.7109173126614987,
+          "average_precision": 0.2708100026715545
+        },
+        "centered_minus_raw": {
+          "roc_auc": 0.1763565891472868,
+          "average_precision": 0.11322107634842699
+        }
+      },
+      "target_label_qap": {
+        "permutations": 50000,
+        "seed": 20660803,
+        "metrics": {
+          "roc_auc": {
+            "raw_docking": 0.5345607235142119,
+            "raw_target_label_qap_p": 0.32957340853182937,
+            "centered_docking": 0.7109173126614987,
+            "centered_target_label_qap_p": 0.003879922401551969,
+            "centered_minus_raw": 0.1763565891472868,
+            "paired_target_label_qap_p_positive_gain": 0.0017999640007199855,
+            "paired_delta_null_interval_95": [
+              -0.09819121447028423,
+              0.1133720930232558
+            ]
+          },
+          "average_precision": {
+            "raw_docking": 0.1575889263231275,
+            "raw_target_label_qap_p": 0.14243715125697487,
+            "centered_docking": 0.2708100026715545,
+            "centered_target_label_qap_p": 0.0030399392012159755,
+            "centered_minus_raw": 0.11322107634842699,
+            "paired_target_label_qap_p_positive_gain": 0.0020199596008079836,
+            "paired_delta_null_interval_95": [
+              -0.05417143146434407,
+              0.056294779897998096
+            ]
+          }
+        }
+      },
+      "jaccard_with_primary_labels": 0.5
+    }
+  },
+  "threshold_family_omnibus": {
+    "thresholds": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25
+    ],
+    "interpretation": "average paired gain across a declared threshold family; included to expose, rather than hide, upper-tail threshold dependence",
+    "permutations": 50000,
+    "seed": 20360803,
+    "mean_centered_minus_raw": {
+      "roc_auc": 0.07228707402035368,
+      "average_precision": 0.03233756162690586
+    },
+    "paired_target_label_qap_p_positive_gain": {
+      "roc_auc": 0.060518789624207515,
+      "average_precision": 0.0758984820303594
+    },
+    "paired_delta_null_interval_95": {
+      "roc_auc": [
+        -0.0800983091576386,
+        0.09295337730217641
+      ],
+      "average_precision": [
+        -0.04885757735890574,
+        0.05143362799347161
+      ]
+    }
+  },
+  "target_delete_one": {
+    "centered_minus_raw_roc_auc": {
+      "minimum": 0.02935010482180289,
+      "maximum": 0.165909090909091
+    },
+    "centered_minus_raw_average_precision": {
+      "minimum": 0.004904204890711639,
+      "maximum": 0.10029031365143062
+    }
+  },
+  "leave_one_experimental_panel_out": {
+    "held_out_experimental_roc_auc": {
+      "minimum": 0.9088950446291166,
+      "maximum": 0.9812249923053247
+    },
+    "centered_minus_raw_roc_auc": {
+      "minimum": 0.050784856879039775,
+      "maximum": 0.09602954755309323
+    },
+    "centered_minus_raw_average_precision": {
+      "minimum": -0.01280820175975439,
+      "maximum": 0.06769750223095644
+    }
+  },
+  "independent_reference_supports": {
+    "size": 15000,
+    "seeds": [
+      11,
+      29,
+      47,
+      71,
+      97
+    ],
+    "centered_minus_raw_roc_auc": {
+      "minimum": 0.1104761904761905,
+      "maximum": 0.11847619047619051
+    },
+    "centered_minus_raw_average_precision": {
+      "minimum": 0.03259954316186928,
+      "maximum": 0.07917278019594545
+    }
+  },
+  "unclipped_positive_score_sensitivity": {
+    "positive_pairs": 15,
+    "total_pairs": 190,
+    "prevalence": 0.07894736842105263,
+    "raw_docking": {
+      "roc_auc": 0.5942857142857143,
+      "average_precision": 0.23346614650004796
+    },
+    "centered_docking": {
+      "roc_auc": 0.7100952380952381,
+      "average_precision": 0.3005884561113572
+    },
+    "centered_minus_raw": {
+      "roc_auc": 0.1158095238095238,
+      "average_precision": 0.06712230961130924
+    }
+  },
+  "support": {
+    "targets": [
+      "ABL1",
+      "AKT1",
+      "AKT2",
+      "CDK2",
+      "CSF1R",
+      "EGFR",
+      "FGFR1",
+      "IGF1R",
+      "JAK2",
+      "KDR",
+      "KIT",
+      "LCK",
+      "MAP2K1",
+      "MAPK1",
+      "MAPK14",
+      "MAPKAPK2",
+      "MET",
+      "PLK1",
+      "ROCK1",
+      "SRC"
+    ],
+    "n_targets": 20,
+    "davis_ligands": 72,
+    "pkis2_ligands": 645,
+    "pkis1_ligands": 360,
+    "dockstring_reference_ligands": 259579,
+    "excluded_connectivity_blocks": 1050,
+    "excluded_dockstring_rows": 481
+  },
+  "configuration": {
+    "qap_permutations": 50000,
+    "seed": 20260803,
+    "primary_fraction": 0.1,
+    "primary_minimum_panels": 2,
+    "positive_score_handling": "clip to zero; unclipped full-support sensitivity reported",
+    "reference_exclusion": "all experimental-panel Standard-InChI connectivity blocks"
+  },
+  "sources": {
+    "dockstring": "data/frozen/dockstring-dataset.tsv.gz",
+    "dockstring_sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64",
+    "davis": "data/frozen/project_clean/data/processed/davis_boltz2/davis_complete.tab.gz",
+    "davis_sha256": "e5614549ec970bf24bd58d04d8a74feb8f8a53806410eaa8d84d24e96a4ff827",
+    "pkis2": "data/frozen/pkis2_s4.xlsx",
+    "pkis2_sha256": "48ead22a1f860cd0d5096fa87d5acd329f722fe8d65e693bb0be682a333e2a2c",
+    "pkis1_doi": "10.1038/nbt.3374",
+    "pkis1_source_url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fnbt.3374/MediaObjects/41587_2016_BFnbt3374_MOESM5_ESM.zip",
+    "pkis1_local_filename": "pkis1_supplement.zip",
+    "pkis1_sha256": "1ffbe7fd0b4fc1ef72f2434a2b247d15c0f2b4d3c34668f112f4b4c9e4ead7dc"
+  },
+  "receptor_sequence_identity_control": {
+    "standalone_baselines": {
+      "sequence_identity": {
+        "roc_auc": 0.7180952380952381,
+        "average_precision": 0.4263313038513235
+      },
+      "raw_docking": {
+        "roc_auc": 0.5965714285714285,
+        "average_precision": 0.2355064642070323
+      },
+      "centered_docking": {
+        "roc_auc": 0.7104761904761905,
+        "average_precision": 0.3014656490938134
+      },
+      "boundary": "Sequence identity is the stronger standalone baseline when its average precision exceeds centered docking."
+    },
+    "partial_rank_association_controlling_sequence_identity": {
+      "raw_docking": {
+        "partial_correlation": 0.10691150214071506,
+        "target_label_qap_p_positive": 0.1391972160556789
+      },
+      "centered_docking": {
+        "partial_correlation": 0.16707343470221497,
+        "target_label_qap_p_positive": 0.01879962400751985
+      }
+    },
+    "equal_rank_sequence_centered_docking_ensemble": {
+      "definition": "0.5 sequence-identity percentile + 0.5 centered-docking percentile",
+      "point_estimate": {
+        "roc_auc": 0.748,
+        "average_precision": 0.33177409398989716
+      },
+      "minus_sequence_identity_alone": {
+        "roc_auc": 0.02990476190476188,
+        "average_precision": -0.09455720986142635
+      },
+      "target_label_qap_p_at_least_observed_delta": {
+        "roc_auc": 0.03477930441391172,
+        "average_precision": 0.05099898002039959
+      },
+      "boundary": "A null-tail probability for a negative observed delta is not evidence of a positive gain."
+    },
+    "low_homology_stratum": {
+      "definition": "receptor-domain sequence identity < 0.40",
+      "comparison_is_exploratory": true,
+      "target_pairs": 183,
+      "positive_pairs": 12,
+      "sequence_identity": {
+        "roc_auc": 0.6627680311890838,
+        "average_precision": 0.3953496395260416
+      },
+      "raw_docking": {
+        "roc_auc": 0.5423976608187134,
+        "average_precision": 0.160771780841634
+      },
+      "centered_docking": {
+        "roc_auc": 0.6681286549707602,
+        "average_precision": 0.23512737855357368
+      },
+      "centered_minus_raw": {
+        "roc_auc": 0.1257309941520468,
+        "average_precision": 0.0743555977119397
+      },
+      "centered_target_label_qap_p": {
+        "roc_auc": 0.029059418811623768,
+        "average_precision": 0.0071798564028719425
+      },
+      "paired_target_label_qap_p_positive_gain": {
+        "roc_auc": 0.03509929801403972,
+        "average_precision": 0.01133977320453591
+      }
+    },
+    "permutations": 50000,
+    "seed": 20335803,
+    "provenance": {
+      "source": "DOCKSTRING receptor PDBQT CA sequences",
+      "source_repository": "https://github.com/dockstring/dockstring",
+      "source_paper_doi": "10.1021/acs.jcim.1c01334",
+      "resource_aggregate_sha256": "730581e1eef1b4720326a9c7933dd87d0f64cb894ed780597c5f811b562292bb",
+      "individual_resource_sha256": {
+        "ABL1": "2e31e2f3b3aba4bb5ee038d7bc3573c7864a8fface7741dea3de1effc0c1d2bc",
+        "AKT1": "8ed6762318dc8c64f96808a2a0a8eda412ea911db1dc4c9e367be8450bdd84a2",
+        "AKT2": "0bcf560f7c384624ee58faefce7c679bcd64e0839841088da78a0a0da6fa0f87",
+        "CDK2": "903526461510e29a4bfc6ee15d53eac3ca8a12710c70aed5c7f70fbf982b236e",
+        "CSF1R": "1ca29060b270de19a737711f557ef47fe817e62b459122bc9610dde5df79f74e",
+        "EGFR": "be850f92b01f264a648a8fb31b101953ef49b95f0a7e5cd16fd4a13c68366ec3",
+        "FGFR1": "7eb86a9d88565aedf2616255056294fed96144078e95812ae0a415ee0a2bcff4",
+        "IGF1R": "811403cca533df633ddfc71e3cf1514fff1d81998a06203792bb4e398dfd4257",
+        "JAK2": "5680c53d20bfce420edd86d35703658eba4c8c041d9102372a8e990cddeb49a7",
+        "KDR": "0efb7d7b2fe9c96ca682cb7f24d7132d59fb036529cacb21af295bdddcc54e41",
+        "KIT": "e630debb3871f13d56a0e552bf27944365ed3928a7c83ae39ae8acdbee88f18d",
+        "LCK": "365c5594742e5691dff7ea1ea9aa5b0fb3d25c5011fe5b0044865573b97cb4d0",
+        "MAP2K1": "ace85697090c6c264c747464679041eb5178b67e3be745cdff3d8e0a45a04382",
+        "MAPK1": "281e0d89e8d4fa170a8606372091b6d352c7a9fb72dd6f07334b1b5d54ff4fff",
+        "MAPK14": "e11275b647ac846e7e63af2e8d8d7482ef9da7f768b8223a2d49c8168ceca66c",
+        "MAPKAPK2": "75c4d143cddd6259a6030621df3f8a9d8739cb53e9ad9417534048e81738d0c2",
+        "MET": "daa7a604ee86ab376cf3bb71e647d90f4537b34cf68adf9118f91a9b2ca8e9f6",
+        "PLK1": "ae55f32fb7a7f1e7a2911d6611882de030176fd2d4787bfb776c786ed74f73f3",
+        "ROCK1": "e6e8b75ec312e47b481cac962c10723235085a611b5a7f15f5aa2fdacd975c62",
+        "SRC": "5fc235fc051e6da3d6fdfe8cbb95988438c486e44abca43deb517490f47bdb75"
+      },
+      "nonstandard_residue_handling": "map to X",
+      "alignment": "global BLOSUM62; gap-open -10; gap-extend -0.5",
+      "identity_denominator": "all alignment columns, including gaps",
+      "biopython_version": "1.87",
+      "sequence_length_range": [
+        233,
+        339
+      ]
+    }
+  }
+}

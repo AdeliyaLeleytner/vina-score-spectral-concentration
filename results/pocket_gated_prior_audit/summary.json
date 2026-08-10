@@ -1,0 +1,178 @@
+{
+  "PKIS1_discovery_compounds": 360,
+  "analysis": "PKIS1 target-degree prior audit of pocket-gated Vina fusion",
+  "baseline": "PKIS1-fit OLS on target-degree joint breadth, target-degree similarity, receptor-domain sequence identity, and KLIFS pocket identity",
+  "claim_boundary": "The discovery target prior, gate, and coefficients are learned on PKIS1 and transferred to different ligands on the same 20 targets. This does not establish ligand-level target ranking, causal biology, or transfer to unseen targets. The analysis is post hoc.",
+  "decision_rule": "GO only if all three primary locked mean deltas are positive, all three are positive in every locked panel, selection-aware QAP Holm p values are <=0.05, and at least 80% of target deletions remain positive",
+  "degree_prior_external_continuous_spearman": {
+    "DAVIS": 0.3945404164040444,
+    "KiRHub": 0.32321307735907767,
+    "PKIS2": 0.42550833225830514
+  },
+  "degree_prior_increment_beyond_sequence_plus_pocket": {
+    "definition_sensitivity": "See target_prior_definition_sensitivity.csv. The conventional 50% degree is primary; thresholds and continuous marginal summaries are post-hoc sensitivities, not additional confirmatory tests.",
+    "metrics": {
+      "continuous_spearman": {
+        "holm_p_three_primary_metrics": 0.004439911201775964,
+        "mean_locked_delta": 0.19755438625650804,
+        "minimum_panel_delta": 0.14194299011052935,
+        "minimum_target_jackknife_delta": 0.06573547411620706,
+        "positive_panel_target_deletions": 60,
+        "target_label_qap_p": 0.0016799664006719867,
+        "total_panel_target_deletions": 60
+      },
+      "top_10_average_precision": {
+        "holm_p_three_primary_metrics": 0.02023959520809584,
+        "mean_locked_delta": 0.08874909434535866,
+        "minimum_panel_delta": 0.07791047465532819,
+        "minimum_target_jackknife_delta": 0.0073489279358577575,
+        "positive_panel_target_deletions": 60,
+        "target_label_qap_p": 0.02023959520809584,
+        "total_panel_target_deletions": 60
+      },
+      "top_10_roc_auc": {
+        "holm_p_three_primary_metrics": 0.004439911201775964,
+        "mean_locked_delta": 0.12393556991894938,
+        "minimum_panel_delta": 0.1157279162819328,
+        "minimum_target_jackknife_delta": 0.04030501089324623,
+        "positive_panel_target_deletions": 60,
+        "target_label_qap_p": 0.0014799704005919881,
+        "total_panel_target_deletions": 60
+      }
+    },
+    "null": "permute PKIS1 marginal degrees across target labels, reconstruct both pair-prior features, and refit on PKIS1; sequence, pocket, and locked experimental panels remain fixed",
+    "strict_decision": "GO_replicated_target_prior_increment"
+  },
+  "degree_prior_plus_sequence_plus_pocket_external_continuous_spearman": {
+    "DAVIS": 0.4761336150148495,
+    "KiRHub": 0.4537600545867286,
+    "PKIS2": 0.5051713052264168
+  },
+  "degree_threshold_sensitivity": {
+    "continuous_spearman": {
+      "minimum_locked_panel_delta_across_20_35_50_65_80_percent": 0.00371259737476326,
+      "positive_locked_panel_threshold_cells": 15,
+      "total_locked_panel_threshold_cells": 15
+    },
+    "top_10_average_precision": {
+      "minimum_locked_panel_delta_across_20_35_50_65_80_percent": 0.004614782651315985,
+      "positive_locked_panel_threshold_cells": 15,
+      "total_locked_panel_threshold_cells": 15
+    },
+    "top_10_roc_auc": {
+      "minimum_locked_panel_delta_across_20_35_50_65_80_percent": 0.005540166204986097,
+      "positive_locked_panel_threshold_cells": 15,
+      "total_locked_panel_threshold_cells": 15
+    }
+  },
+  "discovery_panel": "PKIS1",
+  "inputs": {
+    "KiRHub_workbook": {
+      "local_filename": "kirhub_supp_tables.xlsx",
+      "redistributed": false,
+      "sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03"
+    },
+    "PKIS1_workbook_archive": {
+      "local_filename": "pkis1_supplement.zip",
+      "redistributed": false,
+      "sha256": "1ffbe7fd0b4fc1ef72f2434a2b247d15c0f2b4d3c34668f112f4b4c9e4ead7dc"
+    },
+    "target_pairs": {
+      "path": "results/klifs_pocket_control/target_pairs.csv",
+      "sha256": "08238b207ac4f9f991193db0d0e03063403727f98aa1230cbfe636eeb6501a23"
+    }
+  },
+  "locked_no_retuning_panels": [
+    "DAVIS",
+    "PKIS2",
+    "KiRHub"
+  ],
+  "primary_docking_addition": "one feature proportional to the previously locked dual-surface pocket-gated fusion minus sequence",
+  "primary_locked_mean_deltas": {
+    "continuous_spearman": {
+      "augmented_minus_baseline": 0.021330230754314505,
+      "holm_p_three_primary_metrics": 0.19085618287634246,
+      "minimum_panel_delta": 0.014199547734956908,
+      "selection_aware_qap_p": 0.06361872762544749
+    },
+    "top_10_average_precision": {
+      "augmented_minus_baseline": 0.028163787085322033,
+      "holm_p_three_primary_metrics": 0.19085618287634246,
+      "minimum_panel_delta": 0.014904475020902336,
+      "selection_aware_qap_p": 0.07921841563168737
+    },
+    "top_10_roc_auc": {
+      "augmented_minus_baseline": 0.025443726274751183,
+      "holm_p_three_primary_metrics": 0.19085618287634246,
+      "minimum_panel_delta": 0.020621729763003915,
+      "selection_aware_qap_p": 0.07319853602927942
+    }
+  },
+  "residual_gate_increment_beyond_raw_gate_at_fixed_primary_gate": {
+    "continuous_spearman": {
+      "mean_locked_delta": 0.001244530756793057,
+      "minimum_locked_panel_delta": -0.00020470023225604983
+    },
+    "top_10_average_precision": {
+      "mean_locked_delta": 0.004749733497944618,
+      "minimum_locked_panel_delta": -0.0028811885805532234
+    },
+    "top_10_roc_auc": {
+      "mean_locked_delta": -0.0015389350569405824,
+      "minimum_locked_panel_delta": -0.007694675284703023
+    }
+  },
+  "selected_klifs_pocket_identity_threshold": 0.55,
+  "selection_aware_qap": "jointly permutes raw and residual docking target labels, reselects the gate and refits the augmented PKIS1 model on every permutation; all non-docking predictors and experimental endpoints remain fixed",
+  "selection_metric": "PKIS1 top-10-percent average precision",
+  "status": "post_hoc_exploratory_science_only",
+  "strict_decision": "NO_GO_not_QAP_resolved_beyond_degree_prior",
+  "target_degree_definition": "fraction of PKIS1 compounds with at least 50% inhibition; the pair prior uses rank geometric-mean degree and rank negative absolute degree difference",
+  "target_jackknife": {
+    "continuous_spearman": {
+      "minimum_delta": 0.007490340077279334,
+      "positive_panel_target_deletions": 60,
+      "total_panel_target_deletions": 60
+    },
+    "top_10_average_precision": {
+      "minimum_delta": 0.006029715466637886,
+      "positive_panel_target_deletions": 60,
+      "total_panel_target_deletions": 60
+    },
+    "top_10_roc_auc": {
+      "minimum_delta": 0.009440813362381895,
+      "positive_panel_target_deletions": 60,
+      "total_panel_target_deletions": 60
+    }
+  },
+  "targets": [
+    "ABL1",
+    "AKT1",
+    "AKT2",
+    "CDK2",
+    "CSF1R",
+    "EGFR",
+    "FGFR1",
+    "IGF1R",
+    "JAK2",
+    "KDR",
+    "KIT",
+    "LCK",
+    "MAP2K1",
+    "MAPK1",
+    "MAPK14",
+    "MAPKAPK2",
+    "MET",
+    "PLK1",
+    "ROCK1",
+    "SRC"
+  ],
+  "ungated_continuous_pocket_trend": {
+    "interpretation": "tests whether the absolute-error benefit of an ungated docking addition increases continuously as KLIFS pocket identity falls",
+    "null_mean": 0.003951541968749624,
+    "null_q025": -0.16817445045698556,
+    "null_q975": 0.18028709311407445,
+    "selection_aware_qap_p_negative_trend": 0.32845343093138135,
+    "spearman_pair_gain_vs_pocket_identity": -0.03369443750488931
+  }
+}

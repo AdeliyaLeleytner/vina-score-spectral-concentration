@@ -1,0 +1,106 @@
+{
+  "analysis": "spectral_qc_criterion_falsification_figure",
+  "outputs": {
+    "pdf": {
+      "path": "figures/spectral_qc_criterion_falsification.pdf",
+      "sha256": "089019a8108a6a89fad13c6d6d5de0e479f4aebe29461281bdc2a34cd65e15f2"
+    },
+    "png": {
+      "path": "figures/spectral_qc_criterion_falsification.png",
+      "sha256": "5ac42f4dd4ffaf8e887c38ba3663b0c24f39a94ee27a4781050e189f6a505526"
+    }
+  },
+  "plotted_summary": {
+    "interval": "central 95% across paired simulation replicates",
+    "path": "results/spectral_qc_criterion_simulation/falsification_figure_summary.csv",
+    "sha256": "6701738805b966827c9d9093bddef01ef0a31de7dda536daa6214a197e5f5126"
+  },
+  "predeclared_rules": {
+    "expansion_only_comparator": {
+      "logic": "E=log2(PR_residual/PR_raw) >= 1",
+      "minimum_expansion_log2": 1.0,
+      "name": "dimension_doubling_after_two_way_centering",
+      "scope": "A deliberately weak comparator, not a recommended rule."
+    },
+    "path": "results/spectral_qc_criterion_simulation/predeclared_rules.json",
+    "primary": {
+      "logic": "all three conditions must hold",
+      "maximum_empirical_lower_tail_p": 0.05,
+      "maximum_residual_pr_over_row_norm_null_median": 0.8,
+      "minimum_median_pairwise_residual_seed_spearman": 0.7,
+      "name": "reproducible_correlated_residual_gate",
+      "scope": "A matrix-level coherence screen, not an affinity-accuracy, target-retrieval, pose-validity, receptor-quality, or box-validity criterion.",
+      "threshold_provenance": "Fixed before inspecting simulation outcomes: rho>=0.70 requires substantial seed reproducibility; a null ratio<=0.80 requires at least a 20% PR deficit; and p<=0.05 requires lower-tail separation from the row-norm null."
+    },
+    "sha256": "340a0fd091c1528d4114cf42ae935c17ee49100eb72fe85d9353854a71bc9dac"
+  },
+  "regime_order": [
+    "good_correlated_interactions",
+    "generic_ligand_effect_independent_noise",
+    "target_correlated_artifact",
+    "shuffled_box_labels",
+    "seed_unstable_noise",
+    "good_high_dimensional_interactions"
+  ],
+  "regime_style": {
+    "generic_ligand_effect_independent_noise": {
+      "color": "#E69F00",
+      "label": "Independent artifact",
+      "marker": "s",
+      "short_label": "independent artifact",
+      "size": 7.5,
+      "zorder": 3
+    },
+    "good_correlated_interactions": {
+      "color": "#0072B2",
+      "label": "Informative, correlated",
+      "marker": "o",
+      "short_label": "informative correlated",
+      "size": 6.8,
+      "zorder": 5
+    },
+    "good_high_dimensional_interactions": {
+      "color": "#009E73",
+      "label": "Informative, high-dimensional",
+      "marker": "^",
+      "short_label": "informative high-D",
+      "size": 6.3,
+      "zorder": 7
+    },
+    "seed_unstable_noise": {
+      "color": "#6F777D",
+      "label": "Seed-unstable noise",
+      "marker": "v",
+      "short_label": "seed-unstable",
+      "size": 6.5,
+      "zorder": 4
+    },
+    "shuffled_box_labels": {
+      "color": "#CC79A7",
+      "label": "Shuffled target labels",
+      "marker": "X",
+      "short_label": "shuffled labels",
+      "size": 6.6,
+      "zorder": 8
+    },
+    "target_correlated_artifact": {
+      "color": "#D55E00",
+      "label": "Correlated artifact",
+      "marker": "D",
+      "short_label": "correlated artifact",
+      "size": 5.8,
+      "zorder": 6
+    }
+  },
+  "release_timestamp": "2026-08-02T00:00:00+00:00",
+  "runtime": {
+    "matplotlib": "3.10.6",
+    "numpy": "1.26.4",
+    "pandas": "2.3.2",
+    "python": "3.12.11"
+  },
+  "source": {
+    "path": "results/spectral_qc_criterion_simulation/replicate_metrics.csv",
+    "sha256": "76740ffa4fa8ecb9fc6ea03afc107c1d17b9a72ed56e8d2f2327316aafe78fd6"
+  }
+}

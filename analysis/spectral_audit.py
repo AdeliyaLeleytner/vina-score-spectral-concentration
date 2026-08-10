@@ -15,6 +15,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from scipy import stats
 
 from build_evidence import (
     additive_main_effect_null,
@@ -65,6 +66,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--sample-size", type=int, default=12000)
     parser.add_argument("--permutations", type=int, default=500)
     parser.add_argument("--bootstrap", type=int, default=500)
+    parser.add_argument(
+        "--recovery-sizes",
+        default="50,100,200,500",
+        help=(
+            "comma-separated same-support ligand counts for the map-recovery curve; "
+            "values larger than the input are skipped"
+        ),
+    )
+    parser.add_argument(
+        "--recovery-repeats",
+        type=int,
+        default=100,
+        help="simple-random subsamples per recovery-curve point",
+    )
     parser.add_argument("--seed", type=int, default=0)
     return parser.parse_args()
 
@@ -78,8 +93,11 @@ def load_matrix(args: argparse.Namespace) -> tuple[pd.DataFrame, np.ndarray | No
         if args.score_columns
         else [column for column in frame.columns if column not in excluded]
     )
-    if len(columns) < 2:
-        raise ValueError("at least two target score columns are required")
+    if len(columns) < 3:
+        raise ValueError(
+            "at least three target score columns are required because map recovery "
+            "needs more than one target-pair edge"
+        )
     missing_columns = sorted(set(columns) - set(frame.columns))
     if missing_columns:
         raise ValueError(f"score columns not found: {missing_columns}")
@@ -93,6 +111,8 @@ def load_matrix(args: argparse.Namespace) -> tuple[pd.DataFrame, np.ndarray | No
         scores = scores.fillna(scores.mean(axis=0))
     if scores.isna().any().any():
         raise ValueError("at least one target column has no finite value")
+    if not np.isfinite(scores.to_numpy(dtype=np.float64)).all():
+        raise ValueError("score columns must contain only finite values after imputation")
     clusters = None
     if args.smiles_column:
         if args.smiles_column not in frame:
@@ -158,8 +178,91 @@ def make_diagnostic_plot(
     plt.close(fig)
 
 
+def map_recovery_curve(
+    matrix: np.ndarray,
+    sample_sizes: list[int],
+    *,
+    repeats: int,
+    seed: int,
+) -> dict[str, object]:
+    """Estimate support-specific recovery of the full residual target-correlation map.
+
+    The reference and every probe are computed from the same input library.  This is a
+    convergence diagnostic for that support, target panel and preprocessing pipeline; it is
+    not a promise that the same ligand count transports to a shifted chemical domain.
+    """
+
+    if repeats < 1:
+        raise ValueError("recovery repeats must be positive")
+    n_ligands, n_targets = matrix.shape
+    if n_ligands < 3:
+        raise ValueError("map recovery requires at least three ligand rows")
+    if n_targets < 3:
+        raise ValueError("map recovery requires at least three target columns")
+    full_corr = target_correlation_matrix(two_way_center(matrix))
+    if full_corr.shape != (n_targets, n_targets):
+        raise ValueError(
+            "map recovery requires every target to retain non-zero variance after "
+            "within-ligand centering"
+        )
+    triangle = np.triu_indices(n_targets, 1)
+    full_edges = full_corr[triangle]
+    rng = np.random.default_rng(seed)
+    points: dict[str, dict[str, float | int]] = {}
+    for size in sorted(set(sample_sizes)):
+        if size < 3 or size > n_ligands:
+            continue
+        agreements = np.empty(repeats, dtype=np.float64)
+        for repeat in range(repeats):
+            rows = rng.choice(n_ligands, size=size, replace=False)
+            probe_corr = target_correlation_matrix(two_way_center(matrix[rows]))
+            if probe_corr.shape != full_corr.shape:
+                raise ValueError(
+                    "a recovery subsample produced a zero-variance target; increase "
+                    "the requested ligand count or inspect the input columns"
+                )
+            agreement = float(
+                stats.spearmanr(probe_corr[triangle], full_edges).statistic
+            )
+            if not np.isfinite(agreement):
+                raise ValueError(
+                    "map recovery is undefined because the target-pair correlation "
+                    "vectors are constant"
+                )
+            agreements[repeat] = agreement
+        points[str(size)] = {
+            "ligands": int(size),
+            "repeats": int(repeats),
+            "mean_spearman": float(np.mean(agreements)),
+            "q025_spearman": float(np.quantile(agreements, 0.025)),
+            "q975_spearman": float(np.quantile(agreements, 0.975)),
+        }
+    if not points:
+        raise ValueError(
+            "no valid recovery size remains; request at least one size between 3 "
+            f"and the input ligand count ({n_ligands})"
+        )
+    return {
+        "points": points,
+        "reference_ligands": int(n_ligands),
+        "targets": int(n_targets),
+        "seed": int(seed),
+        "interpretation_boundary": (
+            "same-support convergence diagnostic; choose a ligand count from this curve "
+            "for the present matrix; 200 ligands is not a universal threshold"
+        ),
+    }
+
+
 def main() -> None:
     args = parse_args()
+    recovery_sizes = [
+        int(value.strip())
+        for value in args.recovery_sizes.split(",")
+        if value.strip()
+    ]
+    if not recovery_sizes:
+        raise ValueError("at least one recovery size is required")
     scores, clusters = load_matrix(args)
     matrix = scores.to_numpy(dtype=np.float64)
     common = {
@@ -190,6 +293,12 @@ def main() -> None:
             sample_size=args.sample_size,
             seed=args.seed + 20,
         ),
+        "same_support_map_recovery": map_recovery_curve(
+            matrix,
+            recovery_sizes,
+            repeats=args.recovery_repeats,
+            seed=args.seed + 25,
+        ),
         "parallel_analysis": parallel_analysis(
             matrix,
             sample_size=args.sample_size,
@@ -204,7 +313,7 @@ def main() -> None:
             matrix, **{**common, "seed": args.seed + 40}
         ),
         "row_norm_preserving_residual_null": row_norm_preserving_residual_null(
-            matrix, **{**common, "seed": args.seed + 50}
+            matrix, **{**common, "seed": args.seed + 40}
         ),
         "interpretation_boundary": (
             "effective dimension diagnoses variance concentration; it does not validate "
@@ -212,7 +321,9 @@ def main() -> None:
         ),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+    args.output.write_text(
+        json.dumps(report, indent=2, sort_keys=True, allow_nan=False) + "\n"
+    )
     if args.plot_prefix:
         make_diagnostic_plot(matrix, list(scores.columns), args.plot_prefix)
         print(

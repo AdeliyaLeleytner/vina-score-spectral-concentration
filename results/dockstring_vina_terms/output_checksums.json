@@ -1,0 +1,71 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "analysis_summary.json": {
+      "bytes": 51326,
+      "sha256": "51dae3ad54d9061472525ab5744790e1aceeb4a1770ea1f61e2ec7bdc9260a17"
+    },
+    "cell_terms.csv.gz": {
+      "bytes": 989557,
+      "sha256": "fe8d7a839906ebfd02a45e24d845dbeb1ed92f6facb5b7f4ac192892722a1cb9"
+    },
+    "cross_panel_term_fingerprint.csv": {
+      "bytes": 8881,
+      "sha256": "219f42f1d76c2411965ada9a1792ffd538046c2c95e62b30526c881641af2795"
+    },
+    "cross_panel_term_fingerprint_by_descriptor.csv": {
+      "bytes": 368318,
+      "sha256": "5d00fa64d58cf45bd922d4a1b3537bb57560d31b8a5fc784752476b6c696c454"
+    },
+    "descriptor_correlations.csv": {
+      "bytes": 20386,
+      "sha256": "333fbc9ab48279ba1ed97d3153f3926f6bd1a7b05bedb1bf9cdefd09395c1ca5"
+    },
+    "fixed_pose_term_ablations.csv": {
+      "bytes": 1091,
+      "sha256": "03407639b33516d7e53ad355768a774c83cb70fc5e79872eab68bfb57e54ff45"
+    },
+    "heavy_atom_slope_decomposition.csv": {
+      "bytes": 2924,
+      "sha256": "f43cf2b83a4fa5925acc09fc25b028136aff51a821f7ada5b6afbd09b946f740"
+    },
+    "nested_support_metrics.csv": {
+      "bytes": 9996,
+      "sha256": "1e5b823439e6ba02e41b01f01a882eb43734b4423c6de7248bab24aa6c260ac5"
+    },
+    "quality_support_spectral_sensitivity.csv": {
+      "bytes": 2892,
+      "sha256": "da108b396173e3fc02d6146ea96b7b174e5330f997516d1df4eb26395afd9adf"
+    },
+    "quality_support_term_attribution.csv": {
+      "bytes": 2639,
+      "sha256": "86f2fecfa99e47c1ee9c262fc0966a8d84e7c9ea8c192908dd21a22f25439d41"
+    },
+    "residual_mode_term_attribution.csv": {
+      "bytes": 1310,
+      "sha256": "af7a73c54a62efb37f720dc5d1b557c37347b9203dd9d675a5a93579f79e8786"
+    },
+    "selected_ligands.csv": {
+      "bytes": 73349,
+      "sha256": "8ba546fc345d6a79611a7b974967f34d08ed88e777aed2457e6ace50cbd1e707"
+    },
+    "si_vina_term_summary.csv": {
+      "bytes": 1949,
+      "sha256": "498a06c34cd42e18b8949ae2a370df8ce2275102cf42f271cb8ac4c5dcab3310"
+    },
+    "target_heavy_atom_slopes.csv": {
+      "bytes": 7385,
+      "sha256": "dd4eb09aee9ae0b20e78320d08e8faf283e1650ef8221dd7b7682824cc23213b"
+    },
+    "term_attribution.csv": {
+      "bytes": 576,
+      "sha256": "43dc39f483519e5a1c9e60fe162bde11b3770846eeaa8640297f53378754dab6"
+    },
+    "term_spectral_metrics.csv": {
+      "bytes": 2595,
+      "sha256": "aa98f35f474f0ef4ad20c71a35d5db047a671e3a4d99bd65fe8f1ada0f7eec56"
+    }
+  },
+  "schema_version": "1.0.0",
+  "scope": "all regular files in this result directory except this manifest"
+}

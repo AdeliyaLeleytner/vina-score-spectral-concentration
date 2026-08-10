@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Generate the five vector figures for the dimensionality manuscript.
+"""Deprecated legacy figure builder; direct execution is disabled.
+
+The current release builder is ``analysis/make_manuscript_figures.py``.
+This module is retained only to keep its historical plotting helpers readable.
 
 Every plotted value is read from a versioned source table or cached analysis
 result in this repository.  The script deliberately does not touch the live
@@ -44,7 +47,7 @@ PLUM = PALETTE["plum"]
 GREY = PALETTE["grey"]
 INK = PALETTE["ink"]
 PALE = PALETTE["pale"]
-RELEASE_TIMESTAMP = datetime(2026, 8, 1, tzinfo=timezone.utc)
+RELEASE_TIMESTAMP = datetime(2026, 8, 10, tzinfo=timezone.utc)
 
 
 def use_paper_style() -> None:
@@ -106,6 +109,10 @@ def save(fig: plt.Figure, path: str, dpi: int = 400) -> None:
     base.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(
         base.with_suffix(".pdf"),
+        # Matplotlib otherwise embeds artists marked ``rasterized=True`` at
+        # the figure's 100-dpi screen default even inside an otherwise vector
+        # PDF.  Use the same publication-resolution contract as the preview.
+        dpi=dpi,
         metadata={
             "Title": base.stem,
             "Author": "Adeliya Leleytner; Victor Safronov; Maxim Fedorov",
@@ -859,7 +866,188 @@ def fig_s6_dockstring_supports(evidence: dict) -> None:
     plt.close(fig)
 
 
-def main() -> None:
+def fig_s8_spectral_estimand_sensitivities(evidence: dict) -> None:
+    """Missing-value and covariance-spectrum checks requested during review."""
+    fig, axes = plt.subplots(2, 2, figsize=(WIDTH, 5.0))
+    a, b, c, d = axes.flat
+    missing = evidence["preprocessing_sensitivity"][
+        "missing_value_residual_sensitivity"
+    ]
+    method_keys = [
+        "target_mean",
+        "target_median",
+        "observed_additive_least_squares",
+        "complete_case",
+    ]
+    labels = ["mean", "median", "additive LS", "complete"]
+    x = np.arange(len(method_keys))
+    raw = [missing["methods"][key]["raw_participation_ratio"] for key in method_keys]
+    residual = [
+        missing["methods"][key]["residual_participation_ratio"] for key in method_keys
+    ]
+    width = 0.36
+    a.bar(x - width / 2, raw, width, color=BLUE, label="column-standardized")
+    a.bar(x + width / 2, residual, width, color=ORANGE, label="residual")
+    a.set_xticks(x, labels, rotation=24, ha="right")
+    a.set_ylabel("PR effective dimension")
+    a.set_title("Missing-value sensitivity", loc="left")
+    a.legend(frameon=False, fontsize=6.3, loc="upper left")
+    clean(a)
+
+    removed = missing["without_most_affected_target"]
+    drop_keys = ["target_mean", "target_median", "complete_case"]
+    drop_labels = ["mean", "median", "complete"]
+    all_values = [
+        missing["methods"][key]["residual_participation_ratio"]
+        for key in drop_keys
+    ]
+    dropped_values = [removed[key]["residual_participation_ratio"] for key in drop_keys]
+    x = np.arange(len(drop_keys))
+    b.plot(x, all_values, "o-", color=BLUE, label="44 targets")
+    b.plot(x, dropped_values, "s--", color=ORANGE,
+           label=f"without {removed['removed_target']}")
+    b.set_xticks(x, drop_labels)
+    b.set_ylabel("residual PR effective dimension")
+    b.set_title("Remove most-missing target", loc="left")
+    b.set_xlim(-0.25, len(drop_keys) - 0.7)
+    b.legend(frameon=False, fontsize=6.5)
+    clean(b)
+
+    for ax, key, title, color in [
+        (c, "docking44", "Docking-44", BLUE),
+        (d, "dockstring58", "DOCKSTRING-58", ORANGE),
+    ]:
+        sensitivity = evidence["spectral_estimand_sensitivity"][key]
+        for position, (estimand, marker) in enumerate([
+            ("correlation", "o"),
+            ("covariance", "s"),
+        ]):
+            values = [
+                sensitivity[estimand][surface]["participation_ratio"]
+                for surface in ("raw", "residual")
+            ]
+            offset = (position - 0.5) * 0.08
+            ax.plot(np.arange(2) + offset, values, marker=marker, ms=5,
+                    color=color, alpha=1.0 if estimand == "correlation" else 0.65,
+                    label=estimand)
+        ax.set_xticks([0, 1], ["raw", "residual"])
+        ax.set_ylabel("PR effective dimension")
+        ax.set_title(title, loc="left")
+        ax.legend(frameon=False, fontsize=6.5)
+        clean(ax)
+    for ax, label in zip(axes.flat, "abcd"):
+        panel_label(ax, label)
+    fig.subplots_adjust(left=0.11, right=0.985, bottom=0.11, top=0.96,
+                        wspace=0.34, hspace=0.58)
+    assert audit_fig(fig)
+    save(fig, str(OUT / "figS8_spectral_estimand_sensitivities"))
+    plt.close(fig)
+
+
+def fig_s9_physicochemical_target_slopes(evidence: dict) -> None:
+    """Uniform-axis geometry and target-specific size/flexibility slopes."""
+    fig, axes = plt.subplots(3, 2, figsize=(WIDTH, 6.65))
+    for column, (key, title, color) in enumerate([
+        ("docking44", "Docking-44", BLUE),
+        ("dockstring58", "DOCKSTRING-58", ORANGE),
+    ]):
+        axis = evidence["pc1_axis"][key]
+        slopes = evidence["physicochemical_target_slopes"][key]
+        targets = slopes["target_names"]
+        per_target = slopes["per_target"]
+
+        ax = axes[0, column]
+        loading = np.sort(np.asarray(axis["loadings"], dtype=float))
+        uniform = 1.0 / np.sqrt(len(loading))
+        ax.plot(np.arange(1, len(loading) + 1), loading, "o", ms=2.8, color=color)
+        ax.axhline(uniform, color=INK, lw=0.8, ls="--", label="uniform loading")
+        ax.set_xlabel("target ordered by PC1 loading")
+        ax.set_ylabel("PC1 loading")
+        ax.set_title(title, loc="left")
+        ax.text(0.03, 0.06,
+                f"cosine = {axis['cosine_with_uniform_target_vector']:.3f}\n"
+                f"angle = {axis['angle_from_uniform_target_vector_degrees']:.1f}°",
+                transform=ax.transAxes, fontsize=6.7, va="bottom")
+        ax.legend(frameon=False, fontsize=6.3, loc="lower right")
+        clean(ax)
+
+        ax = axes[1, column]
+        mw = np.asarray([
+            per_target[target]["conditional_mw_slope_per_100_da"] for target in targets
+        ])
+        rot = np.asarray([
+            per_target[target]["conditional_rotatable_bond_slope"] for target in targets
+        ])
+        ax.scatter(mw, rot, s=21, color=color, alpha=0.82,
+                   edgecolors="white", linewidths=0.35)
+        ax.axhline(0, color=GREY, lw=0.7)
+        ax.axvline(0, color=GREY, lw=0.7)
+        ax.set_xlabel("conditional MW slope\n(kcal/mol per 100 Da)")
+        ax.set_ylabel("conditional rotatable-bond slope\n(kcal/mol per bond)")
+        conditional = slopes["conditional_model"]
+        conditional_annotation = (
+            f"median: {np.median(mw):.2f}, {np.median(rot):.2f}\n"
+            f"positive flexibility slope: "
+            f"{conditional['targets_with_positive_rotatable_bond_slope']}/{len(targets)}"
+        )
+        if key == "docking44":
+            excluded_sensitivity = slopes[
+                "most_imputed_target_exclusion_sensitivity"
+            ]
+            excluded_conditional = excluded_sensitivity["conditional_model"]
+            conditional_annotation += (
+                f"\nwithout {excluded_sensitivity['removed_target']} medians: "
+                f"{excluded_conditional['molecular_weight_slope']['median']:.2f}, "
+                f"{excluded_conditional['rotatable_bond_slope']['median']:.2f}"
+            )
+        ax.text(0.03, 0.95, conditional_annotation,
+                transform=ax.transAxes, va="top", fontsize=6.2)
+        clean(ax)
+
+        ax = axes[2, column]
+        residual_slope = np.asarray([
+            per_target[target]["molecular_weight_residual_correlation"]
+            for target in targets
+        ])
+        residual_loading = np.asarray([
+            per_target[target]["residual_pc1_loading"] for target in targets
+        ])
+        ax.scatter(residual_slope, residual_loading, s=21, color=color, alpha=0.82,
+                   edgecolors="white", linewidths=0.35)
+        alignment = slopes["descriptor_slopes"]["molecular_weight"][
+            "cosine_with_residual_pc1_loading"
+        ]
+        score_correlation = slopes["descriptor_slopes"]["molecular_weight"][
+            "absolute_correlation_with_residual_pc1_scores"
+        ]
+        ax.set_xlabel("residual target–MW correlation")
+        ax.set_ylabel("residual PC1 target loading")
+        annotation = (
+            f"loading-vector cosine = {alignment:.3f}\n"
+            f"|corr(MW, residual PC1 score)| = {score_correlation:.3f}"
+        )
+        if key == "docking44":
+            exclusion = slopes["most_imputed_target_exclusion_sensitivity"]
+            excluded_mw = exclusion["descriptor_slopes"]["molecular_weight"]
+            annotation += (
+                f"\nwithout {exclusion['removed_target']}: "
+                f"{excluded_mw['cosine_with_residual_pc1_loading']:.3f}, "
+                f"{excluded_mw['absolute_correlation_with_residual_pc1_scores']:.3f}"
+            )
+        ax.text(0.03, 0.95, annotation,
+                transform=ax.transAxes, va="top", fontsize=6.2)
+        clean(ax)
+
+    for ax, label in zip(axes.flat, "abcdef"):
+        panel_label(ax, label)
+    fig.subplots_adjust(left=0.12, right=0.985, bottom=0.08, top=0.975,
+                        wspace=0.36, hspace=0.48)
+    assert audit_fig(fig)
+    save(fig, str(OUT / "figS9_physicochemical_target_slopes"))
+    plt.close(fig)
+
+
+def _legacy_main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     use_paper_style()
     evidence = load_json(PACKAGE / "results/evidence_summary.json")
@@ -875,7 +1063,19 @@ def main() -> None:
     fig_s5_dti(evidence)
     fig_s6_dockstring_supports(evidence)
     fig_s7_residual_correlations(evidence)
+    fig_s8_spectral_estimand_sensitivities(evidence)
+    fig_s9_physicochemical_target_slopes(evidence)
     print(f"Wrote manuscript figures to {OUT}")
+
+
+def main() -> None:
+    """Stop obsolete DTI/RF figure generation from overwriting release outputs."""
+
+    raise SystemExit(
+        "analysis/make_figures.py is a deprecated legacy DTI/RF figure workflow "
+        "and is intentionally disabled. Use analysis/make_manuscript_figures.py "
+        "for the current release figures."
+    )
 
 
 if __name__ == "__main__":

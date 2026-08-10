@@ -1,0 +1,141 @@
+{
+  "analysis": "ordinal within-ligand docking target-map representation",
+  "status": "science-only exploratory test; manuscript unchanged",
+  "verdict": "NO-GO: ordinal geometry is not a reproducibly stronger cross-panel representation than standard centering",
+  "verdict_details": {
+    "criteria": {
+      "positive_in_at_least_three_of_four_continuous_panels": false,
+      "equal_weight_four_panel_qap_p_below_0_05": false,
+      "all_target_deletions_positive_for_four_panel_mean": false,
+      "replicated_endpoint_auc_gain_positive": true,
+      "replicated_endpoint_auc_qap_p_below_0_05": false
+    },
+    "continuous_panel_deltas": {
+      "DAVIS": -0.039911296566022436,
+      "KiRHub": -0.03210119539686912,
+      "PKIS1": -0.043462933074396276,
+      "PKIS2": -0.05406535536047799
+    }
+  },
+  "prespecified_representations": {
+    "raw_column_z": "target-wise z-score of clipped Vina scores; no row projection",
+    "standard_centered": "target-wise z-score of clipped Vina scores, then subtract row mean",
+    "within_ligand_ordinal": "within-row Vina ranks, target-wise z-score, then subtract row mean",
+    "heavy_atom_efficiency": "Vina score divided by heavy-atom count, target-wise z-score, then subtract row mean"
+  },
+  "primary_question": "Does within-ligand target order, stripped of score magnitude, improve transfer over the standard column-z-plus-row-centered Vina geometry?",
+  "claim_boundary": "All results concern target-pair co-response geometry on a fixed 20-kinase panel. They do not establish ligand-level target ranking, unseen-target retrieval, affinity calibration, or docking pose quality.",
+  "continuous_endpoint": "Spearman concordance with each experimental target-correlation geometry after two-way centering the experimental surface",
+  "replicated_endpoint": "target pair in the upper 10% of centered experimental geometry in at least two of DAVIS, PKIS2, and PKIS1",
+  "paired_inference": "same target-label permutation applied to ordinal and standard-centered predictors; experimental endpoints remain fixed",
+  "target_delete_one_ordinal_minus_standard_centered": {
+    "DAVIS__spearman_geometry_concordance": {
+      "minimum": -0.06038591691266468,
+      "median": -0.041290469676242614,
+      "maximum": -0.008980728154174777,
+      "positive_deletions": 0,
+      "total_deletions": 20
+    },
+    "PKIS2__spearman_geometry_concordance": {
+      "minimum": -0.07832097343221256,
+      "median": -0.057847937216502276,
+      "maximum": -0.02247822017423856,
+      "positive_deletions": 0,
+      "total_deletions": 20
+    },
+    "PKIS1__spearman_geometry_concordance": {
+      "minimum": -0.05830753353973171,
+      "median": -0.04369045047639622,
+      "maximum": -0.018938248494012017,
+      "positive_deletions": 0,
+      "total_deletions": 20
+    },
+    "KiRHub__spearman_geometry_concordance": {
+      "minimum": -0.05902032783737726,
+      "median": -0.0331737346101231,
+      "maximum": -0.0052223582211342046,
+      "positive_deletions": 0,
+      "total_deletions": 20
+    },
+    "equal_weight_mean_of_four_panels__mean_spearman_geometry_concordance": {
+      "minimum": -0.06400868793049652,
+      "median": -0.04475784193726451,
+      "maximum": -0.016745866033071766,
+      "positive_deletions": 0,
+      "total_deletions": 20
+    },
+    "replicated_upper_10pct_in_at_least_two_old_panels__roc_auc": {
+      "minimum": -0.014118792599805197,
+      "median": 0.012222763172130224,
+      "maximum": 0.036363636363636265,
+      "positive_deletions": 18,
+      "total_deletions": 20
+    },
+    "replicated_upper_10pct_in_at_least_two_old_panels__average_precision": {
+      "minimum": -0.03059609724850204,
+      "median": 0.0018046032239373289,
+      "maximum": 0.06067054055036686,
+      "positive_deletions": 11,
+      "total_deletions": 20
+    }
+  },
+  "support": {
+    "complete_dockstring_rows_before_exclusion": 260060,
+    "reference_rows_after_old_panel_connectivity_exclusion": 259579,
+    "excluded_connectivity_blocks": 1050,
+    "excluded_dockstring_rows": 481,
+    "positive_score_cells_clipped_to_zero": 22,
+    "chemical_exclusion": "all Standard-InChI connectivity blocks in DAVIS, PKIS2, and PKIS1",
+    "kirhub_identity_boundary": "KiRHub Table S4 exposes compound names but no structures; residual KiRHub chemical overlap with DOCKSTRING cannot be excluded by structure",
+    "targets": [
+      "ABL1",
+      "AKT1",
+      "AKT2",
+      "CDK2",
+      "CSF1R",
+      "EGFR",
+      "FGFR1",
+      "IGF1R",
+      "JAK2",
+      "KDR",
+      "KIT",
+      "LCK",
+      "MAP2K1",
+      "MAPK1",
+      "MAPK14",
+      "MAPKAPK2",
+      "MET",
+      "PLK1",
+      "ROCK1",
+      "SRC"
+    ],
+    "n_targets": 20,
+    "target_pairs": 190,
+    "replicated_positive_pairs": 15,
+    "experimental_ligands": {
+      "DAVIS": 72,
+      "PKIS2": 645,
+      "PKIS1": 360,
+      "KiRHub": 92
+    },
+    "heavy_atom_count_range": [
+      13.0,
+      73.0
+    ]
+  },
+  "configuration": {
+    "qap_permutations": 50000,
+    "seed": 20260805,
+    "positive_score_handling": "clip to zero before all four representations",
+    "ordinal_ties": "average within-row ranks",
+    "continuous_panel_aggregation": "unweighted mean of four panel-specific Spearman correlations"
+  },
+  "spd_boundary": "The frozen SPD panel has only one target (EGFR) in common with this 20-kinase panel, so it cannot test the same target-pair geometry and was not duplicated here.",
+  "sources": {
+    "dockstring_sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64",
+    "davis_sha256": "e5614549ec970bf24bd58d04d8a74feb8f8a53806410eaa8d84d24e96a4ff827",
+    "pkis2_sha256": "48ead22a1f860cd0d5096fa87d5acd329f722fe8d65e693bb0be682a333e2a2c",
+    "pkis1_sha256": "1ffbe7fd0b4fc1ef72f2434a2b247d15c0f2b4d3c34668f112f4b4c9e4ead7dc",
+    "kirhub_sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03"
+  }
+}

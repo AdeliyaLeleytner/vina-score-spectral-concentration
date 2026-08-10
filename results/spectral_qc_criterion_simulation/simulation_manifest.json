@@ -1,0 +1,75 @@
+{
+  "analysis": "spectral_qc_criterion_falsification_simulation",
+  "config": {
+    "ligand_main_sd": 4.5,
+    "n_ligands": 480,
+    "n_seeds": 3,
+    "n_target_families": 4,
+    "n_targets": 20,
+    "null_draws": 39,
+    "replicates": 160,
+    "seed": 20260802,
+    "stable_seed_noise_sd": 0.25,
+    "target_offset_sd": 0.12,
+    "unstable_seed_noise_sd": 1.25
+  },
+  "interpretation_boundary": "No statistic computed only from a score matrix and replicate seeds can distinguish the good surface from an identical surface assigned to the wrong target labels. The proposed gate can establish reproducible, non-independent residual structure, not docking accuracy.",
+  "outputs": {
+    "falsification": {
+      "path": "falsification_summary.json",
+      "sha256": "baee15ea59e55edffad1c16324163e8fa1c1a4e22024b7bd05cd9eb36f636571"
+    },
+    "permutations": {
+      "path": "shuffled_target_permutations.csv",
+      "sha256": "3170031f483c24fedf028e3eeda8b1c5db4a497691555cef70dd2504777d5ac9"
+    },
+    "replicates": {
+      "path": "replicate_metrics.csv",
+      "sha256": "76740ffa4fa8ecb9fc6ea03afc107c1d17b9a72ed56e8d2f2327316aafe78fd6"
+    },
+    "rules": {
+      "path": "predeclared_rules.json",
+      "sha256": "340a0fd091c1528d4114cf42ae935c17ee49100eb72fe85d9353854a71bc9dac"
+    },
+    "summary": {
+      "path": "regime_summary.csv",
+      "sha256": "eff7621836b7c949057d3a34708e81be7c364b1377170f169a90dd0b5dd6ad09"
+    },
+    "threshold_sensitivity": {
+      "path": "threshold_sensitivity.csv",
+      "sha256": "4ec0a1e4510541f7db2a928deddedf09ecd5d9cc652e3e09ca4b89de0db5e954"
+    }
+  },
+  "paired_design": "Every replicate shares ligand effects, target support, and latent truth; the shuffled-label regime is an exact column permutation of the good regime.",
+  "regimes": {
+    "generic_ligand_effect_independent_noise": {
+      "description": "A strong ligand main effect plus a reproducible but target-independent cell artifact; this is the canonical expansion-without-information case.",
+      "truth_informative": false
+    },
+    "good_correlated_interactions": {
+      "description": "A strong ligand main effect plus reproducible, family-correlated ligand--target interactions and small seed noise.",
+      "truth_informative": true
+    },
+    "good_high_dimensional_interactions": {
+      "description": "Accurate, reproducible target-specific interactions with approximately independent target directions; a deliberate false-negative challenge for any criterion that requires residual spectral concentration.",
+      "truth_informative": true
+    },
+    "seed_unstable_noise": {
+      "description": "A strong ligand main effect with independently regenerated cell noise for every seed and no reproducible residual surface.",
+      "truth_informative": false
+    },
+    "shuffled_box_labels": {
+      "description": "The complete good score surface, including seed noise, is globally permuted across target labels, mimicking a receptor/box-label mismatch.",
+      "truth_informative": false
+    },
+    "target_correlated_artifact": {
+      "description": "A reproducible low-dimensional target-correlated artifact independent of the ligand--target truth.",
+      "truth_informative": false
+    }
+  },
+  "runtime": {
+    "numpy": "1.26.4",
+    "pandas": "2.3.2",
+    "python": "3.12.11"
+  }
+}

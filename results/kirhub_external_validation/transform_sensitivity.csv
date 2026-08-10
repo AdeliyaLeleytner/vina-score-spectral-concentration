@@ -1,0 +1,15 @@
+sensitivity_family,transform,description,old_endpoint_roc_auc,old_endpoint_average_precision,old_mean_geometry_spearman,kirhub_specific_roc_auc,kirhub_specific_average_precision,four_panel_roc_auc,four_panel_average_precision
+KiRHub_experimental_transform,raw,no explicit preprocessing before target correlation,0.8034285714285714,0.5970814640337863,0.36184080172479,,,,
+KiRHub_experimental_transform,column_center_only,remove target offsets only; correlation is mathematically invariant,0.8034285714285714,0.5970814640337863,0.36184080172479,,,,
+KiRHub_experimental_transform,row_center_only,remove the per-ligand mean; target offsets are left to correlation,0.9634285714285714,0.6937444511224998,0.8340198308460516,,,,
+KiRHub_experimental_transform,two_way_center,remove ligand and target additive effects,0.9634285714285714,0.6937444511224998,0.8340198308460516,,,,
+KiRHub_experimental_transform,z_before_center,"column z-score, then remove ligand and target additive effects",0.9211428571428572,0.6858417056487878,0.7063754815706899,,,,
+KiRHub_experimental_transform,rank_normal_before_center,"column inverse-normal ranks, then remove additive effects",0.9184761904761904,0.6220584890388812,0.6976703701711633,,,,
+DOCKSTRING_predictor_transform,raw,no explicit preprocessing before target correlation,,,,0.7510003077870114,0.33119034232702843,0.647609819121447,0.2606937809362087
+DOCKSTRING_predictor_transform,column_center_only,remove target offsets only; correlation is mathematically invariant,,,,0.7510003077870114,0.33119034232702843,0.647609819121447,0.2606937809362087
+DOCKSTRING_predictor_transform,row_center_only,remove the per-ligand mean; target offsets are left to correlation,,,,0.7436134195136965,0.28948469418136796,0.7441860465116279,0.3216850106444428
+DOCKSTRING_predictor_transform,two_way_center,remove ligand and target additive effects,,,,0.7436134195136965,0.28948469418136796,0.7441860465116279,0.3216850106444428
+DOCKSTRING_predictor_transform,z_before_center,"column z-score, then remove ligand and target additive effects",,,,0.7528470298553401,0.2820510670061393,0.7535529715762274,0.3226727465895821
+DOCKSTRING_predictor_transform,rank_normal_before_center,"column inverse-normal ranks, then remove additive effects",,,,0.7543859649122807,0.28454558187152607,0.7548449612403101,0.32596135962676054
+DOCKSTRING_predictor_transform,raw_unclipped,unclipped-score sensitivity using the named transform,,,,0.7485380116959064,0.3273329513643743,0.645671834625323,0.25847501205077317
+DOCKSTRING_predictor_transform,two_way_center_unclipped,unclipped-score sensitivity using the named transform,,,,0.7433056325023084,0.28920961624261865,0.7441860465116279,0.3216850106444428

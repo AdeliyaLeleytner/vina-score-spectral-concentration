@@ -1,0 +1,7 @@
+dataset,transformation,mw_quintile_pairs,spearman_median_mw_separation_vs_geometry_dissimilarity,analysis_status
+DOCKSTRING-58,group_heldout_descriptor_adjusted_residual,10,0.9999999999999999,descriptive_post_hoc
+DOCKSTRING-58,raw,10,0.9515151515151514,descriptive_post_hoc
+DOCKSTRING-58,row_centered_residual,10,0.9999999999999999,descriptive_post_hoc
+Docking-44,group_heldout_descriptor_adjusted_residual,10,0.9878787878787878,descriptive_post_hoc
+Docking-44,raw,10,0.8666666666666665,descriptive_post_hoc
+Docking-44,row_centered_residual,10,0.9878787878787878,descriptive_post_hoc

@@ -1,57 +1,101 @@
-# Vina score spectral concentration
+# Target-correlation maps are library-conditional but recoverable from a few hundred ligands in two large Vina panels
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21733767.svg)](https://doi.org/10.5281/zenodo.21733767)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21865607.svg)](https://doi.org/10.5281/zenodo.21865607)
 
-Reproducibility package for the manuscript:
+Reproducibility package for the *Journal of Cheminformatics* Research article:
 
-> Spectral concentration in two large Vina docking-score matrices: two-way centering reveals
-> correlated residual variation without a resolved target-ranking gain
+> **Target-correlation maps are library-conditional but recoverable from a few hundred ligands in two large Vina panels**
 
-The analysis distinguishes the column-standardized ligand-by-target score surface from its
-two-way-centered residual surface. Participation-ratio (PR) effective dimension is used as a
-continuous measure of spectral concentration, not as algebraic rank or a direct measure of
-affinity accuracy or selectivity.
+The study separates three quantities that are often conflated in multi-target docking:
 
-## Headline result
+1. spectral redundancy of a ligand-by-target score matrix;
+2. the target-correlation map estimated across a stated ligand library;
+3. compound-level ordering of targets.
 
-| Matrix | Ligands × targets | Column-standardized PR | Residual PR |
+Participation-ratio (PR) effective dimension is used as a transparent dependence scale. For
+a target correlation matrix it is exactly a transformation of mean squared inter-target
+correlation, not a new rank estimator, docking-quality score or affinity-accuracy metric.
+
+## Main findings
+
+| Matrix | Ligands × targets | Uncentred correlation PR | Within-ligand-centred PR |
 | --- | ---: | ---: | ---: |
 | Docking-44 (Vina-GPU 2.0) | 12,651 × 44 | 1.834 | 9.303 |
-| DOCKSTRING (AutoDock Vina) | 260,060 × 58 | 2.266 | 18.206 |
+| DOCKSTRING-58 (AutoDock Vina) | 260,060 × 58 | 2.266 | 18.206 |
 
-These claims are limited to the tested Vina systems. Two small RF-Score v1 blocks are
-reported as sensitivities, not large independent replications.
+The residual maps remain much more correlated than additive, empirical-marginal and
+row-norm-preserving nulls. Centring reduces spectral concentration; it does not eliminate it
+and is not a quality criterion.
 
-Gaussian additive, empirical residual-permutation and row-norm-preserving nulls put target-
-wise independent residual PR near 43 and 57, far above the observed 9.30 and 18.21. The
-centered surfaces therefore retain correlated variation but remain spectrally concentrated.
-PR is reported alongside mean squared correlation, mean absolute correlation, PC1 fraction,
-full spectra and clustered residual heatmaps; PR is exactly a monotone re-expression of mean
-squared off-diagonal correlation.
+The central practical result is support dependence. In exploratory, post hoc splits within
+the two observed source libraries, low- and high-molecular-weight maps agree at only 0.205
+and 0.351, whereas chemically disjoint controls with matched molecular-weight distributions
+agree at 0.991 and 0.994. The same cross-band shift is already visible on the raw surfaces
+(0.227 and 0.409). Conversely, MW-stratified chemical-group-disjoint halves made separately
+inside each extreme band retain residual-map agreement of 0.966--0.980 and raw-map
+agreement of 0.979--0.991. Thus row centring and restriction alone do not account for the
+transport boundary. Across the seven inspected descriptor splits, the strongest shifts
+in both matrices form a correlated molecular-size family (Labute ASA, molecular weight and
+heavy-atom count); the other splits are weaker. Residual PR moves in opposite directions
+across the MW split in the two matrices, so the result is neither a unique descriptor
+mechanism nor a monotone quality relation. In descriptive, support-specific sampling
+experiments, 200 same-distribution ligands recover the corresponding source-library maps at
+0.942 and 0.918, and chemical-group-held-out comparisons remain 0.927 and 0.916. These
+values do not define a universal 200-ligand accuracy threshold. A target-correlation map
+should be re-estimated after molecular-size-domain shift and reported with its scoring
+pipeline, receptor panel and ligand support.
 
-The dense 74-ligand by six-target ChEMBL block remains a same-support spectral control. The
-operational benchmark now uses every strictly matched ligand with at least two observed
-targets: 137 ligands, 38 targets, 691 observed cells and 2,522 non-tied within-ligand target
-pairs, without experimental activity imputation. Absolute, two-way-residual and
-column-standardized Vina reached pairwise accuracies 0.566, 0.564 and 0.546; the paired
-intervals establish neither superiority nor equivalence. A fixed-support analysis comparing
-only identical ChEMBL endpoint types gave 0.553, 0.555 and 0.538, respectively.
-Human binding Ki/Kd is reported as a complementary assay-restricted estimand. Separate Ki,
-Kd, IC50 and EC50 results, paired target jackknives, one-ligand-per-scaffold permutations and
-a duplicate-collapsed target-pair estimator make the benchmark's precision limits explicit.
+Low-dimensional ligand features have non-zero held-out predictive performance out of chemical group, but the
+basis is not unique. On the fixed 20-target support, seven physicochemical descriptors and a
+locked seven-dimensional count-Morgan projection reduce mean squared target correlation by
+0.234 and 0.238. Across 20 count-Morgan seeds the range is 0.176–0.260.
 
-The operational decomposition is the main practical result. Subtracting a ligand row effect
-is a constant shift within that ligand, so unscaled target-centered and unscaled two-way-
-centered scores have exactly identical target rankings. Differences arise only after
-target-specific scaling, through its interaction with the ligand offset. The release
-therefore treats two-way centering as a spectral diagnostic and requires any scaled ranking
-rule to be validated against absolute scores, target priors, permutation nulls, assay type
-and coverage strata.
+The rank-matched controls also expose a scale-free projection failure. A stable-hash basis
+has mean out-of-fold target R² near zero and correlation reduction near zero, yet its fitted
+component map agrees 0.103–0.348 with four experimental maps. Across 20 row-permuted
+physicochemical bases, held-out predictive performance remains near zero while map agreement ranges
+from −0.072 to 0.564. Target-wise coefficient noise can inherit a low-rank sketch of target
+covariance, and column correlation removes the predicted columns' scale. Component-map agreement
+therefore requires an out-of-fold predictive-performance metric and a nuisance-basis control; it cannot by
+itself establish physicochemical mediation or biological orientation.
 
-## Reproduce
+Four separately published kinase panels bound the external interpretation. Against fixed
+centred experimental endpoints, docking-side centring increments are 0.001–0.045 and are
+unresolved; against uncentred endpoints they are 0.168–0.264. Sequence and KLIFS pocket
+similarity have comparable or higher retrieval point estimates for the fixed co-selective-
+pair endpoint than Vina, and a
+strict within-KLIFS-group analysis does not resolve an additional docking component. DAVIS
+is treated as measurement-limited because 67.0% of its fixed block lies at the reporting
+floor and its continuous target map largely tracks binary above-floor status.
 
-The repository contains all frozen matrices and summaries needed for the reported analysis.
-From a clean clone:
+For ligand-wise ranking, subtracting a ligand row mean is algebraically invariant to target
+order. Unequal target scaling converts that row term into an exact rank-one correction and
+must be validated as a new score rule. The broad DOCKSTRING–ChEMBL benchmark contains 6,480
+informative ligands, 31 targets and 25,214 non-tied observed within-ligand comparisons: absolute, column-standardized
+and scaled-residual Vina concordances are 0.537, 0.530 and 0.529. Residual-minus-absolute is
+−0.008, with chemical-cluster 95% interval [−0.022, 0.006] and target-jackknife approximation
+[−0.056, 0.030]. Absolute Vina exceeds the ligand-invariant target-only prior fitted on the
+external DOCKSTRING reference by
+only 0.013, with paired chemical-cluster interval [−0.011, 0.038]; the benchmark therefore
+does not resolve ligand-specific ordering information beyond that target-only baseline.
+
+A less assay-heterogeneous, endpoint-restricted human binding Ki/Kd arm contains 1,049
+informative ligands and 3,955 comparisons; it can still compare a Ki-derived cell with a Kd-derived
+cell (91.3% of pairs used the same single endpoint, 0.8% were unambiguous Ki–Kd comparisons,
+and 7.9% involved at least one cell pooling both endpoint types):
+absolute and residual scores are 0.559 and 0.520, with paired difference −0.040,
+chemical-cluster interval [−0.091, 0.003] and target-jackknife approximation
+[−0.133, 0.029]. Separate endpoints are heterogeneous: Ki is negative with a chemical
+interval excluding zero, while the much smaller Kd arm reverses sign and remains unresolved.
+No universal normalized representation is supported.
+
+The reusable output is a decision-oriented audit: define the score, endpoint, ligand support
+and target panel; report correlation and covariance spectra; test molecular-size-domain transport and other support shifts;
+pair fitted-component maps with held-out predictive-performance and nuisance controls; compare the full
+predictor-by-endpoint factorial; include protein-similarity baselines; and validate any
+operational score with chemical- and target-aware uncertainty.
+
+## Build the submission package
 
 ```bash
 uv venv --python 3.12.11 .venv
@@ -59,76 +103,70 @@ uv pip install --python .venv/bin/python -r requirements.lock
 make PYTHON=.venv/bin/python all
 ```
 
-`make all` verifies 26 inputs against byte sizes and SHA-256 digests, rebuilds the evidence
-ledger, validates mathematical and cross-analysis invariants, generates and checks a
-registered TeX number source, regenerates every figure and supplementary table, and compiles
-both PDFs twice.
-The 500-permutation and 5,000-replicate target-preference analyses are the longest steps.
-Seed 0 initializes all stochastic procedures; derived support and replicate seeds are stored
-in the evidence ledger.
+`make all` verifies frozen inputs and manuscript-facing result bundles by SHA-256, runs the
+invariant tests, rebuilds the evidence ledger, regenerates registered values/tables/figures,
+and compiles the article and Supplement twice.
 
-Container reproduction is self-contained:
+The report-layer build does not silently download source-restricted assay files or rerun
+receptor preparation, pose generation or docking. Retrieval commands and dataset-specific
+analysis contracts are documented in `PROVENANCE.md` and `REPRODUCIBILITY.md`.
+The secondary fixed-pose ODDT rescoring outputs are also checksum-verified rather than
+recreated by the default container: their source run used ODDT 0.7 in a separate Python 3.9
+environment, plus external pose archives and a smina executable.
+
+Container build:
 
 ```bash
-docker build -t vina-score-spectral-concentration .
-docker run --rm vina-score-spectral-concentration
+docker build -t vina-target-map-audit .
+docker run --rm vina-target-map-audit
 ```
 
-## Package map
-
-- `manuscript.tex` and `manuscript.pdf`: article source and compiled manuscript.
-- `supplementary_information.tex` and `.pdf`: supplementary source and compiled PDF.
-- `analysis/build_evidence.py`: statistical analysis and machine-readable evidence ledger.
-- `analysis/validate_evidence.py`: PR/correlation, centering, null and ranking invariants.
-- `analysis/spectral_audit.py`: reusable CLI for applying the audit to a dense score matrix.
-- `analysis/make_figures.py`: five main and seven supplementary figures.
-- `analysis/make_supplement_tables.py`: supplementary tables generated from the ledger.
-- `analysis/make_reported_results.py` and `verify_reported_results.py`: generated TeX
-  numbers/table and build-time drift detection.
-- `results/evidence_summary.json`: authoritative numeric result ledger.
-- `results/spectral_metric_comparison.csv`: PR, correlation and PC1 summaries.
-- `results/residual_target_order.csv`: target/family mapping for clustered residual heatmaps.
-- `results/complete_case_chemical_support.csv`: descriptor audit of complete-case selection.
-- `results/operational_benchmark_representations.csv`: operational score summary and cluster intervals.
-- `results/operational_benchmark_contrasts.csv`: paired contrasts, equivalence sensitivities and detectable differences.
-- `results/operational_assay_sensitivities.csv`: endpoint-aligned benchmark results.
-- `results/spectral_audit_protocol.csv`: machine-readable nine-step audit protocol.
-- `data/frozen/`: compressed frozen analysis inputs.
-- `data_manifest.csv`: source, version, license, byte size, and SHA-256 for every input.
-- `PROVENANCE.md`: boundary between reproducible analysis and upstream docking/rescoring.
-- `REPRODUCIBILITY.md`: expected outputs and validation checks.
-- `REVISION_MATRIX.md`: disposition of the pre-submission major-revision feedback.
-
-## Scope of reproducibility
-
-The release exactly reproduces the manuscript from frozen score/activity matrices. It does
-not rerun receptor preparation, pose generation, Vina docking, or RF-Score rescoring; those
-upstream stages are documented in `PROVENANCE.md` and the cited source releases. This is an
-intentional boundary: the frozen matrices themselves are versioned and checksum-verified.
-
-## Licenses and citation
-
-Analysis code is MIT licensed. Data products have file-specific licenses in
-`data_manifest.csv` and `DATA_LICENSES.md`; in particular, ChEMBL-derived files remain under
-CC BY-SA 3.0 and DOCKSTRING remains under Apache-2.0. Cite the manuscript and the upstream
-datasets when reusing the package. Citation metadata are provided in `CITATION.cff`.
-Versioned archives are indexed under the Zenodo concept DOI
-[`10.5281/zenodo.21733767`](https://doi.org/10.5281/zenodo.21733767).
-
-## Apply the audit to another matrix
-
-For a dense CSV or TSV with one ligand per row and target-score columns:
+## Apply the spectral audit to another matrix
 
 ```bash
 .venv/bin/python analysis/spectral_audit.py scores.csv \
   --score-columns target_A,target_B,target_C \
   --id-column ligand_id \
+  --recovery-sizes 50,100,200,500 \
+  --recovery-repeats 100 \
   --output audit.json \
   --plot-prefix audit_diagnostics
 ```
 
-The output contains both spectral estimands, paired chemical-support uncertainty,
-leave-one-target-out sensitivities, transformation-matched parallel analysis, and Gaussian
-additive, empirical residual and row-norm-preserving nulls. The optional plot contains
-spectra, correlation distributions and raw/residual heatmaps. Task-level ranking validation
-remains dataset-specific.
+The generic command reports uncentred and within-ligand-centred spectra, correlation
+distributions, heatmaps, target-composition sensitivity, matched nulls and a same-support
+map-recovery curve. The curve chooses a matrix-specific probe size; the observed 200-ligand
+result in this article is not a universal threshold. Experimental geometry, chemical-domain
+transport and task-level ranking remain dataset-specific.
+
+## Package map
+
+- `manuscript.tex`, `manuscript.pdf`: article source and compiled manuscript.
+- `supplementary_information.tex`, `supplementary_information.pdf`: Supplement.
+- `analysis/build_manuscript_evidence.py`: machine-readable report ledger.
+- `analysis/make_reported_results.py`: registered manuscript values.
+- `analysis/make_manuscript_figures.py`: five main figures.
+- `analysis/make_supplement_tables.py`: evidence-driven supplementary tables.
+- `analysis/descriptor_correlation_reduction_uncertainty.py`: repeated chemical-group
+  partitions and score-blind supports.
+- `analysis/descriptor_rank_matched_controls.py`: physicochemical, count-Morgan, stable-hash
+  and row-permuted nuisance controls.
+- `analysis/dockstring_chembl_ranking_benchmark.py`: broad and endpoint-restricted ranking
+  benchmarks.
+- `analysis/spectral_audit.py`: reusable spectral-audit CLI.
+- `results/manuscript_evidence.json`: evidence consumed by the paper.
+- `data_manifest.csv`: frozen matrix metadata, rights, sizes and checksums.
+- `results/manuscript_source_manifest.csv`: checksums for manuscript-facing artifacts.
+- `PROVENANCE.md`, `DATA_LICENSES.md`, `REPRODUCIBILITY.md`: source, rights and build boundaries.
+
+## Licensing and citation
+
+Analysis code is MIT licensed. File-specific data rights are recorded in
+`data_manifest.csv` and `DATA_LICENSES.md`. ChEMBL-derived data retain their source terms and
+DOCKSTRING is distributed under Apache-2.0. The package does not redistribute the KiRHub
+workbook or compound-level activity profiles; it releases only the aggregate target-pair
+statistics used in the article under the documented boundary.
+
+Citation metadata are in `CITATION.cff`. The immutable `v3.0.0` submission archive has DOI
+[`10.5281/zenodo.21865607`](https://doi.org/10.5281/zenodo.21865607); all versions are indexed
+by the concept DOI [`10.5281/zenodo.21733767`](https://doi.org/10.5281/zenodo.21733767).

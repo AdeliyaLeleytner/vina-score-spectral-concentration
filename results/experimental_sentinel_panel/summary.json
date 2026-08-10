@@ -1,0 +1,73 @@
+{
+  "analysis_status": "post_hoc_exploratory_science_only",
+  "chemical_validation": "five-fold GroupKFold by RDKit Bemis-Murcko scaffold; the existing helper assigns acyclic molecules to singleton groups",
+  "claim_boundary": "reconstruction of held-out targets within three existing dense kinase assay panels; not prospective assay-budget validation and not retrieval of targets outside the fixed 20-kinase panel",
+  "dockstring_support": {
+    "complete_dockstring_rows": 260060,
+    "conservative_reference_rows": 256540,
+    "dockstring_inchikey_boundary": "DOCKSTRING supplied keys systematically use a different suffix from current RDKit Standard InChIKeys; identity exclusion and acyclic grouping use the recomputed 14-character connectivity block.",
+    "exact_connectivity_excluded_rows": 481,
+    "exact_reference_rows": 259579,
+    "experimental_cyclic_murcko_scaffolds": 575,
+    "kirhub_chemical_exclusion_boundary": "KiRHub provides compound names but no structures; exact or scaffold exclusion against KiRHub was impossible.",
+    "positive_scores_clipped_to_zero": 22,
+    "reference_acyclic_connectivity_groups": 751,
+    "reference_cyclic_murcko_groups": 99234,
+    "reference_scaffold_groups": 99985,
+    "reported_vs_recomputed_connectivity_block_mismatches": 1031,
+    "reported_vs_recomputed_full_inchikey_string_differences": 260060,
+    "same_cyclic_murcko_additionally_excluded_rows": 3039
+  },
+  "experimental_panels": {
+    "DAVIS": {
+      "ligands": 72,
+      "targets": 20
+    },
+    "PKIS1": {
+      "ligands": 360,
+      "targets": 20
+    },
+    "PKIS2": {
+      "ligands": 645,
+      "targets": 20
+    }
+  },
+  "fixed_targets": [
+    "ABL1",
+    "AKT1",
+    "AKT2",
+    "CDK2",
+    "CSF1R",
+    "EGFR",
+    "FGFR1",
+    "IGF1R",
+    "JAK2",
+    "KDR",
+    "KIT",
+    "LCK",
+    "MAP2K1",
+    "MAPK1",
+    "MAPK14",
+    "MAPKAPK2",
+    "MET",
+    "PLK1",
+    "ROCK1",
+    "SRC"
+  ],
+  "k_values": [
+    3,
+    5,
+    10
+  ],
+  "metric_boundary": "full-target R2 is the primary fair panel-compression metric because every k-target design is evaluated on the same 20 targets, with measured sentinels inserted exactly. Held-out-target R2 changes its target support when the sentinel set changes and is therefore reported only as a target-set-dependent diagnostic. Rank and top-5 metrics test a distinct within-ligand objective and need not improve with squared-error recovery.",
+  "model": "fold-local target z-scoring; seven physicochemical descriptors plus observed sentinel experimental values; fixed ridge alpha=1.0 after fold-local predictor standardization",
+  "primary_target_selection": "DEIM/pivoted-QR sensor placement on the leading k eigenvectors of the residual target correlation from all exact-connectivity-excluded complete DOCKSTRING ligands",
+  "random_seed": 20260819,
+  "random_target_panels": 2000,
+  "raw_vina_selection": "representation-matched DEIM on the raw Vina target correlation",
+  "sequence_selection": "deterministic greedy farthest-point traversal of one minus receptor-domain sequence identity",
+  "support_repeats": 25,
+  "support_sample_size": 15000,
+  "support_sensitivity": "25 independent random supports of 15,000 ligands, five leave-one-scaffold-fold-out supports, and conservative same-cyclic-Murcko exclusion",
+  "target_selection_uses_experimental_outcomes": false
+}

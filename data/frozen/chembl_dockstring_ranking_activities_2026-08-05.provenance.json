@@ -1,0 +1,217 @@
+{
+  "activity_id_max": 29328815,
+  "activity_id_min": 31964,
+  "api_url": "https://www.ebi.ac.uk/chembl/api/data/activity.json",
+  "differs_from_chembl_sea_activities_2026-08-03": [
+    "no pchembl_value floor (the SEA snapshot is truncated at pchembl_value >= 6)",
+    "no assay_type restriction (the SEA snapshot keeps assay_type=B only)",
+    "no data_validity_comment or potential_duplicate server-side exclusion",
+    "assay_type and target_organism retained as columns for downstream sensitivities"
+  ],
+  "notes": [
+    "Targets are the same 31 human SINGLE PROTEIN mappings as the SEA snapshot.",
+    "This activity contract matches the published Docking-44 x ChEMBL pull: non-null pChEMBL, exact standard relation, no potency floor.",
+    "Endpoint-type restriction and chemical standardisation are downstream operations."
+  ],
+  "output_sha256": "10f99671b9cb126510ca84a6838a52b3791b3508d3490a043929d8054e2dc23a",
+  "query": {
+    "limit": 1000,
+    "offset": 0,
+    "only": "activity_id,target_chembl_id,molecule_chembl_id,canonical_smiles,pchembl_value,standard_type,standard_relation,standard_value,standard_units,assay_chembl_id,assay_type,document_chembl_id,target_organism,data_validity_comment,potential_duplicate",
+    "pchembl_value__isnull": "false",
+    "standard_relation": "=",
+    "target_chembl_id__in": "CHEMBL1844,CHEMBL1862,CHEMBL1871,CHEMBL1936,CHEMBL1957,CHEMBL203,CHEMBL2034,CHEMBL204,CHEMBL206,CHEMBL208,CHEMBL210,CHEMBL213,CHEMBL217,CHEMBL2208,CHEMBL230,CHEMBL242,CHEMBL2431,CHEMBL251,CHEMBL258,CHEMBL260,CHEMBL267,CHEMBL279,CHEMBL2971,CHEMBL301,CHEMBL3024,CHEMBL3231,CHEMBL3587,CHEMBL3650,CHEMBL3717,CHEMBL4040,CHEMBL4282"
+  },
+  "record_count": 212254,
+  "records_per_target": {
+    "CHEMBL1844": 3834,
+    "CHEMBL1862": 6314,
+    "CHEMBL1871": 5530,
+    "CHEMBL1936": 5711,
+    "CHEMBL1957": 3545,
+    "CHEMBL203": 21342,
+    "CHEMBL2034": 6155,
+    "CHEMBL204": 6516,
+    "CHEMBL206": 7966,
+    "CHEMBL208": 3316,
+    "CHEMBL210": 3285,
+    "CHEMBL213": 2032,
+    "CHEMBL217": 15078,
+    "CHEMBL2208": 1364,
+    "CHEMBL230": 6289,
+    "CHEMBL242": 3433,
+    "CHEMBL2431": 1750,
+    "CHEMBL251": 8818,
+    "CHEMBL258": 2999,
+    "CHEMBL260": 7043,
+    "CHEMBL267": 5567,
+    "CHEMBL279": 14484,
+    "CHEMBL2971": 18070,
+    "CHEMBL301": 3454,
+    "CHEMBL3024": 1823,
+    "CHEMBL3231": 3346,
+    "CHEMBL3587": 1523,
+    "CHEMBL3650": 6592,
+    "CHEMBL3717": 7686,
+    "CHEMBL4040": 21020,
+    "CHEMBL4282": 6369
+  },
+  "retrieved_at_utc": "2026-08-04T22:16:11.801225+00:00",
+  "target_contract": {
+    "ABL1": {
+      "chembl": "CHEMBL1862",
+      "panels": "kinase20",
+      "uniprot": "P00519"
+    },
+    "ADORA2A": {
+      "chembl": "CHEMBL251",
+      "panels": "spd12",
+      "uniprot": "P29274"
+    },
+    "ADRB1": {
+      "chembl": "CHEMBL213",
+      "panels": "spd12",
+      "uniprot": "P08588"
+    },
+    "ADRB2": {
+      "chembl": "CHEMBL210",
+      "panels": "spd12",
+      "uniprot": "P07550"
+    },
+    "AKT1": {
+      "chembl": "CHEMBL4282",
+      "panels": "kinase20",
+      "uniprot": "P31749"
+    },
+    "AKT2": {
+      "chembl": "CHEMBL2431",
+      "panels": "kinase20",
+      "uniprot": "P31751"
+    },
+    "AR": {
+      "chembl": "CHEMBL1871",
+      "panels": "spd12",
+      "uniprot": "P10275"
+    },
+    "CDK2": {
+      "chembl": "CHEMBL301",
+      "panels": "kinase20",
+      "uniprot": "P24941"
+    },
+    "CSF1R": {
+      "chembl": "CHEMBL1844",
+      "panels": "kinase20",
+      "uniprot": "P07333"
+    },
+    "DRD2": {
+      "chembl": "CHEMBL217",
+      "panels": "spd12",
+      "uniprot": "P14416"
+    },
+    "EGFR": {
+      "chembl": "CHEMBL203",
+      "panels": "kinase20,spd12",
+      "uniprot": "P00533"
+    },
+    "ESR1": {
+      "chembl": "CHEMBL206",
+      "panels": "spd12",
+      "uniprot": "P03372"
+    },
+    "ESR2": {
+      "chembl": "CHEMBL242",
+      "panels": "spd12",
+      "uniprot": "Q92731"
+    },
+    "F2": {
+      "chembl": "CHEMBL204",
+      "panels": "spd12",
+      "uniprot": "P00734"
+    },
+    "FGFR1": {
+      "chembl": "CHEMBL3650",
+      "panels": "kinase20",
+      "uniprot": "P11362"
+    },
+    "IGF1R": {
+      "chembl": "CHEMBL1957",
+      "panels": "kinase20",
+      "uniprot": "P08069"
+    },
+    "JAK2": {
+      "chembl": "CHEMBL2971",
+      "panels": "kinase20",
+      "uniprot": "O60674"
+    },
+    "KDR": {
+      "chembl": "CHEMBL279",
+      "panels": "kinase20",
+      "uniprot": "P35968"
+    },
+    "KIT": {
+      "chembl": "CHEMBL1936",
+      "panels": "kinase20",
+      "uniprot": "P10721"
+    },
+    "LCK": {
+      "chembl": "CHEMBL258",
+      "panels": "kinase20",
+      "uniprot": "P06239"
+    },
+    "MAP2K1": {
+      "chembl": "CHEMBL3587",
+      "panels": "kinase20",
+      "uniprot": "Q02750"
+    },
+    "MAPK1": {
+      "chembl": "CHEMBL4040",
+      "panels": "kinase20",
+      "uniprot": "P28482"
+    },
+    "MAPK14": {
+      "chembl": "CHEMBL260",
+      "panels": "kinase20",
+      "uniprot": "Q16539"
+    },
+    "MAPKAPK2": {
+      "chembl": "CHEMBL2208",
+      "panels": "kinase20",
+      "uniprot": "P49137"
+    },
+    "MET": {
+      "chembl": "CHEMBL3717",
+      "panels": "kinase20",
+      "uniprot": "P08581"
+    },
+    "NR3C1": {
+      "chembl": "CHEMBL2034",
+      "panels": "spd12",
+      "uniprot": "P04150"
+    },
+    "PGR": {
+      "chembl": "CHEMBL208",
+      "panels": "spd12",
+      "uniprot": "P06401"
+    },
+    "PLK1": {
+      "chembl": "CHEMBL3024",
+      "panels": "kinase20",
+      "uniprot": "P53350"
+    },
+    "PTGS2": {
+      "chembl": "CHEMBL230",
+      "panels": "spd12",
+      "uniprot": "P35354"
+    },
+    "ROCK1": {
+      "chembl": "CHEMBL3231",
+      "panels": "kinase20",
+      "uniprot": "Q13464"
+    },
+    "SRC": {
+      "chembl": "CHEMBL267",
+      "panels": "kinase20",
+      "uniprot": "P12931"
+    }
+  }
+}

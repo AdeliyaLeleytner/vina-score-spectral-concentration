@@ -1,0 +1,7 @@
+klifs_group,targets,target_count,movable,within_group_pair_positions,within_block_label_permutations
+TK,ABL1;CSF1R;EGFR;FGFR1;IGF1R;JAK2;KDR;KIT;LCK;MET;SRC,11,True,55,39916800
+AGC,AKT1;AKT2;ROCK1,3,True,3,6
+CMGC,CDK2;MAPK1;MAPK14,3,True,3,6
+STE,MAP2K1,1,False,0,1
+CAMK,MAPKAPK2,1,False,0,1
+Other,PLK1,1,False,0,1

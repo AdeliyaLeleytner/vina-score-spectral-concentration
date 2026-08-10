@@ -1,0 +1,404 @@
+{
+  "analysis": "chemistry-support edge stability as a confidence score for target-pair co-selectivity",
+  "analysis_status": "post_hoc_science_only_decisive_no_go",
+  "calibration_target_breadth": {
+    "activity_threshold_percent_inhibition": 50.0,
+    "compounds": 80,
+    "selected_compound_id_sha256": "5e88466dd0c72e92ce99f2d037f8307ac12b1bc8321d902a389ca4418b7623bb",
+    "selection": "Morgan-r2/2048 MaxMin; no activity used for selection",
+    "selection_seed": 20260830
+  },
+  "claim_boundary": "This is one fixed post-hoc test on a 20-kinase Vina panel. An initial whole-group 50 x 2,000 allocator was rejected before inference after an outcome-blind audit found dominant-analogue-series imbalance. The released 50 x 1,995 design is the maximum possible with one representative from each of 99,755 groups. No endpoint, statistic, model hyperparameter, or GO threshold changed in response to the result. A NO-GO rejects this confidence feature; it does not prove that prospective domain-shift uncertainty is never useful.",
+  "configuration": {
+    "discovery_panel": "PKIS1",
+    "fixed_lcb_multiplier": 1.645,
+    "ligands_per_support": 1995,
+    "locked_panels": [
+      "DAVIS",
+      "PKIS2",
+      "KiRHub"
+    ],
+    "logistic_sensitivity_C_fixed_without_tuning": 1.0,
+    "primary_model": "class-balanced ridge linear probability ranking score",
+    "primary_stability": "negative SD of within-support edge percentile rank",
+    "primary_top_fraction": 0.1,
+    "qap_permutations": 50000,
+    "qap_seed": 20360808,
+    "random_support_seed": 20260809,
+    "ridge_alpha_fixed_without_tuning": 1.0,
+    "scaffold_support_seed": 20260808,
+    "scaffold_supports": 50,
+    "sensitivity_top_fractions": [
+      0.05,
+      0.1,
+      0.15
+    ],
+    "targets": [
+      "ABL1",
+      "AKT1",
+      "AKT2",
+      "CDK2",
+      "CSF1R",
+      "EGFR",
+      "FGFR1",
+      "IGF1R",
+      "JAK2",
+      "KDR",
+      "KIT",
+      "LCK",
+      "MAP2K1",
+      "MAPK1",
+      "MAPK14",
+      "MAPKAPK2",
+      "MET",
+      "PLK1",
+      "ROCK1",
+      "SRC"
+    ]
+  },
+  "continuous_partial_associations": [
+    {
+      "analysis_role": "post_hoc_discovery_model_fit_only",
+      "candidate_name": "scaffold_residual_stability_primary",
+      "controls": "mean scaffold-support residual docking edge; receptor-domain sequence identity; KLIFS pocket identity; two outcome-blind MaxMin-80 target-breadth pair features",
+      "panel": "PKIS1",
+      "partial_spearman_stability_vs_continuous_experimental_geometry": -0.04555892239682492
+    },
+    {
+      "analysis_role": "locked_no_retuning_evaluation",
+      "candidate_name": "scaffold_residual_stability_primary",
+      "controls": "mean scaffold-support residual docking edge; receptor-domain sequence identity; KLIFS pocket identity; two outcome-blind MaxMin-80 target-breadth pair features",
+      "panel": "DAVIS",
+      "partial_spearman_stability_vs_continuous_experimental_geometry": -0.08135609126976583
+    },
+    {
+      "analysis_role": "locked_no_retuning_evaluation",
+      "candidate_name": "scaffold_residual_stability_primary",
+      "controls": "mean scaffold-support residual docking edge; receptor-domain sequence identity; KLIFS pocket identity; two outcome-blind MaxMin-80 target-breadth pair features",
+      "panel": "PKIS2",
+      "partial_spearman_stability_vs_continuous_experimental_geometry": 0.02732951220164837
+    },
+    {
+      "analysis_role": "locked_no_retuning_evaluation",
+      "candidate_name": "scaffold_residual_stability_primary",
+      "controls": "mean scaffold-support residual docking edge; receptor-domain sequence identity; KLIFS pocket identity; two outcome-blind MaxMin-80 target-breadth pair features",
+      "panel": "KiRHub",
+      "partial_spearman_stability_vs_continuous_experimental_geometry": -0.11535200053849738
+    },
+    {
+      "analysis_role": "post_hoc_discovery_model_fit_only",
+      "candidate_name": "random_residual_stability_control",
+      "controls": "mean scaffold-support residual docking edge; receptor-domain sequence identity; KLIFS pocket identity; two outcome-blind MaxMin-80 target-breadth pair features",
+      "panel": "PKIS1",
+      "partial_spearman_stability_vs_continuous_experimental_geometry": 0.0017250848646542974
+    },
+    {
+      "analysis_role": "locked_no_retuning_evaluation",
+      "candidate_name": "random_residual_stability_control",
+      "controls": "mean scaffold-support residual docking edge; receptor-domain sequence identity; KLIFS pocket identity; two outcome-blind MaxMin-80 target-breadth pair features",
+      "panel": "DAVIS",
+      "partial_spearman_stability_vs_continuous_experimental_geometry": -0.024729990252350748
+    },
+    {
+      "analysis_role": "locked_no_retuning_evaluation",
+      "candidate_name": "random_residual_stability_control",
+      "controls": "mean scaffold-support residual docking edge; receptor-domain sequence identity; KLIFS pocket identity; two outcome-blind MaxMin-80 target-breadth pair features",
+      "panel": "PKIS2",
+      "partial_spearman_stability_vs_continuous_experimental_geometry": 0.05708342335651972
+    },
+    {
+      "analysis_role": "locked_no_retuning_evaluation",
+      "candidate_name": "random_residual_stability_control",
+      "controls": "mean scaffold-support residual docking edge; receptor-domain sequence identity; KLIFS pocket identity; two outcome-blind MaxMin-80 target-breadth pair features",
+      "panel": "KiRHub",
+      "partial_spearman_stability_vs_continuous_experimental_geometry": -0.07945723466790068
+    },
+    {
+      "analysis_role": "post_hoc_discovery_model_fit_only",
+      "candidate_name": "scaffold_raw_stability_control",
+      "controls": "mean scaffold-support residual docking edge; receptor-domain sequence identity; KLIFS pocket identity; two outcome-blind MaxMin-80 target-breadth pair features",
+      "panel": "PKIS1",
+      "partial_spearman_stability_vs_continuous_experimental_geometry": -0.1000809230637904
+    },
+    {
+      "analysis_role": "locked_no_retuning_evaluation",
+      "candidate_name": "scaffold_raw_stability_control",
+      "controls": "mean scaffold-support residual docking edge; receptor-domain sequence identity; KLIFS pocket identity; two outcome-blind MaxMin-80 target-breadth pair features",
+      "panel": "DAVIS",
+      "partial_spearman_stability_vs_continuous_experimental_geometry": -0.019853361765573358
+    },
+    {
+      "analysis_role": "locked_no_retuning_evaluation",
+      "candidate_name": "scaffold_raw_stability_control",
+      "controls": "mean scaffold-support residual docking edge; receptor-domain sequence identity; KLIFS pocket identity; two outcome-blind MaxMin-80 target-breadth pair features",
+      "panel": "PKIS2",
+      "partial_spearman_stability_vs_continuous_experimental_geometry": -0.08669693171309126
+    },
+    {
+      "analysis_role": "locked_no_retuning_evaluation",
+      "candidate_name": "scaffold_raw_stability_control",
+      "controls": "mean scaffold-support residual docking edge; receptor-domain sequence identity; KLIFS pocket identity; two outcome-blind MaxMin-80 target-breadth pair features",
+      "panel": "KiRHub",
+      "partial_spearman_stability_vs_continuous_experimental_geometry": -0.03465585953187093
+    }
+  ],
+  "decision": "NO-GO",
+  "go_rule_checks": {
+    "all_locked_panels_nonnegative": false,
+    "at_least_18_of_20_positive_target_drops": false,
+    "conditional_qap_p_below_0_05": false,
+    "locked_mean_effect_thresholds": false
+  },
+  "input_provenance": {
+    "complete_dockstring_rows": 260060,
+    "conservative_reference_rows": 256540,
+    "dockstring_inchikey_boundary": "DOCKSTRING supplied keys systematically use a different suffix from current RDKit Standard InChIKeys; identity exclusion and acyclic grouping use the recomputed 14-character connectivity block.",
+    "exact_connectivity_excluded_rows": 481,
+    "exact_reference_rows": 259579,
+    "experimental_cyclic_murcko_scaffolds": 575,
+    "kirhub_chemical_exclusion_boundary": "KiRHub provides compound names but no structures; exact or scaffold exclusion against KiRHub was impossible.",
+    "positive_scores_clipped_to_zero": 22,
+    "reference_acyclic_connectivity_groups": 751,
+    "reference_cyclic_murcko_groups": 99234,
+    "reference_scaffold_groups": 99985,
+    "reported_vs_recomputed_connectivity_block_mismatches": 1031,
+    "reported_vs_recomputed_full_inchikey_string_differences": 260060,
+    "same_cyclic_murcko_additionally_excluded_rows": 3039,
+    "target_pair_path": "results/klifs_pocket_control/target_pairs.csv",
+    "target_pair_sha256": "08238b207ac4f9f991193db0d0e03063403727f98aa1230cbfe636eeb6501a23"
+  },
+  "negative_and_direct_controls_locked_mean_deltas": {
+    "fixed_outcome_blind_residual_LCB": {
+      "average_precision": -0.0017635420673050388,
+      "continuous_spearman": -0.0016504320720358012,
+      "roc_auc": -0.0010259567046270919
+    },
+    "random_residual_stability_control": {
+      "average_precision": -0.03852055005571614,
+      "continuous_spearman": -0.019612731654616522,
+      "roc_auc": -0.021339899456242928
+    },
+    "scaffold_raw_stability_control": {
+      "average_precision": -0.0069403123170901915,
+      "continuous_spearman": -0.0007056617693156723,
+      "roc_auc": -0.0009233610341643125
+    }
+  },
+  "output_files": {
+    "calibration_target_breadth.csv": {
+      "rows": 20,
+      "sha256": "614ce8f90cfe0fb9d71701f801b7739e207ae29d809c11321eb89de20181ac81"
+    },
+    "edge_stability_features.csv": {
+      "rows": 190,
+      "sha256": "197d45f044357af27fd914643696361e4677afff750c9e2f5a134089c04c5847"
+    },
+    "panel_metrics.csv": {
+      "rows": 180,
+      "sha256": "6881a7337cb02ee1d4c7dc330314cfe8de96d3973e257d80e511bb30080999d3"
+    },
+    "partial_rank_associations.csv": {
+      "rows": 12,
+      "sha256": "395bd19fbc379276b104b169b9b818a7dc2594c672fa7f12e91fe40402e508b7"
+    },
+    "primary_target_label_qap.csv": {
+      "rows": 3,
+      "sha256": "d32bc6962965ff374468d4396c8c544ff5487768bc8991430c860734209a09d8"
+    },
+    "support_edge_values.csv": {
+      "rows": 38000,
+      "sha256": "bc2f38d6b282a31220637151f517943403a7cfba936facb66da7c557e37a7b72"
+    },
+    "support_manifest.csv": {
+      "rows": 100,
+      "sha256": "343c5e7f3b718295499fd59b20fc24a710dd6fa47dcb78b655436f331e41a4f8"
+    },
+    "support_pairwise_stability.csv": {
+      "rows": 4900,
+      "sha256": "0d0612820284cf243a3b22b07be3e9472803d4eec7373cbda388a70002b2aa6f"
+    },
+    "target_jackknife.csv": {
+      "rows": 180,
+      "sha256": "6c42ba03464e46c515343ecaa2d866d914d93688083235dc6e2c1d1d766babb0"
+    }
+  },
+  "prespecified_go_rule": {
+    "conditional_qap_one_sided_p_maximum": 0.05,
+    "every_locked_panel_delta_nonnegative": true,
+    "locked_panel_mean_minimum_effects": {
+      "average_precision": 0.04,
+      "continuous_spearman": 0.05,
+      "roc_auc": 0.07
+    },
+    "minimum_positive_target_drops_out_of_20": 18
+  },
+  "primary_locked_panel_deltas": {
+    "average_precision": {
+      "DAVIS": -0.04171801783501328,
+      "KiRHub": -0.025841143119047283,
+      "PKIS2": -0.03010538705204341
+    },
+    "continuous_spearman": {
+      "DAVIS": -0.01734878207735746,
+      "KiRHub": -0.020398290665581964,
+      "PKIS2": 0.007276480905579863
+    },
+    "roc_auc": {
+      "DAVIS": 0.0015389350569406934,
+      "KiRHub": -0.01138811942136031,
+      "PKIS2": -0.016620498614958512
+    }
+  },
+  "primary_locked_panel_mean_deltas": {
+    "average_precision": -0.03255484933536799,
+    "continuous_spearman": -0.01015686394578652,
+    "roc_auc": -0.00882322765979271
+  },
+  "primary_qap": [
+    {
+      "locked_panel_mean_candidate_minus_baseline": -0.01015686394578652,
+      "metric": "continuous_spearman",
+      "null_interval_95_high": 0.012817981544903533,
+      "null_interval_95_low": -0.055700493234249145,
+      "null_mean": -0.008145347639021947,
+      "null_median": -0.0027605371777320218,
+      "permutation_contract": "target-relabel only the scaffold-residual stability network; keep mean residual docking edge, receptor sequence, KLIFS pocket identity, outcome-blind MaxMin-80 target-breadth features, and all endpoints fixed; refit the candidate on PKIS1 after every relabelling",
+      "permutations": 50000,
+      "seed": 20360808,
+      "target_label_qap_p_at_least_observed": 0.7062458750824984,
+      "target_label_qap_p_positive_increment": 1.0,
+      "top_fraction": 0.1
+    },
+    {
+      "locked_panel_mean_candidate_minus_baseline": -0.00882322765979271,
+      "metric": "roc_auc",
+      "null_interval_95_high": 0.019698368728839677,
+      "null_interval_95_low": -0.027290448343079882,
+      "null_mean": -0.0008094675284702656,
+      "null_median": 3.700743415417188e-17,
+      "permutation_contract": "target-relabel only the scaffold-residual stability network; keep mean residual docking edge, receptor sequence, KLIFS pocket identity, outcome-blind MaxMin-80 target-breadth features, and all endpoints fixed; refit the candidate on PKIS1 after every relabelling",
+      "permutations": 50000,
+      "seed": 20360808,
+      "target_label_qap_p_at_least_observed": 0.8506629867402652,
+      "target_label_qap_p_positive_increment": 1.0,
+      "top_fraction": 0.1
+    },
+    {
+      "locked_panel_mean_candidate_minus_baseline": -0.03255484933536799,
+      "metric": "average_precision",
+      "null_interval_95_high": 0.048784780678851315,
+      "null_interval_95_low": -0.05566478146673893,
+      "null_mean": -0.0029938419627981274,
+      "null_median": -0.0017261140298464317,
+      "permutation_contract": "target-relabel only the scaffold-residual stability network; keep mean residual docking edge, receptor sequence, KLIFS pocket identity, outcome-blind MaxMin-80 target-breadth features, and all endpoints fixed; refit the candidate on PKIS1 after every relabelling",
+      "permutations": 50000,
+      "seed": 20360808,
+      "target_label_qap_p_at_least_observed": 0.9154016919661607,
+      "target_label_qap_p_positive_increment": 1.0,
+      "top_fraction": 0.1
+    }
+  ],
+  "software": {
+    "numpy": "1.26.4",
+    "pandas": "2.3.2",
+    "python": "3.12.11",
+    "scipy": "1.16.2",
+    "script_sha256": "83cdae14b6ba0e218899b83efd463cc560e95749270e1bfb50c3099d0531ad69"
+  },
+  "stability_diagnostics": {
+    "random_raw": {
+      "edge_rank_sd_95th_percentile": 0.049615595807766436,
+      "edge_rank_sd_median": 0.02655077125114611,
+      "edges_total": 190,
+      "edges_with_identical_sign_in_all_supports": 190,
+      "selected_chemical_groups": 53322,
+      "selected_rows": 99750,
+      "support_pair_spearman_maximum": 0.99514143123953,
+      "support_pair_spearman_median": 0.9893415913256092,
+      "support_pair_spearman_minimum": 0.9785502149789832,
+      "support_rows_maximum": 1995,
+      "support_rows_minimum": 1995,
+      "supports": 50
+    },
+    "random_residual": {
+      "edge_rank_sd_95th_percentile": 0.05324064462967282,
+      "edge_rank_sd_median": 0.03939005674938152,
+      "edges_total": 190,
+      "edges_with_identical_sign_in_all_supports": 149,
+      "selected_chemical_groups": 53322,
+      "selected_rows": 99750,
+      "support_pair_spearman_maximum": 0.9894815572963824,
+      "support_pair_spearman_median": 0.9821490900024932,
+      "support_pair_spearman_minimum": 0.971655141343761,
+      "support_rows_maximum": 1995,
+      "support_rows_minimum": 1995,
+      "supports": 50
+    },
+    "scaffold_raw": {
+      "edge_rank_sd_95th_percentile": 0.051755129716115233,
+      "edge_rank_sd_median": 0.028927211980271924,
+      "edges_total": 190,
+      "edges_with_identical_sign_in_all_supports": 190,
+      "selected_chemical_groups": 99750,
+      "selected_rows": 99750,
+      "support_pair_spearman_maximum": 0.9929684595432737,
+      "support_pair_spearman_median": 0.9875920166909421,
+      "support_pair_spearman_minimum": 0.976629182030119,
+      "support_rows_maximum": 1995,
+      "support_rows_minimum": 1995,
+      "supports": 50
+    },
+    "scaffold_residual": {
+      "edge_rank_sd_95th_percentile": 0.05689634991931724,
+      "edge_rank_sd_median": 0.04187648070591427,
+      "edges_total": 190,
+      "edges_with_identical_sign_in_all_supports": 144,
+      "selected_chemical_groups": 99750,
+      "selected_rows": 99750,
+      "support_pair_spearman_maximum": 0.9897160002974278,
+      "support_pair_spearman_median": 0.980228057053629,
+      "support_pair_spearman_minimum": 0.9634268918369222,
+      "support_rows_maximum": 1995,
+      "support_rows_minimum": 1995,
+      "supports": 50
+    }
+  },
+  "strongest_honest_conclusion": "In the prespecified 50 x 1,995 design, inverse between-support edge rank variability does not meet the locked-panel effect, conditional-QAP, and target-jackknife criteria for incremental co-selectivity information beyond mean docking strength and fixed controls.",
+  "support_integrity": {
+    "conservative_chemical_groups": 99755,
+    "conservative_rows": 256540,
+    "experimental_cyclic_scaffold_groups_excluded": 230,
+    "maximum_balanced_support_size_at_fixed_support_count": 1995,
+    "primary_groups_present_in_more_than_one_support": 0,
+    "primary_selected_groups": 99750,
+    "primary_selected_rows": 99750,
+    "primary_support_boundary": "Murcko/connectivity-disjoint, not globally Butina-disjoint",
+    "primary_support_definition": "one frozen-row representative from each cyclic Murcko scaffold or acyclic connectivity group; group keys assigned by seeded SHA256 order",
+    "primary_unused_groups": 5,
+    "primary_unused_rows": 156790,
+    "random_control_groups_present_in_more_than_one_support": 15453
+  },
+  "target_jackknife": {
+    "average_precision": {
+      "maximum_locked_panel_mean_delta": 0.00974631052586881,
+      "median_locked_panel_mean_delta": -0.041381397346447545,
+      "minimum_locked_panel_mean_delta": -0.09723475310631581,
+      "positive_target_drops": 1,
+      "total_target_drops": 20
+    },
+    "continuous_spearman": {
+      "maximum_locked_panel_mean_delta": -0.0005391956864344571,
+      "median_locked_panel_mean_delta": -0.012453900368796983,
+      "minimum_locked_panel_mean_delta": -0.05383716930264554,
+      "positive_target_drops": 0,
+      "total_target_drops": 20
+    },
+    "roc_auc": {
+      "maximum_locked_panel_mean_delta": 0.017308157831033677,
+      "median_locked_panel_mean_delta": -0.00786734446865169,
+      "minimum_locked_panel_mean_delta": -0.0266279351246671,
+      "positive_target_drops": 2,
+      "total_target_drops": 20
+    }
+  }
+}

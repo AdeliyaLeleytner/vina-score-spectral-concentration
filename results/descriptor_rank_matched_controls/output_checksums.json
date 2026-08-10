@@ -1,0 +1,67 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "component_remainder_partial_associations.csv": {
+      "bytes": 3857,
+      "sha256": "0b6699e9aad7f82856074ace16de0eca53f2e7589c27667f646a78d6c92f48f9"
+    },
+    "feature_diagnostics.csv": {
+      "bytes": 504,
+      "sha256": "5a9bbb6a8686a228df1cd2c412cd65382bd8195a0d1078fd6e015ba2192364b2"
+    },
+    "fold_oracle_reconstruction_diagnostics.csv": {
+      "bytes": 719,
+      "sha256": "02bbb24c9511f4677a72a2f6a877bc17fee722456632deefba87b4da323bbd9b"
+    },
+    "morgan_count_rp_ensemble_metrics.csv": {
+      "bytes": 4035,
+      "sha256": "748acff22ea3e129aecc189aabe1b06ce895bfa258402f1cb60f7c6426138036"
+    },
+    "morgan_count_rp_ensemble_panel_geometry.csv": {
+      "bytes": 2828,
+      "sha256": "59eb1584b302091fc537d084d7fbca65b68f9861808d0f01479b7a62d30a7279"
+    },
+    "morgan_count_rp_ensemble_partial_associations.csv": {
+      "bytes": 16145,
+      "sha256": "2e044ba5115131f4250984a207a4ee3d5e089677af8a974b3305cc946816f6e3"
+    },
+    "paired_geometry_differences.csv": {
+      "bytes": 10673,
+      "sha256": "65cabf23c30e4109e7a20f667a654fbcc2663ff1c19fd3086de14a7010287635"
+    },
+    "paired_operational_reduction_differences.csv": {
+      "bytes": 2610,
+      "sha256": "b67ee0422f380298d7be02a218cea28d520d41047ee63ae6e11d4da6af6dd625"
+    },
+    "panel_geometry_agreement.csv": {
+      "bytes": 1598,
+      "sha256": "e309e943ae29ad3b41c2c8cf4498f5c497ae0df4ede7e4f4aad9c2dd5eca1f60"
+    },
+    "physicochemical_row_permutation_nuisance_ensemble.csv": {
+      "bytes": 5625,
+      "sha256": "e33669422c1ad03ab714bb3009d62d78281d7c64fb650a158850049134f9cec0"
+    },
+    "predictive_metrics.csv": {
+      "bytes": 1601,
+      "sha256": "045dba2db1954bf36743c8df157abcf15615848b8f9ad5e7ee917164c382cb9f"
+    },
+    "summary.json": {
+      "bytes": 181915,
+      "sha256": "a1914cabee94aec2a145363aeaa78feb05e921e18603c09216304f30f2e0c97b"
+    },
+    "topology_holdout_sensitivity_folds.csv": {
+      "bytes": 715,
+      "sha256": "e0b53a2399fbcf165a7082c9dbf8c3881dadda1aeacea9ba0a463594ec20d6ef"
+    },
+    "topology_holdout_sensitivity_panel_geometry.csv": {
+      "bytes": 1349,
+      "sha256": "8249cb20a49fcf5ed8e141c8887b84ac635b91782a36cd4f2292ce724b2a09ad"
+    },
+    "topology_holdout_sensitivity_predictive_metrics.csv": {
+      "bytes": 1398,
+      "sha256": "88e6b39e564af3dca311b4a079d1e5cafb2bc1aa7abc03df63f1d42090415735"
+    }
+  },
+  "schema_version": "1.0.0",
+  "scope": "all regular files in this result directory except this manifest"
+}

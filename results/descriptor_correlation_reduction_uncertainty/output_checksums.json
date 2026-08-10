@@ -1,0 +1,27 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "conditional_block_bootstrap.csv": {
+      "bytes": 1782,
+      "sha256": "7c2e69b8bc923167733ac83f653ebf9e0595766f423cc2ae23e87dc4e79b37f4"
+    },
+    "dockstring_support_overlap.csv": {
+      "bytes": 404,
+      "sha256": "51753154b53e0bec1928bafb049a693f864959a41e4eae9a6512e0de3d0b0a1c"
+    },
+    "dockstring_support_summary.csv": {
+      "bytes": 671,
+      "sha256": "9d90fcd3365ad662686d9c5fef979800f0618126c92977a1cf6363eff6ef65e5"
+    },
+    "repeated_partition_metrics.csv": {
+      "bytes": 17956,
+      "sha256": "0b598ecbda84517a312b88bd2c553d52980043f68f8a38a9d7f2ccf69da264a2"
+    },
+    "summary.json": {
+      "bytes": 8845,
+      "sha256": "5a785553574ac9832a3cff476bab87f5a991d2be94b7a3e83cb34c472edbe645"
+    }
+  },
+  "schema_version": "1.0.0",
+  "scope": "all regular files in this result directory except this manifest"
+}

@@ -1,0 +1,84 @@
+{
+  "analysis": "strict_frozen_chembl_active_target_residual_boundary_audit",
+  "config": {
+    "pchembl_threshold": 6.0,
+    "bootstrap_replicates": 5000,
+    "null_replicates": 5000,
+    "switch_burnin_per_edge": 20,
+    "switch_between_per_edge": 2,
+    "seed": 20260803
+  },
+  "input_derivation": {
+    "activity_rule": "frozen ChEMBL standard_relation '=' records; Ki/Kd/IC50/EC50; median pChEMBL per compound-target cell >= threshold",
+    "molecular_join": "canonical InChIKey generated from frozen cleaned SMILES",
+    "duplicate_rule": "one binary record per compound-target pair",
+    "score_preprocessing": "numeric coercion; positive scores clipped to zero; target-mean imputation; sample-SD target z-score",
+    "tie_rule": "average within-ligand rank; lower score is favorable"
+  },
+  "benchmark_counts": {
+    "score_matrix_compounds": 12651,
+    "ranking_panel_targets": 44,
+    "active_pairs": 500,
+    "compounds": 190,
+    "represented_targets": 39,
+    "butina_clusters": 166,
+    "active_targets_per_compound": {
+      "minimum": 1.0,
+      "quartile_1": 1.0,
+      "median": 1.0,
+      "quartile_3": 3.0,
+      "maximum": 14.0
+    },
+    "active_pairs_per_represented_target": {
+      "minimum": 1.0,
+      "quartile_1": 1.5,
+      "median": 8.0,
+      "quartile_3": 22.5,
+      "maximum": 57.0
+    },
+    "benchmark_compounds_per_butina_cluster": {
+      "minimum": 1.0,
+      "quartile_1": 1.0,
+      "median": 1.0,
+      "quartile_3": 1.0,
+      "maximum": 3.0
+    }
+  },
+  "preprocessing_counts": {
+    "missing_cells_before_imputation": 8159,
+    "positive_cells_clipped_to_zero": 0
+  },
+  "rank_identity": {
+    "statement": "within-ligand two-way-residual ranking equals column-z ranking",
+    "mathematical_reason": "two_way_residual[i,j] = column_z[i,j] - row_mean[i]",
+    "floating_point_tie_policy": "column-z ranks are reused after verifying the score identity",
+    "maximum_absolute_score_reconstruction_error": 8.881784197001252e-16,
+    "maximum_absolute_rank_difference": 0.0,
+    "all_rankings_identical": true
+  },
+  "null_diagnostics": {
+    "null_replicates": 5000,
+    "number_of_binary_edges": 500,
+    "switch_chain_burnin_accepted_swaps": 10000,
+    "switch_chain_burnin_attempts": 17861,
+    "switch_chain_between_samples_accepted_swaps": 1000,
+    "switch_chain_total_between_sample_attempts": 8841963,
+    "row_degrees_preserved": true,
+    "target_frequencies_preserved": true,
+    "binary_incidence_preserved": true
+  },
+  "privacy_boundary": {
+    "row_level_records_written": false,
+    "compound_identifiers_written": false,
+    "target_identifiers_written": false,
+    "aggregate_outputs_only": true
+  },
+  "output_files": [
+    "README.md",
+    "analysis_summary.json",
+    "input_manifest.csv",
+    "observed_metrics.csv",
+    "paired_contrasts.csv",
+    "null_summary.csv"
+  ]
+}

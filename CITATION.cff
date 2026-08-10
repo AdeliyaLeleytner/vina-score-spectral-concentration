@@ -1,7 +1,9 @@
 cff-version: 1.2.0
 message: "If you use this analysis, please cite the manuscript and this software release."
-title: "Spectral concentration in two large Vina docking-score matrices: two-way centering reveals correlated residual variation without a resolved target-ranking gain"
+title: "Target-correlation maps are library-conditional but recoverable from a few hundred ligands in two large Vina panels"
 type: software
+version: "3.0.0"
+date-released: "2026-08-10"
 authors:
   - family-names: Leleytner
     given-names: Adeliya
@@ -12,9 +14,7 @@ authors:
   - family-names: Fedorov
     given-names: Maxim
     orcid: "https://orcid.org/0000-0003-3901-3565"
-version: "1.4.0"
-date-released: 2026-08-01
 license: MIT
 repository-code: "https://github.com/AdeliyaLeleytner/vina-score-spectral-concentration"
-doi: "10.5281/zenodo.21733767"
-url: "https://doi.org/10.5281/zenodo.21733767"
+doi: "10.5281/zenodo.21865607"
+url: "https://doi.org/10.5281/zenodo.21865607"

@@ -1,0 +1,21 @@
+{
+  "analysis_status": "exploratory_science_only",
+  "chemical_split": "frozen source Butina clusters",
+  "claim_boundary": "reconstruction of Vina scores on held-out chemical scaffolds; not experimental affinity or target-retrieval validation",
+  "dataset": "Docking-44",
+  "folds": 5,
+  "k_values": [
+    2,
+    5,
+    10,
+    15,
+    20
+  ],
+  "outcome_leakage": "none: only docking scores and molecular descriptors enter this analysis",
+  "predictor": "fixed near-OLS ridge alpha=1e-6 after fold-local feature standardization",
+  "random_seed": 20260803,
+  "random_sentinel_repeats_per_fold": 10,
+  "sample_seed": null,
+  "sample_size": 12651,
+  "target_selection": "column-pivoted QR of fold-local column-standardized training docking matrix"
+}
