@@ -79,16 +79,17 @@ Article type: **Research article**.
 
 ## Required immediately before submission
 
-1. Build from a clean archived checkout or `git archive`, not the development worktree.
-   Include only the figure files referenced by the current TeX sources:
+1. Build from a clean tagged checkout or `git archive`, not the development worktree.
+   The full reproducibility archive intentionally retains all tracked analysis artifacts,
+   including historical figure outputs. For the journal portal, upload only the figure files
+   referenced by the current TeX sources:
    `fig1_spectral_geometry.pdf`, `fig4_support_recovery.pdf`,
    `fig3_external_boundary.pdf`, `fig4_feature_controls.pdf`,
    `fig5_ranking_boundary.pdf`, `figS1_full_spectra.pdf`,
    `figS2_target_jackknife.pdf`, `figS7_residual_correlations.pdf`,
    `figS8_spectral_estimand_sensitivities.pdf`,
    `figS9_physicochemical_target_slopes.pdf` and
-   `figS6_dockstring_supports.pdf`; exclude legacy figure stems retained in the
-   development worktree.
+   `figS6_dockstring_supports.pdf`; do not upload the legacy figure stems separately.
 2. Run the pinned local and Docker builds and record their logs.
 3. Inspect every PDF page at final size and resolve remaining overfull boxes.
 4. Obtain coauthor confirmation of author order, affiliations, contributions, funding,
@@ -100,5 +101,5 @@ Repository: <https://github.com/AdeliyaLeleytner/vina-score-spectral-concentrati
 
 Zenodo concept DOI: <https://doi.org/10.5281/zenodo.21733767>
 
-Submission release: `v3.0.2`; version-specific Zenodo DOI:
-<https://doi.org/10.5281/zenodo.21874252>.
+Submission release: `v3.0.3`; version-specific Zenodo DOI:
+<https://doi.org/10.5281/zenodo.21874630>.

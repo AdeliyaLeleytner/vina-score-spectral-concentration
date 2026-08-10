@@ -1272,8 +1272,7 @@ def main() -> None:
     ranking = ledger["ligand_wise_ranking_boundary"]
     begin_table(
         lines,
-        "Legacy sparse Docking-44--ChEMBL sensitivity (137 ligands, 38 targets, 691 "
-        "observed cells and 2,522 non-tied pairs). This is retained only to show the "
+        "Legacy sparse Docking-44--ChEMBL ranking sensitivity. This is retained only to show the "
         "effect of changing the docking matrix and matched chemical support; it is not the "
         "primary operational benchmark. The docking and external experimental priors are "
         "ligand-invariant target means fitted after excluding all evaluation ligands. The "
