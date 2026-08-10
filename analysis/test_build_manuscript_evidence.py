@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+
 from build_manuscript_evidence import build
 from make_reported_results import build as build_reported
 
@@ -519,17 +521,34 @@ def test_post_hoc_descriptor_family_sensitivity_is_registered() -> None:
     dockstring_mw = family["datasets"]["DOCKSTRING-58"][
         "descriptor_results"
     ]["molecular_weight"]
-    assert docking44_mw["low_domain_residual_participation_ratio"] == (
-        13.62457616857832
-    )
-    assert docking44_mw["high_domain_residual_participation_ratio"] == (
-        10.147009176104564
-    )
-    assert dockstring_mw["low_domain_residual_participation_ratio"] == (
-        19.552064499216343
-    )
-    assert dockstring_mw["high_domain_residual_participation_ratio"] == (
-        23.799697948677796
+    expected_domain_pr = {
+        "docking44_low": 13.62457616857832,
+        "docking44_high": 10.147009176104564,
+        "dockstring_low": 19.552064499216343,
+        "dockstring_high": 23.799697948677796,
+    }
+    observed_domain_pr = {
+        "docking44_low": docking44_mw[
+            "low_domain_residual_participation_ratio"
+        ],
+        "docking44_high": docking44_mw[
+            "high_domain_residual_participation_ratio"
+        ],
+        "dockstring_low": dockstring_mw[
+            "low_domain_residual_participation_ratio"
+        ],
+        "dockstring_high": dockstring_mw[
+            "high_domain_residual_participation_ratio"
+        ],
+    }
+    assert all(
+        math.isclose(
+            observed_domain_pr[key],
+            expected,
+            rel_tol=1e-12,
+            abs_tol=1e-12,
+        )
+        for key, expected in expected_domain_pr.items()
     )
     assert (
         family["datasets"]["Docking-44"][
