@@ -1,6 +1,6 @@
 # Target-correlation maps are library-conditional but recoverable from a few hundred ligands in two large Vina panels
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21865607.svg)](https://doi.org/10.5281/zenodo.21865607)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21874032.svg)](https://doi.org/10.5281/zenodo.21874032)
 
 Reproducibility package for the *Journal of Cheminformatics* Research article:
 
@@ -167,6 +167,6 @@ DOCKSTRING is distributed under Apache-2.0. The package does not redistribute th
 workbook or compound-level activity profiles; it releases only the aggregate target-pair
 statistics used in the article under the documented boundary.
 
-Citation metadata are in `CITATION.cff`. The immutable `v3.0.0` submission archive has DOI
-[`10.5281/zenodo.21865607`](https://doi.org/10.5281/zenodo.21865607); all versions are indexed
+Citation metadata are in `CITATION.cff`. The immutable `v3.0.1` submission archive has DOI
+[`10.5281/zenodo.21874032`](https://doi.org/10.5281/zenodo.21874032); all versions are indexed
 by the concept DOI [`10.5281/zenodo.21733767`](https://doi.org/10.5281/zenodo.21733767).

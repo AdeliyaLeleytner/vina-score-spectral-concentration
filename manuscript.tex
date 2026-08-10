@@ -977,8 +977,8 @@ universal accuracy threshold for a different library, receptor panel or scorer.
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig4_support_recovery.pdf}
-\caption{\textbf{Exploratory molecular-size-domain shifts alter the target-pair map, whereas
-within-library sampling recovers it rapidly on the tested supports.} \textbf{a}, Agreement of low- and high-molecular-weight
+\caption{\textbf{Exploratory molecular-size-domain shifts alter target maps; within-library
+sampling recovers them rapidly.} \textbf{a}, Agreement of low- and high-molecular-weight
 docking maps on raw and row-centred surfaces and after group-held-out feature removal,
 compared with chemically group-disjoint splits made separately within each extreme MW band.
 Error bars are chemical-group bootstrap intervals or repeated-split 2.5--97.5\%
@@ -1667,7 +1667,11 @@ available in the public GitHub repository and its Zenodo archive
 \cite{softwaregithub,softwarezenodo}. The release corresponding to this article is identified
 by version and date in the repository's \path{CITATION.cff}; readers should cite that
 version-specific archive rather than the concept record, because earlier versions correspond
-to earlier analyses. Source files that cannot be redistributed are obtained
+to earlier analyses. The \path{vina-score-spectral-concentration} project is implemented in
+Python 3.12.11, runs platform-independently through the supplied Docker workflow and pins
+all other requirements in \path{requirements.lock}; its MIT software license places no
+academic or non-academic use restriction, while third-party data retain the licenses
+documented in \path{DATA_LICENSES.md}. Source files that cannot be redistributed are obtained
 from their cited repositories under checksum-verified retrieval contracts documented in the
 package; they are not downloaded by the default report-layer build. KiRHub source tables
 are not redistributed. The associated article is CC BY-NC-ND 4.0, while the official
@@ -1932,7 +1936,7 @@ evidence. GitHub.
 \bibitem{softwarezenodo} Leleytner A, Safronov V, Fedorov M (2026) Target-correlation maps
 are library-conditional but recoverable from a few hundred ligands in two large Vina panels:
 reproducibility archive.
-Zenodo, version 3.0.0. doi:10.5281/zenodo.21865607.
+Zenodo, version 3.0.1. doi:10.5281/zenodo.21874032.
 
 \end{thebibliography}
 

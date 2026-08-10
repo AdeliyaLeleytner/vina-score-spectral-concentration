@@ -93,5 +93,5 @@ Repository: <https://github.com/AdeliyaLeleytner/vina-score-spectral-concentrati
 
 Zenodo concept DOI: <https://doi.org/10.5281/zenodo.21733767>
 
-Submission release: `v3.0.0`; reserved version-specific Zenodo DOI:
-<https://doi.org/10.5281/zenodo.21865607> (registered when the archive is published).
+Submission release: `v3.0.1`; version-specific Zenodo DOI:
+<https://doi.org/10.5281/zenodo.21874032>.
