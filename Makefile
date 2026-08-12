@@ -106,12 +106,13 @@ release-check-v5: all full-test
 manuscript-v5: verify-v5-numbers
 	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(PDFLATEX) -interaction=nonstopmode -halt-on-error manuscript_v5.tex
 	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(PDFLATEX) -interaction=nonstopmode -halt-on-error manuscript_v5.tex
-	! grep -Eq 'Overfull \\[hv]box|undefined references|undefined citations|Citation .* undefined|Reference .* undefined' manuscript_v5.log
+	! grep -Eq 'Overfull \\[hv]box|undefined references|undefined citations|Citation .* undefined|Reference .* undefined|Label\(s\) may have changed|Rerun to get cross-references right' manuscript_v5.log
 
 supplement-v5: verify-v5-numbers
 	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(PDFLATEX) -interaction=nonstopmode -halt-on-error supplementary_v5.tex
 	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(PDFLATEX) -interaction=nonstopmode -halt-on-error supplementary_v5.tex
-	! grep -Eq 'Overfull \\[hv]box|undefined references|undefined citations|Citation .* undefined|Reference .* undefined' supplementary_v5.log
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(PDFLATEX) -interaction=nonstopmode -halt-on-error supplementary_v5.tex
+	! grep -Eq 'Overfull \\[hv]box|undefined references|undefined citations|Citation .* undefined|Reference .* undefined|Label\(s\) may have changed|Rerun to get cross-references right' supplementary_v5.log
 
 # Four main figures named in citation order. The exploratory pocket-volume figure
 # is embedded only in the Supplement and is deliberately not staged as a main figure.
