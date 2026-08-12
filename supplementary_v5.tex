@@ -1,0 +1,70 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{charter}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{lineno}
+\usepackage{cite}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[font=small,labelfont=bf]{caption}
+
+\hypersetup{
+  pdftitle={Supplementary information: A shared ligand-wide score axis obscures
+            library-dependent target geometry in docking matrices},
+  pdfauthor={Adeliya Leleytner, Victor Safronov, Maxim Fedorov}
+}
+
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\arraystretch}{1.12}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{2}
+\newcommand{\sisection}[1]{\section*{#1}\addcontentsline{toc}{section}{#1}}
+\newcommand{\sisubsection}[1]{\subsection*{#1}\addcontentsline{toc}{subsection}{#1}}
+\doublespacing
+
+\title{Supplementary information\\[4pt]
+\large A shared ligand-wide score axis obscures library-dependent target geometry
+in docking matrices}
+\author{Adeliya Leleytner, Victor Safronov, Maxim Fedorov}
+\date{}
+
+\begin{document}
+\linenumbers
+\maketitle
+
+\noindent\textbf{Scope.}
+This Supplement holds the material the main text defers: seed and tie-resolution contracts,
+the full null constructions, and sensitivity analyses behind the reported results. Every value
+traces to a frozen file under \path{results/}. Source paths are given throughout, and the report
+manifest records the exact files consumed by the v5 build. Analyses outside the claims of the main
+text are not summarised here.
+
+\tableofcontents
+\clearpage
+
+\input{si_sections/S1_data.tex}
+
+\input{si_sections/S2_spectra_nulls.tex}
+
+\input{si_sections/S3_transport.tex}
+
+\input{si_sections/S4_domain.tex}
+
+\input{si_sections/S5_recovery.tex}
+
+\input{si_sections/S6_experimental.tex}
+
+\input{si_sections/S7_software.tex}
+
+\input{references_v5.tex}
+
+\end{document}

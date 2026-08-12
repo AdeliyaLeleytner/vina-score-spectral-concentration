@@ -1,0 +1,57 @@
+{
+  "analysis_status": "strict_public_k8_selector_robustness_control",
+  "contracts": {
+    "common_omitted_primary": "designed and random predictions are compared only on the exact intersection of targets omitted by both k=8 panels; no selected truth is copied into these target-level contrasts",
+    "direct_residual_secondary": "selected raw target scores are the only inputs; direct residual Ridge/PC1 and raw-to-derived residual Ridge/PC1 use identical exact panels, folds, omitted targets and evaluation rows",
+    "primary_deployment_model_unchanged": "the manuscript deployment model remains raw-score prediction followed by residual derivation; direct residual training is sensitivity only",
+    "random_inference": "three pre-existing fixed random panels per fold are descriptive Monte Carlo controls, first aggregated within fold"
+  },
+  "dataset_input_sha256": {
+    "DOCKSTRING-58": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64",
+    "Docking-44": "25436e49b9fc80421d8499ef289ed8ef00b4ab35b904c7d930fc377f493e1d51"
+  },
+  "limitations": [
+    "These are Vina score-reconstruction controls, not affinity validation.",
+    "Five chemical-group folds are descriptive composition sensitivities.",
+    "Only three fixed random panels per fold enter the common-omitted comparison.",
+    "Direct residual training is not the deployable primary policy."
+  ],
+  "parameters": {
+    "folds": 5,
+    "panel_k": 8,
+    "pilot_ligands": 500,
+    "random_panel_draws": [
+      0,
+      1,
+      2
+    ],
+    "ridge_alphas": [
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ],
+    "source_seed": 20260828
+  },
+  "producer": "analysis/public_panel_selector_robustness.py",
+  "producer_sha256": "180bde6aef87d61d493ef5482f1b254b494014ffeeeacfd2aa0005c16602bfec",
+  "source_artifact": "results/public_panel_selector_controls",
+  "source_artifact_sha256": {
+    "checksums.sha256": "1cc66ff40fd92be3cc6304902bfb35437bbf85a965948ef423f4527c412af122",
+    "panel_metrics.csv.gz": "7a5ac93ec048c86c8d3d48a30b3508f3ec9856798ca342b331a31fa7249d2ffb",
+    "split_diagnostics.csv": "0f8b0a022eb1858ccc44e79f059a9a0d7b5c69a3d64a7855f7ba27d1e0b6e452",
+    "summary.json": "805d0a8a973241f9a86502714418ebc5cbb09d41d8cbd48681a441f4c9f3e52f"
+  },
+  "table_rows": {
+    "common_omitted_pair_contrasts.csv": 60,
+    "common_omitted_split_contrasts.csv": 20,
+    "common_omitted_summary.csv": 4,
+    "direct_residual_contrasts.csv": 10,
+    "direct_residual_summary.csv": 2,
+    "panel_metrics.csv": 180,
+    "primary_target_metrics.csv": 3440,
+    "split_diagnostics.csv": 10
+  },
+  "test_sha256": "d46c8128d9214ac0cfc4034dca1b337faf33bdd0250c5348aa31d166274ee6c8"
+}

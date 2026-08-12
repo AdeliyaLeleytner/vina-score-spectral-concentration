@@ -1,0 +1,3 @@
+dataset,transformation,support_seeds,geometry_spearman_minimum,geometry_spearman_median,geometry_spearman_maximum,sign_flip_fraction_minimum,sign_flip_fraction_maximum
+DOCKSTRING-58,raw,6,0.37736794053937817,0.39799883525882873,0.40947327442193726,0.016938898971566849,0.023593466424682397
+DOCKSTRING-58,row_centered_residual,6,0.32540387277103661,0.34562762775537859,0.36102479369214213,0.35934664246823955,0.37507562008469447

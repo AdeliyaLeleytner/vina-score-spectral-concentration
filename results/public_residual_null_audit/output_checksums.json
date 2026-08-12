@@ -1,0 +1,10 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "README.md": "9d70a68020805ce870a855a965d52e983905c55cc870577a646adecd02843afd",
+    "mw_conditional_bin_contract.csv": "a0b5e1f50ea023030c9e6668543c05e3abfa2b98e6f662bb4267b6e63a3bf474",
+    "mw_conditional_null_repeats.csv": "7089462b2d3ab0d8f8fbc86e2cc69b875f0956d204ac0f7e507d459a3bc38823",
+    "summary.json": "d7954b5a5a9a017d79f1feb0f4a326e620dbe4ba623560070e9e35bad84edc25"
+  },
+  "scope": "all output files except this checksum manifest"
+}

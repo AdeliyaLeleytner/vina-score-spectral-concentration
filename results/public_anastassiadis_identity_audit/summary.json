@@ -1,0 +1,275 @@
+{
+  "access_date": "2026-08-10",
+  "analysis": "public_anastassiadis_identity_audit",
+  "article_doi": "10.1038/nbt.2017",
+  "chemical_dependence": {
+    "acyclic_compounds": 0,
+    "butina_clusters": 130,
+    "butina_contract": {
+      "distance_threshold": 0.5,
+      "fingerprint": "RDKit Morgan",
+      "fp_size": 2048,
+      "input_order": "official workbook compound order",
+      "minimum_within_cluster_similarity_to_seed": 0.5,
+      "radius": 2,
+      "reordering": true,
+      "similarity": "Tanimoto"
+    },
+    "butina_singleton_clusters": 114,
+    "compounds_in_butina_singletons": 114,
+    "compounds_in_murcko_singletons": 114,
+    "multi_fragment_compounds": 4,
+    "murcko_contract": "RDKit MurckoScaffoldSmiles on the complete PubChem compound; acyclic compounds receive identity-specific ACYCLIC:<connectivity> labels",
+    "murcko_groups": 130,
+    "murcko_singleton_groups": 114,
+    "total_cluster_multiplier_groups": 151,
+    "unresolved_identity_singleton_groups": 21,
+    "usable_structures": 157
+  },
+  "cluster_multiplier_feasibility": {
+    "feasible": true,
+    "limitations": "cluster bootstrap quantifies dependence conditional on resolved structures and the fixed compound library; it does not make the 178 commercial inhibitors a population sample",
+    "recommended_scheme": "independent Exp(1) multiplier per resolved-structure Butina cluster; all members inherit the cluster weight; each unresolved identity is an explicit singleton group",
+    "recommended_unit": "Butina cluster"
+  },
+  "identity_resolution": {
+    "ambiguous_records": 21,
+    "pubchem_rdkit_inchikey_disagreements": 0,
+    "records": 178,
+    "resolved_records": 157,
+    "status_counts": {
+      "resolved_unique_cas_name_agrees": 118,
+      "resolved_unique_cas_name_intersection": 6,
+      "resolved_unique_cas_name_not_found": 32,
+      "resolved_unique_name_only": 1,
+      "unresolved_ambiguous_cas": 5,
+      "unresolved_cas_name_conflict": 16
+    },
+    "unresolved_records": 21,
+    "usable_structures": 157
+  },
+  "input_checksums": {
+    "davis_identity": "676f72e1f53979927a9f5efce514cac772840cab4cb14cd88c21361e48323861",
+    "dockstring_identity": "5c5d06635cb276f543f9744487d6b8d4015432087e5f87b7875628973b8f32b3",
+    "identity_csv": "a3fb9469484ca94f34c51497ab28e447a2a0d9cce0a42829c927726148b767b2",
+    "identity_provenance": "08c11247309b186a52f593639a39e5fb89ec6583faabd108366d0587adec1937",
+    "pkis2_workbook": "48ead22a1f860cd0d5096fa87d5acd329f722fe8d65e693bb0be682a333e2a2c"
+  },
+  "overlap": [
+    {
+      "connectivity_only_overlap": 4,
+      "connectivity_overlap": 19,
+      "conservative_de_leakage_connectivity_overlap": 22,
+      "exact_full_standard_inchikey_overlap": 15,
+      "hotspot_records": 178,
+      "hotspot_support": "all_178",
+      "panel": "DAVIS",
+      "reference_rows": 72,
+      "reference_unique_connectivities": 72,
+      "reference_unique_full_inchikeys": 72,
+      "usable_hotspot_structures": 157
+    },
+    {
+      "connectivity_only_overlap": 4,
+      "connectivity_overlap": 19,
+      "conservative_de_leakage_connectivity_overlap": 22,
+      "exact_full_standard_inchikey_overlap": 15,
+      "hotspot_records": 176,
+      "hotspot_support": "complete_fixed21_176",
+      "panel": "DAVIS",
+      "reference_rows": 72,
+      "reference_unique_connectivities": 72,
+      "reference_unique_full_inchikeys": 72,
+      "usable_hotspot_structures": 155
+    },
+    {
+      "connectivity_only_overlap": 3,
+      "connectivity_overlap": 137,
+      "conservative_de_leakage_connectivity_overlap": 156,
+      "exact_full_standard_inchikey_overlap": 134,
+      "hotspot_records": 178,
+      "hotspot_support": "all_178",
+      "panel": "DOCKSTRING",
+      "reference_rows": 260060,
+      "reference_unique_connectivities": 250513,
+      "reference_unique_full_inchikeys": 257791,
+      "usable_hotspot_structures": 157
+    },
+    {
+      "connectivity_only_overlap": 3,
+      "connectivity_overlap": 136,
+      "conservative_de_leakage_connectivity_overlap": 155,
+      "exact_full_standard_inchikey_overlap": 133,
+      "hotspot_records": 176,
+      "hotspot_support": "complete_fixed21_176",
+      "panel": "DOCKSTRING",
+      "reference_rows": 260060,
+      "reference_unique_connectivities": 250513,
+      "reference_unique_full_inchikeys": 257791,
+      "usable_hotspot_structures": 155
+    },
+    {
+      "connectivity_only_overlap": 0,
+      "connectivity_overlap": 4,
+      "conservative_de_leakage_connectivity_overlap": 4,
+      "exact_full_standard_inchikey_overlap": 4,
+      "hotspot_records": 178,
+      "hotspot_support": "all_178",
+      "panel": "PKIS2",
+      "reference_rows": 645,
+      "reference_unique_connectivities": 637,
+      "reference_unique_full_inchikeys": 640,
+      "usable_hotspot_structures": 157
+    },
+    {
+      "connectivity_only_overlap": 0,
+      "connectivity_overlap": 4,
+      "conservative_de_leakage_connectivity_overlap": 4,
+      "exact_full_standard_inchikey_overlap": 4,
+      "hotspot_records": 176,
+      "hotspot_support": "complete_fixed21_176",
+      "panel": "PKIS2",
+      "reference_rows": 645,
+      "reference_unique_connectivities": 637,
+      "reference_unique_full_inchikeys": 640,
+      "usable_hotspot_structures": 155
+    }
+  ],
+  "redistribution_boundary": {
+    "contains_hotspot_assay_values": false,
+    "contains_identity_labels_from_official_supplement": true,
+    "contains_pubchem_compound_properties": true,
+    "license_label": "LicenseRef-NCBI-PubChem-molecular-data-policy",
+    "ncbi_molecular_data_policy": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+    "not_asserted": "CC0 or transfer of third-party contributor rights",
+    "pubchem_download_terms": "https://pubchem.ncbi.nlm.nih.gov/docs/downloads"
+  },
+  "reference_supports": {
+    "DAVIS": {
+      "rows": 72,
+      "unique_connectivities": 72,
+      "unique_full_standard_inchikeys": 72
+    },
+    "DOCKSTRING": {
+      "rows": 260060,
+      "unique_connectivities": 250513,
+      "unique_full_standard_inchikeys": 257791
+    },
+    "PKIS2": {
+      "rows": 645,
+      "unique_connectivities": 637,
+      "unique_full_standard_inchikeys": 640
+    }
+  },
+  "software": {
+    "numpy": "1.26.4",
+    "pandas": "2.3.2",
+    "python": "3.12.11",
+    "rdkit": "2025.03.6"
+  },
+  "workbook": {
+    "complete_fixed21_compounds": 176,
+    "compound_records": 178,
+    "fixed21_targets": [
+      "ABL1",
+      "AKT1",
+      "AKT2",
+      "CDK2",
+      "CSF1R",
+      "EGFR",
+      "FGFR1",
+      "IGF1R",
+      "JAK2",
+      "KDR",
+      "KIT",
+      "LCK",
+      "MAP2K1",
+      "MAPK1",
+      "MAPK14",
+      "MAPKAPK2",
+      "MET",
+      "PLK1",
+      "PTK2",
+      "ROCK1",
+      "SRC"
+    ],
+    "fixed21_workbook_aliases": {
+      "ABL1": [
+        "ABL1"
+      ],
+      "AKT1": [
+        "AKT1"
+      ],
+      "AKT2": [
+        "AKT2"
+      ],
+      "CDK2": [
+        "CDK2/cyclin A",
+        "CDK2/cyclin E"
+      ],
+      "CSF1R": [
+        "FMS"
+      ],
+      "EGFR": [
+        "EGFR"
+      ],
+      "FGFR1": [
+        "FGFR1"
+      ],
+      "IGF1R": [
+        "IGF1R"
+      ],
+      "JAK2": [
+        "JAK2"
+      ],
+      "KDR": [
+        "KDR/VEGFR2"
+      ],
+      "KIT": [
+        "c-Kit"
+      ],
+      "LCK": [
+        "LCK"
+      ],
+      "MAP2K1": [
+        "MEK1"
+      ],
+      "MAPK1": [
+        "ERK2 MAPK1"
+      ],
+      "MAPK14": [
+        "P38a/MAPK14"
+      ],
+      "MAPKAPK2": [
+        "MAPKAPK2"
+      ],
+      "MET": [
+        "c-MET"
+      ],
+      "PLK1": [
+        "PLK1"
+      ],
+      "PTK2": [
+        "FAK/PTK2"
+      ],
+      "ROCK1": [
+        "ROCK1"
+      ],
+      "SRC": [
+        "c-SRC"
+      ]
+    },
+    "incomplete_fixed21_pairs": [
+      [
+        "SB 202474",
+        "AKT1"
+      ],
+      [
+        "VEGF Receptor 2 Kinase Inhibitor II",
+        "MAPK14"
+      ]
+    ],
+    "workbook_columns": 179,
+    "workbook_rows": 303
+  }
+}

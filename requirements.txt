@@ -2,8 +2,10 @@
 numpy==1.26.4
 pandas==2.3.2
 openpyxl==3.1.5
+xlrd==2.0.2
 scipy==1.16.2
 matplotlib==3.10.6
+pillow==12.3.0
 rdkit==2025.3.6
 scikit-learn==1.7.2
 biopython==1.87

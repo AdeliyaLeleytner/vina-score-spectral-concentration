@@ -1,0 +1,16 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "README.md": "0f3d9108363295e3866fcac1d386fa5d33ee123f8ecb0f31c05828bbb4aa4129",
+    "chemical_group_fold_diagnostics.csv": "0b2018e33adfb02b35bf50fe1e57dc2e06af10b04088c78dd0df0fabebfd14a6",
+    "chemical_group_minus_random_summary.csv": "f1fc3aedacfb646312984c65581aca27f44b3e5bb7f22d7063d257511ec6d28b",
+    "heldout_maximum_morgan_tanimoto.csv": "ba316d3f9d68e6cc897596e2dd159acd6a4af6b5a01a9c45a79a630d377db04c",
+    "heldout_maximum_morgan_tanimoto_summary.csv": "60ad7e80e4360eaeeb17f2ad5c4dd3f021e9ee4b84d8750f1b06dd9d1f7f02b8",
+    "matched_random_row_holdout_summary.csv": "79f433bc094e3a0af089a01b2f9e145af3e2af49d182f5966856836a3f91ed1c",
+    "scaffold_holdout_by_fold_summary.csv": "3582ba80d3d3714687fefc8e1139231df5f382c540c2e50e3e16870c91e3daa7",
+    "scaffold_holdout_metrics.csv": "55b7d50a9d4d357dab24a0e0d6f1d95c389d9758ba7bd6ab9820de0a7bbdbaea",
+    "scaffold_holdout_summary.csv": "adcf06a48dd0899c31a385d92ac37709a3028b86dee65fc224d76601257643c0",
+    "summary.json": "fabb47f1de509fc4adae3773d84db0c527154e395b74fdde4b04ad9069d70c99"
+  },
+  "scope": "all output files except this checksum manifest"
+}

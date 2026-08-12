@@ -28,19 +28,20 @@ Against the fixed-margin target-frequency null, the one-sided compound-balanced
 mean-rank probabilities are 0.0002 for
 absolute Vina and 0.0002 for column-z.
 The residual top-5 rate remains above its matched null
-(0.1704 versus
-0.1237; one-sided
-p=0.007199). Thus target-specific
+(0.1641 versus
+0.1253; one-sided
+p=0.0212). Thus target-specific
 signal survives removal of the shared row axis, although target-wise
 standardization lowers observed top-5 recovery relative to absolute scores.
 These are weak aggregate retrieval results, not prospective target discovery.
 
 ## Exact boundary
 
-Within each ligand, the two-way residual equals the column-z vector minus one
-row-specific constant. Consequently its target order is exactly identical to
-column-z (maximum rank difference =
-0.0). The rise in
+Within each ligand, the two-way residual equals the column-centred score vector
+minus one row-specific constant. Consequently its target order is exactly
+identical to the column-centred score order. It need not equal the column-z order
+(maximum rank difference =
+33.0). The rise in
 spectral effective dimension after row centering can reveal residual covariance,
 but row centering itself cannot create a new within-ligand ranking signal.
 

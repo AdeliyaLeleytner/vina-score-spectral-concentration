@@ -1,0 +1,22 @@
+canonical_dockstring_target,source_aliases,primary_aggregation,sensitivity
+ABL1,ABL1,single source row,none
+AKT1,AKT1,single source row,none
+AKT2,AKT2,single source row,none
+CDK2,CDK2/cyclin A;CDK2/cyclin E,per-compound arithmetic mean of cyclin-A and cyclin-E rows,cyclin-A-only and cyclin-E-only
+CSF1R,FMS,single source row,none
+EGFR,EGFR,single source row,none
+FGFR1,FGFR1,single source row,none
+IGF1R,IGF1R,single source row,none
+JAK2,JAK2,single source row,none
+KDR,KDR/VEGFR2,single source row,none
+KIT,c-Kit,single source row,none
+LCK,LCK,single source row,none
+MAP2K1,MEK1,single source row,none
+MAPK1,ERK2 MAPK1,single source row,none
+MAPK14,P38a/MAPK14,single source row,none
+MAPKAPK2,MAPKAPK2,single source row,none
+MET,c-MET,single source row,none
+PLK1,PLK1,single source row,none
+PTK2,FAK/PTK2,single source row,none
+ROCK1,ROCK1,single source row,none
+SRC,c-SRC,single source row,none

@@ -1,0 +1,186 @@
+\section{Methods}
+
+This is a secondary analysis of released docking scores and published assay tables. We ran no
+new docking and made no new measurement. OpenAI Codex assisted with code review, implementation
+review of sensitivity analyses, literature search and language editing. Anthropic Claude (Fable 5)
+was used for an independent adversarial audit of the manuscript and its claim boundaries. The authors
+executed the analyses, inspected the outputs and verified the reported values; the full disclosure is
+in the Declarations. Seed contracts, tie-resolution rules, bin contracts
+and the detailed null constructions are in the Supplementary Information.
+
+\subsection{Score matrices and preprocessing}
+
+Docking-44 is the frozen export of Nikitin et al.~\cite{nikitin2025}: 12{,}651 ligands by 44
+Vina-GPU~2.0 target columns \cite{ding2023}. The carrier file also contains three appended score
+columns---8pm6 (BSEP), 6itm (FXR) and 9fzj (PXR)---that are not among the 44 targets in the
+published source panel. We excluded them by matching target identities to that panel before any
+score statistic was calculated. The receptor structures are inherited from that
+study and are not uniformly human: five of the 43 Protein Data Bank (PDB) entries carry a non-human receptor chain,
+which matters wherever a human sequence baseline is compared against them, and we report a
+construct-clean sensitivity for the panel where it applies. Within the selected 44 columns, we
+clipped positive scores to zero, which changed nothing because none is strictly positive, and
+replaced the 8{,}159 missing cells (1.47\% of
+556{,}644) by their target-column mean. DOCKSTRING-58 is the DOCKSTRING v1 table
+\cite{dockstring2022}, 260{,}155 molecules by 58 AutoDock Vina columns \cite{vina2010}. We kept
+the 260{,}060 rows that are complete across all 58 targets, dropped the 95 rows carrying any of
+the 339 missing cells, and clipped the 5{,}393 positive scores to zero. Everything ran in the
+pinned release environment: Python 3.12.11 with NumPy 1.26.4, pandas 2.3.2 and SciPy 1.16.2
+\cite{numpy2020,scipy2020}.
+
+\subsection{Target maps, centring and spectral summaries}
+
+For an $N\times P$ score matrix $X$, the raw target map is the sample Pearson correlation matrix
+of its $P$ target columns. The residual surface is the two-way-centred matrix
+\begin{equation}
+\Gamma_{ij}=X_{ij}-\bar X_{i\cdot}-\bar X_{\cdot j}+\bar X_{\cdot\cdot},
+\label{eq:centering}
+\end{equation}
+and the residual map is the target correlation matrix of $\Gamma$. Correlation already removes
+column means, so the only operative difference between the two maps is that the residual map has
+each ligand's mean across targets taken out. A cell of $\Gamma$ asks a relative question: not
+how well this compound scored here, but how well it scored here compared with how it scored
+across the panel.
+
+We summarise a map by the eigenvalues $\lambda_k$ of its correlation matrix.
+Participation-ratio (PR) dimension is $(\sum_k\lambda_k)^2/\sum_k\lambda_k^2$. It counts how
+many directions the correlations effectively spread over: $P$ if the targets were mutually
+uncorrelated, close to 1 if they all moved as one. Since $\sum_k\lambda_k=P$ and
+$\sum_k\lambda_k^2=P+2\sum_{j<k}r_{jk}^2$, it is exactly
+\begin{equation}
+r_{\mathrm{PR}}=\frac{P}{1+(P-1)\,\overline{r_{jk}^{2}}},
+\label{eq:pr}
+\end{equation}
+where the bar averages over the $P(P-1)/2$ off-diagonal target correlations. PR therefore adds
+no information beyond the correlation spectrum. It restates the mean squared off-diagonal
+correlation on a scale readers can compare with a target count, and it is not an algebraic
+rank. PC1 variance fraction and entropy effective rank are secondary summaries
+\cite{roy2007,mazzucato2016}. The shared-axis diagnostic orients the leading eigenvector to a
+positive loading sum and takes its cosine with the unit-normalised all-ones vector, so that a
+value near 1 means the leading direction is close to ``all targets rise together''. Agreement
+between two maps is the Spearman correlation of their corresponding strict-upper-triangle
+entries.
+
+Mode selection takes the smallest $k$ whose leading residual eigenvalues reach half the residual
+trace, read from the docking spectrum with no experimental value entering. The retained map is
+the rank-$k$ reconstruction rescaled to unit diagonal, and $k$ was recomputed in five
+scaffold-disjoint folds.
+
+\subsection{Fixed-pose rescoring across scoring functions}
+
+To separate the scoring function from the pose search, we rescored one fixed block of retained
+DOCKSTRING poses: 2{,}000 ligands by 9 targets, 18{,}000 cells, each holding the top AutoDock
+Vina pose. Because every scorer sees the same geometry, any difference between their outputs
+comes from the function and not from where the molecule was placed. smina 2020.12.10 supplied
+the Vina and Vinardo functions \cite{smina2013,vinardo2016}, ODDT 0.7 supplied RF-Score v1, v2
+and v3, NNScore 2.0 and PLECscore linear
+\cite{oddt2015,rfscore2010,ballester2014rfscore,nnscore2011,plecscore2019}, and the released
+DOCKSTRING Vina column is the eighth output. RF-Score and NNScore were trained on PDBbind 2016
+descriptor tables of 3{,}767 complexes; PLECscore uses the coefficients ODDT ships from that
+release. Scores were not clipped here, because clipping only the Vina-family columns would treat
+the scorers asymmetrically.
+
+The nine targets form a convenience block spanning GPCRs, nuclear receptors, enzymes and one
+kinase, with retained poses available for every sampled ligand. They were not randomly sampled from
+DOCKSTRING and are not claimed to represent its full target panel.
+
+Four criteria were evaluated for each output: PC1 fraction at least 0.50; cosine at least 0.95 to
+the uniform target direction with every loading positive; raw PR no larger than half the target
+count; and a centring-induced PR rise whose conservative cluster-bootstrap interval excludes
+zero. They are a descriptive checklist. The criteria and the results they judge enter the
+repository in one commit, so their ordering cannot be verified from the released package.
+
+\subsection{Transformation-matched nulls}
+
+The residual dimension has to be read against something, because the subtraction raises it
+whatever the data. Each matrix therefore has one deterministic simple-random support of 12{,}000
+ligands, and every null family within a matrix uses that support and 500 repetitions. Every
+simulated surface passes through the same centring and spectral steps as the observed one, so
+the only thing that varies is the mechanism that generated the numbers. The additive null adds
+Gaussian noise with the observed target-specific residual standard deviations to fitted grand,
+ligand and target effects. The column-permutation null permutes each residual target column
+independently across ligands, and the direction null replaces each ligand's residual by a random
+zero-sum direction with its norm preserved. The size-conditioned null permutes each raw target
+column within ten equally populated molecular-weight bins, which keeps each target's score
+distribution inside a coarse size domain while destroying any correspondence between targets for
+a given ligand.
+
+\subsection{Chemical-domain controls}
+
+Molecular weight came from RDKit on the frozen analysis SMILES. The low band satisfies
+$\mathrm{MW}\le q_{0.25}$ and the high band $\mathrm{MW}\ge q_{0.75}$, with boundary ties kept in
+both, and each band has its own raw and row-centred map. The matched control is 200 splits of
+the same library into size-matched halves that share no whole chemical group, which asks how far
+two maps drift apart when the chemistry differs but the size distribution does not. Groups are
+the frozen \texttt{Butina\_clusters} column for Docking-44, 8{,}150 clusters \cite{butina1999},
+and RDKit Bemis--Murcko scaffolds for DOCKSTRING \cite{murcko1996}, with every acyclic molecule a
+singleton. Docking-44 used all 12{,}651 rows, DOCKSTRING a fixed 15{,}000-row complete-case
+sample.
+
+Calibration recovery used 100 outcome-blind samples without replacement at each of seven sizes
+from 50 to 5{,}000 ligands, comparing each sample's residual map with the full-matrix map. Its
+chemical-group version splits the library into five \texttt{GroupKFold} folds under the same
+rule, drawing 25 samples of 200 and of 500 ligands from four folds and taking the reference map
+from the fifth.
+
+\subsection{Experimental resources and matching}
+
+The kinase panels are DAVIS, 72 compounds as $\mathrm{p}K_\mathrm{d}$
+\cite{davis2011,wu2025davis}; PKIS2, 645 compounds over 21 mapped percentage-inhibition columns
+\cite{drewry2017}; PKIS1, 360 compounds \cite{elkins2016}; and KiRHub, 92 drugs by 20 targets,
+which gives names but no structures \cite{saifudeen2026}. Secondary pharmacology comes from the
+PDSP $K_\mathrm{i}$ database, 481 compounds over a 27-target export whose primary graph keeps the
+148 target pairs with at least ten shared compounds across 21 targets
+\cite{pdspdatabase,pdsp2000,helmuth2000}, and the
+Novartis Safety Profiling Database, 12 targets and 1{,}975 InChIKeys with 91.6\% of selected rows
+right-censored \cite{sutherland2023}.
+PDSP combines measurements from different publications and assay conditions. Median aggregation
+within a compound--target cell reduces duplicate rows but cannot remove study or batch effects.
+
+Compound identity is the Standard InChIKey recomputed from source SMILES with the pinned RDKit
+\cite{rdkit2025}, and matching an assay compound to a docking row required the full key to be
+equal. Exclusion is deliberately coarser than matching, so that near-relatives leave as well:
+any docking row whose 14-character connectivity block appears in an assay panel left the
+calibration support first. That dropped 481 DOCKSTRING rows over 1{,}050 blocks for the kinase
+panels, and 1{,}364 rows over 932 blocks for the safety panel, which shares no exact key with
+DOCKSTRING at all. For PDSP, the conservative mask used every exact or censored compound retained
+by the analysis and removed 128 Docking-44 rows before its map was built. The exact-only endpoint
+itself shared 63 full keys and 116 connectivity blocks with Docking-44.
+
+The kinase endpoint is defined by the assay panels alone, with no docking score entering: a
+target pair is positive when its centred experimental correlation falls in the upper decile of at
+least two of DAVIS, PKIS2 and PKIS1, which labels 15 of the 190 pairs on the 20 shared kinases.
+Structural baselines on the same pairs are receptor-domain sequence identity from a global
+BLOSUM62 alignment, and identity across the aligned 85-residue Kinase--Ligand Interaction
+Fingerprints and Structures (KLIFS) ATP pocket \cite{klifs2021}.
+Centring an assay matrix changes what its edges measure, so every raw-versus-residual comparison
+holds the experimental map fixed and varies only the docking side.
+
+\subsection{Statistics}
+
+Edges of a map share nodes: two target pairs that involve the same receptor are not independent.
+Inference therefore permutes whole target labels rather than individual edges. A quadratic
+assignment procedure permutation test \cite{hubert1976} applies one complete relabelling of the
+docking targets to the rows and columns of its map while the experimental endpoint stays fixed,
+and paired residual-minus-raw contrasts reuse the same relabelling, so the two maps are always
+judged against the same shuffle. Permutation and simulation probabilities use the add-one rule,
+with 50{,}000 permutations on the kinase and safety-panel endpoints and 20{,}000 on the PDSP
+graph. The external comparisons are post hoc. The directional kinase and safety-panel tests retain
+the one-sided positive alternatives defined in their source analyses, but we treat their
+probabilities as descriptive tail areas. For PDSP, the paired-QAP
+probabilities reported in the paper are two-sided: each is twice the smaller of the add-one
+upper- and lower-tail probabilities, capped at one;
+directional values remain in the released table as diagnostics only. We report Holm and Bonferroni
+adjustments within each 12-row PDSP QAP table: two contrasts, three metrics and two permutation
+schemes. These within-table adjustments do not correct the wider post-hoc analytical search. QAP preserves
+dependence among edges that share targets, but it does not propagate the uncertainty in estimating
+each PDSP edge from a different set of compounds. Where a separate kinase contrast
+was reported on both ROC-AUC and average precision, we adjusted across those two metrics by Holm. A
+homology-preserving version of the same test shuffles labels only within receptor families, which asks
+whether an association survives once relatedness among receptors is held fixed.
+
+Ligand-side uncertainty comes from a cluster bootstrap that resamples chemical groups with
+replacement rather than individual ligands. The groups are Butina clusters built from Morgan
+fingerprints or whole Bemis--Murcko scaffolds
+\cite{morgan1965,rogers2010,murcko1996}. Fixed-pose intervals are the conservative
+union of the two schemes at 5{,}000 replicates each. All of these are finite-support summaries on
+fixed target panels. They are not confidence intervals for a superpopulation of targets.

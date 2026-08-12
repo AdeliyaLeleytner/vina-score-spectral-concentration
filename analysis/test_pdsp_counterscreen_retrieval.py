@@ -68,3 +68,25 @@ def test_family_preserving_order_never_crosses_family() -> None:
     order = audit.family_preserving_order(np.random.default_rng(7), targets, labels)
     for destination, source in enumerate(order):
         assert labels[targets[destination]] == labels[targets[source]]
+
+
+def test_docking_geometries_can_apply_a_frozen_overlap_exclusion_mask(tmp_path: Path) -> None:
+    columns = list(audit.PDB_TO_GENE)
+    rng = np.random.default_rng(17)
+    rows = []
+    for index in range(10):
+        row = {"ligand_id": index + 1}
+        row.update(
+            {
+                column: float(value)
+                for column, value in zip(columns, -rng.uniform(1.0, 12.0, len(columns)))
+            }
+        )
+        rows.append(row)
+    source = tmp_path / "scores.csv"
+    pd.DataFrame(rows).to_csv(source, index=False)
+    genes, matrices = audit.docking_geometries(
+        source, excluded_ligand_ids={1, 4}
+    )
+    assert genes == list(audit.PDB_TO_GENE.values())
+    assert set(matrices) == {"raw_docking", "residual_docking"}

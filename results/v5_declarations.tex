@@ -1,0 +1,139 @@
+\section*{Declarations}
+
+\subsection*{Ethics approval and consent to participate}
+
+Not applicable.  This secondary computational study used public molecular,
+docking-score and biochemical-assay datasets and involved no human participants,
+identifiable human data, human tissue or new animal experiments.
+
+\subsection*{Consent for publication}
+
+Not applicable.
+
+\subsection*{Availability of data and materials}
+
+The release separates files that can be redistributed from files that readers
+must obtain from their original source.  Versions, checksums and access routes
+are recorded in the accompanying manifests.
+
+\emph{Redistributed with the analysis release.}  Docking-44 is the frozen
+project export associated with Nikitin et al.~\cite{nikitin2025}, included under
+CC~BY~4.0.  DOCKSTRING v1 and the derived row-aligned identity contract retain
+Apache-2.0 and cite the source release \cite{dockstring2022}.  The DAVIS-Complete
+V3 table is the exact upstream TSV export, recompressed without content changes,
+under CC0-1.0 \cite{davis2011,wu2025davis}.  The official PKIS2 S4 workbook is
+included under CC~BY~4.0 \cite{drewry2017}.  The derived pocket-descriptor table
+used in the exploratory Supplementary analysis is also included; readers can
+retrieve the corresponding structures from the wwPDB.
+
+\emph{Not redistributed; obtainable from the named source against a recorded
+checksum.}  The exploratory PDSP comparison uses the PDSP $K_\mathrm{i}$ database
+\cite{pdsp2000}, for which no redistribution licence was located; it is
+downloadable from the PDSP database site \cite{pdspdatabase}, and the exact export
+consumed here has SHA-256 \texttt{45c9a18a\ldots37ac6},
+recorded in \path{results/pdsp_counterscreen_retrieval/summary.json}.  The
+Novartis Secondary Pharmacology Database \cite{sutherland2023} is CC~BY~4.0 at
+Zenodo record \texttt{8103950} and is not duplicated here; the accepted file has
+SHA-256 \texttt{7132723f\ldots00240}.  The PKIS1 publisher archive
+\cite{elkins2016}, the Anastassiadis workbook \cite{anastassiadis2011} and the
+KiRHub workbook \cite{saifudeen2026} are each retrieved by a checksum-gated
+fetcher in \path{analysis/}, named per source in \path{external_sources.csv}.
+KiRHub inhibition data are the
+property of Reaction Biology Corporation and require acknowledgement, so the
+release contains aggregate analytical summaries only.  KLIFS pocket identities
+\cite{klifs2021} and UniProt sequence records are API responses, released as
+derived identities with the response checksum and retrieval provenance rather
+than as copies.  \path{external_sources.csv} is the machine-readable inventory of
+all of the above --- role in this paper, redistribution status, access route,
+integrity record, licence and fetcher --- and \path{data_manifest.csv} together with
+\path{DATA_LICENSES.md} remain the authorities for the files that are shipped.
+
+The redistributed files are sufficient to rebuild the spectral results,
+transformation-matched nulls, chemical-domain controls and calibration-recovery
+analyses.  Source-level reconstruction of the external-agreement analyses
+requires the PDSP and Novartis files named above.  The release contains their
+derived target-pair summaries, and
+\path{analysis/reproduce_pdsp_derived_qap.py} reconstructs all reported PDSP
+permutation rows from the aggregate table and redistributed docking matrix.  It
+does not rerun upstream
+receptor preparation, pose generation or docking; those stages belong to the
+cited Docking-44 and DOCKSTRING studies.
+
+The MIT-licensed analysis code, frozen inputs, tests, result bundles, manuscript
+and Supplement sources and generated figures are assembled in the project repository
+\cite{projectrepository}.
+A version-specific immutable archive will be cited only after the release
+candidate is tagged, rebuilt from a clean clone and deposited; the present draft
+does not substitute an earlier-version DOI for that evidence package.
+Author-generated summaries and target annotations are
+released under CC~BY~4.0 unless an identified upstream condition applies.
+
+\subsection*{Additional files}
+
+\textbf{Additional file 1.} \emph{Supplementary information} (PDF).  Sections
+S1--S7: data provenance and preprocessing contracts; correlation and covariance
+spectra, missing-score sensitivity and the four transformation-matched null
+constructions; fixed-pose scorer transport; chemical-domain and support
+controls; calibration recovery and the five-mode core; the experimental
+resources, endpoint definitions, homology-preserving nulls and normalisation
+comparisons; and the software, environment and audit-tool contracts.
+
+\subsection*{Competing interests}
+
+The authors declare no financial or commercial competing interests.  V.S. and
+M.F. are coauthors of the source study from which the Docking-44 matrix was
+obtained \cite{nikitin2025}; that relationship is disclosed because the present
+study reanalyses the matrix.
+
+\subsection*{Funding}
+
+This research received no specific grant from any funding agency in the public,
+commercial or not-for-profit sectors.
+
+\subsection*{Authors' contributions}
+
+A.L. conceived the study, performed the analyses and drafted the manuscript.
+V.S. and M.F. contributed to study design and interpretation.  All authors
+reviewed the manuscript and approved the final submitted version.
+
+\subsection*{Acknowledgements}
+
+The authors thank the developers, curators and maintainers of the public
+datasets and open-source software used in this study, and acknowledge Reaction
+Biology Corporation as the source of the KiRHub inhibition data.
+
+\subsection*{Use of generative artificial intelligence}
+
+No artificial-intelligence system is listed as an author or was treated as a
+source of scientific evidence. OpenAI Codex assisted with code review, implementation
+review of sensitivity analyses, literature search and language editing. Anthropic Claude
+(Fable 5) was used for an independent adversarial audit of the manuscript and its claim
+boundaries, review of the deterministic plotting code, and execution of the released figure
+scripts. All computations
+were executed in the pinned environment and their outputs were inspected by the authors. No figure in this manuscript
+or its Supplement is generatively produced; every panel is plotted from a frozen
+result file by a released script.  The authors inspected the underlying data and
+code, verified the reported claims and citations, and retain full responsibility
+for the work.
+
+\subsection*{Authors' information}
+
+ORCID: Adeliya Leleytner, 0009-0001-8214-2496; Victor Safronov,
+0009-0003-5668-0201; Maxim Fedorov, 0000-0003-3901-3565.
+
+% EDITORIAL VERIFICATION FLAGS (comments, not submission prose):
+% 1. Confirm the author-supplied funding, competing-interest and contribution
+%    statements with all authors immediately before submission.
+% 2. Confirm all three ORCIDs and the corresponding-author metadata against the
+%    journal submission system.
+% 3. Add the version-specific archive DOI, archive version and deposit date only
+%    after the final package is deposited and its files/checksums are checked; do
+%    not reuse CITATION.cff metadata from an earlier analytical release.
+% 4. Confirm the final supplementary-file name and section counts against the
+%    Additional file 1 description above before upload.
+% 5. Confirm the journal's required wording/category for the generative-AI
+%    disclosure while preserving the explicit no-AI-authorship statement.
+% 6. PDSP and the Novartis panel are NOT redistributed. Confirm that the final
+%    release includes every derived target-pair file required to audit the
+%    reported comparisons and that the editor accepts the source + checksum
+%    route for source-level reconstruction.

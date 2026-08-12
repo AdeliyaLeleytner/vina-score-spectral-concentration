@@ -1,0 +1,1084 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{charter}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{cite}
+\usepackage[hidelinks]{hyperref}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[font=small,labelfont=bf]{caption}
+\input{results/public_core_macros.tex}
+
+\hypersetup{
+  pdftitle={Supplementary information: Two-way centering reveals distributed target-relative structure and limits score-surface compression in Vina docking matrices},
+  pdfauthor={Adeliya Leleytner, Victor Safronov, Maxim Fedorov}
+}
+
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\arraystretch}{1.12}
+\setlength{\emergencystretch}{3em}
+\doublespacing
+
+\title{Supplementary information\\[4pt]
+\large Two-way centering reveals distributed target-relative structure and
+limits score-surface compression in Vina docking matrices}
+\author{Adeliya Leleytner, Victor Safronov, Maxim Fedorov}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Scope.}
+This Supplement is restricted to the public sources used by the public-core
+manuscript: Docking-44, DOCKSTRING, DAVIS-Complete, PKIS2 and the
+checksum-fetched Anastassiadis HotSpot workbook. It contains only the
+matrix-spectrum, chemical-support, pilot-recovery, score-reconstruction,
+experimental-panel and reusable-audit analyses assembled in
+\path{results/public_core_evidence.json}. Ancillary public identity and target
+mapping files supply identifiers for the overlap audit but no additional score
+or assay rows. Historical or source-restricted analysis branches are outside
+the report layer and are not summarized here.
+
+\section*{S1. Data, estimands and cross-panel overlap}
+
+\subsection*{S1.1 Public row-level sources}
+
+Table~\ref{tab:s1data} states the support actually used by this Supplement.
+Docking-44 was taken from \path{data/frozen/df_final_v4.csv.gz}
+\cite{nikitin2025}. Its \DffRows{} rows contain \DffTargets{} Vina-family
+target columns. The primary preprocessing clips positive scores at zero (none
+occurred) and replaces a missing score with the mean of its target. DOCKSTRING
+was taken from \path{data/frozen/dockstring-dataset.tsv.gz}
+\cite{dockstring2022}. Of 260,155 source rows, 95 contained at least one of 339
+missing target scores and were removed, leaving \DsRows{} complete rows by
+\DsTargets{} targets. The released analysis contract clips its 5,393 positive
+scores to zero; this is 0.0358\% of cells in the complete matrix.
+
+DAVIS-Complete is redistributed as
+\path{data/frozen/davis_complete.tab.gz} \cite{davis2011,wu2025davis}. The
+source audit recovers the complete 72-compound by 442-target grid (31,824
+records). PKIS2 is redistributed as \path{data/frozen/pkis2_s4.xlsx}
+\cite{drewry2017}; it contains 645 populated compound rows and 406 assay
+columns. The public-core experimental analysis restricts both panels to the
+same 21 kinases present in DOCKSTRING. This gives 13,545 observed PKIS2 cells
+with no missing values. Five DAVIS profiles and one PKIS2 profile are constant
+over these 21 targets; the remaining 67 and 644 profiles define the
+informative cross-panel maps.
+
+Anastassiadis Supplementary Table~3 is downloaded from the publisher and
+accepted only at the frozen SHA-256 \cite{anastassiadis2011}. It is not
+redistributed. The primary 21-target block contains 176 complete compounds
+after two declared incomplete profiles are removed; CDK2 is the mean of its
+cyclin-A and cyclin-E measurements.
+
+\begin{table}[htbp]
+\centering
+\caption{Public inputs and fixed analysis supports. Licences and full
+SHA-256 digests are recorded in the public-core source manifest.}
+\label{tab:s1data}
+\small
+\begin{tabular}{p{0.18\linewidth}p{0.30\linewidth}p{0.43\linewidth}}
+\toprule
+Source & Redistributed file & Public-core support \\
+\midrule
+Docking-44 & \path{data/frozen/df_final_v4.csv.gz} &
+12,651 ligands $\times$ 44 targets; 8,159 missing cells target-mean imputed \\
+DOCKSTRING & \path{data/frozen/dockstring-dataset.tsv.gz} &
+260,060 complete ligands $\times$ 58 targets; 95 incomplete source rows removed \\
+DAVIS-Complete & \path{data/frozen/davis_complete.tab.gz} &
+72 ligands $\times$ 442 targets in the source audit; 21 kinases in the public-core map \\
+PKIS2 & \path{data/frozen/pkis2_s4.xlsx} &
+645 compounds; 21 complete kinase columns in the public-core map \\
+HotSpot & Publisher Supplementary Table~3, checksum-fetched only &
+176 complete compounds; 21 kinase columns in the public-core map \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Input identities, byte counts, licences and SHA-256 digests are machine-readable
+in \path{results/public_core_source_manifest.csv}; the digest of that manifest
+is stored in \path{results/public_core_source_manifest.sha256}. The public-core
+builder fails if an opened source is undeclared or if its digest has changed.
+The overlap audit additionally reads the frozen identifier contract
+\path{data/frozen/dockstring_identity_contract_2026-08-03.csv.gz}, the public
+family labels in \path{data/target_families.csv}, and a curated receptor mapping
+whose rows and source digest are exposed in
+\path{results/cross_panel_overlap_audit/summary.json}. These files define
+identities and labels only; they add no ligand--target measurements.
+
+\subsection*{S1.2 Map and dimension estimands}
+
+For a ligand-by-target score or response matrix $X$, the two-way residual is
+\begin{equation}
+\Gamma_{ij}=X_{ij}-\bar X_{i\cdot}-\bar X_{\cdot j}+\bar X_{\cdot\cdot}.
+\label{eq:s1residual}
+\end{equation}
+The target map is the Pearson correlation matrix of the specified columns, and
+its geometry is the vector of unique off-diagonal correlations. Correlation
+spectra standardize each target to unit variance; covariance spectra retain
+target-specific variances. For a $P$-target correlation matrix $C$ with
+eigenvalues $\lambda_k$, the participation-ratio dimension is
+\begin{equation}
+r_{\mathrm{PR}}
+=\frac{(\sum_k\lambda_k)^2}{\sum_k\lambda_k^2}
+=\frac{P}{1+(P-1)\overline{r_{ij}^{\,2}}}.
+\label{eq:s1pr}
+\end{equation}
+Thus PR is an exact re-expression of mean squared target correlation, not an
+algebraic rank or an independently estimated molecular dimension
+\cite{mazzucato2016,roy2007}. Equation~\ref{eq:s1residual} also imposes one zero
+spectral mode because every residual row sums to zero.
+
+\subsection*{S1.3 Chemical and target overlap of the two Vina matrices}
+
+The two Vina matrices were generated independently but are not disjoint
+statistical samples. Recomputed full Standard InChIKeys identify 582 shared
+ligands. Collapsing stereochemical and protonation suffixes gives 804 shared
+connectivity blocks, containing 804 Docking-44 rows and 1,014 DOCKSTRING rows.
+There are also 1,340 shared nonempty Bemis--Murcko scaffolds, containing 7,529
+Docking-44 and 25,614 DOCKSTRING rows \cite{murcko1996}. The curated target map
+contains nine matched receptor identities, although only seven Docking-44
+structures are human. The 2vt4 and 3ln1 structures are turkey ADRB1 and mouse
+PTGS2 orthologues; both are among the three mapped pairs that use the same
+receptor structure in DOCKSTRING. The complete overlap record, including all
+target mappings, is
+\path{results/cross_panel_overlap_audit/summary.json}. Agreement across these
+matrices is therefore replication across independently sourced score matrices,
+not evidence from formally independent chemical or receptor samples.
+
+\subsection*{S1.4 Interpretation of ranges and probabilities}
+
+No interval in this Supplement is presented as a confidence interval for a
+population of proteins or all chemical space. Central 95\% \emph{simulation
+ranges} are empirical 2.5th--97.5th percentiles of null simulations. Central
+95\% \emph{repeated-sample}, \emph{repeated-support} or
+\emph{repeated-split ranges} are the same percentiles over the stated random
+sampling operation. Percentile \emph{bootstrap perturbation ranges} condition
+on the fixed target panel and observed assay systems. The one QAP probability
+reported below is a two-sided Monte Carlo target-label probability. These
+objects quantify different sources of variation and are not interchangeable.
+
+\section*{S2. Spectral, covariance, missing-data and null sensitivities}
+
+\subsection*{S2.1 Correlation and covariance spectra}
+
+The full-support summaries are given in Table~\ref{tab:s2spectra}. In both
+matrices the raw first component is close to the uniform target direction:
+loading-vector cosine similarities are 0.970 for Docking-44 and 0.969 for
+DOCKSTRING. The corresponding component scores correlate 0.998 and 0.997 with
+the mean column-standardized ligand score. Two-way centring increases PR from
+1.834 to 9.303 and from 2.266 to 18.206, while mean squared target correlation
+falls from 0.535 to 0.087 and from 0.431 to 0.038.
+
+\begin{table}[htbp]
+\centering
+\caption{Full-support correlation-spectrum summaries. The numbers are fixed
+matrix summaries, not estimates for a target superpopulation.}
+\label{tab:s2spectra}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrr}
+\toprule
+Dataset & Raw PC1 & Raw PR & Raw $\overline{r^2}$ & Residual PR &
+Residual $\overline{r^2}$ & PCs for 90\%, raw/residual \\
+\midrule
+Docking-44 & 0.733 & 1.834 & 0.535 & 9.303 & 0.087 & 8/29 \\
+DOCKSTRING-58 & 0.659 & 2.266 & 0.431 & 18.206 & 0.038 & 22/43 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+Unit-variance scaling changes the magnitude but not the direction of this
+contrast. On unscaled covariance surfaces, Docking-44 PR rises from 1.915 to
+6.911 and DOCKSTRING PR from 2.474 to 8.235 after two-way centring. Retaining
+the 5,393 positive DOCKSTRING scores instead of clipping them changes raw PR
+from 2.266 to 2.275 and residual PR from 18.206 to 18.362. The complete scalar
+records, including entropy dimension, PC1 fraction and the exact PR identity,
+are in the \texttt{large\_vina\_panels} block of
+\path{results/public_core_evidence.json}.
+
+\subsection*{S2.2 Docking-44 missing scores alter support under complete-case deletion}
+
+Docking-44 contains 8,159 missing scores among 556,644 cells (1.4657\%), spread
+over 3,354 ligands. Target 4mqs accounts for 3,352 missing cells. Target-mean
+imputation on all 12,651 rows gives residual PR 9.3029; target-median imputation
+gives 9.5279. Fitting additive row and target effects only to the 548,485
+observed cells and completing an unobserved residual with its fitted value of
+zero gives 9.6630. This last construction is an additive-model sensitivity, not
+recovery of an unknown raw docking score.
+
+Complete-case deletion retains 9,297 ligands and gives residual PR 13.9702.
+Restricting the primary mean-imputed surface to exactly those rows produces an
+identical score matrix, confirming that no imputed value survives the
+complete-case comparison. Across 1,000 equally sized random supports drawn from
+the full primary surface, residual PR has median 9.2940 and central 95\%
+repeated-support range 9.1281--9.4452. The complete-case value lies above every
+random-support value.
+
+The selected rows are chemically atypical: complete and excluded-incomplete
+rows have median molecular weights of 249.332 and 398.552~g/mol and median
+heavy-atom counts of 17 and 28. The molecular-weight median shift is
+149.220~g/mol (Cliff's $\delta=0.893$), and the heavy-atom median shift is 11
+($\delta=0.896$). These are descriptive associations with row inclusion; no
+missing-at-random mechanism or causal explanation is assumed. Replicate-level
+values and chemical summaries are in
+\path{results/public_docking44_missing_data_sensitivity/equal_n_random_controls.csv},
+\path{results/public_docking44_missing_data_sensitivity/spectral_sensitivity.csv},
+\path{results/public_docking44_missing_data_sensitivity/chemistry_group_summary.csv}
+and \path{results/public_docking44_missing_data_sensitivity/chemistry_effect_sizes.csv}.
+
+\subsection*{S2.3 Transformation-matched residual nulls}
+
+Four null families were evaluated on one deterministic 12,000-ligand support
+per dataset, with 500 simulations per family. The additive Gaussian null keeps
+fitted ligand and target effects and target-specific residual variances. The
+empirical-column null independently permutes each observed residual target
+column before repeating two-way centring and scaling. The row-norm null samples
+an independent direction in the target-zero-sum subspace for each ligand and
+rescales it to that ligand's observed residual Euclidean norm. It therefore
+preserves the fixed support, target count, zero row sums and every row norm, but
+not target marginals or cross-target alignment.
+
+The fourth family independently permuted processed raw target scores within
+empirical molecular-weight bins and then repeated row centring. At the
+permutation step it preserves each target's exact empirical score marginal
+within each bin but not ligand correspondence across targets. The ten-bin
+design was primary; 1, 5 and 20 bins and random partitions with the same bin
+sizes were sensitivities.
+
+\begin{table}[htbp]
+\centering
+\caption{Residual PR on the common 12,000-ligand support and under four
+matched nulls. Brackets are central 95\% simulation ranges over 500 null
+replicates, not confidence intervals.}
+\label{tab:s2nulls}
+\small
+\begin{tabular}{p{0.20\linewidth}p{0.14\linewidth}p{0.27\linewidth}p{0.27\linewidth}}
+\toprule
+Dataset & Observed & Null family & Null median [simulation range] \\
+\midrule
+Docking-44 & 9.295 & Additive Gaussian & 42.400 [42.345, 42.451] \\
+ & & Residual-column permutation & 42.403 [42.350, 42.451] \\
+ & & Row-norm random direction & 42.628 [42.597, 42.663] \\
+ & & MW-conditioned raw-score permutation (10 bins) & 34.875 [34.790, 34.972] \\
+\addlinespace
+DOCKSTRING-58 & 18.158 & Additive Gaussian & 56.482 [56.445, 56.515] \\
+ & & Residual-column permutation & 56.481 [56.438, 56.516] \\
+ & & Row-norm random direction & 56.612 [56.583, 56.640] \\
+ & & MW-conditioned raw-score permutation (10 bins) & 47.039 [46.942, 47.131] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Every simulated residual PR exceeded its corresponding observed value. For
+each family the lower-tail Monte Carlo probability is therefore
+$(0+1)/(500+1)=0.0020$, the resolution floor of that simulation design. The
+first three nulls reject three mechanical explanations for the residual
+spectral concentration, and the fourth tests coarse MW-conditioned marginals;
+none establishes docking accuracy, biological
+correctness or transport beyond the two fixed panels. Seeds, support-index
+digests, minima, maxima and all distribution summaries are in
+\path{results/public_residual_null_audit/summary.json}; all conditional-null
+replicates and exact bin contracts are in
+\path{results/public_residual_null_audit/mw_conditional_null_repeats.csv} and
+\path{results/public_residual_null_audit/mw_conditional_bin_contract.csv}.
+
+Across 5, 10 and 20 bins, the share of the one-bin-to-observed PR gap explained
+by MW conditioning was 0.191, 0.238 and 0.257 for Docking-44 and 0.228, 0.251
+and 0.260 for DOCKSTRING-58. The corresponding ten-bin size-matched random
+partitions remained at PR 42.844 and 56.726. Although ten-bin MW conditioning
+left PR far above observation, its median Spearman agreement with the observed
+residual edge map was \DffMWConditionedMapRho{} and
+\DsMWConditionedMapRho{}, with sign agreement
+\DffMWConditionedSignAgreement{} and \DsMWConditionedSignAgreement{}. Thus the
+coarse size gradients recover substantial map topology while accounting for
+only about one quarter of its excess concentration.
+
+\section*{S3. Chemical-domain controls}
+
+\subsection*{S3.1 Quartile contrast and matched chemical-group controls}
+
+Molecular weight was selected after preliminary inspection and is treated as a
+post-hoc domain coordinate. The primary Docking-44 contrast uses all 12,651
+rows; its lower and upper threshold-defined quartiles contain 3,163 rows each,
+with median molecular weights 178.054 and 413.602~g/mol. The primary
+DOCKSTRING contrast uses a score-blind 15,000-row support drawn with seed 71;
+its two bands contain 3,751 and 3,750 rows, with medians 286.310 and
+498.573~g/mol.
+
+Docking-44 uses 8,150 frozen source cluster labels from the
+\texttt{Butina\_clusters} column; the public producer treats these labels as
+opaque and does not regenerate or assume their fingerprint recipe. On the
+primary DOCKSTRING support, cyclic molecules are grouped by Bemis--Murcko
+scaffold and each acyclic molecule is a source-row singleton, yielding 11,905
+groups \cite{butina1999,murcko1996}. The global matched control assigns whole
+groups to disjoint halves within ten rank strata of group-median molecular
+weight while balancing ligand counts. The within-band controls repeat the same
+whole-group split after restricting to one molecular-weight band.
+
+\begin{table}[htbp]
+\centering
+\caption{Residual-map agreement across molecular-weight domains and controls.
+The observed low/high value is one fixed contrast. Control brackets are central
+95\% repeated-split ranges across 200 chemical-group assignments, not
+confidence intervals.}
+\label{tab:s3controls}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{p{0.18\linewidth}rrrr}
+\toprule
+Dataset & Observed low/high $\rho$ & Sign flips & Global MW-matched control &
+Within low / within high \\
+\midrule
+Docking-44 & 0.205 & 0.425 &
+0.992 [0.985, 0.995] &
+0.980 [0.974, 0.984] / 0.979 [0.966, 0.986] \\
+DOCKSTRING-58 & 0.351 & 0.367 &
+0.994 [0.993, 0.995] &
+0.979 [0.973, 0.982] / 0.966 [0.958, 0.971] \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+At the fixed quartile definition, the observed agreement is below the 2.5th
+percentile of the global and both within-band whole-group controls in each
+matrix. The controls separate the low/high contrast from finite-sample
+instability and generic chemical disjointness within a fixed molecular-weight
+band. They do not isolate molecular weight from correlated chemical properties.
+Raw-map results lead to the same boundary: observed low/high agreements are
+0.227 and 0.409, compared with global matched-control medians 0.996 and 0.998.
+The complete summaries and replicate rows are in
+\path{results/public_chemical_domain_controls/observed_low_high_mw_contrasts.csv},
+\path{results/public_chemical_domain_controls/mw_matched_group_disjoint_summary.csv}
+and
+\path{results/public_chemical_domain_controls/within_band_reproducibility_summary.csv}.
+
+\subsection*{S3.2 Threshold, continuum and support-seed sensitivities}
+
+A separate exact-rank sensitivity used lower and upper tail fractions of 0.10,
+0.15, 0.20, 0.25, 0.30, 0.35 and 0.40. Residual-map agreement ranges from
+0.201 to 0.259 in Docking-44 and from 0.174 to 0.528 in DOCKSTRING. At every
+fraction, the observed value is below the 2.5th percentile of 100 equal-$N$
+random-disjoint controls. Their mean agreements range from 0.978 to 0.995 and
+from 0.976 to 0.994, respectively. These are threshold-sensitivity and
+repeated-support ranges, not confidence intervals.
+
+Ten non-overlapping equal-population molecular-weight bins provide a continuous
+check. Across their 45 pairs, Spearman correlation between separation of bin
+median molecular weights and residual-map dissimilarity is 0.945 for
+Docking-44 and 0.988 for DOCKSTRING. The 45 observations reuse ten maps, so the
+trend is descriptive and no independent-pair significance calculation is
+reported. Exact threshold and bin-pair records are in
+\path{results/revision_map_decision_sensitivities/mw_threshold_sweep.csv} and
+\path{results/revision_map_decision_sensitivities/mw_decile_pair_distances.csv};
+compact summaries are in
+\path{results/revision_map_decision_sensitivities/mw_threshold_sweep_summary.csv}
+and
+\path{results/revision_map_decision_sensitivities/mw_decile_continuous_trends.csv}.
+
+Finally, the DOCKSTRING quartile contrast was repeated on six independently
+seeded, score-blind 15,000-ligand supports. Residual-map agreement ranges from
+0.325 to 0.361 (median 0.346), while raw-map agreement ranges from 0.377 to
+0.409 (median 0.398). This is a range across six specified support seeds, not
+an uncertainty interval. Support-index SHA-256 fingerprints and per-seed
+values are in
+\path{results/public_chemical_domain_controls/dockstring_support_seed_contrasts.csv}.
+
+\subsection*{S3.3 Descriptor-domain specificity}
+
+To test whether the molecular-weight result generalized indiscriminately to
+other coarse chemical coordinates, the same lower/upper 25\% threshold family
+was applied post hoc to seven RDKit descriptors. Heavy-atom count, molecular
+weight and Labute ASA were designated size-related; TPSA, cLogP, rotatable-bond
+count and ring count formed the other-coarse family. Inclusive empirical
+quartile thresholds retain boundary ties, so discrete descriptors need not
+produce equal-sized tails. Docking-44 again uses all 12,651 rows and
+DOCKSTRING uses the fixed seed-71 support of 15,000 rows.
+
+Across the three size-related axes, residual-map agreement spans
+0.200--0.207 (median 0.205) in Docking-44 and 0.322--0.361 (median 0.351) in
+DOCKSTRING. Across the four other coarse axes, the corresponding spans are
+0.703--0.887 (median 0.771) and 0.787--0.831 (median 0.812). These are
+descriptive ranges across the named, correlated descriptors, not confidence
+intervals or evidence that any descriptor is causal. The three size-related
+coordinates are themselves strongly correlated and represent one coherent
+family, not three independent replications.
+
+For every descriptor, 200 random-row-disjoint controls used exactly the
+observed low- and high-tail sizes. Every observed contrast fell below the 2.5th
+percentile of its matched control (Table~\ref{tab:s3descriptors}). Thus the
+result is graded rather than a size-versus-null dichotomy: the strongest changes
+follow size, but all four other coarse axes also show more domain dependence
+than expected from finite support alone. Inclusive thresholds retain boundary
+ties. Consequently, tail sizes expand for discrete descriptors; in the most
+extreme case the two disjoint DOCKSTRING ring-count tails jointly contain all
+15,000 rows. Descriptor contrasts with an identical pair of tail sizes reuse
+the same cached series of 200 random controls; the 14 table rows therefore do
+not represent 14 independent control simulations.
+
+\begin{table}[htbp]
+\centering
+\caption{Post-hoc descriptor-domain contrasts and matched-size random controls.
+Control entries are medians [2.5th, 97.5th percentiles] across 200 disjoint
+random-row splits with the same two tail sizes. They are finite-support
+comparators, not confidence intervals or causal tests.}
+\label{tab:s3descriptors}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrl}
+\toprule
+Dataset & Descriptor & Low $n$ & High $n$ & Observed $\rho$ & Matched random control \\
+\midrule
+Docking-44 & Heavy atoms & 3,545 & 3,523 & 0.207 & 0.993 [0.988, 0.995] \\
+ & Molecular weight & 3,163 & 3,163 & 0.205 & 0.992 [0.987, 0.994] \\
+ & Labute ASA & 3,163 & 3,163 & 0.200 & 0.992 [0.987, 0.994] \\
+ & TPSA & 3,163 & 3,167 & 0.753 & 0.992 [0.987, 0.994] \\
+ & cLogP & 3,164 & 3,163 & 0.887 & 0.992 [0.988, 0.994] \\
+ & Rotatable bonds & 3,736 & 3,168 & 0.789 & 0.993 [0.989, 0.995] \\
+ & Ring count & 4,537 & 4,349 & 0.703 & 0.994 [0.992, 0.996] \\
+\addlinespace
+DOCKSTRING-58 & Heavy atoms & 4,367 & 3,817 & 0.361 & 0.991 [0.989, 0.993] \\
+ & Molecular weight & 3,751 & 3,750 & 0.351 & 0.990 [0.988, 0.992] \\
+ & Labute ASA & 3,750 & 3,750 & 0.322 & 0.990 [0.988, 0.992] \\
+ & TPSA & 3,755 & 3,750 & 0.787 & 0.991 [0.988, 0.992] \\
+ & cLogP & 3,750 & 3,750 & 0.822 & 0.990 [0.988, 0.992] \\
+ & Rotatable bonds & 6,154 & 4,352 & 0.831 & 0.993 [0.991, 0.994] \\
+ & Ring count & 8,376 & 6,624 & 0.803 & 0.995 [0.994, 0.996] \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+Exact tail supports, thresholds and map statistics are in
+\path{results/public_descriptor_domain_specificity/descriptor_extremes.csv};
+family summaries and descriptor correlations are in
+\path{results/public_descriptor_domain_specificity/descriptor_family_summary.csv}
+and
+\path{results/public_descriptor_domain_specificity/descriptor_correlations.csv}.
+Matched-control replicates and summaries are in
+\path{results/public_descriptor_domain_specificity/descriptor_random_disjoint_controls.csv}
+and
+\path{results/public_descriptor_domain_specificity/descriptor_random_disjoint_summary.csv}.
+
+\section*{S4. Pilot recovery and panel-size sensitivity}
+
+\subsection*{S4.1 Recovery of the source-library map}
+
+For each dataset and calibration size, 100 simple-random pilot samples were
+drawn without replacement. A pilot residual map was compared with the map on
+all source rows not used by that pilot. Thus calibration and reference rows are
+disjoint in every replicate. A 200-ligand pilot uses 1.58\% of Docking-44 score
+cells and 0.077\% of DOCKSTRING score cells; the corresponding 500-ligand
+fractions are 3.95\% and 0.192\%.
+
+\begin{table}[htbp]
+\centering
+\caption{Pilot recovery on row-disjoint complement maps. Entries are replicate
+means with central 95\% repeated-sample ranges over 100 pilots. Top-edge
+columns report precision for the ten most positive or ten most negative
+reference edges.}
+\label{tab:s4edges}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrr}
+\toprule
+Dataset & $n$ & Map $\rho$ & Sign agreement & Top positive 10 & Top negative 10 \\
+\midrule
+Docking-44 & 200 & 0.940 [0.888, 0.965] & 0.896 [0.850, 0.929] &
+0.550 [0.200, 0.852] & 0.480 [0.200, 0.800] \\
+Docking-44 & 500 & 0.973 [0.956, 0.982] & 0.931 [0.904, 0.951] &
+0.618 [0.348, 0.900] & 0.606 [0.400, 0.800] \\
+DOCKSTRING-58 & 200 & 0.920 [0.896, 0.936] & 0.877 [0.856, 0.895] &
+0.639 [0.400, 0.852] & 0.677 [0.348, 0.900] \\
+DOCKSTRING-58 & 500 & 0.965 [0.955, 0.972] & 0.920 [0.906, 0.936] &
+0.779 [0.600, 0.900] & 0.776 [0.500, 0.952] \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+Global map recovery therefore does not imply exact recovery of every extreme
+edge. Full replicate summaries, including edge RMSE, top-10\% sign agreement
+and top-25 lists, are in
+\path{results/revision_map_decision_sensitivities/recovery_edge_summary.csv};
+replicate-level edge results are in
+\path{results/revision_map_decision_sensitivities/recovery_edge_metrics.csv}.
+Including each calibration sample in the reference map changes the mean
+agreements only to 0.941 and 0.975 for the 200- and 500-ligand Docking-44
+pilots, and to 0.920 and 0.966 for DOCKSTRING; the corresponding row-disjoint
+means in Table~\ref{tab:s4edges} are 0.940, 0.973, 0.920 and 0.965.
+
+\subsection*{S4.2 Chemical-group-held-out recovery}
+
+A stricter sensitivity formed five chemical-group folds and compared each
+held-out fold's residual map with calibration maps sampled only from the other
+four folds. Both datasets used one reproducible grouping rule after RDKit
+cleanup, largest-fragment selection, uncharging, isotope removal and removal of
+stereochemistry: canonical non-isomeric Bemis--Murcko scaffolds for cyclic
+compounds and Standard-InChIKey connectivity blocks for acyclic compounds
+(canonical non-isomeric SMILES fallback). This produced 5,112 groups among all
+12,651 Docking-44 rows and 11,903 groups on the fixed seed-71 15,000-row
+DOCKSTRING support. For
+Docking-44, missing target scores were filled in every split using target means
+estimated only on the four-fold calibration pool and then applied to both
+calibration and held-out rows.
+
+For the chemical-group design, 25 samples per held-out fold give 125 samples
+per dataset and calibration size, with zero calibration--reference group
+overlap throughout. A matched random-row design used the same held-out and
+calibration sizes in each replicate. For Docking-44, that comparator
+independently re-estimated target means on its random calibration pool before
+filling either side, so held-out scores never informed imputation. Table~\ref{tab:s4group} shows that chemical-group holdout retained
+high recovery, while all four paired group-minus-random central ranges included
+zero. This tests group-held-out recovery within each source collection; it does
+not establish transport to a shifted or external library.
+
+For every held-out ligand, the exact maximum Tanimoto similarity to the full
+calibration pool was computed from achiral radius-2, 2,048-bit Morgan
+fingerprints on the same standardized parents. Median maxima across folds were
+0.485--0.542 versus 0.630--0.644 for group and random Docking-44 holdouts, and
+0.467--0.472 versus 0.491--0.493 for DOCKSTRING. Thus the group arm was
+chemically harder by this diagnostic while retaining map recovery. The split
+is not claimed to be fingerprint-cluster-disjoint; finite-bit Tanimoto equal to
+one is not treated as proof of molecular identity.
+
+\begin{table}[htbp]
+\centering
+\caption{Chemical-group-held-out map recovery and matched random-row holdout.
+Entries are means [2.5th, 97.5th percentiles] across 125 repeated splits; the
+paired column summarizes group minus matched-random recovery. These are
+composition ranges, not confidence intervals or equivalence tests.}
+\label{tab:s4group}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrll}
+\toprule
+Dataset & Calibration $n$ & Group-held-out $\rho$ & Matched-random $\rho$ & Paired difference \\
+\midrule
+Docking-44 & 200 & 0.925 [0.884, 0.956] & 0.935 [0.884, 0.960] & $-0.010$ [$-0.057$, 0.041] \\
+Docking-44 & 500 & 0.958 [0.926, 0.975] & 0.968 [0.943, 0.980] & $-0.011$ [$-0.050$, 0.019] \\
+DOCKSTRING-58 & 200 & 0.914 [0.889, 0.933] & 0.917 [0.893, 0.934] & $-0.003$ [$-0.034$, 0.029] \\
+DOCKSTRING-58 & 500 & 0.958 [0.945, 0.965] & 0.960 [0.950, 0.968] & $-0.002$ [$-0.018$, 0.011] \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+Summary and replicate rows are in
+\path{results/public_scaffold_holdout_recovery/scaffold_holdout_summary.csv}
+and
+\path{results/public_scaffold_holdout_recovery/scaffold_holdout_metrics.csv};
+fold diagnostics and exact nearest-neighbour records are in
+\path{results/public_scaffold_holdout_recovery/chemical_group_fold_diagnostics.csv},
+\path{results/public_scaffold_holdout_recovery/heldout_maximum_morgan_tanimoto.csv}
+and
+\path{results/public_scaffold_holdout_recovery/heldout_maximum_morgan_tanimoto_summary.csv};
+the matched-random and paired summaries are in
+\path{results/public_scaffold_holdout_recovery/matched_random_row_holdout_summary.csv}
+and
+\path{results/public_scaffold_holdout_recovery/chemical_group_minus_random_summary.csv}.
+
+\subsection*{S4.3 A fixed panel-compression decision and sensitivity to $k$}
+
+The decision example treats either positive or negative linear dependence as
+computational redundancy and uses distance $d_{jk}=1-|r_{jk}|$. Pilot panels
+are selected by deterministic BUILD+SWAP $k$-medoids; the fixed full-source
+comparator is the exact mixed-integer $k$-medoids optimum. Both panels are
+evaluated on each row-disjoint complement map. Consequently, the reported
+difference is relative to one fixed full-source panel, not regret relative to a
+complement-specific optimum, and can include BUILD+SWAP approximation error as
+well as calibration-sample error. Average-linkage clustering on signed distance
+$1-r$ is reported separately through adjusted Rand index (ARI).
+
+\begin{table}[htbp]
+\centering
+\caption{Eight-target decision recovery. Values are means over 100 pilots;
+brackets are central 95\% repeated-sample ranges. ``Random no worse'' is the
+fraction of random eight-target panels with mean complement-map coverage
+distance no greater than the pilot panel.}
+\label{tab:s4decision}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrr}
+\toprule
+Dataset & $n$ & ARI & Medoid overlap / 8 & Excess mean distance & Random no worse \\
+\midrule
+Docking-44 & 200 & 0.694 & 3.41 & 0.0153 [0.0037, 0.0325] & 0.0126 \\
+Docking-44 & 500 & 0.784 & 4.63 & 0.0083 [0.0007, 0.0216] & 0.0006 \\
+DOCKSTRING-58 & 200 & 0.595 & 3.65 & 0.0113 [0.0035, 0.0237] & 0.0010 \\
+DOCKSTRING-58 & 500 & 0.658 & 5.01 & 0.0056 [0.0009, 0.0123] & 0.0001 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+The coverage result is not specific to $k=8$. Across $k=6,8,10$, mean excess
+distance ranges from 0.01525 to 0.01604 at $n=200$ and from 0.00828 to 0.00868
+at $n=500$ in Docking-44. DOCKSTRING ranges are 0.00994--0.01134 and
+0.00488--0.00557. ARI ranges across those $k$ values are 0.690--0.712 and
+0.745--0.785 for Docking-44 and 0.595--0.633 and 0.658--0.746 for
+DOCKSTRING. These are ranges across three decision settings, not uncertainty
+intervals. All $k$-specific means and repeated-sample ranges are in
+\path{results/revision_map_decision_sensitivities/recovery_decision_summary.csv};
+selected targets for every replicate are in
+\path{results/revision_map_decision_sensitivities/recovery_medoid_selections.csv}.
+The exercise quantifies compression of a Vina map and does not establish
+biological target coverage or experimental selectivity.
+
+\subsection*{S4.4 Raw and residual score-surface reconstruction}
+
+Five chemical-group-disjoint folds tested whether selected raw target scores
+reconstructed omitted target columns. Each fold used a 500-ligand pilot from
+the other four folds; all scaling, exact residual-map $k$-medoids selection and
+Ridge-GCV fitting were pilot-only. Table~\ref{tab:s4reconstruction} reports the
+primary omitted-target variance-weighted $R^2$. The fold range is shown to make
+the composition sensitivity visible; it is not a target-population confidence
+interval.
+
+\begin{table}[htbp]
+\centering
+\caption{Omitted-target reconstruction from residual-map-selected panels.
+Entries are fold medians [minimum, maximum] across five chemical-group-disjoint
+folds.}
+\label{tab:s4reconstruction}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Dataset & $k$ & Raw score surface & Row-centred residual surface \\
+\midrule
+Docking-44 & 4  & 0.881 [0.687, 0.886] & 0.234 [0.116, 0.249] \\
+Docking-44 & 6  & 0.896 [0.737, 0.897] & 0.254 [0.145, 0.262] \\
+Docking-44 & 8  & 0.900 [0.753, 0.910] & 0.278 [0.170, 0.283] \\
+Docking-44 & 10 & 0.906 [0.762, 0.912] & 0.299 [0.178, 0.301] \\
+Docking-44 & 12 & 0.907 [0.767, 0.913] & 0.316 [0.191, 0.319] \\
+DOCKSTRING-58 & 4  & 0.650 [0.590, 0.675] & 0.184 [0.174, 0.192] \\
+DOCKSTRING-58 & 6  & 0.682 [0.650, 0.707] & 0.202 [0.191, 0.207] \\
+DOCKSTRING-58 & 8  & 0.698 [0.668, 0.726] & 0.219 [0.203, 0.221] \\
+DOCKSTRING-58 & 10 & 0.705 [0.688, 0.731] & 0.228 [0.220, 0.231] \\
+DOCKSTRING-58 & 12 & 0.711 [0.698, 0.743] & 0.242 [0.239, 0.246] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Because different selectors omit different targets, their omitted-only scores
+are not a common-outcome comparison. Table~\ref{tab:s4selectorcontrols}
+therefore compares the corresponding all-target profiles, with observed panel
+scores copied into their selected columns. The residual-map medoid selector was
+competitive with pivoted QR on the raw surface and was better on the residual
+surface in both datasets; the 50-panel random control did not remove the large
+raw-versus-residual reconstruction gap.
+
+\begin{table}[htbp]
+\centering
+\caption{Compact selector controls at $k=8$. Entries are median all-target
+variance-weighted $R^2$ on five chemical-group-disjoint evaluation folds. The
+two deterministic selectors contribute one value per fold; the fixed-random
+row is the median over 50 panels per fold (250 panel--fold evaluations). These
+all-target metrics provide a common outcome set across selectors; they are not
+the selector-specific omitted-only values in Table~\ref{tab:s4reconstruction}.}
+\label{tab:s4selectorcontrols}
+\small
+\begin{tabular}{llrr}
+\toprule
+Dataset & Pilot-only selector & Raw surface & Residual surface \\
+\midrule
+Docking-44 & Residual-map exact medoids & 0.918 & 0.391 \\
+Docking-44 & Raw-correlation pivoted QR & 0.927 & 0.365 \\
+Docking-44 & 50 fixed random panels & 0.904 & 0.359 \\
+\addlinespace
+DOCKSTRING-58 & Residual-map exact medoids & 0.740 & 0.315 \\
+DOCKSTRING-58 & Raw-correlation pivoted QR & 0.716 & 0.290 \\
+DOCKSTRING-58 & 50 fixed random panels & 0.716 & 0.280 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At $k=8$, direct residual-outcome Ridge gave 0.278 and 0.219, essentially
+identical to the residuals derived after raw-score prediction (differences
+$1.5\times10^{-5}$ and $-6.3\times10^{-7}$). Selected-target PC1 baselines were
+0.180 and 0.065. On common omitted targets, designed-minus-median-random mean
+$R^2$ was positive in every fold for both matrices; medians were 0.036 and
+0.058. Full profile, pooled RMSE, target-correlation, ligand-profile,
+descriptor-only, pivoted-QR and 50-random-panel results are serialized in
+\path{results/public_panel_selector_controls/}; the direct and common-omitted
+controls are in \path{results/public_panel_selector_robustness/}.
+
+\section*{S5. Experimental-map reliability and exact-support boundary}
+
+\subsection*{S5.1 Repeatability of the DAVIS, PKIS2 and HotSpot maps}
+
+All three experimental maps use the same 21 kinases and 210 target pairs. Two-way
+residual maps were recomputed in 2,000 random disjoint half splits. The direct
+half--half statistic estimates repeatability at the observed half-panel size;
+it is not extrapolated to the full panel with Spearman--Brown. Whole-cluster
+splits keep every Butina cluster in one half. Table~\ref{tab:s5reliability}
+reports the empirical correlation estimator; Oracle Approximating Shrinkage
+(OAS) is retained only as an estimator sensitivity \cite{chen2010}. These
+splits retain all 72 DAVIS and 645 PKIS2 profiles, including the five and one
+profiles that are constant across the 21 targets; the informative-profile
+filter applies only to the cross-panel maps below. The Anastassiadis workbook
+contains 178 compounds; two incomplete profiles were excluded, leaving 176.
+Its primary split uses ligand rows because the workbook does not provide
+structures. A separate PubChem crosswalk resolves 155 records for a secondary
+cluster-weight sensitivity, with the remaining 21 treated as singletons.
+
+\begin{table}[htbp]
+\centering
+\caption{Disjoint-half experimental residual-map repeatability. Brackets are
+central 95\% repeated-split ranges over 2,000 splits, conditional on the fixed
+21-target panel.}
+\label{tab:s5reliability}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Panel & Released ligands & Ligand-disjoint median [range] &
+Butina-disjoint median [range] \\
+\midrule
+DAVIS & 72 & 0.757 [0.642, 0.840] & 0.753 [0.629, 0.840] \\
+PKIS2 & 645 & 0.915 [0.874, 0.940] & 0.868 [0.807, 0.910] \\
+HotSpot & 176 & 0.794 [0.690, 0.854] & Not primary \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Across ligand-disjoint splits, median edge-sign agreement is 0.767 in DAVIS
+and 0.867 in PKIS2; median precision for the reference top correlation decile
+is 0.619 and 0.714. The corresponding target-label null medians are close to
+0.5 for sign agreement and 0.095 for top-decile precision. Split-level records
+are in \path{results/experimental_map_reliability/map_reliability.csv};
+edge-level bootstrap stability is in
+\path{results/experimental_map_reliability/edge_stability.csv}. Bootstrap maps
+overlap the full map, so those rows describe perturbation stability rather than
+independent-map reliability.
+
+The complete residual DAVIS and PKIS2 maps agree at Spearman $\rho=0.8484$
+across 210 edges, with 79.52\% sign agreement and 57.14\% precision for the top
+correlation decile. A joint target-label QAP with 9,999 permutations gives a
+two-sided Monte Carlo probability of $1\times10^{-4}$, the resolution floor of
+the design \cite{hubert1976}; null medians are $-0.0111$, 51.90\% and 9.52\%
+for the three statistics. This is an external reproducibility
+benchmark across different compounds and assay technologies, not an
+attenuation-based noise ceiling. The complete row is
+\path{results/experimental_map_reliability/cross_panel_geometry.csv}.
+
+\subsection*{S5.2 Exact same-ligand support}
+
+Full Standard InChIKey matching to DOCKSTRING yields 59 DAVIS and 154 PKIS2
+ligands after duplicate cells are collapsed by their median. Three matched
+DAVIS profiles are constant at the released pKd=5 floor, leaving 56 informative
+primary matches; all 154 PKIS2 matches are informative. The broad comparator is
+the 259,806-row DOCKSTRING map remaining after all 254 rows whose connectivity
+blocks occur in DAVIS or PKIS2 are excluded.
+
+\begin{table}[htbp]
+\centering
+\caption{Docking--experiment residual-map agreement on the primary informative
+exact matches and on the chemically de-leaked broad DOCKSTRING reference.
+Bootstrap brackets are paired Butina-cluster 95\% perturbation ranges for the
+same-minus-broad difference, not target-population confidence intervals.}
+\label{tab:s5same}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+Panel & Exact informative ligands & Same support $\rho$ & Broad support $\rho$ &
+Same minus broad [perturbation range] \\
+\midrule
+DAVIS & 56 & 0.3066 & 0.2995 & 0.0070 [$-0.1814$, 0.0904] \\
+PKIS2 & 154 & 0.3261 & 0.3290 & $-0.0029$ [$-0.1338$, 0.0662] \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+OAS correlations on the same supports are 0.3190 and 0.3223. In a further
+whole-cluster disjoint-half check, the central 95\% repeated-split range for
+same-half minus cross-half docking--experiment agreement is
+$-0.0780$--0.0871 in DAVIS and $-0.0471$--0.0457 in PKIS2. Sharing one finite
+ligand draw therefore does not explain a consistent gain over cross-half
+comparison. Point estimates are in
+\path{results/experimental_map_reliability/same_support_geometry.csv}, paired
+bootstrap rows in
+\path{results/experimental_map_reliability/same_support_bootstrap.csv}, and the
+cross-half check in
+\path{results/experimental_map_reliability/same_support_split_half.csv}.
+
+These comparisons remove one chemical-support mismatch but do not validate
+experimental affinity calibration or a biological co-selectivity network. No
+classical correction for attenuation is applied because docking and experiment
+cannot be assumed to be interchangeable measurements of one latent quantity.
+
+\subsection*{S5.3 Cross-assay agreement after row centring}
+
+Row centring increased edge-rank agreement for every assay pair: DAVIS--PKIS2
+from 0.5821 to 0.8484, DAVIS--HotSpot from 0.6897 to 0.7651, and
+PKIS2--HotSpot from 0.5264 to 0.7515. The comparison is paired over the same 210
+target-pair edges. It shows greater reproducibility of a target-relative map
+across these observed assays, not recovery of a true protein network or
+independence among the three panels. HotSpot source validation, mappings,
+excluded compounds, split-half rows and map-concordance records are in
+\path{results/public_anastassiadis_panel_validation/}.
+
+\subsection*{S5.4 Assay-value-blind fixed-target panel transfer}
+
+Raw- and residual-map panels were selected from a 259,641-row DOCKSTRING
+reference after excluding every DAVIS, PKIS2 and conservative HotSpot
+connectivity. Every $\binom{21}{k}$ subset was evaluated for
+$k=4,6,8,10,12$. Table~\ref{tab:s5transfer} reports the absolute signed
+$1-r$ coverage losses of the lexicographic representative of each optimal
+Vina or sequence panel and of the in-sample experimental oracle. It also
+retains the conservative contrast, best raw optimum minus worst residual
+optimum, across numerical Vina ties; positive values favour the residual
+selector. Table~\ref{tab:s5panels} gives the representative panel compositions.
+
+\begin{table}[htbp]
+\centering
+\caption{Absolute assay-value-blind signed co-response coverage losses on the
+fixed 21-kinase panel. Lower absolute loss is better. Raw, residual and sequence
+columns use the lexicographic representative among numerical optima; the oracle
+uses the experimental map in sample and is a reference floor, not an
+assay-value-blind selector. The final column is the conservative best-raw minus
+worst-residual contrast across numerical Vina ties. All values are deterministic
+for the stated maps; no assay value entered Vina panel selection.}
+\label{tab:s5transfer}
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+Panel & $k$ & Raw Vina & Residual Vina & Sequence & Oracle &
+Conservative contrast \\
+\midrule
+DAVIS & 4 & 0.6126 & 0.4799 & 0.4831 & 0.4240 & 0.1327 \\
+DAVIS & 6 & 0.4437 & 0.4102 & 0.4014 & 0.3297 & 0.0235 \\
+DAVIS & 8 & 0.4056 & 0.2657 & 0.3039 & 0.2508 & 0.1313 \\
+DAVIS & 10 & 0.2932 & 0.2374 & 0.2515 & 0.1745 & 0.0471 \\
+DAVIS & 12 & 0.2134 & 0.2025 & 0.1911 & 0.1154 & 0.0005 \\
+\addlinespace
+PKIS2 & 4 & 0.6519 & 0.6132 & 0.5704 & 0.5654 & 0.0387 \\
+PKIS2 & 6 & 0.5589 & 0.5245 & 0.4956 & 0.4705 & 0.0344 \\
+PKIS2 & 8 & 0.5057 & 0.4122 & 0.4145 & 0.3852 & 0.0935 \\
+PKIS2 & 10 & 0.3975 & 0.3484 & 0.3381 & 0.3066 & 0.0491 \\
+PKIS2 & 12 & 0.2887 & 0.2901 & 0.2717 & 0.2332 & $-0.0014$ \\
+\addlinespace
+HotSpot & 4 & 0.7000 & 0.5268 & 0.5773 & 0.5186 & 0.1543 \\
+HotSpot & 6 & 0.5507 & 0.4452 & 0.4948 & 0.4284 & 0.0548 \\
+HotSpot & 8 & 0.4787 & 0.3646 & 0.4171 & 0.3456 & 0.0936 \\
+HotSpot & 10 & 0.3641 & 0.2980 & 0.3271 & 0.2689 & 0.0397 \\
+HotSpot & 12 & 0.2691 & 0.2478 & 0.2517 & 0.1994 & 0.0186 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Lexicographic representative panels for the primary signed coverage
+objective. Numerical ties are resolved only for reproducible display; the
+conservative inference in Table~\ref{tab:s5transfer} ranges over all tied Vina
+optima. The same Vina and sequence panels are evaluated against each of the
+three experimental maps.}
+\label{tab:s5panels}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{rp{0.285\textwidth}p{0.285\textwidth}p{0.285\textwidth}}
+\toprule
+$k$ & Raw-Vina panel & Residual-Vina panel & Sequence-identity panel \\
+\midrule
+4 & CDK2, FGFR1, KDR, ROCK1 &
+AKT1, JAK2, KDR, LCK &
+AKT1, CSF1R, LCK, MAPK1 \\
+6 & ABL1, CDK2, FGFR1, KDR, MET, ROCK1 &
+AKT1, CSF1R, EGFR, JAK2, KDR, LCK &
+AKT1, CSF1R, LCK, MAP2K1, MAPK14, MAPKAPK2 \\
+8 & ABL1, CDK2, CSF1R, FGFR1, KDR, KIT, MET, ROCK1 &
+AKT1, CSF1R, EGFR, JAK2, KDR, LCK, MAPKAPK2, PTK2 &
+AKT1, CSF1R, EGFR, MAP2K1, MAPK14, MAPKAPK2, PLK1, SRC \\
+10 & ABL1, CDK2, CSF1R, FGFR1, IGF1R, KDR, KIT, MAPK14, MET, ROCK1 &
+AKT1, CSF1R, EGFR, IGF1R, JAK2, KDR, LCK, MAPK1, MAPKAPK2, PTK2 &
+AKT1, CDK2, CSF1R, JAK2, MAP2K1, MAPK1, MAPKAPK2, MET, PLK1, SRC \\
+12 & ABL1, AKT1, CDK2, CSF1R, FGFR1, IGF1R, KDR, KIT, LCK, MAPK1, MAPK14, MET &
+AKT1, AKT2, CSF1R, EGFR, IGF1R, JAK2, KDR, LCK, MAPK1, MAPK14, MAPKAPK2, PTK2 &
+AKT1, CDK2, CSF1R, EGFR, IGF1R, JAK2, MAP2K1, MAPK1, MAPKAPK2, PLK1, ROCK1, SRC \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The conservative contrast was positive in 14 of 15 cells. Normalized
+trapezoidal AUCs over $k$ were 0.0671, 0.0489 and 0.0686 for DAVIS, PKIS2 and
+HotSpot; their mean was 0.0616. A common 20,000-permutation target-label test
+gave exploratory one-sided $p=0.0069$ after the reported
+max-over-three-objectives adjustment. This post-hoc conditional randomization
+result applies to the fixed 21-target set and does not provide confirmatory
+error control for the full analysis history. In the HotSpot cluster multiplier,
+all 2,000 perturbations were
+positive (median 0.0628; 2.5--97.5\% range 0.0319--0.1063). Absolute and squared
+distance objectives, CDK2 cyclin-A/cyclin-E alternatives, clipping,
+target-median imputation, column-rank transformation, tie handling and the
+locked two-panel versus triple-de-leaked reference are provided as sensitivity
+records in the same result directory. After independently ranking ligands
+within every experimental target before row centring, the primary signed
+contrast remained positive in 14/15 cells (mean conservative contrast 0.0384;
+max-over-three-objectives adjusted $p=0.0056$). Sequence was better than residual Vina
+in 6 of 15 cells, so the comparison does not establish Vina superiority.
+
+In a target-influence sensitivity, each of the 21 kinases was removed in turn
+and both Vina selectors were re-optimized by complete enumeration on the
+remaining 20-target maps. The joint normalized AUC contrast remained positive
+for all 21 omissions (range 0.0294--0.0622), and 11--15 of the 15 assay--$k$
+cells were positive for each omission. For DAVIS--PKIS2, DAVIS--HotSpot and
+PKIS2--HotSpot, respectively, leave-one-target-out raw-map agreement ranged
+0.541--0.699, 0.661--0.749 and 0.467--0.612; residual-map agreement ranged
+0.798--0.875, 0.708--0.832 and 0.687--0.792. Residual agreement exceeded raw
+agreement for every target omission in all three assay pairs. Complete records
+are in
+\path{results/public_anastassiadis_panel_validation/target_leave_one_out_panel_transfer.csv}
+and
+\path{results/public_anastassiadis_panel_validation/target_leave_one_out_map_concordance.csv}.
+The 21 omissions overlap extensively and are reported as influence
+sensitivities, not independent replications or a target-population interval;
+single-target deletion also does not remove an entire redundant kinase group.
+
+\section*{S6. Command-line audit and reproducibility}
+
+\subsection*{S6.1 Public-core reconstruction}
+
+As locked in \path{requirements.lock}, the public-core environment uses CPython
+3.12.11, NumPy 1.26.4, pandas 2.3.2, SciPy 1.16.2, scikit-learn 1.7.2 and RDKit
+2025.03.6 \cite{numpy2020,scipy2020,rdkit2025}. Environment specifications are
+also in \path{requirements.txt} and \path{environment.yml}; \path{Dockerfile}
+supplies a containerized alternative.
+The following commands regenerate the analysis bundles and strict public-core
+evidence ledger from the redistributed sources and checksum-fetched HotSpot
+workbook:
+
+\begin{verbatim}
+.venv/bin/python analysis/cross_panel_overlap_audit.py
+
+.venv/bin/python analysis/public_docking44_missing_data_sensitivity.py \
+  --random-controls 1000 \
+  --output-dir results/public_docking44_missing_data_sensitivity
+
+.venv/bin/python analysis/public_residual_null_audit.py \
+  --sample-size 12000 --repeats 500 \
+  --output-dir results/public_residual_null_audit
+
+.venv/bin/python analysis/public_chemical_domain_controls.py \
+  --repetitions 200 \
+  --output-dir results/public_chemical_domain_controls
+
+.venv/bin/python analysis/public_descriptor_domain_specificity.py
+
+.venv/bin/python analysis/revision_map_decision_sensitivities.py \
+  --repetitions 100 --sizes 200,500 \
+  --mw-null-repetitions 100 --cluster-k 6,8,10 \
+  --output-dir results/revision_map_decision_sensitivities
+
+.venv/bin/python analysis/public_scaffold_holdout_recovery.py
+
+.venv/bin/python analysis/public_panel_selector_controls.py --overwrite
+
+.venv/bin/python analysis/public_panel_selector_robustness.py --overwrite
+
+.venv/bin/python analysis/experimental_map_reliability.py \
+  --split-repeats 2000 --bootstraps 2000 --seed 20260810 \
+  --output results/experimental_map_reliability
+
+.venv/bin/python analysis/fetch_anastassiadis_supplement.py \
+  data/source_cache/anastassiadis2011_moesm23.xls
+
+.venv/bin/python analysis/public_anastassiadis_identity_audit.py --quiet
+
+.venv/bin/python analysis/public_anastassiadis_panel_validation.py \
+  --source data/source_cache/anastassiadis2011_moesm23.xls
+
+.venv/bin/python analysis/build_public_core_evidence.py
+
+.venv/bin/python analysis/build_public_core_macros.py
+
+.venv/bin/python analysis/make_public_manuscript_figures.py \
+  --output figures/public_core
+\end{verbatim}
+
+Arguments not shown use the producer defaults recorded in each bundle's
+\texttt{summary.json} or \texttt{metadata.json}; changing a seed does not
+reproduce the published replicate rows. The figure producer reads only the
+strict-public ledger and cited bundles and renders with Matplotlib
+\cite{matplotlib2007}.
+
+Every multi-file result directory contains its own
+\texttt{output\_checksums.json} manifest when
+the producer emits multiple files. The evidence builder records every file it
+opens in \path{results/public_core_source_manifest.csv}; this keeps the v4
+report layer separate from historical ledgers. The focused verification suite
+is:
+
+\begin{verbatim}
+.venv/bin/python -m pytest -q \
+  analysis/test_cross_panel_overlap_audit.py \
+  analysis/test_public_docking44_missing_data_sensitivity.py \
+  analysis/test_public_residual_null_audit.py \
+  analysis/test_public_chemical_domain_controls.py \
+  analysis/test_public_descriptor_domain_specificity.py \
+  analysis/test_revision_map_decision_sensitivities.py \
+  analysis/test_public_scaffold_holdout_recovery.py \
+  analysis/test_public_panel_selector_controls.py \
+  analysis/test_public_panel_selector_robustness.py \
+  analysis/test_experimental_map_reliability.py \
+  analysis/test_public_anastassiadis_identity_audit.py \
+  analysis/test_public_anastassiadis_panel_validation.py \
+  analysis/test_dense_davis_benchmark.py \
+  analysis/test_dense_pkis2_benchmark.py \
+  analysis/test_residual_mechanism_analysis.py \
+  analysis/test_target_map_audit.py \
+  analysis/test_build_public_core_evidence.py \
+  analysis/test_build_public_core_macros.py \
+  analysis/test_v4_submission_consistency.py \
+  analysis/test_make_public_manuscript_figures.py
+\end{verbatim}
+
+\subsection*{S6.2 Reusable target-map audit}
+
+\path{analysis/target_map_audit.py} is a standalone CLI for a new dense
+ligand-by-target numeric matrix. It reads no manuscript evidence ledger and
+imports no repository-local analysis module. Target columns can be selected by
+an explicit ordered list or regular expression. Missing values fail closed by
+default and require an explicit target-mean or target-median imputation option;
+malformed nonnumeric values always stop the run. A minimal invocation is:
+
+\begin{verbatim}
+python analysis/target_map_audit.py scores.csv \
+  --output-dir results/my_target_map_audit \
+  --target-regex '^score_' --ligand-id compound_id
+\end{verbatim}
+
+Domain comparison, row-disjoint pilot recovery and an eight-target compression
+example can be requested together:
+
+\begin{verbatim}
+python analysis/target_map_audit.py scores.csv.gz \
+  --output-dir results/my_target_map_audit \
+  --target-regex '^target_' \
+  --domain-column molecular_weight --domain-quantiles 4 \
+  --pilot-sizes 100,200,500 --pilot-repeats 200 \
+  --top-edge-count 10 --panel-k 8 --seed 20260810
+\end{verbatim}
+
+Each run writes a preprocessing contract, raw and residual target-correlation
+matrices, the full eigenspectra and scalar summaries, reconstructable signed
+edges, and a SHA-256 output manifest. Optional domain, pilot and medoid files
+are emitted only when requested. The output directory must be absent or empty,
+which prevents accidental mixing of artifacts from different contracts.
+Complete CLI documentation is in \path{analysis/TARGET_MAP_AUDIT.md}; the
+synthetic invariant tests verify that row centring preserves within-row target
+ranks and that a controlled ligand-support shift changes the target map.
+
+\input{references_public.tex}
+
+\end{document}

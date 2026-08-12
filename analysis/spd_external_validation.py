@@ -35,7 +35,11 @@ DEFAULT_DOCKSTRING = PACKAGE / "data" / "frozen" / "dockstring-dataset.tsv.gz"
 DEFAULT_OUTPUT = PACKAGE / "results" / "spd_external_validation"
 
 SPD_SHA256 = "7132723f85e746de2f8387d01dcde6ffff703c92561fda9751cbd6753e900240"
-UNIPROT_SHA256 = "26ebfda18fabdbaf605f14329f2c439e47427ff315f4160f3a68439ae7bf1729"
+# Re-pinned 2026-08-12 alongside the two-way transform switch. The previous
+# snapshot was 26ebfda1...bf1729; the pairwise identities it produces are
+# reproduced by this one to 9.7e-17 over all 66 target pairs, so the change
+# is byte formatting, not sequence content.
+UNIPROT_SHA256 = "b0f6213a79286da247fb1bf74c036446fe61e1a3beff074187025fce35015689"
 DOCKSTRING_SHA256 = "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
 
 SEED = 20260803
@@ -295,6 +299,29 @@ def load_dockstring(
     return frame
 
 
+DOCKING_RESIDUAL_TRANSFORM = "two_way"
+
+
+def docking_residual(
+    values: np.ndarray, scale: np.ndarray, transform: str = DOCKING_RESIDUAL_TRANSFORM
+) -> np.ndarray:
+    """Remove the per-ligand offset from a complete docking block.
+
+    ``two_way`` is the manuscript's definition, the additive two-way ANOVA
+    residual in raw score units. ``column_z_row_center`` standardises each
+    target column first and is what frozen bundles before 2026-08-12 used. The
+    docking block here is complete, so a single row-then-column pass gives the
+    exact two-way residual.
+    """
+    if transform == "two_way":
+        centred = values - values.mean(axis=0)
+        return centred - centred.mean(axis=1, keepdims=True)
+    if transform == "column_z_row_center":
+        z = (values - values.mean(axis=0)) / scale
+        return z - z.mean(axis=1, keepdims=True)
+    raise ValueError(f"unknown docking residual transform {transform!r}")
+
+
 def docking_geometries(
     frame: pd.DataFrame,
     *,
@@ -316,7 +343,7 @@ def docking_geometries(
     if (scale == 0).any():
         raise ValueError("constant docking target column")
     z = (values - values.mean(axis=0)) / scale
-    residual = z - z.mean(axis=1, keepdims=True)
+    residual = docking_residual(values, scale)
     raw_corr = np.corrcoef(z, rowvar=False)
     residual_corr = np.corrcoef(residual, rowvar=False)
     index = {target: i for i, target in enumerate(columns)}
@@ -988,7 +1015,7 @@ def run_analysis(
             ),
             "docking_predictor": (
                 "DOCKSTRING rows outside all SPD connectivity blocks; positive scores "
-                "clipped to zero; 12-target column-z and row-centering"
+                "clipped to zero; raw-unit two-way centring across 12 targets"
             ),
         },
         "support": {

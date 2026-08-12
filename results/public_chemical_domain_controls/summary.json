@@ -1,0 +1,160 @@
+{
+  "analysis_status": "standalone_public_post_hoc_domain_sensitivity",
+  "claim_boundary": "The controls show whether low-versus-high MW target-map disagreement is larger than disagreement caused by chemically disjoint but MW-matched supports and whether each restricted MW map is internally reproducible. Molecular weight was selected post hoc and is correlated with other ligand properties; these comparisons therefore do not establish MW as causal, validate docking poses, or establish biological target relationships.",
+  "configuration": {
+    "control_repetitions": 200,
+    "control_seed": 20260812,
+    "dockstring_support_seeds": [
+      71,
+      72,
+      73,
+      74,
+      75,
+      20260809
+    ],
+    "dockstring_support_size": 15000,
+    "extreme_fraction_per_tail": 0.25,
+    "primary_dockstring_support_seed": 71,
+    "rdkit_version": "2025.03.6"
+  },
+  "control_estimands": {
+    "mw_matched_group_disjoint": "whole chemical groups assigned to two halves inside ten stable rank strata of group-median MW, greedily balancing ligand counts",
+    "within_band_group_disjoint": "the same whole-group split repeated separately after restricting to the low- or high-MW quartile",
+    "within_band_row_random": "equal-size nonoverlapping random row halves within one MW band; chemical groups may overlap"
+  },
+  "datasets": {
+    "DOCKSTRING-58": {
+      "chemical_groups_on_primary_support": 11905,
+      "complete_rows": 260060,
+      "group_definition": "RDKit Bemis-Murcko scaffold; every acyclic molecule is a source-row singleton",
+      "primary_support_ligands": 15000,
+      "source_rows": 260155,
+      "targets": 58
+    },
+    "Docking-44": {
+      "chemical_groups": 8150,
+      "group_definition": "frozen source Butina_clusters",
+      "ligands": 12651,
+      "missing_cells_before_imputation": 8159,
+      "targets": 44
+    }
+  },
+  "dockstring_seed_summary": [
+    {
+      "dataset": "DOCKSTRING-58",
+      "geometry_spearman_maximum": 0.40947327442193726,
+      "geometry_spearman_median": 0.39799883525882873,
+      "geometry_spearman_minimum": 0.37736794053937817,
+      "sign_flip_fraction_maximum": 0.023593466424682397,
+      "sign_flip_fraction_minimum": 0.01693889897156685,
+      "support_seeds": 6,
+      "transformation": "raw"
+    },
+    {
+      "dataset": "DOCKSTRING-58",
+      "geometry_spearman_maximum": 0.36102479369214213,
+      "geometry_spearman_median": 0.3456276277553786,
+      "geometry_spearman_minimum": 0.3254038727710366,
+      "sign_flip_fraction_maximum": 0.37507562008469447,
+      "sign_flip_fraction_minimum": 0.35934664246823955,
+      "support_seeds": 6,
+      "transformation": "row_centered_residual"
+    }
+  ],
+  "inputs": {
+    "docking44": {
+      "path": "data/frozen/df_final_v4.csv.gz",
+      "sha256": "25436e49b9fc80421d8499ef289ed8ef00b4ab35b904c7d930fc377f493e1d51"
+    },
+    "dockstring": {
+      "path": "data/frozen/dockstring-dataset.tsv.gz",
+      "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+    }
+  },
+  "key_boundary_results": [
+    {
+      "dataset": "Docking-44",
+      "global_mw_matched_group_disjoint_median": 0.9956222495010835,
+      "global_mw_matched_group_disjoint_q025": 0.9919448198034184,
+      "interpretation": "descriptive separation from chemical-disjoint controls; not causal attribution to molecular weight",
+      "observed_below_both_within_band_group_disjoint_q025": true,
+      "observed_below_global_group_disjoint_q025": true,
+      "observed_low_high_geometry_spearman": 0.2272436943147387,
+      "transformation": "raw",
+      "within_high_mw_group_disjoint_median": 0.9894149442588822,
+      "within_high_mw_group_disjoint_q025": 0.9828576368391204,
+      "within_low_mw_group_disjoint_median": 0.9889071704744207,
+      "within_low_mw_group_disjoint_q025": 0.9842999079400443
+    },
+    {
+      "dataset": "Docking-44",
+      "global_mw_matched_group_disjoint_median": 0.9917015350968347,
+      "global_mw_matched_group_disjoint_q025": 0.9853449385079255,
+      "interpretation": "descriptive separation from chemical-disjoint controls; not causal attribution to molecular weight",
+      "observed_below_both_within_band_group_disjoint_q025": true,
+      "observed_below_global_group_disjoint_q025": true,
+      "observed_low_high_geometry_spearman": 0.20496480945389367,
+      "transformation": "row_centered_residual",
+      "within_high_mw_group_disjoint_median": 0.9787665496808199,
+      "within_high_mw_group_disjoint_q025": 0.9664119353274826,
+      "within_low_mw_group_disjoint_median": 0.9798813401426302,
+      "within_low_mw_group_disjoint_q025": 0.9735971267967043
+    },
+    {
+      "dataset": "DOCKSTRING-58",
+      "global_mw_matched_group_disjoint_median": 0.997733384763785,
+      "global_mw_matched_group_disjoint_q025": 0.9967946296185192,
+      "interpretation": "descriptive separation from chemical-disjoint controls; not causal attribution to molecular weight",
+      "observed_below_both_within_band_group_disjoint_q025": true,
+      "observed_below_global_group_disjoint_q025": true,
+      "observed_low_high_geometry_spearman": 0.40947327442193726,
+      "transformation": "raw",
+      "within_high_mw_group_disjoint_median": 0.9800006390725311,
+      "within_high_mw_group_disjoint_q025": 0.971849855498777,
+      "within_low_mw_group_disjoint_median": 0.9912069462077713,
+      "within_low_mw_group_disjoint_q025": 0.9883441000653361
+    },
+    {
+      "dataset": "DOCKSTRING-58",
+      "global_mw_matched_group_disjoint_median": 0.9944818581697781,
+      "global_mw_matched_group_disjoint_q025": 0.9928753775726009,
+      "interpretation": "descriptive separation from chemical-disjoint controls; not causal attribution to molecular weight",
+      "observed_below_both_within_band_group_disjoint_q025": true,
+      "observed_below_global_group_disjoint_q025": true,
+      "observed_low_high_geometry_spearman": 0.3505978420709316,
+      "transformation": "row_centered_residual",
+      "within_high_mw_group_disjoint_median": 0.9662258416754474,
+      "within_high_mw_group_disjoint_q025": 0.9576261701577718,
+      "within_low_mw_group_disjoint_median": 0.9785161557318001,
+      "within_low_mw_group_disjoint_q025": 0.9727836173419235
+    }
+  ],
+  "producer": "analysis/public_chemical_domain_controls.py",
+  "schema_version": "1.0.0",
+  "support_fingerprints": [
+    {
+      "seed": 71,
+      "selected_complete_row_index_sha256": "8afe6ccc883bd5d376847ddc4bfe0fff3b8cba1a518e4d8941f1e50a9356b11d"
+    },
+    {
+      "seed": 72,
+      "selected_complete_row_index_sha256": "5fdb196d25050a3fd557fc19b1cc2e33f11a80c6ddf087834a077ac9412ab58e"
+    },
+    {
+      "seed": 73,
+      "selected_complete_row_index_sha256": "3bb4be271352ea8e6fc522f392a386a277b6b7fd727499fbe689d06950ec32e9"
+    },
+    {
+      "seed": 74,
+      "selected_complete_row_index_sha256": "8c59fdbd43b58d0fca905afcc599dc93dd8b18bc1ca2dfd777cc98aca2d17725"
+    },
+    {
+      "seed": 75,
+      "selected_complete_row_index_sha256": "96149426fe7606c532c29c764c28945845fb466759e0cf2f383c639d834546f9"
+    },
+    {
+      "seed": 20260809,
+      "selected_complete_row_index_sha256": "31957fa2ccfd641a2e9d6e9b3f3bcef8ede95d11c09e0f8a3a224247a37cb99c"
+    }
+  ]
+}

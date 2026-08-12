@@ -1,0 +1,276 @@
+\sisection{S2. Spectral sensitivities and matched nulls}
+
+\sisubsection{S2.1 Correlation and covariance spectra}
+
+The frozen values are in \path{results/correlation_covariance_sensitivity.csv} and, with the
+scalar records, in the \texttt{large\_vina\_panels} block of
+\path{results/public_core_evidence.json}.
+
+The correlation spectrum is primary because the question concerns target dependence after each
+target column is placed on a common variance scale. The covariance spectrum keeps
+target-specific variances instead. The result holds in direction under both scalings: removing
+each ligand's mean across targets raises PR in both matrices under both
+(Table~\ref{tab:s2spectra}). On the correlation surface PR rises from 1.834 to 9.303 for
+Docking-44 and from 2.266 to 18.206 for DOCKSTRING-58. Through Equation~\ref{eq:s1pr} that is
+the same statement as mean squared target correlation falling from 0.535 to 0.087 and from
+0.431 to 0.038. On the covariance surface the rise is from 1.915 to 6.911 and from 2.474 to
+8.235, so the direction is scaling-independent while the size is not.
+
+\begin{table}[htbp]
+\centering
+\caption{Full-support spectra under both scalings, from
+\protect\path{results/correlation_covariance_sensitivity.csv}. Docking-44 uses all 12{,}651 ligands and
+DOCKSTRING-58 all 260{,}060 complete rows. These are fixed-matrix summaries, not estimates for
+a target superpopulation.}
+\label{tab:s2spectra}
+\small
+\begin{tabular}{llrrrr}
+\toprule
+Dataset & Surface & PR & PC1 fraction & Entropy rank & PCs for 90\% \\
+\midrule
+Docking-44 & correlation, raw & 1.834 & 0.733 & 3.897 & 8 \\
+ & correlation, residual & 9.303 & 0.274 & 19.991 & 29 \\
+ & covariance, raw & 1.915 & 0.716 & 4.062 & 8 \\
+ & covariance, residual & 6.911 & 0.313 & 14.548 & 21 \\
+\addlinespace
+DOCKSTRING-58 & correlation, raw & 2.266 & 0.659 & 6.206 & 22 \\
+ & correlation, residual & 18.206 & 0.178 & 34.563 & 43 \\
+ & covariance, raw & 2.474 & 0.624 & 6.491 & 20 \\
+ & covariance, residual & 8.235 & 0.319 & 21.902 & 37 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The raw leading component is close to the uniform target direction in both matrices. Its
+loading vector sits at cosine 0.9698 from that direction for Docking-44 and 0.9691 for
+DOCKSTRING-58, with 43 of 44 and 57 of 58 loadings positive; the one negative loading in each
+is $-0.0221$ and $-0.0122$. The PC1 scores correlate 0.9980 and 0.9973 with the ligand mean of
+the column-standardised scores, so the leading component is close to an average of the panel.
+
+Retaining the 5{,}393 positive DOCKSTRING scores instead of clipping them changes raw PR from
+2.266 to 2.275 and residual PR from 18.206 to 18.362. Docking-44 holds no positive cell, so it
+has no counterpart to this sensitivity.
+
+\sisubsection{S2.2 Docking-44 missing scores}
+
+The producer is \path{analysis/public_docking44_missing_data_sensitivity.py} and the frozen
+outputs are \path{results/public_docking44_missing_data_sensitivity/summary.json} with the
+four CSV files beside it.
+
+Docking-44 carries 8{,}159 missing cells in 3{,}354 of its 12{,}651 rows. Two choices are
+available: impute and keep every row, or delete incomplete rows and keep every observed score.
+They give different answers (Table~\ref{tab:s2missing}). Target-mean imputation on the full
+support gives residual PR 9.3029, target-median imputation 9.5279, and an additive fit on the
+548{,}485 observed cells with each unobserved residual completed by its fitted value of zero
+gives 9.6630. Complete-case deletion retains 9{,}297 rows and gives 13.9702, a rise of 4.6673
+over the primary value.
+
+The rise is not caused by imputation. Restricting the primary mean-imputed surface to exactly
+the 9{,}297 complete rows reproduces the complete-case score matrix to a maximum absolute cell
+difference of 0.0, so the two rows of Table~\ref{tab:s2missing} at 9{,}297 ligands are the same
+matrix. What changed is which ligands are in the support.
+
+\begin{table}[htbp]
+\centering
+\caption{Residual PR of Docking-44 under each missing-cell treatment, from
+\protect\path{results/public_docking44_missing_data_sensitivity/spectral_sensitivity.csv}.}
+\label{tab:s2missing}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Treatment & Ligands & Observed cells used & Residual PR \\
+\midrule
+Target-mean imputation (primary) & 12{,}651 & 556{,}644 & 9.3029 \\
+Target-median imputation & 12{,}651 & 556{,}644 & 9.5279 \\
+Observed-cell additive fit, zero residual completion & 12{,}651 & 548{,}485 & 9.6630 \\
+Complete-case deletion, observed scores & 9{,}297 & 409{,}068 & 13.9702 \\
+Primary surface restricted to the complete rows & 9{,}297 & 409{,}068 & 13.9702 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+To separate support from sample size we drew 1{,}000 random supports of exactly 9{,}297 rows
+without replacement from the full primary surface, at seed 20260811. Their residual PR has
+median 9.2940, mean 9.2951 and central 95\% repeated-support range 9.1281 to 9.4452. The
+maximum over the 1{,}000 draws is below the complete-case value, so the fraction of random
+supports at or below 13.9702 is 1.000. Reducing the row count from 12{,}651 to 9{,}297 does not
+move residual PR; selecting these particular 9{,}297 rows moves it by 4.67.
+
+Those rows are chemically distinct from the ones deletion removes. Complete rows have median
+molecular weight 249.332~g/mol against 398.552 for excluded rows, a median shift of
+149.220~g/mol at Cliff's $\delta=0.893$, and median heavy-atom count 17 against 28 at
+$\delta=0.896$. Missingness is concentrated in one target: 4mqs holds 3{,}352 of the 8{,}159
+missing cells. These are descriptive associations with row inclusion. Missingness was not
+randomised, so the equal-$n$ control is a support-selection diagnostic and not a population
+test, and the zero-residual completion is an additive-model sensitivity rather than recovery of
+unknown docking scores.
+
+\sisubsection{S2.3 The four transformation-matched null constructions}
+
+The producer is \path{analysis/public_residual_null_audit.py} and every frozen output sits in
+\path{results/public_residual_null_audit/}. Distribution summaries, seeds and support digests
+are in \path{summary.json} there, each size-conditioned replicate is in
+\path{mw_conditional_null_repeats.csv}, and each bin edge is in
+\path{mw_conditional_bin_contract.csv}.
+
+\paragraph{The common contract.} Within each matrix all four families run on one deterministic
+simple-random support of 12{,}000 ligands drawn without replacement, at seed 60 for Docking-44
+(from 12{,}651 rows) and seed 61 for DOCKSTRING-58 (from 260{,}060 rows). Each support is
+recorded as the SHA-256 of its sorted zero-based row indices encoded as little-endian int64:
+\texttt{8253cb55c373} for Docking-44 and \texttt{64dccaf8b65d} for DOCKSTRING-58. Each family
+runs 500 repetitions, and every simulated surface passes through the same centring, scaling and
+spectral steps as the observed matrix, so only the generating mechanism differs. On these
+supports the observed residual PR is 9.295 for Docking-44 and 18.158 for DOCKSTRING-58, against
+$P-1$ bounds of 43 and 57.
+
+\paragraph{Additive Gaussian.} We fit a grand mean with ligand and target effects, then add
+independent Gaussian noise whose standard deviation is the observed residual standard deviation
+of each target column. This preserves both main-effect structures and the target-wise noise
+scale, and destroys any dependence between target columns beyond those effects. It also gives a
+check on the raw spectrum: the null median raw PR is 1.891 against an observed 1.837 for
+Docking-44, and 2.283 against 2.212 for DOCKSTRING-58, so the construction reproduces the raw
+map closely while missing the residual one.
+
+\paragraph{Empirical residual-column permutation.} We permute each observed residual target
+column independently across ligands, then repeat centring and target scaling. The permutation
+step preserves the empirical marginal distribution of every target residual exactly. It
+destroys cross-target residual correspondence and each ligand's residual scale.
+
+\paragraph{Row-norm-preserving random direction.} We replace each ligand's residual by an
+independent random direction in the target-zero-sum subspace, rescaled to that ligand's
+observed residual Euclidean norm. This preserves the ligand support, the target count, the zero
+row sums and every residual row norm exactly. It destroys target residual marginals, target
+variances and cross-target alignment.
+
+\paragraph{Size-conditioned permutation.} We permute each processed raw target column
+independently within deterministic molecular-weight bins, then row-centre and target-scale.
+The permutation keeps each target's exact empirical raw-score marginal inside each bin, so
+bin-specific location and scale survive, and so does the non-Gaussian shape of the score
+distribution. It destroys ligand correspondence across targets and any continuous
+molecular-weight trend inside a bin, and row centring afterwards changes target marginals. Ten
+equally populated bins are the primary design; 1, 5 and 20 bins are sensitivities, and a
+size-matched random partition with identical bin sizes is the control that holds bin sizes
+while carrying no size information.
+
+\paragraph{The ten-bin contract.} Molecular weight is \texttt{Descriptors.MolWt} from RDKit
+2025.03.6 on the released row SMILES \cite{rdkit2025}. Quantile edges are deduplicated and
+\texttt{np.searchsorted(side='left')} assigns every exactly tied value to one bin, which is why
+bin sizes vary between 1{,}197 and 1{,}203 rather than sitting at 1{,}200
+(Table~\ref{tab:s2bins}). The bin-label vector is itself recorded as a SHA-256 of the
+support-order labels encoded as little-endian int16: \texttt{0c5b40e02258} for Docking-44 and
+\texttt{0d6f84fc2e99} for DOCKSTRING-58.
+
+\begin{table}[htbp]
+\centering
+\caption{The primary ten-bin molecular-weight contract on each 12{,}000-ligand support, from
+\protect\path{results/public_residual_null_audit/mw_conditional_bin_contract.csv}. Bounds are
+g/mol.}
+\label{tab:s2bins}
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+& \multicolumn{3}{c}{Docking-44} & \multicolumn{3}{c}{DOCKSTRING-58} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+Bin & Ligands & Minimum & Maximum & Ligands & Minimum & Maximum \\
+\midrule
+1 & 1{,}203 & 16.043 & 167.296 & 1{,}200 & 172.167 & 275.289 \\
+2 & 1{,}197 & 168.036 & 204.209 & 1{,}203 & 275.304 & 310.397 \\
+3 & 1{,}201 & 204.229 & 231.339 & 1{,}197 & 310.400 & 336.467 \\
+4 & 1{,}199 & 231.339 & 258.155 & 1{,}200 & 336.471 & 361.426 \\
+5 & 1{,}202 & 258.173 & 282.387 & 1{,}200 & 361.438 & 384.460 \\
+6 & 1{,}198 & 282.390 & 306.453 & 1{,}200 & 384.476 & 408.426 \\
+7 & 1{,}200 & 306.453 & 332.444 & 1{,}200 & 408.445 & 434.462 \\
+8 & 1{,}200 & 332.444 & 367.514 & 1{,}200 & 434.470 & 465.597 \\
+9 & 1{,}200 & 367.562 & 438.740 & 1{,}200 & 465.601 & 511.427 \\
+10 & 1{,}200 & 439.216 & 1506.135 & 1{,}200 & 511.499 & 987.217 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Results.} Table~\ref{tab:s2nulls} gives every null median with its central 95\%
+simulation range. In all eight dataset-by-family combinations, each of the 500 simulated
+residual PR values exceeds the observed value, so the empirical lower-tail probability is
+$(0+1)/(500+1)=0.0020$ throughout, which is the resolution floor of a 500-repetition design.
+The three families that ignore molecular size sit within 0.60 of the $P-1$ bound. The
+size-conditioned null is the only one that moves away from it, to 0.811 and 0.825 of the bound.
+What each family removes is stated above. None of them establishes docking accuracy or
+biological correctness, and none reaches past these two fixed Vina panels.
+
+\begin{table}[htbp]
+\centering
+\caption{Residual PR on the common 12{,}000-ligand supports and under the four matched nulls,
+from \protect\path{results/public_residual_null_audit/summary.json}. Brackets are central 95\%
+simulation ranges over 500 repetitions, not confidence intervals. The last column is the
+empirical lower-tail probability under the add-one rule.}
+\label{tab:s2nulls}
+\small
+\begin{tabular}{llrr}
+\toprule
+Dataset (observed; bound) & Null family & Median [simulation range] & $p$ \\
+\midrule
+Docking-44 & Additive Gaussian & 42.400 [42.345, 42.451] & 0.0020 \\
+(9.295; 43) & Residual-column permutation & 42.403 [42.350, 42.451] & 0.0020 \\
+ & Row-norm random direction & 42.628 [42.597, 42.663] & 0.0020 \\
+ & Size-conditioned, 10 bins & 34.875 [34.790, 34.972] & 0.0020 \\
+\addlinespace
+DOCKSTRING-58 & Additive Gaussian & 56.482 [56.445, 56.515] & 0.0020 \\
+(18.158; 57) & Residual-column permutation & 56.481 [56.438, 56.516] & 0.0020 \\
+ & Row-norm random direction & 56.612 [56.583, 56.640] & 0.0020 \\
+ & Size-conditioned, 10 bins & 47.039 [46.942, 47.131] & 0.0020 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{How much coarse size explains.} We measure the size-conditioned null against its own
+one-bin version, which is the same construction with no size information at all. The one-bin
+null medians are 42.843 and 56.728. Ten-bin conditioning closes 23.8\% of the distance from
+that one-bin median to the observed value for Docking-44 and 25.1\% for DOCKSTRING-58. Finer
+binning adds little: the closed share is 19.1\%, 23.8\% and 25.7\% at 5, 10 and 20 bins for
+Docking-44, and 22.8\%, 25.1\% and 26.0\% for DOCKSTRING-58. A size-matched random partition
+with the same ten bin sizes but no size information stays at median PR 42.844 and 56.726 and
+closes nothing, at $-4.2\times10^{-6}$ and $2.8\times10^{-5}$, so the shift comes from
+molecular weight and not from partitioning as such.
+
+\paragraph{What the same null does reproduce.} Coarse size accounts for 23.8\% and 25.1\% of
+the excess concentration, and it still reproduces much of the edge ordering. The ten-bin null map
+agrees with the observed residual map at median Spearman 0.924, with 95\% simulation range
+0.921 to 0.928, for Docking-44, and 0.718 with range 0.707 to 0.728 for DOCKSTRING-58; median
+edge-sign agreement is 0.834 and 0.727. The size-matched random partition reaches 0.051 and
+0.052 Spearman with sign agreement 0.517 and 0.514, so the ordering the size-conditioned null
+recovers is carried by molecular weight. Its overlap with the strongest observed edges is much
+weaker: the median Jaccard index against the 25 largest-magnitude observed edges is 0.087 for
+Docking-44 and 0.351 for DOCKSTRING-58. A null can therefore rank the edges of the residual map
+without concentrating it.
+
+\sisubsection{S2.4 Exploratory pocket-volume association}
+
+An exploratory analysis asks whether pocket volume is associated with each receptor's residual
+response to ligand molecular weight. It is produced by
+\path{analysis/residual_mechanism_analysis.py} and frozen in
+\path{results/residual_mechanism/}. The joined target table is
+\path{results/residual_mechanism/pocket_volume_exploratory.csv}; the source descriptor table is
+\path{data/frozen/toxicodynamics/data/44pockets_analysis.csv}. Complete pocket volumes are available
+for 36 of the 44 receptors.
+
+Pocket volume is negatively associated with the two-way residual slope (Spearman $\rho=-0.613$;
+Supplementary Figure~\ref{fig:s1-pocket}). The target-label permutation gives two-sided
+$p=9.0\times10^{-5}$, and permutation within receptor families gives $p=0.046$. A target bootstrap
+range is $[-0.788,-0.348]$, and leave-one-family and leave-one-target checks retain the negative
+direction. DOCKSTRING search-box volume is nearly constant and is not associated with the analogous
+descriptor slopes.
+
+This result is hypothesis-generating. It was selected after inspecting descriptor--residual-mode
+alignment, its probabilities are unadjusted for that search, and the released pocket table has no
+executable, versioned workflow defining the pockets. No harmonised DOCKSTRING pocket table is
+available for replication. The association is therefore consistent with pocket size contributing to
+residual geometry, but it does not establish a mechanism or explain the PDSP result.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/v5/fig_pocket_volume.pdf}
+\caption{Pocket volume and the residual response to ligand size. Each point is one of the 36
+Docking-44 receptors with complete descriptors; colour denotes receptor class. The negative rank
+association was selected post hoc, and the pocket-definition workflow is unavailable, so the plot is
+an exploratory structural reading rather than a validated mechanism.}
+\label{fig:s1-pocket}
+\end{figure}

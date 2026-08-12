@@ -1,0 +1,45 @@
+pdb,gene,receptor_organism,all_organisms,mutation_count,receptor_is_human,auxiliary_chains
+1m2z,NR3C1,Homo sapiens,Homo sapiens,1,True,
+1pbq,GRIN1,Rattus norvegicus,Rattus norvegicus,0,False,
+1xoq,PDE4D,Homo sapiens,Homo sapiens,0,True,
+2rh1,ADRB2,Homo sapiens,Enterobacteria phage T4; Homo sapiens,3,True,beta-2-adrenergic receptor/T4-lysozyme chimera
+2vt4,ADRB1,MELEAGRIS GALLOPAVO,MELEAGRIS GALLOPAVO,8,False,
+2ydo,ADORA2A,Homo sapiens,HOMO SAPIENS,5,True,
+2z5x,MAOA,Homo sapiens,Homo sapiens,0,True,
+3b66,AR,Homo sapiens,Homo sapiens,0,True,
+3kk6,PTGS1,Ovis aries,Ovis aries,0,False,
+3ln1,PTGS2,Mus musculus,Mus musculus,0,False,
+3rze,HRH1,Homo sapiens,Enterobacteria phage T4; Homo sapiens,2,True,"Histamine H1 receptor, Lysozyme chimera"
+4djh,OPRK1,Homo sapiens,Enterobacteria phage T4; Homo Sapiens,3,True,"Kappa-type opioid receptor, Lysozyme"
+4ey7,ACHE,Homo sapiens,Homo sapiens,0,True,
+4iar,HTR1B,Homo sapiens,Escherichia coli; Homo sapiens,4,True,
+4mqs,CHRM2,Homo sapiens,Homo sapiens; Lama glama,6,True,Nanobody 9-8
+4n6h,OPRD1,Homo sapiens,Escherichia coli; Homo sapiens,4,True,
+5cxv,CHRM1,Homo sapiens,Enterobacteria phage T4; Homo sapiens,7,True,
+5i71,SLC6A4,Homo sapiens,Homo sapiens; Mus musculus,4,True,"8B6 antibody, heavy chain | 8B6 antibody, light chain"
+5tvn,HTR2B,Homo sapiens,Escherichia coli; Homo sapiens,4,True,
+5u09,CNR1,Homo sapiens,Homo sapiens; Pyrococcus abyssi (strain GE5 / Orsay),1,True,
+5va1,KCNH2,Homo sapiens,Homo sapiens,0,True,
+6cm4,DRD2,Homo sapiens,Enterobacteria phage T4; Homo sapiens,0,True,
+6kpf,CNR2,Homo sapiens,Homo sapiens,0,True,Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1 | scFv16 | Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-2 | Guanine nucleotide-binding protein G(i) subunit alpha-1
+6kux,ADRA2A,Homo sapiens,Homo sapiens,0,True,
+6lqa,SCN5A,Homo sapiens,Homo sapiens,0,True,
+6pdj,LCK,Homo sapiens,Homo sapiens,0,True,
+6x3x,GABRA1,Homo sapiens,Homo sapiens; Mus musculus,0,True,IgG2b Fab Heavy Chain | Kappa Fab Light Chain
+6y1z,HTR3A,Mus musculus,Mus musculus,0,False,
+7f8y,CCKAR,Homo sapiens,Enterobacteria phage T4; Homo sapiens,6,True,
+7kwe,PDE3A,Homo sapiens,Homo sapiens,0,True,
+7ljd,DRD1,Homo sapiens,Bos taurus; Homo sapiens; Lama glama; Rattus norvegicus,0,True,Nanobody 35 | Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-2 | Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1
+7wc9,HTR2A,Homo sapiens,Homo sapiens,3,True,
+7xnk,KCNQ1,Homo sapiens,Homo sapiens,0,True,
+7ym8,ADRA1A,Homo sapiens,Homo sapiens; synthetic construct,0,True,nanobody 29 | miniGsq
+8e9y,CHRM3,Homo sapiens,Homo sapiens,0,True,scFv16 | Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-2 | Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1 | miniGq
+8ef6,OPRM1,Homo sapiens,Bos taurus; Homo sapiens; Rattus norvegicus; synthetic construct,0,True,scFV16 | Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-2 | Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1 | Guanine nucleotide-binding protein G(i) subunit alpha-1
+8fhs,CACNA1C,Homo sapiens,Homo sapiens,0,True,
+8pjk,HTR1A,Homo sapiens,Homo sapiens,0,True,Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-2 | Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1 | Guanine nucleotide-binding protein G(i) subunit alpha-1
+8st0,CHRNA4,Homo sapiens,Homo sapiens; Mus musculus,0,True,IgG1 Heavy Chain | IgG1 Kappa Light Chain
+8wty,SLC6A2,Homo sapiens,Homo sapiens,0,True,
+8xvk,EDNRA,Homo sapiens,Acetivibrio thermocellus ATCC 27405; Escherichia coli; Homo sapiens; synthetic construct,0,True,anti-BRIL Fab Light chain | anti-Fab Nanobody | anti-BRIL Fab Heavy chain
+8yn3,HRH2,Homo sapiens,Homo sapiens; synthetic construct,0,True,"Nanobody Nb35 | Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-2 | Guanine nucleotide-binding protein G(I)/G(S)/G(T) subunit beta-1 | Engineered guanine nucleotide,binding protein G(s) subunit alpha"
+9eo4,SLC6A3,Homo sapiens,Homo sapiens,0,True,
+V1A,AVPR1A,Homo sapiens,n/a (not a PDB accession),,True,

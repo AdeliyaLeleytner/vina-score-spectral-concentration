@@ -1,0 +1,158 @@
+{
+  "analysis": "Anastassiadis 2011 PubChem identity crosswalk",
+  "article_doi": "10.1038/nbt.2017",
+  "official_workbook_sha256": "cd756bf2b6ad541a1781508c563caf0da6da876dfb71f2546fbff02e13d98684",
+  "official_workbook_url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fnbt.2017/MediaObjects/41587_2011_BFnbt2017_MOESM23_ESM.xls",
+  "pubchem": {
+    "access_date": "2026-08-10",
+    "ambiguous_records": 21,
+    "base_url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug",
+    "candidate_unique_cids": 221,
+    "identifier_queries": "independent PUG REST name lookups for workbook CAS and name",
+    "properties": [
+      "SMILES",
+      "ConnectivitySMILES",
+      "InChIKey",
+      "IUPACName"
+    ],
+    "pubchem_requests": 359,
+    "pubchem_retries": 0,
+    "rate_limit_seconds_between_requests": 0.22,
+    "resolved_records": 157,
+    "selected_unique_cids": 157,
+    "status_counts": {
+      "resolved_unique_cas_name_agrees": 118,
+      "resolved_unique_cas_name_intersection": 6,
+      "resolved_unique_cas_name_not_found": 32,
+      "resolved_unique_name_only": 1,
+      "unresolved_ambiguous_cas": 5,
+      "unresolved_cas_name_conflict": 16
+    },
+    "usable_structures": 157
+  },
+  "redistribution": {
+    "contains_hotspot_assay_values": false,
+    "ncbi_molecular_data_policy": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+    "notice": "NCBI places no restrictions on molecular data but cannot transfer third-party rights; source-specific restrictions remain the user's responsibility. This identity crosswalk is not labelled CC0.",
+    "pubchem_download_terms": "https://pubchem.ncbi.nlm.nih.gov/docs/downloads"
+  },
+  "resolution_rule": {
+    "cas_not_found": "accept only a unique exact PubChem name result",
+    "conservative_de_leakage": "resolved records use the selected RDKit connectivity block; unresolved records use the union of connectivity blocks from every CAS/name candidate PubChem CID",
+    "downstream_structure_gate": "one selected non-ambiguous CID and exact agreement between PubChem and RDKit Standard InChIKey",
+    "multiple_cas": "accept only one-element CAS/name intersection",
+    "primary_identifier": "checksum-valid workbook CAS",
+    "unique_cas": "accept if name is absent or contains the same CID; disjoint name candidates are an unresolved conflict"
+  },
+  "software": {
+    "numpy": "1.26.4",
+    "pandas": "2.3.2",
+    "python": "3.12.11",
+    "rdkit": "2025.03.6"
+  },
+  "workbook_contract": {
+    "complete_fixed21_compounds": 176,
+    "compound_records": 178,
+    "fixed21_targets": [
+      "ABL1",
+      "AKT1",
+      "AKT2",
+      "CDK2",
+      "CSF1R",
+      "EGFR",
+      "FGFR1",
+      "IGF1R",
+      "JAK2",
+      "KDR",
+      "KIT",
+      "LCK",
+      "MAP2K1",
+      "MAPK1",
+      "MAPK14",
+      "MAPKAPK2",
+      "MET",
+      "PLK1",
+      "PTK2",
+      "ROCK1",
+      "SRC"
+    ],
+    "fixed21_workbook_aliases": {
+      "ABL1": [
+        "ABL1"
+      ],
+      "AKT1": [
+        "AKT1"
+      ],
+      "AKT2": [
+        "AKT2"
+      ],
+      "CDK2": [
+        "CDK2/cyclin A",
+        "CDK2/cyclin E"
+      ],
+      "CSF1R": [
+        "FMS"
+      ],
+      "EGFR": [
+        "EGFR"
+      ],
+      "FGFR1": [
+        "FGFR1"
+      ],
+      "IGF1R": [
+        "IGF1R"
+      ],
+      "JAK2": [
+        "JAK2"
+      ],
+      "KDR": [
+        "KDR/VEGFR2"
+      ],
+      "KIT": [
+        "c-Kit"
+      ],
+      "LCK": [
+        "LCK"
+      ],
+      "MAP2K1": [
+        "MEK1"
+      ],
+      "MAPK1": [
+        "ERK2 MAPK1"
+      ],
+      "MAPK14": [
+        "P38a/MAPK14"
+      ],
+      "MAPKAPK2": [
+        "MAPKAPK2"
+      ],
+      "MET": [
+        "c-MET"
+      ],
+      "PLK1": [
+        "PLK1"
+      ],
+      "PTK2": [
+        "FAK/PTK2"
+      ],
+      "ROCK1": [
+        "ROCK1"
+      ],
+      "SRC": [
+        "c-SRC"
+      ]
+    },
+    "incomplete_fixed21_pairs": [
+      [
+        "SB 202474",
+        "AKT1"
+      ],
+      [
+        "VEGF Receptor 2 Kinase Inhibitor II",
+        "MAPK14"
+      ]
+    ],
+    "workbook_columns": 179,
+    "workbook_rows": 303
+  }
+}

@@ -1,0 +1,7 @@
+overlap_level,shared_units,davis_rows_in_shared_units,pkis2_rows_in_shared_units,nearest_similarity_median,nearest_similarity_q025,nearest_similarity_q975,rows_with_nearest_similarity_ge_0_65,rows_with_nearest_similarity_ge_0_80
+full_standard_inchikey,3,3,3,,,,,
+connectivity_block,6,6,6,,,,,
+nonempty_bemis_murcko_scaffold,10,10,18,,,,,
+mixed_panel_butina_cluster,8,9,22,,,,,
+cross_panel_morgan_nearest_DAVIS,,10,,0.3461352657,0.204769647696,1,10,7
+cross_panel_morgan_nearest_PKIS2,,,20,0.2625,0.189873417722,0.682142857143,20,7

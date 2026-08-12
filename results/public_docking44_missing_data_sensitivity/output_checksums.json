@@ -1,0 +1,13 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "README.md": "be9f8e27c9fe79aeef80911cee58aaef0935f63bf1cf48cc167764d4806cb2cc",
+    "chemistry_effect_sizes.csv": "e512af36859d47e00dcdd177c301bc1c975c84926a8fda1cc161e66fe0c5114a",
+    "chemistry_group_summary.csv": "17a37431084473dd59520c939d137d97c894616e13ee2cb9625d895dd0421073",
+    "equal_n_random_controls.csv": "e36a43d48cda682bb9b175b25736d888fea7e31dbb6f8a437085fe01810ea526",
+    "missingness_by_target.csv": "bbf46af4b7b6d3e2bd3e34716008a1c11c11bca57c60ee5be591b056ffa5198b",
+    "spectral_sensitivity.csv": "baa72611bc9217efc68cbcf7e64c654b2699d914e3579efeaffa19ff3d97030e",
+    "summary.json": "77b6f4fde54d3d628723d1188413c316d0f32233e8e063c5c1f9a18eb4b4d603"
+  },
+  "scope": "all output files except this checksum manifest"
+}

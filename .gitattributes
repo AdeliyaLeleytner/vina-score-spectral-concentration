@@ -1,0 +1,6 @@
+# These checksum-registered CSVs are frozen upstream/generated exports with
+# CRLF records. Preserve their exact bytes and do not flag the carriage return
+# as trailing whitespace in release diffs.
+data/frozen/dockstring_58_receptors_manifest.csv -text whitespace=-trailing-space
+data/frozen/dockstring_kinase_receptors_manifest.csv -text whitespace=-trailing-space
+results/docking_structure_species/structure_species.csv -text whitespace=-trailing-space

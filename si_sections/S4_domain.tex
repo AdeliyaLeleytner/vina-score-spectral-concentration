@@ -1,0 +1,217 @@
+\sisection{S4. Chemical-domain controls}
+
+Producers: \path{analysis/public_chemical_domain_controls.py} for S4.1,
+\path{analysis/revision_map_decision_sensitivities.py} for S4.2, and
+\path{analysis/public_descriptor_domain_specificity.py} together with
+\path{analysis/descriptor_rank_matched_controls.py} for S4.3. Frozen outputs are in the
+matching directories under \path{results/}.
+
+\sisubsection{S4.1 Quartile contrast and matched chemical-group controls}
+
+Molecular weight was chosen after preliminary inspection and is treated as a post-hoc domain
+coordinate. It was computed with RDKit 2025.03.6 on the frozen analysis SMILES
+\cite{rdkit2025}. The Docking-44 contrast uses all 12{,}651 rows: the low band is
+$\mathrm{MW}\leq 218.300$ and the high band $\mathrm{MW}\geq 349.333$, 3{,}163 rows each, with
+band median molecular weights 178.054 and 413.602~g/mol. The DOCKSTRING-58 contrast uses the
+score-blind seed-71 support of 15{,}000 complete rows: the low band is
+$\mathrm{MW}\leq 325.368$ and the high band $\mathrm{MW}\geq 449.491$, 3{,}751 and 3{,}750
+rows, with band medians 286.310 and 498.573~g/mol. Each band gets its own raw and
+row-centred residual target map, and the two bands are compared by Spearman correlation of
+corresponding strict-upper-triangle entries.
+
+The matched control is 200 splits of the same library into halves that share no whole chemical
+group, drawn with seed 20260812. Chemical groups are the 8{,}150 frozen
+\texttt{Butina\_clusters} labels for Docking-44, treated as opaque by the producer, and 11{,}905
+Bemis--Murcko scaffold groups on the DOCKSTRING support, where every acyclic molecule is a
+source-row singleton \cite{butina1999,murcko1996}. The global matched control assigns whole
+groups to two halves inside ten stable rank strata of group-median molecular weight, greedily
+balancing ligand counts; group overlap between halves is 0 by construction and the mean
+absolute difference in median molecular weight between halves is 0.80~g/mol for Docking-44 and
+1.32~g/mol for DOCKSTRING. The within-band control repeats the same whole-group split after
+restricting to one molecular-weight band.
+
+\begin{table}[htbp]
+\centering
+\caption{Residual-map agreement across molecular-weight bands, against size-matched
+whole-group-disjoint controls. The observed column is one fixed quartile contrast. Control
+entries are medians with central 95\% repeated-split ranges over 200 group assignments; they
+are composition-sensitivity ranges, not confidence intervals. Sources:
+\protect\path{results/public_chemical_domain_controls/observed_low_high_mw_contrasts.csv},
+\protect\path{.../mw_matched_group_disjoint_summary.csv} and
+\protect\path{.../within_band_reproducibility_summary.csv}.}
+\label{tab:s4controls}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrlll}
+\toprule
+Dataset & Map & Observed $\rho$ & Global matched control & Within low band & Within high band \\
+\midrule
+Docking-44 & residual & 0.205 & 0.992 [0.985, 0.995] & 0.980 [0.974, 0.984] & 0.979 [0.966, 0.986] \\
+Docking-44 & raw & 0.227 & 0.996 [0.992, 0.997] & 0.989 [0.984, 0.992] & 0.989 [0.983, 0.993] \\
+DOCKSTRING-58 & residual & 0.351 & 0.994 [0.993, 0.995] & 0.979 [0.973, 0.982] & 0.966 [0.958, 0.971] \\
+DOCKSTRING-58 & raw & 0.409 & 0.998 [0.997, 0.998] & 0.991 [0.988, 0.994] & 0.980 [0.972, 0.984] \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+In all four rows of Table~\ref{tab:s4controls} the observed value falls below the 2.5th
+percentile of the global matched control and below the 2.5th percentile of both within-band
+controls. The gap between the observed contrast and the controls is therefore not explained by
+finite-sample noise, and not by generic chemical disjointness at matched size.
+
+Sign flips separate the two maps more sharply than the rank correlations do. Between the two
+residual quartile maps, 42.5\% of target-pair correlations change sign on Docking-44 and
+36.7\% on DOCKSTRING-58. In the matched control the median residual sign-flip fraction is
+3.8\% [2.7\%, 5.4\%] on Docking-44 and 2.8\% [2.3\%, 3.5\%] on DOCKSTRING-58. Between the two
+raw quartile maps only 2.7\% and 1.8\% of pairs change sign, against control medians of 0.2\%
+and 0.4\%. A shared positive component holds the raw signs in place inside each band: the raw
+participation ratio is 1.187 in the low Docking-44 band and 2.995 in the high band, against
+13.625 and 10.147 for the residual maps of the same two bands. On DOCKSTRING-58 the raw values
+are 1.751 and 3.080 against 19.552 and 23.800.
+
+These comparisons diagnose dependence on the chemical domain a map was estimated on. Molecular
+weight is correlated with other ligand properties and was selected post hoc, so nothing here
+identifies it as the causal coordinate.
+
+\sisubsection{S4.2 Threshold, continuum and support-seed sensitivities}
+
+The quartile boundary at 0.25 per tail is one choice out of many. A separate exact-rank sweep
+used tail fractions 0.10, 0.15, 0.20, 0.25, 0.30, 0.35 and 0.40. Tails are exact equal-$N$ rank
+tails; rows are sorted by molecular weight and then by source-row index, so boundary ties
+resolve deterministically. Each threshold carries 100 equal-$N$ random-disjoint controls.
+
+On the residual map, agreement between the low and high tails runs from 0.201 to 0.259 across
+the 7 thresholds on Docking-44, median 0.210, and from 0.174 to 0.528 on DOCKSTRING-58, median
+0.351. On the raw map the ranges are 0.175 to 0.351, median 0.227, and 0.134 to 0.598, median
+0.409. The matched random-disjoint control means run from 0.978 to 0.995 on Docking-44 residual
+maps and from 0.976 to 0.994 on DOCKSTRING-58 residual maps. At every one of the 7 thresholds,
+in all four dataset-by-map combinations, the observed value falls below the 2.5th percentile of
+its matched control. Per-threshold rows are in
+\path{results/revision_map_decision_sensitivities/mw_threshold_sweep.csv} and the compact form
+in \path{.../mw_threshold_sweep_summary.csv}.
+
+Tails discard the middle of the library, so we also cut the same libraries into ten
+non-overlapping equal-population molecular-weight bins and compared all 45 bin pairs. Any
+$N \bmod 10$ highest-rank remainder rows are excluded and counted in
+\path{.../mw_decile_maps.csv}. Across the 45 pairs, the Spearman correlation between separation
+of bin median molecular weights and residual-map dissimilarity is 0.945 on Docking-44 and 0.988
+on DOCKSTRING-58; on raw maps it is 0.814 and 0.925. A descriptive ordinary-least-squares slope
+puts the residual-map dissimilarity at 0.220 per 100~Da on Docking-44 and 0.316 per 100~Da on
+DOCKSTRING-58. Pairwise residual agreement ranges from 0.153 to 0.933 on Docking-44 and from
+0.174 to 0.962 on DOCKSTRING-58. The 45 comparisons reuse ten maps and are not independent
+observations, so no significance calculation is attached to the trend.
+
+The DOCKSTRING quartile contrast depends on which 15{,}000 rows were drawn, so it was repeated
+on six independently seeded score-blind supports of that size, seeds 71, 72, 73, 74, 75 and
+20260809. Residual-map agreement runs from 0.325 to 0.361, median 0.346; raw-map agreement runs
+from 0.377 to 0.409, median 0.398. The residual sign-flip fraction runs from 35.9\% to 37.5\%
+and the raw sign-flip fraction from 1.7\% to 2.4\%. Each support carries a SHA-256 fingerprint
+of its selected complete-row index in \path{summary.json}, and per-seed rows are in
+\path{results/public_chemical_domain_controls/dockstring_support_seed_contrasts.csv}. This is a
+range across six named seeds, not an uncertainty interval.
+
+\sisubsection{S4.3 Descriptor-axis specificity and the non-predictive-basis control}
+
+To see whether the molecular-weight result generalises to any coarse chemical coordinate, the
+same inclusive lower/upper 25\% threshold family was applied post hoc to seven RDKit
+descriptors. Three axes are designated size-related: heavy-atom count, molecular weight and
+Labute ASA. The other four are TPSA, cLogP, rotatable-bond count and ring count. Inclusive
+empirical quartile thresholds retain boundary ties, so discrete descriptors give unequal tails
+that can run far past a quarter of the library: the two disjoint DOCKSTRING ring-count tails
+hold 8{,}376 and 6{,}624 rows, jointly all 15{,}000. Docking-44 again uses all 12{,}651 rows
+and DOCKSTRING the fixed seed-71 support.
+
+\begin{table}[htbp]
+\centering
+\caption{Residual-map agreement between the lower and upper 25\% tails of seven descriptor
+axes, with matched-size random-row-disjoint controls. Control entries are medians with central
+95\% ranges over 200 splits at the same two tail sizes. Sources:
+\protect\path{results/public_descriptor_domain_specificity/descriptor_extremes.csv} and
+\protect\path{.../descriptor_random_disjoint_summary.csv}.}
+\label{tab:s4descriptors}
+\small
+\begin{tabular}{llrrrl}
+\toprule
+Dataset & Descriptor & Low $n$ & High $n$ & Observed $\rho$ & Matched random control \\
+\midrule
+Docking-44 & Heavy atoms & 3{,}545 & 3{,}523 & 0.207 & 0.993 [0.988, 0.995] \\
+ & Molecular weight & 3{,}163 & 3{,}163 & 0.205 & 0.992 [0.987, 0.994] \\
+ & Labute ASA & 3{,}163 & 3{,}163 & 0.200 & 0.992 [0.987, 0.994] \\
+ & TPSA & 3{,}163 & 3{,}167 & 0.753 & 0.992 [0.987, 0.994] \\
+ & cLogP & 3{,}164 & 3{,}163 & 0.887 & 0.992 [0.988, 0.994] \\
+ & Rotatable bonds & 3{,}736 & 3{,}168 & 0.789 & 0.993 [0.989, 0.995] \\
+ & Ring count & 4{,}537 & 4{,}349 & 0.703 & 0.994 [0.992, 0.996] \\
+\addlinespace
+DOCKSTRING-58 & Heavy atoms & 4{,}367 & 3{,}817 & 0.361 & 0.991 [0.989, 0.993] \\
+ & Molecular weight & 3{,}751 & 3{,}750 & 0.351 & 0.990 [0.988, 0.992] \\
+ & Labute ASA & 3{,}750 & 3{,}750 & 0.322 & 0.990 [0.988, 0.992] \\
+ & TPSA & 3{,}755 & 3{,}750 & 0.787 & 0.991 [0.988, 0.992] \\
+ & cLogP & 3{,}750 & 3{,}750 & 0.822 & 0.990 [0.988, 0.992] \\
+ & Rotatable bonds & 6{,}154 & 4{,}352 & 0.831 & 0.993 [0.991, 0.994] \\
+ & Ring count & 8{,}376 & 6{,}624 & 0.803 & 0.995 [0.994, 0.996] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Across the three size-related axes, residual-map agreement spans 0.200 to 0.207, median 0.205,
+on Docking-44, and 0.322 to 0.361, median 0.351, on DOCKSTRING-58. Across the four other coarse
+axes the spans are 0.703 to 0.887, median 0.771, and 0.787 to 0.831, median 0.812. Every one of
+the 14 observed contrasts falls below the 2.5th percentile of its matched control, so the
+result is graded rather than a size-versus-nothing dichotomy: the largest changes follow size,
+and the other four axes also move the map more than finite support alone would.
+
+The three size-related axes are one family, not three replications. Heavy-atom count and Labute
+ASA correlate at Spearman 0.985 on Docking-44 and 0.992 on DOCKSTRING-58; heavy-atom count and
+molecular weight at 0.935 and 0.965; molecular weight and Labute ASA at 0.968 and 0.979
+(\path{.../descriptor_correlations.csv}). Control replicates are also shared: contrasts with an
+identical pair of tail sizes reuse the same cached series of 200 random splits, so the 14 rows
+of Table~\ref{tab:s4descriptors} do not stand for 14 independent control simulations.
+
+The second control asks a different question: does agreement between a fitted target-pair
+geometry and an experimental panel require the fitted basis to predict anything? It runs on a
+fixed 20-target de-leaked DOCKSTRING support of 259{,}579 ligands and 5{,}191{,}580 cells, after
+removing 481 rows matching 1{,}050 assay connectivity blocks, with positive scores clipped to
+zero. Each basis carries 7 columns, is fitted in 5 Bemis--Murcko-scaffold folds, is subtracted
+from the score surface out of fold, and the remaining target-pair geometry over the 190 dyads is
+compared with a fixed centred experimental edge vector from each panel. Six bases were run
+through those identical steps: the seven published RDKit physicochemical descriptors, a frozen
+7-D random projection of unnormalised Morgan count fingerprints (seed 20260910, representative
+of a 20-seed ensemble), two 7-D projections of normalised Morgan bit fingerprints, a
+stable-hash nuisance basis, and an outcome-derived rank-7 SVD oracle that uses held-out docking
+outcomes for its projection and is not a predictor. The stable-hash basis is a keyed BLAKE2b
+digest of the exact input SMILES mapped to seven centred uniform coordinates, seed 20260823. It
+carries no chemistry: its maximum absolute Pearson correlation with any published descriptor is
+0.0063 and its maximum absolute within-basis correlation is 0.0056.
+
+The stable-hash basis predicts nothing. Its mean out-of-fold target $R^2$ is
+$-3.6\times 10^{-5}$, with median $-3.5\times 10^{-5}$, minimum $-7.3\times 10^{-5}$ and
+maximum $9.5\times 10^{-6}$; subtracting its prediction reduces the mean squared off-diagonal
+target correlation by a relative $2.1\times 10^{-5}$. The physicochemical basis reaches mean
+out-of-fold $R^2$ 0.107 and a relative reduction of 0.234 on the same support.
+
+It still reproduces panel geometry agreement in the band the predictive bases occupy. Its
+Spearman agreement with the fixed centred experimental edge vector is 0.248 on DAVIS, 0.250 on
+PKIS2, 0.103 on PKIS1 and 0.348 on KiRHub, a 0.10 to 0.35 band. The physicochemical basis gives
+0.256, 0.218, 0.097 and 0.288 on the same four panels, so the nuisance basis lands within 0.008
+of it on DAVIS and above it on the other three. The observed residual surface itself gives
+0.280, 0.287, 0.174 and 0.322, and the SVD oracle gives 0.268, 0.267, 0.149 and 0.319. All
+values are in
+\path{results/descriptor_rank_matched_controls/panel_geometry_agreement.csv} and
+\path{.../predictive_metrics.csv}.
+
+This sets a limit on how any absolute agreement number can be read. A seven-column basis with
+no chemical content and no held-out predictive performance still reaches 0.10 to 0.35 agreement
+with experimental target-pair geometry on these panels. Absolute agreement with an experimental
+panel is therefore weak evidence on its own, and cannot by itself orient an interpretation
+towards the features a basis was built from. The comparison that survives this control is the
+paired one: the same docking scores, raw against centred, held against one fixed experimental
+endpoint, with the target panel and the experimental edges unchanged on both sides of the
+pair. That is the form every experimental contrast in the main text takes.
+
+The boundary on this control is narrow. It tests basis specificity for one fixed common-20
+de-leaked DOCKSTRING geometry and is not extrapolated to the Docking-44 or DOCKSTRING-58
+supports that carry the headline numbers. Its bootstrap reweights coarsened blocks of chemical
+groups at 5{,}000 repeats with seed 20260824, holding the target panel and the experimental
+edges fixed, so those intervals are sensitivity ranges and not confidence intervals for a
+population of targets or assays.

@@ -1,0 +1,5 @@
+dataset,transformation,mw_bins,bin_pairs,spearman_mw_separation_vs_map_dissimilarity,descriptive_ols_dissimilarity_per_100_da,descriptive_ols_intercept,minimum_pair_agreement,maximum_pair_agreement,inference
+Docking-44,raw,10,45,0.81383399209486162,0.19982285620621446,0.12500467181021035,0.13179600046818432,0.97775027212418231,descriptive only; the 45 pairwise comparisons share ten maps and are not independent observations
+Docking-44,row_centered_residual,10,45,0.94492753623188397,0.22047376888060169,0.17718107410309616,0.1531942366548589,0.93305877999279407,descriptive only; the 45 pairwise comparisons share ten maps and are not independent observations
+DOCKSTRING-58,raw,10,45,0.92476943346508567,0.29484203539662485,-0.036060549581885176,0.13354499739341619,0.97597618116579232,descriptive only; the 45 pairwise comparisons share ten maps and are not independent observations
+DOCKSTRING-58,row_centered_residual,10,45,0.9878787878787878,0.31603391434826872,-0.014666274750521156,0.1737052568261509,0.96235948075896172,descriptive only; the 45 pairwise comparisons share ten maps and are not independent observations

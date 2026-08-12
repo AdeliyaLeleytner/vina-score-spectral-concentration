@@ -1,67 +1,95 @@
-# Pre-submission release checklist
+# v5 submission-release checklist
 
-The submission artifact is version `3.0.3` and is titled *Target-correlation maps are
-library-conditional but recoverable from a few hundred ligands in two large Vina panels*.
-It includes the broad 6,480-ligand/31-target DOCKSTRING--ChEMBL benchmark, its endpoint-
-restricted human binding Ki/Kd arm,
-rank-matched physicochemical and count-Morgan feature controls, and stable-hash and
-row-permuted nuisance controls. The old 137-ligand/38-target Docking-44 benchmark is a legacy
-sparse sensitivity only.
+This checklist covers the exact package that will accompany the *Journal of
+Cheminformatics* submission. It must be applied to a clean archive, not the
+current dirty working tree.
 
-The release is not ready until the public tag, rendered repository, versioned archive and
-clean-room build all correspond to this same artifact. Publishing is an outward-facing
-author action; this checklist records the required synchronization.
+## Scientific lock
 
-## Do this before the cover letter claims a reproducibility package
+- [ ] Title matches `manuscript_v5.tex`, `supplementary_v5.tex`, `README.md`,
+  `PREFLIGHT.md` and `CITATION.cff`.
+- [ ] Abstract is no more than 350 words and contains one concise `Scientific Contribution`
+  paragraph.
+- [ ] The primary full-support PDSP residual-versus-raw contrast is described as
+  descriptive and post hoc.
+- [ ] Every external analysis is identified as post hoc.
+- [ ] PDSP-overlapping Docking-44 connectivity blocks are excluded before the
+  target map is built.
+- [ ] Censor-aware weakening and loss of residual agreement on the chemically shifted complete-case
+  Docking-44 support remain explicit.
+- [ ] Paired QAP inference is two-sided, with Holm and Bonferroni correction
+  within the 12-row primary QAP table.
+- [ ] Sequence-and-family fusion is not presented as significant or as a
+  headline result.
+- [ ] Kinase, SPD, KiRHub and ligand-wise ranking boundaries remain.
+- [ ] Pocket volume is Supplementary and hypothesis-generating.
+- [ ] No claim implies universal improvement beyond homology, causal mechanism,
+  affinity prediction or compound-level target-ranking improvement.
 
-1. **Commit and push.** Commit the synchronized submission artifact, then run
-   `git push origin HEAD:main`. Confirm afterwards that `git log origin/main -1` matches the
-   local HEAD and that the rendered README on GitHub shows the current title.
-2. **Tag an immutable release** matching the submitted manuscript, e.g. `v3.0.3`, and confirm
-   `CITATION.cff` (`version`, `date-released`) agrees with the tag.
-3. **Mint a version-specific Zenodo DOI** for that tag. The manuscript's Availability section
-   now tells readers to cite the version-specific archive rather than the concept record
-   `10.5281/zenodo.21733767`. The version-specific DOI is
-   `10.5281/zenodo.21874630`; confirm that the completed archive resolves publicly.
-4. **Clean-room reproduce.** From a fresh clone of the tag, in the container:
-   ```bash
-   git clone --branch v3.0.3 <url> && cd vina-score-spectral-concentration
-   docker build -t jcheminf-repro . && docker run --rm jcheminf-repro
-   ```
-   The build must reach `manuscript.pdf` and `supplementary_information.pdf` without
-   consulting anything outside the clone.
-5. **Confirm the numbers came from the clone**, not from a local cache: every figure, every
-   supplementary table, and every value in the abstract must regenerate from
-   `results/manuscript_evidence.json` as rebuilt inside the container.
-6. **Re-read the README** against the final manuscript: title, headline results, package map,
-   limitations, licences.
-7. **Check the high-risk contracts** in the clean clone:
-   - broad ranking: 6,480 evaluated ligands, 31 targets, 25,214 non-tied observed within-
-     ligand comparisons; absolute/column/
-     residual concordance 0.537/0.530/0.529;
-   - endpoint-restricted human binding Ki/Kd: 1,049 evaluated ligands, 3,955 comparisons;
-     absolute/residual
-     0.559/0.520;
-   - stable-hash and row-permuted controls: essentially zero out-of-fold predictive
-     performance despite nonzero scale-free fitted-component map agreement.
+## Files and build
 
-## Known reproducibility boundaries
+- [ ] Review an explicit release file list; never use `git add .` in this tree.
+- [ ] Ensure all v5 TeX, section, analysis, result, figure, test and metadata
+  files are included in the candidate archive.
+- [ ] Install from `requirements.lock` in a clean Python 3.12.11 environment.
+- [ ] Run `make PYTHON=.venv/bin/python all` successfully.
+- [ ] Run `make PYTHON=.venv/bin/python release-check-v5` and resolve every
+  failure; retain the printed reason for every skip.
+- [ ] Confirm both PDFs compile twice with no undefined citations/references or
+  overfull boxes.
+- [ ] After the report inputs are frozen, run
+  `.venv/bin/python analysis/build_v5_report_manifest.py --write` and review the
+  resulting diff.
+- [ ] Verify `results/v5_report_source_manifest.csv` and its sidecar digest.
+- [ ] Reconstruct both 12-row PDSP paired-QAP tables and the support-threshold
+  sensitivity from the released aggregate table.
+- [ ] Confirm the Supplement contents lists S1--S7 and all subsections.
+- [ ] Confirm four main upload figures, Supplementary Figure S1 and the graphical
+  abstract match the PDF captions.
+- [ ] Confirm `submission/files/Manuscript.pdf` and
+  `submission/files/Additional_file_1.pdf` match the final root PDFs byte for byte.
+- [ ] Confirm the graphical abstract is 920×300 RGB, white-background and at
+  most 150,000 bytes.
 
-- **Source-restricted inputs.** PKIS1 and the KiRHub workbook are not redistributed; they are
-  fetched by checksum-verified scripts from their publishers, and the report-layer build does
-  not download them. The 190-edge target-pair ledger is released so that every fixed-panel
-  number is recomputable, but a reader cannot rebuild the experimental geometry from
-  compound-by-target measurements without obtaining those two sources themselves.
-  Before submission, the authors should verify that this boundary satisfies the journal's
-  data policy and, if needed, ask the editor about the KiRHub and PKIS1 licence terms.
-- **The ODDT rescoring stage** runs under a separate Python 3.9 interpreter (conda) rather
-  than the pinned `.venv`. Both interpreters are recorded in
-  `results/nonvina_scorer_transport/summary.json`, but a clean-room reproducer needs both.
-- **Pose archives.** The non-Vina analysis consumes DOCKSTRING pose archives that are not
-  redistributed with the package; their MD5s are verified in-run and recorded.
+## Data and provenance
 
-## Independent review status
+- [ ] Re-hash every redistributed input against `data_manifest.csv`.
+- [ ] Check `external_sources.csv` against the exact source files used.
+- [ ] Confirm aggregate external-map tables contain no compound-level activity
+  profiles or restricted source rows.
+- [ ] Confirm PDSP source access and checksum; obtain editorial acceptance of the
+  nonredistributed-source route.
+- [ ] Verify that the recorded PDSP connectivity-block exclusions match the
+  docking support used by every reported PDSP map.
+- [ ] Preserve DOCKSTRING pose/receptor checksums, ODDT training/model checksums
+  and the smina executable version/checksum.
+- [ ] Confirm all licences and required acknowledgements, including Reaction
+  Biology Corporation for KiRHub.
+- [ ] Keep v4 manifests explicitly historical; distinguish them from the v5
+  report-source manifest.
 
-Run fresh independent reviews only after the final PDFs and evidence ledger are rebuilt.
-Record the reviewed commit and tag in the review notes; a review of an earlier title,
-benchmark contract or descriptor interpretation does not validate version `3.0.3`.
+## Visual and editorial inspection
+
+- [ ] Read both PDFs from start to finish at final size.
+- [ ] Inspect every figure label, legend, table, symbol, reference and page break.
+- [ ] Search extracted text for placeholders, the old title, stale v4 claims,
+  `Figure 5`, and a main-text pocket figure.
+- [ ] Check author names, affiliations, ORCIDs, corresponding-author email,
+  contributions, funding, competing interests and AI disclosure with all
+  coauthors.
+- [ ] Confirm the journal's current article type, abstract, data-availability,
+  supplementary-file and graphical-abstract requirements.
+
+## Archive and upload
+
+- [ ] Record the candidate commit or archive checksum.
+- [ ] Record SHA-256 hashes for both PDFs and every upload asset.
+- [ ] Deposit the exact tested candidate and mint a version-specific DOI.
+- [ ] Insert that DOI into the availability statement, README and metadata;
+  rebuild and re-hash without changing scientific content.
+- [ ] Obtain final coauthor approval of the exact PDF bytes.
+- [ ] Upload the manuscript, four main figures, Additional file 1, Supplementary
+  Figure S1 and graphical abstract with matching titles and descriptions.
+
+Current state: **v5 submission candidate; no release tag or version-specific DOI
+is yet claimed.**

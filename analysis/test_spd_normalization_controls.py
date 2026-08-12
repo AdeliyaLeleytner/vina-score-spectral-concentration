@@ -49,6 +49,6 @@ def test_release_summary() -> None:
     summary = json.loads(path.read_text(encoding="utf-8"))
     assert summary["docking_rows"] == 258770
     assert summary["results"]["standard_centered"]["floor_at_bound"] == pytest.approx(
-        0.33302162478083
+        0.37229690239625957
     )
     assert "heavy-atom" in summary["ligand_efficiency_definition"]

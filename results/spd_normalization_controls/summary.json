@@ -19,16 +19,16 @@
     {
       "contrast": "minus_standard_centered",
       "endpoint": "floor_at_bound",
-      "observed": -0.18421975452951492,
-      "p_positive": 0.9542045795420458,
+      "observed": -0.2234950321449445,
+      "p_positive": 0.9623037696230377,
       "permutations": 10000,
       "representation": "raw"
     },
     {
       "contrast": "alignment",
       "endpoint": "floor_at_bound",
-      "observed": 0.33302162478083,
-      "p_positive": 0.022097790220977902,
+      "observed": 0.37229690239625957,
+      "p_positive": 0.011898810118988102,
       "permutations": 10000,
       "representation": "standard_centered"
     },
@@ -43,8 +43,8 @@
     {
       "contrast": "minus_standard_centered",
       "endpoint": "floor_at_bound",
-      "observed": 0.033255406195207504,
-      "p_positive": 0.3106689331066893,
+      "observed": -0.006019871420222089,
+      "p_positive": 0.541945805419458,
       "permutations": 10000,
       "representation": "within_ligand_ordinal"
     },
@@ -59,8 +59,8 @@
     {
       "contrast": "minus_standard_centered",
       "endpoint": "floor_at_bound",
-      "observed": -0.04815897136177677,
-      "p_positive": 0.6961303869613039,
+      "observed": -0.08743424897720636,
+      "p_positive": 0.8194180581941806,
       "permutations": 10000,
       "representation": "ligand_efficiency_raw"
     },
@@ -75,8 +75,8 @@
     {
       "contrast": "minus_standard_centered",
       "endpoint": "floor_at_bound",
-      "observed": 0.11636469900642898,
-      "p_positive": 0.05629437056294371,
+      "observed": 0.07708942139099939,
+      "p_positive": 0.09399060093990601,
       "permutations": 10000,
       "representation": "ligand_efficiency_centered"
     },
@@ -91,16 +91,16 @@
     {
       "contrast": "minus_standard_centered",
       "endpoint": "censor_aware_binary_10uM",
-      "observed": -0.046873173582700156,
-      "p_positive": 0.6527347265273473,
+      "observed": -0.040444184687317364,
+      "p_positive": 0.6173382661733826,
       "permutations": 10000,
       "representation": "raw"
     },
     {
       "contrast": "alignment",
       "endpoint": "censor_aware_binary_10uM",
-      "observed": 0.3947983635300994,
-      "p_positive": 0.005099490050994901,
+      "observed": 0.3883693746347166,
+      "p_positive": 0.004399560043995601,
       "permutations": 10000,
       "representation": "standard_centered"
     },
@@ -115,8 +115,8 @@
     {
       "contrast": "minus_standard_centered",
       "endpoint": "censor_aware_binary_10uM",
-      "observed": -0.1071303331385155,
-      "p_positive": 0.9287071292870713,
+      "observed": -0.1007013442431327,
+      "p_positive": 0.9239076092390761,
       "permutations": 10000,
       "representation": "within_ligand_ordinal"
     },
@@ -131,8 +131,8 @@
     {
       "contrast": "minus_standard_centered",
       "endpoint": "censor_aware_binary_10uM",
-      "observed": -0.10151957919345411,
-      "p_positive": 0.8253174682531746,
+      "observed": -0.09509059029807132,
+      "p_positive": 0.8124187581241876,
       "permutations": 10000,
       "representation": "ligand_efficiency_raw"
     },
@@ -147,8 +147,8 @@
     {
       "contrast": "minus_standard_centered",
       "endpoint": "censor_aware_binary_10uM",
-      "observed": -0.11203974284044416,
-      "p_positive": 0.9182081791820818,
+      "observed": -0.10561075394506136,
+      "p_positive": 0.946905309469053,
       "permutations": 10000,
       "representation": "ligand_efficiency_centered"
     },
@@ -163,16 +163,16 @@
     {
       "contrast": "minus_standard_centered",
       "endpoint": "censor_aware_binary_30uM",
-      "observed": -0.22881355932203395,
-      "p_positive": 0.9803019698030196,
+      "observed": -0.27089421390999424,
+      "p_positive": 0.9805019498050195,
       "permutations": 10000,
       "representation": "raw"
     },
     {
       "contrast": "alignment",
       "endpoint": "censor_aware_binary_30uM",
-      "observed": 0.40917592051431917,
-      "p_positive": 0.011898810118988102,
+      "observed": 0.45125657510227946,
+      "p_positive": 0.005699430056994301,
       "permutations": 10000,
       "representation": "standard_centered"
     },
@@ -187,8 +187,8 @@
     {
       "contrast": "minus_standard_centered",
       "endpoint": "censor_aware_binary_30uM",
-      "observed": -0.04587960257159557,
-      "p_positive": 0.7607239276072393,
+      "observed": -0.08796025715955585,
+      "p_positive": 0.8953104689531047,
       "permutations": 10000,
       "representation": "within_ligand_ordinal"
     },
@@ -203,8 +203,8 @@
     {
       "contrast": "minus_standard_centered",
       "endpoint": "censor_aware_binary_30uM",
-      "observed": -0.14494447691408535,
-      "p_positive": 0.9359064093590641,
+      "observed": -0.18702513150204564,
+      "p_positive": 0.9731026897310269,
       "permutations": 10000,
       "representation": "ligand_efficiency_raw"
     },
@@ -219,8 +219,8 @@
     {
       "contrast": "minus_standard_centered",
       "endpoint": "censor_aware_binary_30uM",
-      "observed": 0.035359438924605524,
-      "p_positive": 0.32656734326567344,
+      "observed": -0.006721215663354763,
+      "p_positive": 0.5764423557644236,
       "permutations": 10000,
       "representation": "ligand_efficiency_centered"
     }
@@ -242,9 +242,9 @@
       "floor_at_bound": 0.14880187025131505
     },
     "standard_centered": {
-      "censor_aware_binary_10uM": 0.3947983635300994,
-      "censor_aware_binary_30uM": 0.40917592051431917,
-      "floor_at_bound": 0.33302162478083
+      "censor_aware_binary_10uM": 0.3883693746347166,
+      "censor_aware_binary_30uM": 0.45125657510227946,
+      "floor_at_bound": 0.37229690239625957
     },
     "within_ligand_ordinal": {
       "censor_aware_binary_10uM": 0.2876680303915839,

@@ -1,0 +1,564 @@
+{
+  "activity_contract": {
+    "activity_contract": "non-null pChEMBL; exact standard relation; Ki, Kd, IC50 or EC50; no potency floor and no assay-type restriction, matching the published Docking-44 pull",
+    "analysis_records": 196743,
+    "endpoint_counts": {
+      "EC50": 9945,
+      "IC50": 139012,
+      "Kd": 5715,
+      "Ki": 42071
+    },
+    "fraction_below_pchembl_6": 0.20839877403516263,
+    "maximum_pchembl": 11.0,
+    "minimum_pchembl": 2.3,
+    "records_after_exact_relation_and_endpoint_filter": 196889,
+    "records_with_unparseable_smiles": 146,
+    "source_records": 212254,
+    "targets_with_any_record": 31,
+    "unique_ligands": 110877
+  },
+  "analysis": "dockstring_positive_score_ligand_wise_ranking_sensitivity",
+  "analysis_status": "complete_exploratory_preprocessing_sensitivity",
+  "bootstraps": 2000,
+  "claim_boundary": "This is a paired sensitivity to one released preprocessing choice on the fixed sparse observed-pair ChEMBL benchmark. It does not validate positive Vina scores as affinities, resolve unmeasured targets, or generalize to other docking engines or chemical supports.",
+  "evaluation_positive_scores": {
+    "fraction_ligands_with_at_least_one_positive_evaluated_target_score": 0.0018301052310507853,
+    "ligands_with_at_least_one_positive_evaluated_target_score": 12,
+    "positive_cells_among_evaluated_ligand_by_target_scores": 12,
+    "positive_fraction_among_evaluated_ligand_by_target_scores": 5.903565261454147e-05
+  },
+  "fit_contracts": {
+    "positive_scores_clipped": {
+      "cohort_experimental_target_prior": "leave-one-Bemis-Murcko-scaffold-cluster-out target mean within the evaluated cohort; targets with no remaining value fall back to the external ChEMBL prior",
+      "docking_evaluation_cells_imputed_from_external_target_means": 0,
+      "docking_training_cells_imputed_from_external_target_means": 0,
+      "docking_training_ligands": 251234,
+      "evaluation_ligands_excluded_from_both_references": 6557,
+      "experimental_prior_training_ligands": 104320,
+      "ranking_decomposition": "target_centered_unscaled and two_way_centered_unscaled differ only by a within-ligand constant and must induce identical target rankings; target_centered_residual_scaled isolates the residual-scale choice, while two_way_residual additionally contains the ligand-offset by inverse-scale tilt",
+      "row_effect_for_evaluated_ligand": "mean over all 58 DOCKSTRING target scores"
+    },
+    "positive_scores_retained": {
+      "cohort_experimental_target_prior": "leave-one-Bemis-Murcko-scaffold-cluster-out target mean within the evaluated cohort; targets with no remaining value fall back to the external ChEMBL prior",
+      "docking_evaluation_cells_imputed_from_external_target_means": 0,
+      "docking_training_cells_imputed_from_external_target_means": 0,
+      "docking_training_ligands": 251234,
+      "evaluation_ligands_excluded_from_both_references": 6557,
+      "experimental_prior_training_ligands": 104320,
+      "ranking_decomposition": "target_centered_unscaled and two_way_centered_unscaled differ only by a within-ligand constant and must induce identical target rankings; target_centered_residual_scaled isolates the residual-scale choice, while two_way_residual additionally contains the ligand-offset by inverse-scale tilt",
+      "row_effect_for_evaluated_ligand": "mean over all 58 DOCKSTRING target scores"
+    }
+  },
+  "paired_accuracy_reports": {
+    "absolute_vina": {
+      "butina_cluster_bootstrap": {
+        "interval_90": [
+          0.0,
+          0.0
+        ],
+        "interval_95": [
+          0.0,
+          0.0
+        ],
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "n_clusters": 2312,
+        "plugin_mean": 0.0,
+        "standard_deviation": 0.0
+      },
+      "conservative_cluster_bootstrap_interval_95": [
+        0.0,
+        0.0
+      ],
+      "direction": "positive_scores_retained_minus_clipped",
+      "ligand_bootstrap": {
+        "interval_90": [
+          0.0,
+          0.0
+        ],
+        "interval_95": [
+          0.0,
+          0.0
+        ],
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "n_clusters": null,
+        "plugin_mean": 0.0,
+        "standard_deviation": 0.0
+      },
+      "normal_approx_80pct_power_mde_two_sided_alpha_0.05": 0.0,
+      "plugin_mean_difference": 0.0,
+      "post_hoc_equivalence_sensitivity": {
+        "conservative_cluster_bootstrap_interval_90": [
+          0.0,
+          0.0
+        ],
+        "margins": {
+          "0.02": {
+            "criterion": "the conservative union of Murcko- and Butina-cluster 90% bootstrap intervals lies strictly inside the symmetric margin",
+            "equivalence_established": true
+          },
+          "0.05": {
+            "criterion": "the conservative union of Murcko- and Butina-cluster 90% bootstrap intervals lies strictly inside the symmetric margin",
+            "equivalence_established": true
+          }
+        },
+        "status": "post hoc sensitivity; margins were declared during revision rather than prospectively registered"
+      },
+      "scaffold_cluster_bootstrap": {
+        "interval_90": [
+          0.0,
+          0.0
+        ],
+        "interval_95": [
+          0.0,
+          0.0
+        ],
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "n_clusters": 2815,
+        "plugin_mean": 0.0,
+        "standard_deviation": 0.0
+      }
+    },
+    "column_standardized": {
+      "butina_cluster_bootstrap": {
+        "interval_90": [
+          -0.0005294733647515824,
+          0.0007595250866261674
+        ],
+        "interval_95": [
+          -0.0006570009649287046,
+          0.0009387080644159536
+        ],
+        "maximum": 0.0015413358243811304,
+        "mean": 0.00010230961546165668,
+        "median": 9.658921554667703e-05,
+        "minimum": -0.0011027568922305766,
+        "n_clusters": 2312,
+        "plugin_mean": 9.198741224885017e-05,
+        "standard_deviation": 0.00039465806784935877
+      },
+      "conservative_cluster_bootstrap_interval_95": [
+        -0.0006747455992227514,
+        0.0009387080644159536
+      ],
+      "direction": "positive_scores_retained_minus_clipped",
+      "ligand_bootstrap": {
+        "interval_90": [
+          -0.0005261441601705847,
+          0.0007507032146372977
+        ],
+        "interval_95": [
+          -0.0006480052439842718,
+          0.0008763796506720871
+        ],
+        "maximum": 0.0014751991775893087,
+        "mean": 9.194886706627762e-05,
+        "median": 9.196612434155731e-05,
+        "minimum": -0.0010946877589865485,
+        "n_clusters": null,
+        "plugin_mean": 9.198741224885017e-05,
+        "standard_deviation": 0.00038632702965810193
+      },
+      "normal_approx_80pct_power_mde_two_sided_alpha_0.05": 0.00109854799172291,
+      "plugin_mean_difference": 9.198741224885017e-05,
+      "post_hoc_equivalence_sensitivity": {
+        "conservative_cluster_bootstrap_interval_90": [
+          -0.0005381127613656834,
+          0.0007595250866261674
+        ],
+        "margins": {
+          "0.02": {
+            "criterion": "the conservative union of Murcko- and Butina-cluster 90% bootstrap intervals lies strictly inside the symmetric margin",
+            "equivalence_established": true
+          },
+          "0.05": {
+            "criterion": "the conservative union of Murcko- and Butina-cluster 90% bootstrap intervals lies strictly inside the symmetric margin",
+            "equivalence_established": true
+          }
+        },
+        "status": "post hoc sensitivity; margins were declared during revision rather than prospectively registered"
+      },
+      "scaffold_cluster_bootstrap": {
+        "interval_90": [
+          -0.0005381127613656834,
+          0.0007572327861657941
+        ],
+        "interval_95": [
+          -0.0006747455992227514,
+          0.0009151777411700573
+        ],
+        "maximum": 0.0017985797957808533,
+        "mean": 9.097573223696246e-05,
+        "median": 8.71998378166448e-05,
+        "minimum": -0.0011953491654610254,
+        "n_clusters": 2815,
+        "plugin_mean": 9.198741224885017e-05,
+        "standard_deviation": 0.0003975477016837309
+      }
+    },
+    "target_centered_residual_scaled": {
+      "butina_cluster_bootstrap": {
+        "interval_90": [
+          -0.001461309787461437,
+          0.00047135372351964435
+        ],
+        "interval_95": [
+          -0.0016690537136039793,
+          0.0006575370057213728
+        ],
+        "maximum": 0.0016037530210187526,
+        "mean": -0.0005046315067893429,
+        "median": -0.0005079562382349597,
+        "minimum": -0.002602363414789022,
+        "n_clusters": 2312,
+        "plugin_mean": -0.000524052911563256,
+        "standard_deviation": 0.0005848796433922872
+      },
+      "conservative_cluster_bootstrap_interval_95": [
+        -0.0018112649676800539,
+        0.0007754538360600126
+      ],
+      "direction": "positive_scores_retained_minus_clipped",
+      "ligand_bootstrap": {
+        "interval_90": [
+          -0.0016325018702214253,
+          0.000544226336236616
+        ],
+        "interval_95": [
+          -0.0018675992817466219,
+          0.0007493393104667557
+        ],
+        "maximum": 0.001911402292984818,
+        "mean": -0.0005464222996251123,
+        "median": -0.0005327934490623671,
+        "minimum": -0.0025809071763538563,
+        "n_clusters": null,
+        "plugin_mean": -0.000524052911563256,
+        "standard_deviation": 0.0006680614378012211
+      },
+      "normal_approx_80pct_power_mde_two_sided_alpha_0.05": 0.0018616280730740615,
+      "plugin_mean_difference": -0.000524052911563256,
+      "post_hoc_equivalence_sensitivity": {
+        "conservative_cluster_bootstrap_interval_90": [
+          -0.0016120195111482846,
+          0.000565837815139388
+        ],
+        "margins": {
+          "0.02": {
+            "criterion": "the conservative union of Murcko- and Butina-cluster 90% bootstrap intervals lies strictly inside the symmetric margin",
+            "equivalence_established": true
+          },
+          "0.05": {
+            "criterion": "the conservative union of Murcko- and Butina-cluster 90% bootstrap intervals lies strictly inside the symmetric margin",
+            "equivalence_established": true
+          }
+        },
+        "status": "post hoc sensitivity; margins were declared during revision rather than prospectively registered"
+      },
+      "scaffold_cluster_bootstrap": {
+        "interval_90": [
+          -0.0016120195111482846,
+          0.000565837815139388
+        ],
+        "interval_95": [
+          -0.0018112649676800539,
+          0.0007754538360600126
+        ],
+        "maximum": 0.0018613467185797207,
+        "mean": -0.0005192459742598628,
+        "median": -0.0005148001519029465,
+        "minimum": -0.0028762649618945054,
+        "n_clusters": 2815,
+        "plugin_mean": -0.000524052911563256,
+        "standard_deviation": 0.0006626568190276222
+      }
+    },
+    "target_centered_unscaled": {
+      "butina_cluster_bootstrap": {
+        "interval_90": [
+          0.0,
+          0.0
+        ],
+        "interval_95": [
+          0.0,
+          0.0
+        ],
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "n_clusters": 2312,
+        "plugin_mean": 0.0,
+        "standard_deviation": 0.0
+      },
+      "conservative_cluster_bootstrap_interval_95": [
+        0.0,
+        0.0
+      ],
+      "direction": "positive_scores_retained_minus_clipped",
+      "ligand_bootstrap": {
+        "interval_90": [
+          0.0,
+          0.0
+        ],
+        "interval_95": [
+          0.0,
+          0.0
+        ],
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "n_clusters": null,
+        "plugin_mean": 0.0,
+        "standard_deviation": 0.0
+      },
+      "normal_approx_80pct_power_mde_two_sided_alpha_0.05": 0.0,
+      "plugin_mean_difference": 0.0,
+      "post_hoc_equivalence_sensitivity": {
+        "conservative_cluster_bootstrap_interval_90": [
+          0.0,
+          0.0
+        ],
+        "margins": {
+          "0.02": {
+            "criterion": "the conservative union of Murcko- and Butina-cluster 90% bootstrap intervals lies strictly inside the symmetric margin",
+            "equivalence_established": true
+          },
+          "0.05": {
+            "criterion": "the conservative union of Murcko- and Butina-cluster 90% bootstrap intervals lies strictly inside the symmetric margin",
+            "equivalence_established": true
+          }
+        },
+        "status": "post hoc sensitivity; margins were declared during revision rather than prospectively registered"
+      },
+      "scaffold_cluster_bootstrap": {
+        "interval_90": [
+          0.0,
+          0.0
+        ],
+        "interval_95": [
+          0.0,
+          0.0
+        ],
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "n_clusters": 2815,
+        "plugin_mean": 0.0,
+        "standard_deviation": 0.0
+      }
+    },
+    "two_way_centered_unscaled": {
+      "butina_cluster_bootstrap": {
+        "interval_90": [
+          0.0,
+          0.0
+        ],
+        "interval_95": [
+          0.0,
+          0.0
+        ],
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "n_clusters": 2312,
+        "plugin_mean": 0.0,
+        "standard_deviation": 0.0
+      },
+      "conservative_cluster_bootstrap_interval_95": [
+        0.0,
+        0.0
+      ],
+      "direction": "positive_scores_retained_minus_clipped",
+      "ligand_bootstrap": {
+        "interval_90": [
+          0.0,
+          0.0
+        ],
+        "interval_95": [
+          0.0,
+          0.0
+        ],
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "n_clusters": null,
+        "plugin_mean": 0.0,
+        "standard_deviation": 0.0
+      },
+      "normal_approx_80pct_power_mde_two_sided_alpha_0.05": 0.0,
+      "plugin_mean_difference": 0.0,
+      "post_hoc_equivalence_sensitivity": {
+        "conservative_cluster_bootstrap_interval_90": [
+          0.0,
+          0.0
+        ],
+        "margins": {
+          "0.02": {
+            "criterion": "the conservative union of Murcko- and Butina-cluster 90% bootstrap intervals lies strictly inside the symmetric margin",
+            "equivalence_established": true
+          },
+          "0.05": {
+            "criterion": "the conservative union of Murcko- and Butina-cluster 90% bootstrap intervals lies strictly inside the symmetric margin",
+            "equivalence_established": true
+          }
+        },
+        "status": "post hoc sensitivity; margins were declared during revision rather than prospectively registered"
+      },
+      "scaffold_cluster_bootstrap": {
+        "interval_90": [
+          0.0,
+          0.0
+        ],
+        "interval_95": [
+          0.0,
+          0.0
+        ],
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "n_clusters": 2815,
+        "plugin_mean": 0.0,
+        "standard_deviation": 0.0
+      }
+    },
+    "two_way_residual": {
+      "butina_cluster_bootstrap": {
+        "interval_90": [
+          -0.0012364044418830137,
+          0.0002695430639397683
+        ],
+        "interval_95": [
+          -0.0014146986702126968,
+          0.00039699160893756256
+        ],
+        "maximum": 0.000985927443545239,
+        "mean": -0.00044372172099716177,
+        "median": -0.00042102713844737307,
+        "minimum": -0.0022354778257133424,
+        "n_clusters": 2312,
+        "plugin_mean": -0.0004481643852324964,
+        "standard_deviation": 0.00046189452712918337
+      },
+      "conservative_cluster_bootstrap_interval_95": [
+        -0.0014146986702126968,
+        0.00039699160893756256
+      ],
+      "direction": "positive_scores_retained_minus_clipped",
+      "ligand_bootstrap": {
+        "interval_90": [
+          -0.0011568258697539084,
+          0.00025189266342440686
+        ],
+        "interval_95": [
+          -0.0012769150507907097,
+          0.0003646280122462893
+        ],
+        "maximum": 0.0011337407906197247,
+        "mean": -0.0004267578958409841,
+        "median": -0.0004192278125611344,
+        "minimum": -0.0018454988189011174,
+        "n_clusters": null,
+        "plugin_mean": -0.0004481643852324964,
+        "standard_deviation": 0.00041966237390667397
+      },
+      "normal_approx_80pct_power_mde_two_sided_alpha_0.05": 0.0011710281887023911,
+      "plugin_mean_difference": -0.0004481643852324964,
+      "post_hoc_equivalence_sensitivity": {
+        "conservative_cluster_bootstrap_interval_90": [
+          -0.0012364044418830137,
+          0.0002695430639397683
+        ],
+        "margins": {
+          "0.02": {
+            "criterion": "the conservative union of Murcko- and Butina-cluster 90% bootstrap intervals lies strictly inside the symmetric margin",
+            "equivalence_established": true
+          },
+          "0.05": {
+            "criterion": "the conservative union of Murcko- and Butina-cluster 90% bootstrap intervals lies strictly inside the symmetric margin",
+            "equivalence_established": true
+          }
+        },
+        "status": "post hoc sensitivity; margins were declared during revision rather than prospectively registered"
+      },
+      "scaffold_cluster_bootstrap": {
+        "interval_90": [
+          -0.001128815420240389,
+          0.00022015311654828044
+        ],
+        "interval_95": [
+          -0.001256216419583983,
+          0.00034277233207400434
+        ],
+        "maximum": 0.0010968908174333397,
+        "mean": -0.00045728573030104315,
+        "median": -0.00045853184848009633,
+        "minimum": -0.0017713231836811057,
+        "n_clusters": 2815,
+        "plugin_mean": -0.0004481643852324964,
+        "standard_deviation": 0.0004072076893852183
+      }
+    }
+  },
+  "reference": {
+    "aggregated_reference_positive_cells": 5276,
+    "aggregated_reference_positive_fraction": 0.0003528653724970201,
+    "aggregation": "median over complete rows sharing a standard full InChIKey",
+    "clipping": "elementwise minimum(score, 0.0) before aggregation",
+    "complete_rows": 260060,
+    "complete_source_positive_cells": 5393,
+    "complete_source_positive_fraction": 0.00035754348466003865,
+    "released_rows": 260155,
+    "unique_full_inchikeys": 257791
+  },
+  "released_clipped_result_reproduction": {
+    "differences": {
+      "absolute_vina": 0.0,
+      "column_standardized": 0.0,
+      "target_centered_residual_scaled": 0.0,
+      "target_centered_unscaled": 0.0,
+      "two_way_centered_unscaled": 0.0,
+      "two_way_residual": 0.0
+    },
+    "maximum_absolute_accuracy_difference": 0.0,
+    "path": "results/dockstring_chembl_ranking/summary.json"
+  },
+  "schema_version": "1.0.0",
+  "seed": 20260810,
+  "support": {
+    "butina_clusters": 2312,
+    "murcko_clusters": 2815,
+    "observed_experimental_cells": 18020,
+    "retained_ligands": 6557,
+    "targets": 31
+  },
+  "support_contract": {
+    "chembl_ligands_matched_to_dockstring": 38858,
+    "chembl_ligands_with_any_analysis_record": 110877,
+    "ligands_by_minimum_observed_targets": {
+      "1": 38858,
+      "10": 119,
+      "2": 6557,
+      "3": 1883,
+      "4": 988,
+      "5": 556,
+      "6": 430,
+      "8": 239
+    },
+    "matched_observed_cells": 50321,
+    "targets_dropped_for_no_observation_in_cohort": []
+  }
+}

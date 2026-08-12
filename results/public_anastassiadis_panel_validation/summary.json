@@ -1,0 +1,1031 @@
+{
+  "analysis": "public Anastassiadis fixed-21 panel validation",
+  "broad_vina_contract": {
+    "additional_rows_removed_after_DAVIS_PKIS2_exclusion": 165,
+    "centering_panel": "the fixed 21 columns only; each ligand is row-centered within those 21 targets before target correlation",
+    "hotspot_connectivity_union_size": 187,
+    "hotspot_matching_rows_in_full_complete_support": 201,
+    "locked_DAVIS_PKIS2_only_matrix_sha256": "53c6d482f6e0dbf108660e9a0760527393b5f99940a6be7fd1c1fab88083e03e",
+    "locked_DAVIS_PKIS2_only_rows": 259806,
+    "locked_contract_metadata": {
+      "definition": "complete DOCKSTRING support after excluding every row whose raw InChIKey connectivity block occurs in DAVIS or PKIS2",
+      "excluded_rows": 254,
+      "positive_scores_clipped_to_zero": true,
+      "rows": 259806
+    },
+    "positive_scores_clipped_to_zero": true,
+    "primary_definition": "complete DOCKSTRING support after excluding the union of DAVIS, PKIS2, and conservative HotSpot connectivity blocks",
+    "primary_matrix_sha256": "95227f6fbf70debdfd310540e0d912da12212b05aae14784c4de36a2fb53bc67",
+    "primary_rows": 259641,
+    "total_rows_removed_from_complete_support": 419
+  },
+  "chemical_cluster_multiplier": {
+    "experimental_endpoint": "unclipped activity, metric row-centered correlation",
+    "inference_boundary": "descriptive chemical-support sensitivity conditional on the fixed library; target-panel inference remains the target-label permutation",
+    "objective": "signed_1_minus_r",
+    "repeats": 2000,
+    "resampling_scheme": "independent positive Exp(1) weight per Morgan-radius-2/2048-bit Butina Tanimoto-0.5 cluster; every member inherits its cluster weight",
+    "resolved_clusters": 128,
+    "seed": 22261008,
+    "statistics": {
+      "conservative_best_raw_minus_worst_residual_normalized_auc_over_k": {
+        "maximum": 0.1447272319226462,
+        "mean": 0.06448598394044082,
+        "median": 0.06283173547231383,
+        "minimum": 0.010792489364201685,
+        "n": 2000,
+        "positive_fraction": 1.0,
+        "q025": 0.03193757404311701,
+        "q975": 0.10634100299046947
+      },
+      "lex_raw_minus_residual_normalized_auc_over_k": {
+        "maximum": 0.17228016166131205,
+        "mean": 0.08881836870743456,
+        "median": 0.08682306217209743,
+        "minimum": 0.035531580415751815,
+        "n": 2000,
+        "positive_fraction": 1.0,
+        "q025": 0.05510496166315529,
+        "q975": 0.1329050645401972
+      },
+      "tie_average_raw_minus_residual_normalized_auc_over_k": {
+        "maximum": 0.16038858589080787,
+        "mean": 0.07957118377927468,
+        "median": 0.07768329075795635,
+        "minimum": 0.029787016051388476,
+        "n": 2000,
+        "positive_fraction": 1.0,
+        "q025": 0.047387489416644495,
+        "q975": 0.12209891152329452
+      }
+    },
+    "unresolved_singleton_clusters": 21,
+    "whole_panel_clusters": 149
+  },
+  "claim_boundary": "This is a post-hoc extension that reuses a locked fixed-21 contract. It supports the signed row-centered target-map/panel result across a different functional assay, but absolute and squared objectives are mixed and the rank sensitivity is weaker. PubChem identity resolution supports a secondary cluster multiplier with unresolved compounds as singletons; the ordinary ligand bootstrap remains non-cluster-aware. Target-label QAP is conditional on these same 21 kinase identities and does not establish transfer to unseen targets.",
+  "endpoint_contract": {
+    "activity_range": [
+      -61.15306184633104,
+      99.83035166480977
+    ],
+    "cdk2_mean_178_vector_sha256": "3912762da0bda4e5dfb8e1c612f2430d18c83ae131ab0fc3ff09236b05111fc0",
+    "complete_activity_matrix_sha256": "b73a9d4af993bd28ec29b0a5fc44542020f31ce4079c8636f477f808f7bf747e",
+    "direction_invariance_max_abs_map_difference": 0.0,
+    "excluded_ligands": [
+      [
+        "SB 202474",
+        "AKT1"
+      ],
+      [
+        "VEGF Receptor 2 Kinase Inhibitor II",
+        "MAPK14"
+      ]
+    ],
+    "numeric_hash_serialization": "C-contiguous little-endian IEEE-754 float64 bytes",
+    "primary_cdk2": "per-compound arithmetic mean of CDK2/cyclin A and CDK2/cyclin E",
+    "primary_support": "176 complete ligands x 21 targets",
+    "primary_transform": "100 - percent remaining activity; no clipping",
+    "remaining_178x21_matrix_sha256": "8c0aaae2b2fa5cb40084240a63ae3555b64727f95aa2f692ca4dd1447fec722f",
+    "source_measurement": "average of two replicates, percent remaining kinase activity relative to solvent control"
+  },
+  "experimental_support": {
+    "Anastassiadis": {
+      "ligands": 176,
+      "targets": 21
+    },
+    "DAVIS": {
+      "ligands": 67,
+      "targets": 21
+    },
+    "PKIS2": {
+      "ligands": 644,
+      "targets": 21
+    }
+  },
+  "identity_contract": {
+    "cluster_contract": {
+      "distance_threshold": 0.5,
+      "fingerprint": "RDKit Morgan",
+      "fp_size": 2048,
+      "input_order": "official workbook compound order",
+      "minimum_within_cluster_similarity_to_seed": 0.5,
+      "radius": 2,
+      "reordering": true,
+      "similarity": "Tanimoto"
+    },
+    "complete_fixed21_records": 176,
+    "conservative_de_leakage_connectivity_blocks": 187,
+    "de_leakage_rule": "resolved structures contribute audited RDKit connectivity; each unresolved record contributes the union of all plausible PubChem candidate connectivities",
+    "identity_csv_sha256": "a3fb9469484ca94f34c51497ab28e447a2a0d9cce0a42829c927726148b767b2",
+    "identity_provenance_sha256": "08c11247309b186a52f593639a39e5fb89ec6583faabd108366d0587adec1937",
+    "resolved_butina_clusters_on_complete_support": 128,
+    "unresolved_records_as_singleton_clusters": 21,
+    "usable_structures": 155,
+    "whole_panel_clusters": 149
+  },
+  "inputs": {
+    "data/frozen/anastassiadis2011_pubchem_identity_2026-08-10.csv": "a3fb9469484ca94f34c51497ab28e447a2a0d9cce0a42829c927726148b767b2",
+    "data/frozen/anastassiadis2011_pubchem_identity_2026-08-10.provenance.json": "08c11247309b186a52f593639a39e5fb89ec6583faabd108366d0587adec1937",
+    "data/frozen/davis_complete.tab.gz": "e5614549ec970bf24bd58d04d8a74feb8f8a53806410eaa8d84d24e96a4ff827",
+    "data/frozen/dockstring-dataset.tsv.gz": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64",
+    "data/frozen/dockstring_identity_contract_2026-08-03.csv.gz": "5c5d06635cb276f543f9744487d6b8d4015432087e5f87b7875628973b8f32b3",
+    "data/frozen/dockstring_kinase_receptors.fasta": "c80e13dcb7e00dd297c85198b7afccd81d582950b6c9449b760a1c618322b244",
+    "data/frozen/dockstring_kinase_receptors_manifest.csv": "6e144d60256ad8f1c62daa78b778ee67bfd95ca6ed281a62d1a8f3ea6d99cda0",
+    "data/frozen/pkis2_s4.xlsx": "48ead22a1f860cd0d5096fa87d5acd329f722fe8d65e693bb0be682a333e2a2c"
+  },
+  "joint_cross_assay_inference": {
+    "joint_statistic": "mean across the three assay panels of the normalized trapezoid AUC over k=4,6,8,10,12",
+    "multiplicity": "one-sided maximum-statistic adjustment over the three objective families, reported separately for lexicographic, tie-average, and conservative best-raw-minus-worst-residual statistics",
+    "permutation_orders_sha256": "020216f272dc7a75b479362ae2fae773bf78703204c9275f7deec5e25390441c",
+    "permutation_unit": "complete target labels on the fixed ordered 21-target panel",
+    "permutations": 20000,
+    "seed": 20261008,
+    "shared_permutation": "one target-label permutation is shared across DAVIS, PKIS2, Anastassiadis, every k, all objectives, and all tie statistics"
+  },
+  "joint_primary_target_label_qap": [
+    {
+      "evaluation_panel": "DAVIS;PKIS2;Anastassiadis",
+      "max_over_three_objectives_fwer_p_for_this_objective": 0.017049147542622867,
+      "normalized_trapezoid_auc_over_k": 0.07330314220633717,
+      "objective": "signed_1_minus_r",
+      "omnibus_max_observed_over_three_objectives_p": 0.017049147542622867,
+      "scope": "joint_mean_DAVIS_PKIS2_Anastassiadis",
+      "statistic": "lex_raw_minus_residual_loss",
+      "target_label_p_one_sided": 0.017049147542622867
+    },
+    {
+      "evaluation_panel": "DAVIS;PKIS2;Anastassiadis",
+      "max_over_three_objectives_fwer_p_for_this_objective": 0.01224938753062347,
+      "normalized_trapezoid_auc_over_k": 0.0719866231789373,
+      "objective": "signed_1_minus_r",
+      "omnibus_max_observed_over_three_objectives_p": 0.01224938753062347,
+      "scope": "joint_mean_DAVIS_PKIS2_Anastassiadis",
+      "statistic": "tie_average_raw_minus_residual_loss",
+      "target_label_p_one_sided": 0.01224938753062347
+    },
+    {
+      "evaluation_panel": "DAVIS;PKIS2;Anastassiadis",
+      "max_over_three_objectives_fwer_p_for_this_objective": 0.006899655017249137,
+      "normalized_trapezoid_auc_over_k": 0.061551311281194517,
+      "objective": "signed_1_minus_r",
+      "omnibus_max_observed_over_three_objectives_p": 0.006899655017249137,
+      "scope": "joint_mean_DAVIS_PKIS2_Anastassiadis",
+      "statistic": "conservative_best_raw_minus_worst_residual_loss",
+      "target_label_p_one_sided": 0.006899655017249137
+    }
+  ],
+  "primary_mapping_sensitivity_summary": {
+    "all_k_conservative_positive": true,
+    "all_k_lex_positive": true,
+    "cdk2_context": "mean_cyclin_A_and_E",
+    "experimental_transformation": "row_centered_correlation",
+    "k_grid": "4;6;8;10;12",
+    "ligand_support": "complete_176",
+    "mean_conservative_best_raw_minus_worst_residual_loss_over_k": 0.07219918436837373,
+    "mean_lex_raw_minus_residual_loss_over_k": 0.09605283442173426,
+    "mean_tie_average_raw_minus_residual_loss_over_k": 0.0858281061673554,
+    "objective": "signed_1_minus_r",
+    "range_handling": "unclipped_activity"
+  },
+  "resampling": {
+    "bootstrap_unit": "individual ligand rows sampled with replacement",
+    "inferential_role": "descriptive map reliability only; neither resampling scheme is chemical-cluster-aware and neither is used for target-panel inference",
+    "ordinary_bootstrap_to_full_map_spearman": {
+      "maximum": 0.9787102396231855,
+      "mean": 0.9442193493211701,
+      "median": 0.9484134722847619,
+      "minimum": 0.83168908915978,
+      "n": 2000,
+      "q025": 0.89522065612113,
+      "q975": 0.9723051705092114
+    },
+    "repeats": 2000,
+    "seed": 21261008,
+    "split_half_cross_map_spearman": {
+      "maximum": 0.8804274797290511,
+      "mean": 0.7878566925715841,
+      "median": 0.7938631585426297,
+      "minimum": 0.5695801330124105,
+      "n": 2000,
+      "q025": 0.6901256264314384,
+      "q975": 0.8541832176304612
+    },
+    "split_unit": "individual ligand rows; disjoint equal halves"
+  },
+  "same_endpoint_inference": {
+    "boundary": "This is fixed-target map coverage, not affinity prediction, compound ranking, or retrieval of unseen targets. The k-averaged comparison avoids selecting the exceptionally favorable inherited k=8 result. Sequence is a substantive baseline and no Vina-over-sequence superiority claim is made.",
+    "column_rank_sensitivity": "rank ligands independently within every experimental target before row centring; this removes target-wise monotone scale and reduces the influence of DAVIS floor censoring",
+    "comparison": "raw-Vina-selected versus row-centered-residual-Vina-selected fixed panels, both evaluated on the same residual experimental endpoint",
+    "deterministic_tie_contract": {
+      "numerical_optimum_set": "every enumerated panel whose Vina objective is no more than 1e-12 above the enumerated minimum",
+      "primary_panel": "first minimum in the complete lexicographic C(21,k) enumeration; no optimizer tolerance or outcome-dependent tie breaking",
+      "selector_diagnostics": [
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 0.0007931908575488089,
+          "minimum_objective": 0.4873088959277546,
+          "objective": "sequence_distance_1_minus_identity",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 1505,
+          "selector": "receptor_sequence_identity",
+          "targets_selected_k": 4
+        },
+        {
+          "exact_minimizer_count": 2,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.1486432969107768,
+          "objective": "signed_1_minus_r",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 3184,
+          "selector": "raw_vina",
+          "targets_selected_k": 4
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 0.002737767399494162,
+          "minimum_objective": 0.6040602856781665,
+          "objective": "signed_1_minus_r",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 1824,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 4
+        },
+        {
+          "exact_minimizer_count": 2,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.1486432969107768,
+          "objective": "absolute_1_minus_abs_r",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 3184,
+          "selector": "raw_vina",
+          "targets_selected_k": 4
+        },
+        {
+          "exact_minimizer_count": 2,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.5473713138488758,
+          "objective": "absolute_1_minus_abs_r",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 1591,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 4
+        },
+        {
+          "exact_minimizer_count": 2,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.2686117929640372,
+          "objective": "squared_1_minus_r2",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 3184,
+          "selector": "raw_vina",
+          "targets_selected_k": 4
+        },
+        {
+          "exact_minimizer_count": 2,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.7165866603737469,
+          "objective": "squared_1_minus_r2",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 1591,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 4
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 0.0002804504465633295,
+          "minimum_objective": 0.4144184468959641,
+          "objective": "sequence_distance_1_minus_identity",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 22561,
+          "selector": "receptor_sequence_identity",
+          "targets_selected_k": 6
+        },
+        {
+          "exact_minimizer_count": 2,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.12495595530388583,
+          "objective": "signed_1_minus_r",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 8142,
+          "selector": "raw_vina",
+          "targets_selected_k": 6
+        },
+        {
+          "exact_minimizer_count": 4,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.5129724472964406,
+          "objective": "signed_1_minus_r",
+          "panels_within_absolute_1e_12_of_minimum": 4,
+          "panels_within_absolute_1e_8_of_minimum": 4,
+          "selected_lexicographic_index": 21114,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 6
+        },
+        {
+          "exact_minimizer_count": 2,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.12495595530388583,
+          "objective": "absolute_1_minus_abs_r",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 8142,
+          "selector": "raw_vina",
+          "targets_selected_k": 6
+        },
+        {
+          "exact_minimizer_count": 2,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.46932503838991235,
+          "objective": "absolute_1_minus_abs_r",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 23751,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 6
+        },
+        {
+          "exact_minimizer_count": 2,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.22712855966953618,
+          "objective": "squared_1_minus_r2",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 8142,
+          "selector": "raw_vina",
+          "targets_selected_k": 6
+        },
+        {
+          "exact_minimizer_count": 2,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.6244626949976817,
+          "objective": "squared_1_minus_r2",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 23751,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 6
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 0.000280450446563385,
+          "minimum_objective": 0.34537745617191035,
+          "objective": "sequence_distance_1_minus_identity",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 111378,
+          "selector": "receptor_sequence_identity",
+          "targets_selected_k": 8
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 0.0009601968542592293,
+          "minimum_objective": 0.1019307950890495,
+          "objective": "signed_1_minus_r",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 47604,
+          "selector": "raw_vina",
+          "targets_selected_k": 8
+        },
+        {
+          "exact_minimizer_count": 4,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.4292405704891643,
+          "objective": "signed_1_minus_r",
+          "panels_within_absolute_1e_12_of_minimum": 4,
+          "panels_within_absolute_1e_8_of_minimum": 4,
+          "selected_lexicographic_index": 110244,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 8
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 0.0009601968542592293,
+          "minimum_objective": 0.1019307950890495,
+          "objective": "absolute_1_minus_abs_r",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 47604,
+          "selector": "raw_vina",
+          "targets_selected_k": 8
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 0.0016815923928700238,
+          "minimum_objective": 0.3928810151342943,
+          "objective": "absolute_1_minus_abs_r",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 90549,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 8
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 0.0012509527299073564,
+          "minimum_objective": 0.18664512594629967,
+          "objective": "squared_1_minus_r2",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 47604,
+          "selector": "raw_vina",
+          "targets_selected_k": 8
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 0.0007857245111090316,
+          "minimum_objective": 0.5329335904271403,
+          "objective": "squared_1_minus_r2",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 90549,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 8
+        },
+        {
+          "exact_minimizer_count": 2,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.2805079788728107,
+          "objective": "sequence_distance_1_minus_identity",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 222304,
+          "selector": "receptor_sequence_identity",
+          "targets_selected_k": 10
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 4.3852514716682944e-05,
+          "minimum_objective": 0.08127109667253984,
+          "objective": "signed_1_minus_r",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 124932,
+          "selector": "raw_vina",
+          "targets_selected_k": 10
+        },
+        {
+          "exact_minimizer_count": 4,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.3509470644297189,
+          "objective": "signed_1_minus_r",
+          "panels_within_absolute_1e_12_of_minimum": 4,
+          "panels_within_absolute_1e_8_of_minimum": 4,
+          "selected_lexicographic_index": 239187,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 10
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 4.3852514716682944e-05,
+          "minimum_objective": 0.08127109667253984,
+          "objective": "absolute_1_minus_abs_r",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 124932,
+          "selector": "raw_vina",
+          "targets_selected_k": 10
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 2.8913893290627435e-05,
+          "minimum_objective": 0.3215121212613425,
+          "objective": "absolute_1_minus_abs_r",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 190167,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 10
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 0.00015207191005403575,
+          "minimum_objective": 0.1495808140265352,
+          "objective": "squared_1_minus_r2",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 35051,
+          "selector": "raw_vina",
+          "targets_selected_k": 10
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 1.4548629965582816e-05,
+          "minimum_objective": 0.44367779320404566,
+          "objective": "squared_1_minus_r2",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 190167,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 10
+        },
+        {
+          "exact_minimizer_count": 8,
+          "gap_to_second_panel_objective": 0.0,
+          "minimum_objective": 0.2175344495531275,
+          "objective": "sequence_distance_1_minus_identity",
+          "panels_within_absolute_1e_12_of_minimum": 8,
+          "panels_within_absolute_1e_8_of_minimum": 8,
+          "selected_lexicographic_index": 216018,
+          "selector": "receptor_sequence_identity",
+          "targets_selected_k": 12
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 1.3877787807814457e-17,
+          "minimum_objective": 0.06270478097750788,
+          "objective": "signed_1_minus_r",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 55876,
+          "selector": "raw_vina",
+          "targets_selected_k": 12
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 5.551115123125783e-17,
+          "minimum_objective": 0.2739182480968647,
+          "objective": "signed_1_minus_r",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 195970,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 12
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 1.3877787807814457e-17,
+          "minimum_objective": 0.06270478097750788,
+          "objective": "absolute_1_minus_abs_r",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 55876,
+          "selector": "raw_vina",
+          "targets_selected_k": 12
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 0.0006959471193484501,
+          "minimum_objective": 0.2534178361038335,
+          "objective": "absolute_1_minus_abs_r",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 196826,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 12
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 1.3877787807814457e-17,
+          "minimum_objective": 0.11602253531434875,
+          "objective": "squared_1_minus_r2",
+          "panels_within_absolute_1e_12_of_minimum": 2,
+          "panels_within_absolute_1e_8_of_minimum": 2,
+          "selected_lexicographic_index": 55876,
+          "selector": "raw_vina",
+          "targets_selected_k": 12
+        },
+        {
+          "exact_minimizer_count": 1,
+          "gap_to_second_panel_objective": 0.00045297584255510337,
+          "minimum_objective": 0.35628043140673793,
+          "objective": "squared_1_minus_r2",
+          "panels_within_absolute_1e_12_of_minimum": 1,
+          "panels_within_absolute_1e_8_of_minimum": 1,
+          "selected_lexicographic_index": 196826,
+          "selector": "row_centered_residual_vina",
+          "targets_selected_k": 12
+        }
+      ],
+      "tie_sensitivity": "for every experimental endpoint cell, all raw-optimal crossed with all residual-optimal panels are evaluated. The conservative cell contrast is best raw minus worst residual; pooled inference averages that contrast across the fixed k grid and both panels under the same shared target-label null"
+    },
+    "inference": [
+      {
+        "cells_averaged": 15,
+        "conservative_mean_coverage_loss_improvement_over_ties": 0.06068713903344698,
+        "conservative_tie_cells_with_positive_improvement": 14,
+        "experimental_endpoint": "metric_row_centered_residual",
+        "max_over_three_objectives_p_conservative_tie_improvement": 0.005699715014249288,
+        "max_over_three_objectives_p_coverage_loss": 0.016999150042497874,
+        "max_over_three_objectives_p_exact_percentile": 0.009349532523373831,
+        "max_over_three_objectives_p_tie_averaged_improvement": 0.01064946752662367,
+        "mean_coverage_loss_improvement": 0.07115494409228332,
+        "mean_exact_percentile_improvement": 0.6030187207586588,
+        "objective": "signed_1_minus_r",
+        "target_label_null_loss_q025": -0.06684613089097527,
+        "target_label_null_loss_q975": 0.06508509171984694,
+        "target_label_p_one_sided_conservative_tie_improvement": 0.005699715014249288,
+        "target_label_p_one_sided_coverage_loss_improvement": 0.016999150042497874,
+        "target_label_p_one_sided_exact_percentile_improvement": 0.0050497475126243686,
+        "target_label_p_one_sided_tie_averaged_improvement": 0.01064946752662367,
+        "tie_averaged_mean_coverage_loss_improvement": 0.07127854028952357,
+        "wins_lower_loss": 14
+      },
+      {
+        "cells_averaged": 15,
+        "conservative_mean_coverage_loss_improvement_over_ties": -0.0018149298220945557,
+        "conservative_tie_cells_with_positive_improvement": 6,
+        "experimental_endpoint": "metric_row_centered_residual",
+        "max_over_three_objectives_p_conservative_tie_improvement": 0.005699715014249288,
+        "max_over_three_objectives_p_coverage_loss": 0.016999150042497874,
+        "max_over_three_objectives_p_exact_percentile": 0.009349532523373831,
+        "max_over_three_objectives_p_tie_averaged_improvement": 0.01064946752662367,
+        "mean_coverage_loss_improvement": 0.002722676830493165,
+        "mean_exact_percentile_improvement": -0.037032614215276774,
+        "objective": "absolute_1_minus_abs_r",
+        "target_label_null_loss_q025": -0.030136591262333878,
+        "target_label_null_loss_q975": 0.02972358503821423,
+        "target_label_p_one_sided_conservative_tie_improvement": 0.36023198840057996,
+        "target_label_p_one_sided_coverage_loss_improvement": 0.4358782060896955,
+        "target_label_p_one_sided_exact_percentile_improvement": 0.567621618919054,
+        "target_label_p_one_sided_tie_averaged_improvement": 0.3966801659917004,
+        "tie_averaged_mean_coverage_loss_improvement": 0.003985435325770301,
+        "wins_lower_loss": 7
+      },
+      {
+        "cells_averaged": 15,
+        "conservative_mean_coverage_loss_improvement_over_ties": -0.002957638083894617,
+        "conservative_tie_cells_with_positive_improvement": 5,
+        "experimental_endpoint": "metric_row_centered_residual",
+        "max_over_three_objectives_p_conservative_tie_improvement": 0.005699715014249288,
+        "max_over_three_objectives_p_coverage_loss": 0.016999150042497874,
+        "max_over_three_objectives_p_exact_percentile": 0.009349532523373831,
+        "max_over_three_objectives_p_tie_averaged_improvement": 0.01064946752662367,
+        "mean_coverage_loss_improvement": 0.0017188224261046306,
+        "mean_exact_percentile_improvement": -0.02584207502164161,
+        "objective": "squared_1_minus_r2",
+        "target_label_null_loss_q025": -0.029411177177866222,
+        "target_label_null_loss_q975": 0.029272246040244473,
+        "target_label_p_one_sided_conservative_tie_improvement": 0.40367981600919955,
+        "target_label_p_one_sided_coverage_loss_improvement": 0.4577771111444428,
+        "target_label_p_one_sided_exact_percentile_improvement": 0.5455227238638068,
+        "target_label_p_one_sided_tie_averaged_improvement": 0.4456277186140693,
+        "tie_averaged_mean_coverage_loss_improvement": 0.0020806682163625376,
+        "wins_lower_loss": 6
+      },
+      {
+        "cells_averaged": 15,
+        "conservative_mean_coverage_loss_improvement_over_ties": 0.0383672539228506,
+        "conservative_tie_cells_with_positive_improvement": 14,
+        "experimental_endpoint": "column_rank_then_row_centered",
+        "max_over_three_objectives_p_conservative_tie_improvement": 0.005649717514124294,
+        "max_over_three_objectives_p_coverage_loss": 0.016699165041747913,
+        "max_over_three_objectives_p_exact_percentile": 0.009149542522873857,
+        "max_over_three_objectives_p_tie_averaged_improvement": 0.010849457527123643,
+        "mean_coverage_loss_improvement": 0.04824243030133761,
+        "mean_exact_percentile_improvement": 0.5463204643080803,
+        "objective": "signed_1_minus_r",
+        "target_label_null_loss_q025": -0.04539576795572091,
+        "target_label_null_loss_q975": 0.043476818133313055,
+        "target_label_p_one_sided_conservative_tie_improvement": 0.0055997200139993,
+        "target_label_p_one_sided_coverage_loss_improvement": 0.016699165041747913,
+        "target_label_p_one_sided_exact_percentile_improvement": 0.004199790010499475,
+        "target_label_p_one_sided_tie_averaged_improvement": 0.010849457527123643,
+        "tie_averaged_mean_coverage_loss_improvement": 0.04679691860178566,
+        "wins_lower_loss": 15
+      },
+      {
+        "cells_averaged": 15,
+        "conservative_mean_coverage_loss_improvement_over_ties": -0.002959947102799889,
+        "conservative_tie_cells_with_positive_improvement": 4,
+        "experimental_endpoint": "column_rank_then_row_centered",
+        "max_over_three_objectives_p_conservative_tie_improvement": 0.005649717514124294,
+        "max_over_three_objectives_p_coverage_loss": 0.016699165041747913,
+        "max_over_three_objectives_p_exact_percentile": 0.009149542522873857,
+        "max_over_three_objectives_p_tie_averaged_improvement": 0.010849457527123643,
+        "mean_coverage_loss_improvement": -0.0009015856741254361,
+        "mean_exact_percentile_improvement": -0.07431637162287318,
+        "objective": "absolute_1_minus_abs_r",
+        "target_label_null_loss_q025": -0.023437663673713763,
+        "target_label_null_loss_q975": 0.02357857323076173,
+        "target_label_p_one_sided_conservative_tie_improvement": 0.3846307684615769,
+        "target_label_p_one_sided_coverage_loss_improvement": 0.5305234738263087,
+        "target_label_p_one_sided_exact_percentile_improvement": 0.6352682365881706,
+        "target_label_p_one_sided_tie_averaged_improvement": 0.45317734113294333,
+        "tie_averaged_mean_coverage_loss_improvement": 0.0013705656332621866,
+        "wins_lower_loss": 5
+      },
+      {
+        "cells_averaged": 15,
+        "conservative_mean_coverage_loss_improvement_over_ties": -0.0016292917031020685,
+        "conservative_tie_cells_with_positive_improvement": 4,
+        "experimental_endpoint": "column_rank_then_row_centered",
+        "max_over_three_objectives_p_conservative_tie_improvement": 0.005649717514124294,
+        "max_over_three_objectives_p_coverage_loss": 0.016699165041747913,
+        "max_over_three_objectives_p_exact_percentile": 0.009149542522873857,
+        "max_over_three_objectives_p_tie_averaged_improvement": 0.010849457527123643,
+        "mean_coverage_loss_improvement": 0.0001283618684836211,
+        "mean_exact_percentile_improvement": -0.09097216394430013,
+        "objective": "squared_1_minus_r2",
+        "target_label_null_loss_q025": -0.020360696932520392,
+        "target_label_null_loss_q975": 0.020302683715769907,
+        "target_label_p_one_sided_conservative_tie_improvement": 0.3703314834258287,
+        "target_label_p_one_sided_coverage_loss_improvement": 0.49327533623318837,
+        "target_label_p_one_sided_exact_percentile_improvement": 0.6601169941502925,
+        "target_label_p_one_sided_tie_averaged_improvement": 0.4567771611419429,
+        "tie_averaged_mean_coverage_loss_improvement": 0.0010569359790307412,
+        "wins_lower_loss": 4
+      }
+    ],
+    "k_grid": [
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "multiplicity": "signed 1-r is the prespecified scientific objective. The max-over-three p-value is reported as a retrospective objective-choice sensitivity; metric residual and column-rank endpoints are not pooled as duplicate confirmatory tests",
+    "objectives": [
+      "signed_1_minus_r",
+      "absolute_1_minus_abs_r",
+      "squared_1_minus_r2"
+    ],
+    "outcome_blind_sequence_baseline": "at every k, exact sequence-diverse panels minimize mean nearest distance 1-global-receptor-sequence-identity and are evaluated on the same experimental endpoints as both Vina selectors; sequence uses no experimental outcome",
+    "permutation_contract": "one common permutation of the 21 target labels is applied to every fixed raw- and residual-Vina selected set across DAVIS, PKIS2, and Anastassiadis, all k, and all three objectives in a replicate; experimental maps and exact all-panel distributions remain fixed",
+    "primary_endpoint": "metric_row_centered_residual",
+    "primary_inference": "one-sided shared target-label permutation test for the conservative tie-robust coverage-loss contrast. Deterministic lexicographic and tie-averaged contrasts are co-reported; exact-percentile inference is scale-normalized sensitivity",
+    "primary_statistic": "signed-1-r conservative best-raw-optimum minus worst-residual-optimum coverage-loss improvement, averaged over the prespecified k grid and DAVIS, PKIS2, and Anastassiadis; numerical Vina optima use the declared absolute tolerance",
+    "target_label_permutations": 20000,
+    "target_label_seed": 20261008
+  },
+  "schema_version": "1.0.0",
+  "source_contract": {
+    "access_and_license_boundary": "The official supplement is publicly downloadable, but no explicit permissive dataset redistribution license was identified. The XLS is therefore checksum-fetched/read locally and is not included.",
+    "compound_names": 178,
+    "doi": "10.1038/nbt.2017",
+    "office_conversion_used": false,
+    "official_url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fnbt.2017/MediaObjects/41587_2011_BFnbt2017_MOESM23_ESM.xls",
+    "pairwise_body_missing_cells": 566,
+    "pairwise_body_observed_cells": 52834,
+    "pairwise_body_shape": [
+      300,
+      178
+    ],
+    "parser": "pandas read_excel engine=xlrd; direct legacy XLS/BIFF parse",
+    "redistributed": false,
+    "sha256": "cd756bf2b6ad541a1781508c563caf0da6da876dfb71f2546fbff02e13d98684",
+    "source_filename": "hotspot.xls",
+    "source_kinase_rows": 300,
+    "unique_cas_numbers": 178,
+    "worksheet_shape": [
+      303,
+      179
+    ]
+  },
+  "status": "post_hoc_external_extension",
+  "target_leave_one_out_influence": {
+    "cross_assay_map_concordance": [
+      {
+        "omitted_targets": 21,
+        "panel_a": "DAVIS",
+        "panel_b": "PKIS2",
+        "raw_map_spearman_max": 0.6985990281112905,
+        "raw_map_spearman_min": 0.54148022761966,
+        "residual_exceeds_raw_for_every_omission": true,
+        "residual_map_spearman_max": 0.8751783472643215,
+        "residual_map_spearman_min": 0.7979836152335464
+      },
+      {
+        "omitted_targets": 21,
+        "panel_a": "DAVIS",
+        "panel_b": "Anastassiadis",
+        "raw_map_spearman_max": 0.7488923005594266,
+        "raw_map_spearman_min": 0.6606979928005005,
+        "residual_exceeds_raw_for_every_omission": true,
+        "residual_map_spearman_max": 0.8323382627598666,
+        "residual_map_spearman_min": 0.7082986698858841
+      },
+      {
+        "omitted_targets": 21,
+        "panel_a": "PKIS2",
+        "panel_b": "Anastassiadis",
+        "raw_map_spearman_max": 0.6119845862474687,
+        "raw_map_spearman_min": 0.4665826870842027,
+        "residual_exceeds_raw_for_every_omission": true,
+        "residual_map_spearman_max": 0.7923569832084575,
+        "residual_map_spearman_min": 0.6869573584922166
+      }
+    ],
+    "k_grid": [
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "objective": "signed_1_minus_r",
+    "panel_transfer": {
+      "joint_normalized_auc_max": 0.06223916889773784,
+      "joint_normalized_auc_min": 0.029356209793230906,
+      "joint_normalized_auc_positive_omissions": 21,
+      "omitted_targets": 21,
+      "panel_summary": [
+        {
+          "joint_normalized_auc": 0.0535357746813436,
+          "maximum_cell_contrast": 0.16258242613964508,
+          "minimum_cell_contrast": -0.01185385667324193,
+          "omitted_target": "ABL1",
+          "positive_cells": 13,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.04675590868219524,
+          "maximum_cell_contrast": 0.11956379439945874,
+          "minimum_cell_contrast": -0.0036863428166354906,
+          "omitted_target": "AKT1",
+          "positive_cells": 12,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.043499698756325804,
+          "maximum_cell_contrast": 0.14476915661149903,
+          "minimum_cell_contrast": -0.030645451969959603,
+          "omitted_target": "AKT2",
+          "positive_cells": 13,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.029356209793230906,
+          "maximum_cell_contrast": 0.09442079324904395,
+          "minimum_cell_contrast": -0.023428070137157253,
+          "omitted_target": "CDK2",
+          "positive_cells": 12,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.06032661722340784,
+          "maximum_cell_contrast": 0.14173919245965783,
+          "minimum_cell_contrast": 0.0033661372818820645,
+          "omitted_target": "CSF1R",
+          "positive_cells": 15,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.05852302329004153,
+          "maximum_cell_contrast": 0.1653554695716426,
+          "minimum_cell_contrast": -0.03914225722122058,
+          "omitted_target": "EGFR",
+          "positive_cells": 13,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.0497410293398351,
+          "maximum_cell_contrast": 0.11684860503337169,
+          "minimum_cell_contrast": 0.0009125011082686263,
+          "omitted_target": "FGFR1",
+          "positive_cells": 15,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.05869830656227671,
+          "maximum_cell_contrast": 0.16663341718736624,
+          "minimum_cell_contrast": -0.00773679526064297,
+          "omitted_target": "IGF1R",
+          "positive_cells": 14,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.05451160737403014,
+          "maximum_cell_contrast": 0.15740585721818678,
+          "minimum_cell_contrast": -0.03050918326768942,
+          "omitted_target": "JAK2",
+          "positive_cells": 12,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.033332987734036076,
+          "maximum_cell_contrast": 0.15422895665659464,
+          "minimum_cell_contrast": -0.012138873241730741,
+          "omitted_target": "KDR",
+          "positive_cells": 11,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.04012635361397114,
+          "maximum_cell_contrast": 0.10518987622647824,
+          "minimum_cell_contrast": -0.019295758370632243,
+          "omitted_target": "KIT",
+          "positive_cells": 13,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.05983798206739182,
+          "maximum_cell_contrast": 0.1420180833801833,
+          "minimum_cell_contrast": 0.001055620066408025,
+          "omitted_target": "LCK",
+          "positive_cells": 15,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.05819265755892298,
+          "maximum_cell_contrast": 0.15614525081405772,
+          "minimum_cell_contrast": -0.010405140420911174,
+          "omitted_target": "MAP2K1",
+          "positive_cells": 14,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.06143204563481869,
+          "maximum_cell_contrast": 0.15547485476880785,
+          "minimum_cell_contrast": 0.009072766400551935,
+          "omitted_target": "MAPK1",
+          "positive_cells": 15,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.06223916889773784,
+          "maximum_cell_contrast": 0.14757056397845703,
+          "minimum_cell_contrast": -0.0029952382850123027,
+          "omitted_target": "MAPK14",
+          "positive_cells": 14,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.05905037443311275,
+          "maximum_cell_contrast": 0.1561759139104667,
+          "minimum_cell_contrast": -0.012093447679745906,
+          "omitted_target": "MAPKAPK2",
+          "positive_cells": 14,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.04100924569115932,
+          "maximum_cell_contrast": 0.18067461932401363,
+          "minimum_cell_contrast": -0.008708537983386055,
+          "omitted_target": "MET",
+          "positive_cells": 13,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.05894690336398362,
+          "maximum_cell_contrast": 0.1529355752741396,
+          "minimum_cell_contrast": -0.030617383876564375,
+          "omitted_target": "PLK1",
+          "positive_cells": 12,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.05879206937056528,
+          "maximum_cell_contrast": 0.15713458424362958,
+          "minimum_cell_contrast": -0.0235625671535509,
+          "omitted_target": "PTK2",
+          "positive_cells": 13,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.041863515946719276,
+          "maximum_cell_contrast": 0.10164655011447843,
+          "minimum_cell_contrast": -0.002120136653151805,
+          "omitted_target": "ROCK1",
+          "positive_cells": 14,
+          "total_cells": 15
+        },
+        {
+          "joint_normalized_auc": 0.060907689212872894,
+          "maximum_cell_contrast": 0.141117265240303,
+          "minimum_cell_contrast": 0.01723302021915718,
+          "omitted_target": "SRC",
+          "positive_cells": 15,
+          "total_cells": 15
+        }
+      ],
+      "positive_cells_max": 15,
+      "positive_cells_min": 11
+    },
+    "role": "fixed-panel target influence sensitivity; not a confidence interval for a target superpopulation",
+    "selection_contract": "for each omitted kinase, raw and residual panels are reselected by complete enumeration on the remaining 20-target Vina maps"
+  },
+  "targets": [
+    "ABL1",
+    "AKT1",
+    "AKT2",
+    "CDK2",
+    "CSF1R",
+    "EGFR",
+    "FGFR1",
+    "IGF1R",
+    "JAK2",
+    "KDR",
+    "KIT",
+    "LCK",
+    "MAP2K1",
+    "MAPK1",
+    "MAPK14",
+    "MAPKAPK2",
+    "MET",
+    "PLK1",
+    "PTK2",
+    "ROCK1",
+    "SRC"
+  ],
+  "verdict": "conditional_go_for_signed_row_centered_target_geometry; no_go_for_representation_invariant_or_unseen_target_inference"
+}

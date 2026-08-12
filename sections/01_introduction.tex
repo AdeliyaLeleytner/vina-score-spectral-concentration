@@ -1,0 +1,56 @@
+\section{Introduction}
+
+Reverse docking and multi-target virtual screening turn many separate docking
+calculations into one ligand-by-target matrix
+\cite{luo2017,lapillo2019,lee2020crds,krause2023}. These matrices are now large.
+DOCKSTRING reports AutoDock Vina scores for 260,155 ligands against 58 targets
+\cite{vina2010,dockstring2022}, and a published secondary-pharmacology panel
+scores 12,651 compounds against 44 receptors \cite{nikitin2025}. Once a matrix
+that size exists, people compare its columns. A correlation between two target
+columns gets read as a statement about which receptors a chemical series will hit
+together, and such correlations are used to group receptors, or to place a
+compound in a profile space defined by many pockets at once
+\cite{fukunishi2005,fukunishi2006,lee2012profiles,mangione2019cando}. Read that
+way, the matrix stops being a stack of independent predictions and becomes a map
+of relationships among targets.
+
+That map inherits a known bias. Empirical scoring functions reward size and
+contact count, and receptors differ in how much room their pockets have and in
+the range of scores they return \cite{pan2003,vigers2004,jacobsson2006}. A large
+compound therefore scores well against most pockets, and much of the covariance
+between target columns is a single component shared across the whole panel. In
+the two matrices we examine, the leading principal component of the target
+correlation matrix carries 73.3\% of the variance on the 44-receptor panel and
+65.9\% on the 58-target DOCKSTRING panel, and in both cases its loading vector
+points almost straight at the direction in which all targets move together:
+cosine 0.970 and 0.969 to that uniform direction. Two receptors can look
+correlated simply because both reward bulk.
+
+Corrections for this are old. Per-target normalisation, and two-way schemes that
+also normalise on the ligand side, have been in use since the early 2000s
+\cite{pan2003,carta2007,sepresa2009,casey2009,luo2017}, and principal components
+of docking profiles have served as compound and protein descriptors for just as
+long \cite{fukunishi2005,fukunishi2006,fukunishi2018}. We use the simplest member
+of that family: subtract each ligand's mean across targets, so that what is left
+says how a target treats a compound compared with how the rest of the panel
+treats it. To summarise a map we report participation-ratio dimension
+\cite{mazzucato2016}, which counts how many independent directions the
+correlations spread over, and is a re-expression of the mean squared correlation
+between target pairs. Neither step is new. Our contribution is the evidence needed
+to interpret the resulting map.
+
+Three gaps remain. Single-program studies do not establish whether the shared component
+generalises across scoring-function lineages. Removing a per-ligand mean also raises dimension
+by construction, so any residual structure must be compared with null matrices that undergo the
+same transformation. Finally, a corrected map is useful only if it contributes information beyond
+the sequence identity and family labels that practitioners already use. A practical question sits
+alongside these: how many ligands must be docked before the estimated map settles?
+
+We address these gaps with a fixed-pose scorer comparison, four transformation-matched nulls,
+chemical-domain controls, external pharmacology and sequence baselines, and a sampling-cost analysis.
+The shared axis appears across the tested scorers. Removing it leaves structured geometry, but that
+geometry changes with the ligand library and its external agreement varies by panel
+(Figures~\ref{fig:axis}--\ref{fig:external}). A few hundred ligands from the source-library domain
+closely recover the full maps (Figure~\ref{fig:cost}). We therefore treat the residual map as a
+library-conditional diagnostic, not as an intrinsic protein network or a compound-level target-ranking
+rule.

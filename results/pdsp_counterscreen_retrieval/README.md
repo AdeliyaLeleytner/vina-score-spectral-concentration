@@ -18,25 +18,25 @@ Primary support: 481 compounds,
 148 target pairs, and
 21 targets.
 
-Residual docking AUROC is 0.700 versus
-0.474 for raw docking. For choosing three
+Residual docking AUROC is 0.681 versus
+0.475 for raw docking. For choosing three
 counterscreens per query target, residual geometry recovers the experimental
-best partner with macro recall 0.667
+best partner with macro recall 0.611
 versus 0.389. The fixed
 sequence+family+residual fusion reaches
-0.722; its no-docking sequence+family
+0.667; its no-docking sequence+family
 baseline reaches 0.556.
 
 ## Interpretation boundary and decision
 
-**NO-GO as a general counterscreen selector.** Although the exact-only graph
-passes aligned-target QAP and every target deletion, the operational advantage
-does not survive restoration of explicit right-censored non-binders. Pair
-endpoints in the pooled graph also use different compounds and publication
-campaigns. The defensible positive result is narrower: residual geometry
-retrieves affinity relationships *conditional on both targets having
-quantifiable Ki values*. That conditional graph is a mechanistic hypothesis,
-not yet a prospective counterscreen rule.
+**NO-GO as a general counterscreen selector.** The exact-only, mean-imputed
+comparison is encouraging, including after Docking-44 compounds with PDSP
+connectivity overlap are removed. It is not robust enough for an operational
+claim. The advantage weakens when explicit right-censored non-binders are
+restored and largely disappears when the docking map is rebuilt on chemically
+shifted complete-case support. Pair endpoints also use different compounds and
+publication campaigns. The result is therefore an exploratory, conditional
+association rather than a prospective counterscreen rule.
 
 Raw PDSP data are not included because no redistribution license was located.
 Download from `https://pdsp.unc.edu/databases/kiDownload/download.php` and verify the checksum recorded in

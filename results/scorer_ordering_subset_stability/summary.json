@@ -1,0 +1,51 @@
+{
+  "analysis": "feature-class ordering of the shared component under target subsetting",
+  "analysis_status": "descriptive_post_hoc_sensitivity",
+  "ordering_tested": "min(atom-pair counts) > max(empirical terms) > learned contact net > interaction fingerprint, on PC1 variance fraction",
+  "enumeration": "exhaustive over all target subsets of each size; no sampling, no seed",
+  "input": {
+    "path": "results/nonvina_scorer_transport/fixed_pose_scores.csv.gz",
+    "sha256": "8c0d10d2c31150a12dbd29ad419de65b5bc5ff902339faa7eb335987d1935e6b",
+    "ligands": 2000,
+    "targets": 9,
+    "scorers": 8
+  },
+  "by_size": {
+    "3": {
+      "subsets": 84,
+      "ordering_holds": 31,
+      "fraction": 0.36904761904761907
+    },
+    "4": {
+      "subsets": 126,
+      "ordering_holds": 76,
+      "fraction": 0.6031746031746031
+    },
+    "5": {
+      "subsets": 126,
+      "ordering_holds": 98,
+      "fraction": 0.7777777777777778
+    },
+    "6": {
+      "subsets": 84,
+      "ordering_holds": 78,
+      "fraction": 0.9285714285714286
+    },
+    "7": {
+      "subsets": 36,
+      "ordering_holds": 36,
+      "fraction": 1.0
+    },
+    "8": {
+      "subsets": 9,
+      "ordering_holds": 9,
+      "fraction": 1.0
+    },
+    "9": {
+      "subsets": 1,
+      "ordering_holds": 1,
+      "fraction": 1.0
+    }
+  },
+  "claim_boundary": "A descriptive sensitivity on one fixed nine-target block of retained AutoDock Vina poses. It bounds how far the full-panel ordering can be read as general; it does not establish the ordering for unseen targets or unseen scoring functions, and it does not simulate poses another function would select in its own search."
+}

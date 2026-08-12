@@ -1,0 +1,131 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{charter}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{lineno}
+\usepackage{cite}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[font=small,labelfont=bf]{caption}
+
+\hypersetup{
+  pdftitle={A shared ligand-wide score axis obscures library-dependent target geometry
+            in docking matrices},
+  pdfauthor={Adeliya Leleytner, Victor Safronov, Maxim Fedorov}
+}
+
+\doublespacing
+\linenumbers
+\renewcommand{\arraystretch}{1.15}
+
+\title{A shared ligand-wide score axis obscures library-dependent target geometry
+in docking matrices}
+
+\author{
+Adeliya Leleytner$^{1,*}$, Victor Safronov$^{1}$, Maxim Fedorov$^{1}$\\[4pt]
+\small $^{1}$Institute for Information Transmission Problems of the Russian Academy of Sciences\\
+\small (Kharkevich Institute), Bolshoy Karetny per. 19, Moscow 127051, Russia\\
+\small $^{*}$Correspondence: \texttt{a.leleytner@gmail.com}
+}
+\date{}
+
+\begin{document}
+\maketitle
+
+\input{sections/00_abstract.tex}
+
+\input{sections/01_introduction.tex}
+
+\input{sections/02_methods.tex}
+
+\section{Results}
+
+\input{sections/03_results_axis.tex}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/v5/fig1_shared_axis.pdf}
+\caption{\textbf{A near-uniform leading component appears in all eight scoring outputs.}
+Eight scoring outputs were evaluated on the same 2{,}000-ligand by 9-target block of retained
+DOCKSTRING poses. Rows are grouped by feature class. (a)~PC1 variance fraction. (b)~Cosine of the
+PC1 loading vector with the uniform target direction. (c)~Participation-ratio dimension before
+(open marker) and after (arrowhead) removal of each ligand's mean. Bars in (a) and (b) are the
+conservative union of two cluster-bootstrap intervals. Dashed lines show the descriptive criteria
+set before the non-Vina scores were inspected; PLECscore falls outside two point-estimate gates.
+Because every output uses retained Vina poses and several scorers share a lineage, this is a
+fixed-pose sensitivity analysis, not a comparison of independent docking pipelines.}
+\label{fig:axis}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/v5/fig2_residual_structure.pdf}
+\caption{\textbf{Residual structure exceeds matched-null expectations and depends on ligand support.}
+(a)~Residual participation ratio, scaled by its $P-1$ upper bound, for the observed matrices and
+four nulls passed through the same centring pipeline on identical 12{,}000-ligand supports. Points
+and bars show null medians and 2.5--97.5\% simulation ranges over 500 repetitions. (b)~Edge-rank
+agreement between residual maps from the lower and upper molecular-weight quartiles (coloured
+markers), compared with 200 size-matched splits sharing no whole chemical group (grey ranges).
+Molecular weight was selected after preliminary inspection and marks a domain contrast; it is not
+identified as the cause of the map change.}
+\label{fig:residual}
+\end{figure}
+
+\input{sections/04_results_external.tex}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/v5/fig3_external_agreement.pdf}
+\caption{\textbf{Removing the per-ligand offset helps on some pharmacology panels, but not all.}
+Open markers show raw docking maps and filled markers residual maps; each arrow holds the
+experimental map fixed. (a)~Spearman agreement with Psychoactive Drug Screening Program (PDSP)
+and Novartis Safety Profiling Database (SPD) target-pair maps. The PDSP row uses the primary
+quantified-$K_\text{i}$ graph; both assay transforms are shown for SPD, and chemically overlapping
+DOCKSTRING blocks were excluded. (b)~Upper-decile target-pair retrieval. Identity baselines are
+marked on the kinase row: residual docking approaches them on ROC-AUC but remains below them on
+average precision. The KiRHub arrow reverses, providing a non-replication. PDSP values use quantified
+$K_\text{i}$ measurements; restoring right-censored cells weakens their agreement, and rebuilding
+the docking map on complete-case chemical support largely removes the separation.}
+\label{fig:external}
+\end{figure}
+
+\input{sections/05_results_cost.tex}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{figures/v5/fig4_cost_and_core.pdf}
+\caption{\textbf{A few hundred docked ligands recover the source-library map.}
+(a)~Edge-rank agreement between maps estimated from random calibration samples and the full-matrix
+map. Lines are means and bands are 2.5--97.5\% ranges over 100 samples per size. At 200 ligands the
+DOCKSTRING design uses about 1{,}300-fold fewer score evaluations. This is recovery of docking
+geometry on the source library, not affinity prediction. (b)~Change in external agreement after
+retaining the five leading residual modes. Rank agreement and ROC-AUC improve on all four panels;
+average precision improves on two. The five-mode rule uses docking eigenvalues only, but the
+external comparison remains post hoc.}
+\label{fig:cost}
+\end{figure}
+
+\input{sections/06_discussion.tex}
+
+\section*{Abbreviations}
+
+AP, average precision; InChI, International Chemical Identifier; KLIFS, Kinase--Ligand
+Interaction Fingerprints and Structures; MW, molecular weight; PC1, first principal component;
+PDB, Protein Data Bank; PDSP, Psychoactive Drug Screening Program; PR, participation ratio;
+QAP, quadratic assignment procedure; ROC-AUC, area under the receiver operating characteristic
+curve; SPD, Safety Profiling Database.
+
+\input{results/v5_declarations.tex}
+
+\input{references_v5.tex}
+
+\end{document}

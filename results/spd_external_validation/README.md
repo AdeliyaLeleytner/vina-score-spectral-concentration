@@ -87,7 +87,7 @@ SHA256: `7132723f85e746de2f8387d01dcde6ffff703c92561fda9751cbd6753e900240`.
 
 The reviewed human UniProt snapshot contains exactly the 12 primary gene
 labels. Expected SHA256:
-`26ebfda18fabdbaf605f14329f2c439e47427ff315f4160f3a68439ae7bf1729`.
+`b0f6213a79286da247fb1bf74c036446fe61e1a3beff074187025fce35015689`.
 
 ```bash
 .venv/bin/python analysis/spd_external_validation.py \

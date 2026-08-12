@@ -1,0 +1,13 @@
+metric,value
+usable_structures,157
+butina_clusters,130
+butina_singleton_clusters,114
+compounds_in_butina_singletons,114
+murcko_groups,130
+murcko_singleton_groups,114
+compounds_in_murcko_singletons,114
+acyclic_compounds,0
+multi_fragment_compounds,4
+murcko_contract,RDKit MurckoScaffoldSmiles on the complete PubChem compound; acyclic compounds receive identity-specific ACYCLIC:<connectivity> labels
+unresolved_identity_singleton_groups,21
+total_cluster_multiplier_groups,151

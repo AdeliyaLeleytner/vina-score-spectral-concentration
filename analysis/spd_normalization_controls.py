@@ -44,7 +44,11 @@ def representation_geometries(
         return (values - values.mean(axis=0)) / scale
 
     raw_z = z_columns(scores)
-    centered = raw_z - raw_z.mean(axis=1, keepdims=True)
+    # Standard centring is the manuscript's two-way residual in raw score units,
+    # matching analysis/spd_external_validation.py. Bundles frozen before
+    # 2026-08-12 centred the column-standardised surface instead.
+    score_columns_centred = scores - scores.mean(axis=0)
+    centered = score_columns_centred - score_columns_centred.mean(axis=1, keepdims=True)
     ordinal = stats.rankdata(scores, axis=1, method="average")
     ordinal_z = z_columns(ordinal)
     efficiency = scores / heavy_atoms[:, None]

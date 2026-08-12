@@ -1,0 +1,16 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "README.md": "0e35b76d784c29d3025add9dfac3527b676a6d92ca351ad3319df7b07011dd72",
+    "causal_boundary_summary.csv": "2282941cb66d3ab66db8fdd0078f8768f49da3766a8b2bf774f6582deeefee63",
+    "dockstring_support_seed_contrasts.csv": "1a8c9b1e4581c03febc7b168b466e118067ffa402ab4ca088a018a3984a1d296",
+    "dockstring_support_seed_summary.csv": "e40ceba4486f3c7e2f3892991dd257dc37fcb1f9d011adb168616ea1125060ae",
+    "mw_matched_group_disjoint_controls.csv": "3e014c0bc6f9702b360838b0b94d560a8bbdb326351f1db0a4edfcba4121ac0e",
+    "mw_matched_group_disjoint_summary.csv": "3f5bb845bf80e2a78b01e2ff5b99df121a9990ed7f88153fc78277a68f2c3648",
+    "observed_low_high_mw_contrasts.csv": "18f524e924d322f4e76e3f66c2d0c79ab78284d927b779d010dc7768b87e8e40",
+    "summary.json": "0da44981b58dd209fb98ebd94bf87ec2c6aa306c6a816e54985e13a6591fa973",
+    "within_band_reproducibility_controls.csv": "57ee005defbc2ba6fbc64a16152191770f168251beab9f37d8666c3f9b0f29b2",
+    "within_band_reproducibility_summary.csv": "0dc6e101d9e3d871a9540270f858241237c1916df8f4ca33b2b4f57a9b5a87d9"
+  },
+  "scope": "all output files except this checksum manifest"
+}

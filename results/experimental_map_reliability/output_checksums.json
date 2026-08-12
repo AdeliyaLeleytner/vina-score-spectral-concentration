@@ -1,0 +1,34 @@
+{
+  "README.md": {
+    "bytes": 879,
+    "sha256": "d00ae2011debde468cc64cc0c9072fd9ab79f92375abd89d9ec2fb262eea224a"
+  },
+  "cross_panel_geometry.csv": {
+    "bytes": 1328,
+    "sha256": "5629af9b1312a3668ae794e55f70ac5d1a0d242fc50ab61d4408c5c49d18ec57"
+  },
+  "edge_stability.csv": {
+    "bytes": 207904,
+    "sha256": "f04971832b764bf4d2677192702dd50feb6a4e3ed2b0183bfc8f202eac6c7108"
+  },
+  "map_reliability.csv": {
+    "bytes": 8669459,
+    "sha256": "5474af302ae84e829379f18e640f79e8e4a596fe2ee8be636f8d761c2606ccea"
+  },
+  "same_support_bootstrap.csv": {
+    "bytes": 4283515,
+    "sha256": "78d971da7db268c2295e9345ac20be8659ec8d0e2aef93f0f910264673e850d3"
+  },
+  "same_support_geometry.csv": {
+    "bytes": 3216,
+    "sha256": "dae29a282f1f4514c64cb6783ea29859d493823470c7a6d407dbc0fa37b0256a"
+  },
+  "same_support_split_half.csv": {
+    "bytes": 4483379,
+    "sha256": "36b63577f49f5eb5c81b5b9c67488189c112fe55df03d7b5d7085659f6145ade"
+  },
+  "summary.json": {
+    "bytes": 198512,
+    "sha256": "a03fdeccb1d64707c153a08f5c680c7caae791a177d648a4c2e343da28ea74cd"
+  }
+}

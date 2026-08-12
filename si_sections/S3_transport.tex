@@ -1,0 +1,254 @@
+\sisection{S3. Fixed-pose transport across scoring functions}
+
+Producers: \path{analysis/nonvina_scorer_transport.py}, with the ODDT stage carried by
+\path{analysis/nonvina_scorer_oddt_worker.py}, and
+\path{analysis/scorer_ordering_subset_stability.py} for S3.3. Frozen outputs are in
+\path{results/nonvina_scorer_transport/} and
+\path{results/scorer_ordering_subset_stability/}.
+
+\sisubsection{S3.1 The pose block and the scoring implementations}
+
+Every number in this section comes from one block of poses, 2{,}000 ligands by 9 DOCKSTRING
+targets. Each of the 18{,}000 cells holds the top retained AutoDock Vina pose for that
+ligand--target pair. The 9 targets are NR3C1, ADRB2, ADRB1, ADORA2A, AR, PTGS2, ACHE, DRD2
+and LCK. Poses come from the released DOCKSTRING pose archives (Figshare DOI
+10.6084/m9.figshare.16511577.v1), whose per-target MD5 is checked against a recorded value
+at read time and whose extracted pose SDF carries its own SHA-256 in
+\path{summary.json}. Ligands are a seed-20260802 subsample of the frozen seed-71
+15{,}000-ligand DOCKSTRING support used elsewhere in this package. No ligand was dropped for
+a missing pose. The pose is identical across all eight scoring outputs, so any difference
+between two columns of the block comes from the scoring function.
+
+smina 2020.12.10 (conda-forge build b08c07c, built 15 July 2025, based on AutoDock Vina
+1.1.2) supplied two of the outputs, invoked in score-only mode with scoring arguments
+\texttt{vina} and \texttt{vinardo} \cite{smina2013,vinardo2016}. The binary is identified in
+\path{summary.json} by SHA-256 \texttt{b6902091\ldots}. smina does not echo SDF data tags in
+score-only mode, so its scores are aligned to input record order, the per-target record count
+is asserted, and the smina Vina column is cross-checked against the released DOCKSTRING Vina
+column: per-target Pearson $r$ runs from 0.975 on LCK to 0.985 on NR3C1
+(\path{summary.json}, \path{smina_vina_reproduction_check}).
+
+ODDT 0.7 supplied five outputs: RF-Score v1, v2 and v3, NNScore 2.0 and PLECscore linear
+\cite{oddt2015,rfscore2010,ballester2014rfscore,nnscore2011,plecscore2019}. RF-Score and
+NNScore were fitted inside the run on the ODDT PDBbind 2016 descriptor tables, 3{,}767
+training complexes, ODDT internal seed 1; on the 290-complex core set the fitted models reach
+Pearson $r$ 0.788 for v1, 0.809 for v2, 0.797 for v3 and 0.819 for NNScore. PLECscore uses
+the pretrained linear coefficients ODDT ships from that release
+(\path{plecscore_linear_p5_l1_s65536_pdbbind2016.json}, SHA-256
+\texttt{319a5041\ldots}); ODDT does not ship the matching PDBbind descriptor table, so no
+offline hold-out check is possible for it. Receptors are the \texttt{dockstring} package
+PDBQT resources, each recorded by SHA-256 and by protein atom count, from 1{,}852 atoms for
+ADRB2 to 4{,}441 for PTGS2. The DRD2 receptor fails the default RDKit valence check, so a
+relaxed sanitisation was applied uniformly to all nine receptors and verified bit-identical
+to the default reader wherever the default reader succeeds.
+
+The ODDT stage runs under a separate Python 3.9.23 interpreter with NumPy 1.26.4 and SciPy
+1.13.1, because ODDT 0.7 does not install alongside the release Python 3.12 environment. Two
+ODDT symbols, \path{oddt.scoring.sparse_vstack} and
+\path{oddt.scoring.descriptors.sparse_vstack}, are patched at import because
+\path{scipy.sparse.vstack} no longer accepts a map object; the iterator is materialised into
+a list before stacking and the numeric effect is none. Reproducing this stage also needs about
+600~MB of pose archives and an external smina binary, neither of which the release bundle
+carries. The stage therefore sits outside \texttt{make all}, and its outputs are versioned and
+checksum-verified instead of rebuilt: \path{fixed_pose_scores.csv.gz} at SHA-256
+\texttt{8c0d10d2\ldots} and \path{scorer_spectral_metrics.csv} at SHA-256
+\texttt{29ecc126\ldots}, both recorded in \path{output_checksums.json} and repeated inside
+\path{summary.json}. The release-environment step reads those two files and recomputes every
+statistic reported below.
+
+Scores were not clipped at zero anywhere in this section. Clipping is a Vina-scale convention,
+and applying it to the Vina-family columns alone would treat two of the eight outputs
+differently from the rest; the released Vina column holds 3 positive values on this block. Each
+column is multiplied by the polarity recorded in \path{scorer_spectral_metrics.csv}, $-1$ for
+the Vina-form outputs and $+1$ for the learned outputs, so that larger values mean stronger
+predicted binding. The PLECscore coefficients ODDT ships carry \texttt{intercept\_}~$=0$, so
+absolute PLECscore values are offset from the $\mathrm{p}K_\mathrm{d}$ scale; every statistic
+reported here is correlation-based and invariant to a per-column constant shift.
+
+\sisubsection{S3.2 The four criteria and the per-scorer outcome}
+
+Four criteria were applied to each of the eight outputs. The first asks for a raw PC1 variance
+fraction of at least 0.50. The second asks for a cosine of at least 0.95 between the raw PC1
+loading vector, signed so its entries sum to a positive number, and the uniform target
+direction $\mathbf{1}/\sqrt{9}$, with every loading strictly positive. The third asks for a raw
+participation ratio no larger than half the target count, 4.5 on nine targets. The fourth asks
+that the lower end of the conservative 95\% cluster-bootstrap interval on the
+centring-induced participation-ratio increase be strictly positive.
+
+Intervals are the conservative union of two cluster bootstraps at 5{,}000 replicates each,
+each resampling whole chemical groups with replacement. One scheme uses 1{,}957 Butina
+clusters, built for this block by RDKit Butina clustering on Morgan radius-2 2048-bit
+Tanimoto distances at cutoff 0.35, since DOCKSTRING carries no upstream cluster column
+\cite{butina1999,morgan1965,rogers2010}; the other uses 1{,}876 Bemis--Murcko scaffold groups
+\cite{murcko1996}. The two bootstrap seeds are 20260806 and 20260805. These are
+finite-support sensitivity ranges on a fixed nine-target panel, not confidence intervals for a
+superpopulation of targets.
+
+
+The second criterion has two halves, and the producer records an interval for only one of
+them. It bootstraps the cosine but reports the minimum PC1 loading as a point value, so the
+requirement that every loading be positive carried no uncertainty. That gap matters for
+RF-Score v2, whose minimum loading is 0.0469. We recomputed the missing interval from the
+frozen per-cell scores with
+\path{analysis/nonvina_scorer_min_loading_interval.py}, reusing the producer's own metric
+function, clustering recipe and seeds, so no rescoring, pose archive or second interpreter is
+needed. All eight intervals exclude zero. The narrowest margin is RF-Score v2 at
+$[0.0275, 0.0653]$, and the widest loading is PLECscore at 0.2235 with interval
+$[0.1978, 0.2474]$. The positivity half of the second criterion therefore holds for every
+output under chemical resampling. The same run recomputes the cosine intervals as a check and
+reproduces the released values to a maximum absolute difference of $1.8\times10^{-4}$; the
+residual difference comes from recomputing the Butina and Bemis--Murcko labels rather than
+reading the original assignment, so the resampled draws are not bit-identical.
+
+\begin{table}[htbp]
+\centering
+\caption{Spectral summaries of the eight scoring outputs on the identical 2{,}000-by-9 fixed
+pose block. Brackets give the conservative 95\% cluster-bootstrap interval, the union of the
+Butina-cluster and Bemis--Murcko-scaffold schemes at 5{,}000 replicates each. The minimum
+PC1 loading is reported without an interval in the producer's own table; its interval here comes
+from the recomputation described in the text. Sources:
+\protect\path{results/nonvina_scorer_transport/scorer_spectral_metrics.csv} and
+\protect\path{results/nonvina_scorer_min_loading_interval/min_loading_intervals.csv}.}
+\label{tab:s3metrics}
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllrlll}
+\toprule
+Output & PC1 fraction & Uniform cosine & Min.\ loading & Raw PR & Centred PR & PR increase \\
+\midrule
+Released Vina & 0.573 [0.552, 0.597] & 0.950 [0.939, 0.959] & 0.082 & 2.740 [2.562, 2.905] & 5.125 [4.930, 5.300] & 2.385 [2.157, 2.583] \\
+smina Vina & 0.577 [0.557, 0.599] & 0.955 [0.945, 0.962] & 0.095 & 2.710 [2.548, 2.866] & 5.131 [4.937, 5.309] & 2.421 [2.197, 2.618] \\
+Vinardo & 0.567 [0.551, 0.585] & 0.967 [0.953, 0.977] & 0.153 & 2.806 [2.673, 2.933] & 5.736 [5.497, 5.934] & 2.930 [2.658, 3.169] \\
+RF-Score v1 & 0.635 [0.614, 0.657] & 0.959 [0.952, 0.964] & 0.064 & 2.345 [2.208, 2.484] & 6.444 [6.260, 6.580] & 4.099 [3.839, 4.306] \\
+RF-Score v2 & 0.669 [0.648, 0.691] & 0.954 [0.947, 0.959] & 0.047 & 2.130 [2.008, 2.249] & 5.652 [5.470, 5.801] & 3.522 [3.283, 3.727] \\
+RF-Score v3 & 0.630 [0.609, 0.652] & 0.956 [0.950, 0.962] & 0.057 & 2.369 [2.227, 2.510] & 5.999 [5.805, 6.155] & 3.630 [3.361, 3.857] \\
+NNScore 2.0 & 0.526 [0.507, 0.545] & 0.973 [0.967, 0.977] & 0.134 & 3.210 [3.032, 3.397] & 6.795 [6.620, 6.922] & 3.585 [3.304, 3.814] \\
+PLECscore linear & 0.414 [0.396, 0.432] & 0.986 [0.980, 0.989] & 0.223 & 4.593 [4.335, 4.848] & 7.465 [7.337, 7.532] & 2.872 [2.571, 3.118] \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Outcome of the four criteria for each output. Thresholds are 0.50 on the raw PC1
+variance fraction, 0.95 on the uniform cosine with every PC1 loading strictly positive, 4.5 on
+the raw participation ratio, and a strictly positive lower end of the conservative 95\%
+cluster-bootstrap interval on the participation-ratio increase. Source:
+\protect\path{results/nonvina_scorer_transport/summary.json}, \texttt{prediction\_outcome}.}
+\label{tab:s3criteria}
+\small
+\begin{tabular}{lccccc}
+\toprule
+Output & PC1 $\geq 0.50$ & Cosine $\geq 0.95$ & Raw PR $\leq 4.5$ & PR rise $> 0$ & All four \\
+\midrule
+Released Vina & pass & pass & pass & pass & pass \\
+smina Vina & pass & pass & pass & pass & pass \\
+Vinardo & pass & pass & pass & pass & pass \\
+RF-Score v1 & pass & pass & pass & pass & pass \\
+RF-Score v2 & pass & pass & pass & pass & pass \\
+RF-Score v3 & pass & pass & pass & pass & pass \\
+NNScore 2.0 & pass & pass & pass & pass & pass \\
+PLECscore linear & fail & pass & fail & pass & fail \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Seven outputs meet all four criteria. PLECscore fails two. Its PC1 fraction of 0.414 sits
+below the 0.50 gate and its whole interval, [0.396, 0.432], stays below the gate. Its raw
+participation ratio of 4.593 sits above the 4.5 gate, but the interval [4.335, 4.848] crosses
+it, so that failure is the weaker of the two. PLECscore passes the other two criteria, and its
+uniform cosine of 0.986 is the largest of the eight outputs: its leading component is the most
+nearly uniform of any output while carrying the least variance. All eight pass the centring
+criterion, with the smallest lower bound 2.157 on released Vina.
+
+Two point estimates sit close to a gate on the other side. The released Vina cosine is 0.950
+and the smina Vina cosine is 0.955, and both intervals reach below 0.95, to 0.939 and 0.945.
+The criteria are evaluated on point estimates except for the fourth, which is defined on the
+interval. The criteria, the code that evaluates them and the results they judge all enter the
+repository in a single commit, so a reader of the released package cannot verify that the
+criteria were fixed before the outputs were computed. Read them as a descriptive checklist
+with stated thresholds.
+
+\sisubsection{S3.3 Feature-class ordering under target subsetting}
+
+The main text reports one ordering of the eight outputs by PC1 variance fraction: the smallest
+of the three RF-Scores above the largest of the three empirical-term outputs, that above
+NNScore, and NNScore above PLECscore. The frozen file states the rule as
+\texttt{min(atom-pair counts) > max(empirical terms) > learned contact net > interaction
+fingerprint}, evaluated on PC1 variance fraction.
+
+We enumerated every target subset of every size from 3 to 9 on the same fixed pose block,
+recomputed the eight PC1 fractions inside each subset, and recorded whether the ordering above
+held there. The enumeration is exhaustive, with no sampling and no seed, so the counts in
+Table~\ref{tab:s3subsets} are exact.
+
+\begin{table}[htbp]
+\centering
+\caption{Exhaustive enumeration of the feature-class ordering under target subsetting on the
+fixed nine-target pose block. Source:
+\protect\path{results/scorer_ordering_subset_stability/subset_counts.csv}.}
+\label{tab:s3subsets}
+\small
+\begin{tabular}{rrrr}
+\toprule
+Targets in subset & Subsets & Ordering holds & Fraction \\
+\midrule
+3 & 84 & 31 & 0.369 \\
+4 & 126 & 76 & 0.603 \\
+5 & 126 & 98 & 0.778 \\
+6 & 84 & 78 & 0.929 \\
+7 & 36 & 36 & 1.000 \\
+8 & 9 & 9 & 1.000 \\
+9 & 1 & 1 & 1.000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The ordering holds on the full panel, on all 9 leave-one-target-out panels and on all 36
+seven-target panels. It breaks on 6 of the 84 six-target panels and on 53 of the 84
+three-target panels. What the enumeration bounds is how far the full-panel ordering can be
+read as general: it is a property of this nine-target panel that survives removal of two
+targets and degrades from there. It carries nothing to targets outside the panel or to scoring
+functions outside the eight. It also does not simulate the poses another function would have
+selected in its own search.
+
+\sisubsection{S3.4 Scorer lineage dependence}
+
+The eight outputs are not eight independent scoring functions. They fall into four lineages.
+
+The first is the AutoDock Vina empirical sum, present twice: the released DOCKSTRING column
+and smina's reimplementation of the same function, which agree at per-target Pearson $r$
+between 0.975 and 0.985. The smina Vina column is present only as a same-program control, so
+that a Vinardo-versus-Vina difference cannot be charged to the change of executable. Vinardo
+belongs to
+the same empirical form and is evaluated by the same smina binary. It changes three things in
+that form: the gauss2 term is dropped, repulsion is reweighted, and the hydrophobic and
+hydrogen-bond terms are redefined.
+
+The second lineage is RF-Score, present in three versions of one model. Version 1 is a random
+forest over 36 element-pair close-contact counts within 12~\AA{}. Version 2 bins the same
+contacts over multiple distance shells. Version 3 takes the version-1 contacts plus the
+AutoDock Vina intermolecular terms as extra input features, so it is not independent of the
+Vina function and is reported as a graded intermediate rather than a separate lineage.
+
+The third lineage is NNScore 2.0, an ensemble of neural networks over 350 BINANA descriptors.
+The fourth is PLECscore, a linear model over the protein--ligand extended connectivity
+fingerprint. Eight outputs map onto four lineages, and two of the four are linked through
+RF-Score v3, whose input includes the Vina intermolecular terms.
+
+Agreement of the per-ligand shared axis with the released Vina column tracks lineage. The
+Spearman correlation of the leading ligand-side component with the released Vina ligand axis is
+0.962 for smina Vina, 0.757 for Vinardo, 0.507 for RF-Score v2, 0.506 for RF-Score v3, 0.425
+for RF-Score v1, 0.368 for NNScore and 0.317 for PLECscore
+(\path{summary.json}, \texttt{shared\_axis\_agreement}). The same axis correlates with ligand
+heavy-atom count at Spearman 0.367 for PLECscore up to 0.706 for RF-Score v3.
+
+Two limits bound what this block can show. No commercial scoring function was tested; Glide and
+GOLD are absent. And rescoring retained poses is not re-docking: each function is evaluated on
+the pose AutoDock Vina selected, so a function that would have selected a different pose in its
+own search is not simulated. Agreement could therefore differ in either direction in a full
+per-scorer re-docking run. RF-Score, NNScore and PLECscore were trained on
+PDBbind crystal complexes and are applied off-distribution to docked poses. Nothing in this
+block shows that any scorer is accurate. Nothing in it shows that the shared axis is
+biologically meaningful, or that the residual carries target-resolved mechanism.
