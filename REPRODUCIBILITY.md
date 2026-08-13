@@ -95,14 +95,19 @@ make PYTHON=.venv/bin/python release-check-v5
 The included GitHub Actions workflow runs this same gate in a clean Linux checkout
 and retains the compiled PDFs and staged artwork as workflow artifacts.
 
-A clean source-release checkout reports 13 explicit skips: seven tests for the
+A clean source-release checkout reports 14 explicit skips: seven tests for the
 retired descriptor-geometry exploratory artifact, three historical SEA display
-tests whose optional non-release inputs are absent, one unavailable production
-artifact in `test_public_panel_domain_utility.py` that the v5 report does not
-consume, and two v4 metadata-consistency checks superseded by the v5 submission.
-A developer worktree retaining the optional SEA inputs reports those three as
-passes and therefore has 10 skips. Any other count or reason requires review;
-exclusions must not be silent.
+tests whose optional non-release inputs are absent, one checksum check for the
+intentionally non-redistributed Anastassiadis source workbook, one unavailable
+production artifact in `test_public_panel_domain_utility.py` that the v5 report
+does not consume, and two v4 metadata-consistency checks superseded by the v5
+submission. A developer worktree retaining the optional SEA display inputs
+reports 11 skips. If the checksum-identified Anastassiadis workbook is also
+present at the producer's external temporary input path, that checksum check
+passes and the count is 10. These developer counts depend on optional external
+files; only the 14-skip clean-checkout count is a durable release property. Any
+change to that clean-checkout count or its reasons requires review; exclusions
+must not be silent.
 
 ## Source-level producers
 
