@@ -17,13 +17,6 @@ Figure 3  ``figures/v5/fig3_external_agreement.{pdf,png}``
     ``results/spd_external_validation/geometry_metrics.csv``,
     ``results/klifs_pocket_control/locked_endpoint_retrieval.csv``,
     ``results/kirhub_external_validation/summary.json``
-
-Pocket figure  ``figures/v5/fig_pocket_volume.{pdf,png}``
-    Pocket volume against the per-target residual molecular-weight slope, the
-    structural reading of what separates targets in the residual map.
-    Source: ``results/residual_mechanism/pocket_volume_exploratory.csv`` and the
-    ``exploratory_pocket_volume`` block of
-    ``results/residual_mechanism/analysis_summary.json``
 """
 
 from __future__ import annotations
@@ -196,7 +189,7 @@ def figure_one() -> None:
     ax_pc1.set_yticks(ypos)
     ax_pc1.set_yticklabels(labels)
 
-    # Prespecified gates, drawn as reference lines with a horizontal label above
+    # Recorded descriptive gates, drawn as reference lines with a horizontal label above
     # the axis so nothing is rotated into the data area.
     def gate(axis, value: str | float, text: str, ha: str = "left", dx: float = 0.0):
         axis.axvline(value, color=CRIMSON, lw=0.9, ls=(0, (4, 2)), zorder=1)
@@ -349,8 +342,8 @@ def figure_three() -> None:
     y_rho = draw(ax_rho, rho_rows, "target-map agreement, Spearman $\\rho$", (-0.02, 0.62))
     y_auc = draw(ax_auc, auc_rows, "top-decile retrieval, ROC-AUC", (0.30, 0.90))
 
-    # The structural baselines on the same endpoint: centred docking reaches
-    # parity with them, it does not beat them. Drawn so the figure says so.
+    # Centred docking approaches the structural baselines on ROC-AUC without
+    # establishing equivalence or superiority. Drawn so the figure says so.
     kinase_row = y_auc[1]
     for value, name in (
         (float(kinase.loc["receptor_domain_sequence_identity", "roc_auc"]), "sequence"),
@@ -383,7 +376,7 @@ def figure_three() -> None:
         Line2D([], [], marker="o", ms=4.6, ls="none", color="white", mec=MUTED,
                mew=1.3, label="raw docking map"),
         Line2D([], [], marker="o", ms=4.8, ls="none", color=TEAL, mec="white",
-               mew=0.6, label="after removing the per-ligand offset"),
+               mew=0.6, label="row-centred docking map"),
     ]
     figure.legend(handles=handles, loc="outside lower center", ncol=2,
                   handletextpad=0.35, columnspacing=1.8)
@@ -391,7 +384,7 @@ def figure_three() -> None:
 
 
 # --------------------------------------------------------------------------- #
-# Figure 2 — the residual is not a product of the transformation
+# Figure 2 — matched-null calibration and ligand-domain dependence
 # --------------------------------------------------------------------------- #
 
 NULL_LABELS = [
@@ -496,7 +489,7 @@ def figure_two() -> None:
     ax_domain.set_xlim(0, 1.05)
     ax_domain.set_ylim(-0.65, 1.65)
     ax_domain.annotate(
-        "size-matched,\nchemically disjoint\nhalves",
+        "size-matched,\nchemical-group-disjoint\nhalves",
         xy=(0.95, ypos2[0] + 0.13), xytext=(0.42, ypos2[0] + 0.34),
         fontsize=7.0, color=INK, ha="center", va="bottom",
         arrowprops=dict(arrowstyle="-", lw=0.6, color=INK, shrinkA=1.0, shrinkB=1.5),
@@ -509,7 +502,7 @@ def figure_two() -> None:
 
 
 # --------------------------------------------------------------------------- #
-# Figure 4 — what the map costs, and which of its directions transfer
+# Figure 4 — map-recovery cost and an exploratory five-mode comparison
 # --------------------------------------------------------------------------- #
 
 def figure_four() -> None:
@@ -535,7 +528,7 @@ def figure_four() -> None:
     ax_cost.set_ylim(recovery_floor, 1.005)
     ax_cost.axvline(200, color=CRIMSON, lw=0.9, ls=(0, (4, 2)), zorder=2)
     ax_cost.annotate(
-        "200 ligands:\n$\\rho$ = 0.92–0.94,\n1,300$\\times$ fewer cells",
+        "200 ligands:\n$\\rho$ = 0.92–0.94\nDOCKSTRING: 1,300$\\times$ fewer cells",
         xy=(200, 0.845), xytext=(255, 0.775),
         fontsize=7.0, color=CRIMSON, ha="left", va="center",
         arrowprops=dict(arrowstyle="-", lw=0.6, color=CRIMSON, shrinkA=1.0, shrinkB=1.5),
@@ -543,7 +536,7 @@ def figure_four() -> None:
     ax_cost.legend(loc="lower right", handletextpad=0.4, bbox_to_anchor=(1.0, 0.0))
     panel_label(ax_cost, "a", x=-0.16, y=1.04)
 
-    # --- panel b: only some residual directions transfer ------------------- #
+    # --- panel b: exploratory five-mode comparison ------------------------- #
     clean(ax_core)
     support = "exact_connectivity_excluded"
     core = core[core["reference_support"] == support].copy()
@@ -569,7 +562,7 @@ def figure_four() -> None:
     ax_core.axvline(0, color=INK, lw=0.8, zorder=4)
     ax_core.set_yticks(ypos)
     ax_core.set_yticklabels(panels)
-    ax_core.set_xlabel("five-mode core $-$ full residual map")
+    ax_core.set_xlabel("five-mode truncation $-$ full residual map")
     ax_core.set_ylim(-0.6, len(panels) - 0.05)
     ax_core.legend(loc="lower left", handletextpad=0.4, labelspacing=0.3)
     ax_core.text(
@@ -583,85 +576,9 @@ def figure_four() -> None:
     save(figure, "fig4_cost_and_core")
 
 
-# --------------------------------------------------------------------------- #
-# Figure 5 — what sets a target's place in the residual map
-# --------------------------------------------------------------------------- #
-
-def figure_five() -> None:
-    """Pocket volume against the residual molecular-weight slope.
-
-    Every value is read from ``results/residual_mechanism/pocket_volume_exploratory.csv``
-    and the statistics from ``results/residual_mechanism/analysis_summary.json``.  No
-    trend line is drawn: the frozen analysis reports a rank association, and a fitted
-    curve would assert a functional form it never estimated.  Marker colour is receptor
-    class; the within-family permutation quoted in the panel uses the finer family
-    labels carried in the same table.
-    """
-    table = pd.read_csv(RESULTS / "residual_mechanism" / "pocket_volume_exploratory.csv")
-    stats = json.loads(
-        (RESULTS / "residual_mechanism" / "analysis_summary.json").read_text()
-    )["exploratory_pocket_volume"]
-
-    frame = table.dropna(subset=["volume", "two_way_residual_molecular_weight_slope_per_100_da"])
-    x = frame["volume"].to_numpy(dtype=float)
-    y = frame["two_way_residual_molecular_weight_slope_per_100_da"].to_numpy(dtype=float)
-
-    def receptor_class(name: str) -> str:
-        text = str(name)
-        return "GPCR" if text.endswith("GPCR") else text
-
-    klass = frame["family"].map(receptor_class).to_numpy()
-    style = {
-        "GPCR": (TEAL, "o"),
-        "Enzyme": (CLAY, "D"),
-        "Ion channel": (SAGE, "^"),
-        "Nuclear receptor": (SLATE, "s"),
-        "Transporter": (SAND, "v"),
-    }
-
-    figure = new_figure(WIDTH, 3.05)
-    axis = figure.add_subplot(1, 1, 1)
-    clean(axis, grid="both")
-
-    axis.axhline(0, color=HAIR, lw=0.7, zorder=1)
-    for name in [k for k in style if (klass == k).any()] + sorted(set(klass) - set(style)):
-        colour, marker = style.get(name, (MUTED, "P"))
-        mask = klass == name
-        axis.scatter(
-            x[mask], y[mask], s=27, color=colour, marker=marker,
-            edgecolor="white", linewidth=0.5, zorder=3, label=name,
-        )
-
-    axis.set_xlabel(r"pocket volume ($\AA^3$)")
-    axis.set_ylabel("residual score slope\nper 100 Da (negative = favourable)")
-    axis.legend(
-        loc="lower left", bbox_to_anchor=(0.0, 1.0), ncol=5, handletextpad=0.3,
-        columnspacing=1.1, borderpad=0.0,
-    )
-
-    rho = stats["pocket_volume_vs_residual_mw_slope_spearman_rho"]
-    low, high = stats["target_bootstrap_95_interval"]
-    n_targets = stats["n_targets_with_complete_pocket_volume"]
-    axis.text(
-        0.985, 0.96,
-        f"Spearman $\\rho$ = {rho:.3f}\n"
-        f"$n$ = {n_targets} receptors\n"
-        f"target-bootstrap range: [{low:.2f}, {high:.2f}]\n"
-        "within-family permutation:\n"
-        f"$p$ = {stats['within_family_permutation_two_sided_p']:.3f}, unadjusted\n"
-        "exploratory; hypothesis-generating\n"
-        "not a mechanism",
-        transform=axis.transAxes, fontsize=7.2, color=INK, va="top", ha="right",
-        bbox=dict(facecolor="white", edgecolor="none", alpha=0.92, pad=1.5),
-    )
-
-    save(figure, "fig_pocket_volume")
-
-
 if __name__ == "__main__":
     configure_style()
     figure_one()
     figure_two()
     figure_three()
     figure_four()
-    figure_five()

@@ -2,7 +2,7 @@
 
 ## Scope
 
-- Intended venue and type: *Journal of Cheminformatics*, Research article.
+- Intended venue and type: *Journal of Cheminformatics*, Methodology article.
 - Object of inference: a target-correlation map conditional on the scoring
   pipeline, receptor panel and ligand support.
 - Status: exploratory, post hoc and finite-panel. The study was not
@@ -11,7 +11,7 @@
 ## Central claim
 
 Raw docking target correlations can be dominated by a ligand-wide scoring axis.
-Removing each ligand's mean across targets reveals a structured residual map,
+The map obtained after subtracting each ligand's mean across targets retains structured geometry,
 but that map depends on the ligand library and is experimentally informative
 only on some panels.
 
@@ -48,7 +48,6 @@ individual ligand.
 | Multiplicity limits the fusion result. | Paired QAP inference is two-sided and corrected by Holm and Bonferroni within the 12-row primary QAP table. | Sequence-and-family fusion is a sensitivity, not a significant or headline claim. |
 | A small source-library sample can recover the map. | At 200 ligands, recovery is 0.942 and 0.918. | This is same-library geometry recovery, not a universal threshold or affinity prediction. |
 | Ligand-wise ranking is a different task. | On the Docking-44 boundary audit, top-5 retrieval falls from 23.6% with absolute Vina to 16.4% with the residual map. | Never describe centring as a general compound-level target-ranking improvement. |
-| Pocket size is only a possible contributor. | A post-hoc descriptor association is shown in Supplementary Figure S1. | The unadjusted result and unreproduced pocket-definition workflow do not establish a mechanism. |
 
 ## Required wording
 
@@ -71,5 +70,5 @@ individual ligand.
 ## Outside the submitted claim
 
 Prospective screening performance, proteome-wide target prediction, a universal
-200-ligand rule, model-family leaderboards, causal pocket mechanisms, and any
+200-ligand rule, model-family leaderboards, causal structural mechanisms, and any
 claim that docking generally outperforms sequence-based selection.

@@ -571,6 +571,13 @@ def test_manifest_covers_exact_inputs_code_and_evidence_with_valid_hashes() -> N
     assert filename == public_core.DEFAULT_MANIFEST.name
     assert digest == public_core.sha256_file(public_core.DEFAULT_MANIFEST)
 
+    canonical = "LicenseRef-NCBI-PubChem-molecular-data-policy"
+    for key in ("hotspot_identity", "hotspot_identity_provenance"):
+        assert public_core.INPUT_SPECS[key].license == canonical
+        row = manifest.loc[manifest.path.eq(public_core.INPUT_SPECS[key].path)].iloc[0]
+        assert row.license == canonical
+        assert "CC0" not in row.license
+
 
 def test_released_ledger_does_not_serialize_excluded_dependency_markers() -> None:
     serialized = public_core.DEFAULT_OUTPUT.read_text().lower()

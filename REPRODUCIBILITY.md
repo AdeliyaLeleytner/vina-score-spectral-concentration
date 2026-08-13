@@ -28,8 +28,8 @@ is an independent packaging check.
 
 The v5 report dependency graph is:
 
-1. `figures-v5`: regenerate the four main figures, Supplementary Figure S1 and
-   graphical abstract from frozen results.
+1. `figures-v5`: regenerate the four main figures and graphical abstract from
+   frozen results.
 2. `submission-figures`: stage journal-named upload files and validate the
    graphical-abstract dimensions and size.
 3. `verify-v5-numbers`: verify the report-source manifest, run the manuscript and
@@ -49,7 +49,7 @@ load-bearing manuscript site. They also protect:
 
 - the exact title across TeX and citation metadata;
 - an abstract of at most 350 words with a `Scientific Contribution` heading;
-- four main figures and one Supplementary pocket figure;
+- exactly four report figures and the graphical abstract;
 - two-sided paired-QAP inference with Holm and Bonferroni correction within each
   12-row PDSP QAP table;
 - PDSP connectivity-overlap exclusion, censor-aware weakening and the
@@ -95,11 +95,14 @@ make PYTHON=.venv/bin/python release-check-v5
 The included GitHub Actions workflow runs this same gate in a clean Linux checkout
 and retains the compiled PDFs and staged artwork as workflow artifacts.
 
-The current full suite reports 10 explicit skips: seven tests for the retired
-descriptor-geometry exploratory artifact, one unavailable production artifact in
-`test_public_panel_domain_utility.py` that the v5 report does not consume, and two
-v4 metadata-consistency checks superseded by the v5 submission. A different skip
-count or reason requires review; exclusions must not be silent.
+A clean source-release checkout reports 13 explicit skips: seven tests for the
+retired descriptor-geometry exploratory artifact, three historical SEA display
+tests whose optional non-release inputs are absent, one unavailable production
+artifact in `test_public_panel_domain_utility.py` that the v5 report does not
+consume, and two v4 metadata-consistency checks superseded by the v5 submission.
+A developer worktree retaining the optional SEA inputs reports those three as
+passes and therefore has 10 skips. Any other count or reason requires review;
+exclusions must not be silent.
 
 ## Source-level producers
 

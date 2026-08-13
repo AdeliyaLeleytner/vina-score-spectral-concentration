@@ -22,7 +22,6 @@ current dirty working tree.
 - [ ] Sequence-and-family fusion is not presented as significant or as a
   headline result.
 - [ ] Kinase, SPD, KiRHub and ligand-wise ranking boundaries remain.
-- [ ] Pocket volume is Supplementary and hypothesis-generating.
 - [ ] No claim implies universal improvement beyond homology, causal mechanism,
   affinity prediction or compound-level target-ranking improvement.
 
@@ -44,8 +43,8 @@ current dirty working tree.
 - [ ] Reconstruct both 12-row PDSP paired-QAP tables and the support-threshold
   sensitivity from the released aggregate table.
 - [ ] Confirm the Supplement contents lists S1--S7 and all subsections.
-- [ ] Confirm four main upload figures, Supplementary Figure S1 and the graphical
-  abstract match the PDF captions.
+- [ ] Confirm four main upload figures and the graphical abstract match the PDF
+  captions.
 - [ ] Confirm `submission/files/Manuscript.pdf` and
   `submission/files/Additional_file_1.pdf` match the final root PDFs byte for byte.
 - [ ] Confirm the graphical abstract is 920×300 RGB, white-background and at
@@ -73,7 +72,7 @@ current dirty working tree.
 - [ ] Read both PDFs from start to finish at final size.
 - [ ] Inspect every figure label, legend, table, symbol, reference and page break.
 - [ ] Search extracted text for placeholders, the old title, stale v4 claims,
-  `Figure 5`, and a main-text pocket figure.
+  `Figure 5`, and the removed pocket-volume analysis.
 - [ ] Check author names, affiliations, ORCIDs, corresponding-author email,
   contributions, funding, competing interests and AI disclosure with all
   coauthors.
@@ -88,8 +87,8 @@ current dirty working tree.
 - [ ] Insert that DOI into the availability statement, README and metadata;
   rebuild and re-hash without changing scientific content.
 - [ ] Obtain final coauthor approval of the exact PDF bytes.
-- [ ] Upload the manuscript, four main figures, Additional file 1, Supplementary
-  Figure S1 and graphical abstract with matching titles and descriptions.
+- [ ] Upload the manuscript, four main figures, Additional file 1 and graphical
+  abstract with matching titles and descriptions.
 
 Current state: **v5 submission candidate; no release tag or version-specific DOI
 is yet claimed.**

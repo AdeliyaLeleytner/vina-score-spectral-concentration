@@ -16,7 +16,7 @@ a pilot sample drawn from the source-library domain rather than assumed to trans
 The size-conditioned null also reproduces much of the residual edge ordering, especially on
 Docking-44. Residual edges are therefore not evidence of biochemical cross-reactivity by themselves.
 
-On the primary de-overlapped PDSP graph, which includes only target pairs with at least ten shared
+On the primary connectivity-de-overlapped PDSP graph, which includes only target pairs with at least ten shared
 compounds having quantifiable $K_\text{i}$ at both targets, agreement rises from 0.044 for the raw
 map to 0.295 for the residual map. The difference is unusual under unrestricted two-sided target
 relabeling, but its within-family adjusted probability is unresolved. More importantly, residual
@@ -27,7 +27,7 @@ support-sensitive observation, not confirmation of general performance beyond ho
 The other panels narrow the interpretation further. On the Novartis safety resource, residual
 partial agreement after sequence, family and support control gives $p<0.05$ on one of three
 endpoints under family-preserving permutation. On the frozen kinase endpoint, centred docking
-reaches the sequence-identity baseline on ROC-AUC (0.710 versus 0.718) but remains below it on average
+approaches the sequence-identity baseline on ROC-AUC (0.710 versus 0.718) without passing it, and remains below it on average
 precision (0.301 versus 0.426). KiRHub moves in the opposite direction. Across these panels, centring
 does not reliably outperform sequence-based reasoning among close homologues.
 
@@ -41,10 +41,10 @@ be read as a causal ranking of scorer designs or a comparison of docking accurac
 The audit is inexpensive. Two hundred randomly selected ligands from the source-library domain
 recover the full residual map at Spearman 0.918 on DOCKSTRING-58 and 0.942 on Docking-44, and
 chemical-group-held-out recovery gives similar values. In an exploratory compression analysis,
-five leading modes carry half of the residual trace and improve rank agreement and ROC-AUC on all
-four kinase panels. Average precision improves on only two, and the cross-panel interpretation is
-post hoc. We did not tune over neighbouring values of $k$, and do not claim that five modes are
-optimal. Participation
+the five leading modes retain 0.517 of the residual trace; truncation raises the point estimates of
+rank agreement and ROC-AUC on all four kinase panels. Average-precision point estimates rise on only two, and
+the six-test sensitivity and cross-panel interpretation remain unresolved and post hoc. We did not
+tune over neighbouring values of $k$, and do not claim that five modes are optimal. Participation
 ratio counts directions; it does not tell us which directions will transfer to an experimental
 endpoint.
 
@@ -116,10 +116,7 @@ one fixed endpoint are more informative, but they remain conditional on the chos
 The docking structures are inherited and not uniformly human: five of 43 receptor chains come from
 rat, turkey, sheep or mouse, while the sequence baselines are human. Two affected targets, ADRB1 and
 HTR3A, appear in the PDSP graph. Dropping them leaves a smaller 119-pair association, but this is a
-sensitivity rather than a substitute for uniformly matched structures. An exploratory pocket-volume
-association is reported in Supplementary Section S2.4 and Supplementary Figure~S1. It was selected
-after descriptor inspection, and the released pocket table has no executable pocket-definition
-workflow; it is hypothesis-generating and does not establish a mechanism.
+sensitivity rather than a substitute for uniformly matched structures.
 
 Finally, the two large docking matrices are separately generated but overlap. They share 582 exact
 molecules, 804 connectivity blocks, 1{,}340 Bemis--Murcko scaffolds, nine mapped target identities and
@@ -129,10 +126,13 @@ same 20 target labels rather than independent target-panel replications.
 \section{Conclusions}
 
 A shared ligand-wide score axis is the leading component in every scoring output tested and dominates
-the two large raw Vina matrices. Removing it leaves structured geometry that is inexpensive to estimate,
-but
-that geometry belongs to a declared receptor panel, scoring pipeline and ligand library. External
+the two large raw Vina matrices. The centred map retains structured geometry that is inexpensive to
+estimate, but that geometry belongs to a declared receptor panel, scoring pipeline and ligand library. External
 pharmacology supports its use as an exploratory target-pair diagnostic on some diversified panels;
 mixed safety and kinase results rule out a universal cross-reactivity map or compound-level ranking
-rule. The practical recommendation is simple: remove the per-ligand offset, test the residual against
-matched nulls, and estimate it on a pilot sample drawn from the intended chemical domain.
+rule. The practical recommendation is therefore not to replace the raw map but to audit both:
+compute the row-centred map alongside it, test the residual against matched nulls, estimate it
+on a pilot sample from the intended chemical domain, and let the comparison between the two
+maps --- not the centred map by itself --- carry the interpretation. Which map is preferable is
+panel-dependent: centred maps have higher target-pair agreement on the diversified
+secondary-pharmacology graphs, but lower agreement on KiRHub and lower ligand-wise retrieval.

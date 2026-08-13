@@ -60,7 +60,8 @@ DOCKSTRING poses. Rows are grouped by feature class. (a)~PC1 variance fraction. 
 PC1 loading vector with the uniform target direction. (c)~Participation-ratio dimension before
 (open marker) and after (arrowhead) removal of each ligand's mean. Bars in (a) and (b) are the
 conservative union of two cluster-bootstrap intervals. Dashed lines show the descriptive criteria
-set before the non-Vina scores were inspected; PLECscore falls outside two point-estimate gates.
+recorded for this analysis; their timing cannot be verified from the release, and PLECscore falls
+outside two point-estimate gates.
 Because every output uses retained Vina poses and several scorers share a lineage, this is a
 fixed-pose sensitivity analysis, not a comparison of independent docking pipelines.}
 \label{fig:axis}
@@ -85,12 +86,13 @@ identified as the cause of the map change.}
 \begin{figure}[htbp]
 \centering
 \includegraphics{figures/v5/fig3_external_agreement.pdf}
-\caption{\textbf{Removing the per-ligand offset helps on some pharmacology panels, but not all.}
+\caption{\textbf{Raw and centred maps differ in panel-dependent ways.}
 Open markers show raw docking maps and filled markers residual maps; each arrow holds the
 experimental map fixed. (a)~Spearman agreement with Psychoactive Drug Screening Program (PDSP)
 and Novartis Safety Profiling Database (SPD) target-pair maps. The PDSP row uses the primary
-quantified-$K_\text{i}$ graph; both assay transforms are shown for SPD, and chemically overlapping
-DOCKSTRING blocks were excluded. (b)~Upper-decile target-pair retrieval. Identity baselines are
+quantified-$K_\text{i}$ graph after Docking-44 rows sharing a PDSP connectivity block were excluded.
+Both assay transforms are shown for SPD after DOCKSTRING rows sharing exact identities or
+connectivity blocks were excluded. (b)~Upper-decile target-pair retrieval. Identity baselines are
 marked on the kinase row: residual docking approaches them on ROC-AUC but remains below them on
 average precision. The KiRHub arrow reverses, providing a non-replication. PDSP values use quantified
 $K_\text{i}$ measurements; restoring right-censored cells weakens their agreement, and rebuilding
@@ -108,9 +110,9 @@ the docking map on complete-case chemical support largely removes the separation
 map. Lines are means and bands are 2.5--97.5\% ranges over 100 samples per size. At 200 ligands the
 DOCKSTRING design uses about 1{,}300-fold fewer score evaluations. This is recovery of docking
 geometry on the source library, not affinity prediction. (b)~Change in external agreement after
-retaining the five leading residual modes. Rank agreement and ROC-AUC improve on all four panels;
-average precision improves on two. The five-mode rule uses docking eigenvalues only, but the
-external comparison remains post hoc.}
+the exploratory truncation to the five leading residual modes. Point estimates of rank agreement and ROC-AUC rise on all
+four panels; average precision rises on two. The five-mode rule uses docking eigenvalues only, but
+the six-test sensitivity is unresolved and the external comparison remains post hoc.}
 \label{fig:cost}
 \end{figure}
 

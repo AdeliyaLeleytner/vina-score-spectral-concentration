@@ -16,8 +16,9 @@ and LCK. Poses come from the released DOCKSTRING pose archives (Figshare DOI
 at read time and whose extracted pose SDF carries its own SHA-256 in
 \path{summary.json}. Ligands are a seed-20260802 subsample of the frozen seed-71
 15{,}000-ligand DOCKSTRING support used elsewhere in this package. No ligand was dropped for
-a missing pose. The pose is identical across all eight scoring outputs, so any difference
-between two columns of the block comes from the scoring function.
+a missing pose. The pose is identical across all eight scoring outputs, so differences cannot be
+attributed to different selected poses. They are scorer- and implementation-specific differences
+at fixed geometry, not differences between independent end-to-end docking pipelines.
 
 smina 2020.12.10 (conda-forge build b08c07c, built 15 July 2025, based on AutoDock Vina
 1.1.2) supplied two of the outputs, invoked in score-only mode with scoring arguments

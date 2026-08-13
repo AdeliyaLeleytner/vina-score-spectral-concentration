@@ -413,7 +413,7 @@
       "public_outputs": [
         {
           "path": "results/manuscript_evidence.json",
-          "sha256": "2c5cac0d4b628eeb0231f30f2c9b3625a64776107c301ab8b96f0475f93ec9f9"
+          "sha256": "64db9be9641f4b4118c01980020c513db185c79cc6b9497af2b3436d1941bf2c"
         }
       ],
       "boundary": "The default archive verifies the released SPD summary; row-level regeneration requires downloading the checksum-identified public upstream files."
@@ -552,7 +552,7 @@
       "public_outputs": [
         {
           "path": "results/manuscript_evidence.json",
-          "sha256": "2c5cac0d4b628eeb0231f30f2c9b3625a64776107c301ab8b96f0475f93ec9f9"
+          "sha256": "64db9be9641f4b4118c01980020c513db185c79cc6b9497af2b3436d1941bf2c"
         }
       ],
       "boundary": "The analysis is conditional on Vina-selected poses and is not an independent redocking or scorer-generality test."
@@ -583,7 +583,7 @@
       "public_outputs": [
         {
           "path": "results/manuscript_evidence.json",
-          "sha256": "2c5cac0d4b628eeb0231f30f2c9b3625a64776107c301ab8b96f0475f93ec9f9"
+          "sha256": "64db9be9641f4b4118c01980020c513db185c79cc6b9497af2b3436d1941bf2c"
         }
       ],
       "boundary": "This attributes retained-pose arithmetic and is neither causal term ablation nor redocking."
@@ -601,15 +601,15 @@
       "public_inputs": [
         {
           "path": "data_manifest.csv",
-          "sha256": "0f9748c739a75c02c9f63dc59be98ca8193652b1d2df939ed615493173f656a4"
+          "sha256": "2afcdf3695b9efe6e4c706f45da452a6879649cc052a92358c139d8292972309"
         },
         {
           "path": "results/manuscript_source_manifest.csv",
-          "sha256": "c614ab7915aca7c5e6a94bec07fd6d7e946aee68c8226a86c6a3c587793e9062"
+          "sha256": "23f6e99a4eaccefe4edea6295427d3d85f9e4464ef1c28f415afb208edfb2eef"
         },
         {
           "path": "results/manuscript_evidence.json",
-          "sha256": "2c5cac0d4b628eeb0231f30f2c9b3625a64776107c301ab8b96f0475f93ec9f9"
+          "sha256": "64db9be9641f4b4118c01980020c513db185c79cc6b9497af2b3436d1941bf2c"
         }
       ],
       "analysis_scripts": [

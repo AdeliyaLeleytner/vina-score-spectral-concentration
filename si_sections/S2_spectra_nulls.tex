@@ -221,56 +221,24 @@ DOCKSTRING-58 & Additive Gaussian & 56.482 [56.445, 56.515] & 0.0020 \\
 \end{tabular}
 \end{table}
 
-\paragraph{How much coarse size explains.} We measure the size-conditioned null against its own
+\paragraph{How much coarse-size conditioning reproduces.} We measure the size-conditioned null against its own
 one-bin version, which is the same construction with no size information at all. The one-bin
 null medians are 42.843 and 56.728. Ten-bin conditioning closes 23.8\% of the distance from
 that one-bin median to the observed value for Docking-44 and 25.1\% for DOCKSTRING-58. Finer
 binning adds little: the closed share is 19.1\%, 23.8\% and 25.7\% at 5, 10 and 20 bins for
 Docking-44, and 22.8\%, 25.1\% and 26.0\% for DOCKSTRING-58. A size-matched random partition
 with the same ten bin sizes but no size information stays at median PR 42.844 and 56.726 and
-closes nothing, at $-4.2\times10^{-6}$ and $2.8\times10^{-5}$, so the shift comes from
-molecular weight and not from partitioning as such.
+closes nothing, at $-4.2\times10^{-6}$ and $2.8\times10^{-5}$. The shift is therefore reproduced
+by molecular-weight-aligned bins rather than by an equally sized random partition.
 
-\paragraph{What the same null does reproduce.} Coarse size accounts for 23.8\% and 25.1\% of
+\paragraph{What the same null does reproduce.} Coarse-size conditioning closes 23.8\% and 25.1\% of
 the excess concentration, and it still reproduces much of the edge ordering. The ten-bin null map
 agrees with the observed residual map at median Spearman 0.924, with 95\% simulation range
 0.921 to 0.928, for Docking-44, and 0.718 with range 0.707 to 0.728 for DOCKSTRING-58; median
 edge-sign agreement is 0.834 and 0.727. The size-matched random partition reaches 0.051 and
-0.052 Spearman with sign agreement 0.517 and 0.514, so the ordering the size-conditioned null
-recovers is carried by molecular weight. Its overlap with the strongest observed edges is much
+0.052 Spearman with sign agreement 0.517 and 0.514, so the ordering is recovered specifically by
+molecular-weight-aligned conditioning in this design. This does not identify molecular weight as
+the operative cause. Its overlap with the strongest observed edges is much
 weaker: the median Jaccard index against the 25 largest-magnitude observed edges is 0.087 for
 Docking-44 and 0.351 for DOCKSTRING-58. A null can therefore rank the edges of the residual map
 without concentrating it.
-
-\sisubsection{S2.4 Exploratory pocket-volume association}
-
-An exploratory analysis asks whether pocket volume is associated with each receptor's residual
-response to ligand molecular weight. It is produced by
-\path{analysis/residual_mechanism_analysis.py} and frozen in
-\path{results/residual_mechanism/}. The joined target table is
-\path{results/residual_mechanism/pocket_volume_exploratory.csv}; the source descriptor table is
-\path{data/frozen/toxicodynamics/data/44pockets_analysis.csv}. Complete pocket volumes are available
-for 36 of the 44 receptors.
-
-Pocket volume is negatively associated with the two-way residual slope (Spearman $\rho=-0.613$;
-Supplementary Figure~\ref{fig:s1-pocket}). The target-label permutation gives two-sided
-$p=9.0\times10^{-5}$, and permutation within receptor families gives $p=0.046$. A target bootstrap
-range is $[-0.788,-0.348]$, and leave-one-family and leave-one-target checks retain the negative
-direction. DOCKSTRING search-box volume is nearly constant and is not associated with the analogous
-descriptor slopes.
-
-This result is hypothesis-generating. It was selected after inspecting descriptor--residual-mode
-alignment, its probabilities are unadjusted for that search, and the released pocket table has no
-executable, versioned workflow defining the pockets. No harmonised DOCKSTRING pocket table is
-available for replication. The association is therefore consistent with pocket size contributing to
-residual geometry, but it does not establish a mechanism or explain the PDSP result.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics{figures/v5/fig_pocket_volume.pdf}
-\caption{Pocket volume and the residual response to ligand size. Each point is one of the 36
-Docking-44 receptors with complete descriptors; colour denotes receptor class. The negative rank
-association was selected post hoc, and the pocket-definition workflow is unavailable, so the plot is
-an exploratory structural reading rather than a validated mechanism.}
-\label{fig:s1-pocket}
-\end{figure}

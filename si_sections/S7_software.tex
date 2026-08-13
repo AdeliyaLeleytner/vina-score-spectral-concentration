@@ -55,8 +55,10 @@ when the text and page count agree.
 
 The included \path{.github/workflows/v5-report.yml} is configured to run the complete
 \texttt{release-check-v5} target in a clean Linux checkout and retain the tested PDFs and staged
-artwork. This continuous-integration layer becomes meaningful only when every report input is
-present in the committed release candidate.
+artwork. That target also verifies the repository data and manuscript-source manifests, all
+registered result-bundle checksums and the separate 149-row public-core manifest before running
+the committed test inventory. This continuous-integration layer becomes meaningful only when
+every registered input is present in the committed release candidate.
 
 The v5 manifest, \path{results/v5_report_source_manifest.csv}, records the exact local source,
 frozen-result and build-contract files consumed by this report layer. It does not claim that the
@@ -87,7 +89,7 @@ Calibration recovery, Docking-44 & 20260804 \\
 Chemical-group holdout, DOCKSTRING-58 & 20260805 \\
 Chemical-group holdout, Docking-44 & 20260806 \\
 DOCKSTRING 15{,}000-row working support & 71 \\
-Five-mode core & 20260808 \\
+Exploratory five-mode compression & 20260808 \\
 Fixed-pose ligand subset & 20260802 \\
 Fixed-pose cluster bootstrap, Bemis--Murcko & 20260805 \\
 Fixed-pose cluster bootstrap, Butina & 20260806 \\
@@ -116,7 +118,7 @@ The fixed-pose scorer toolchain additionally depends on ODDT training resources,
 receptor PDBQTs and the smina executable identified in
 \path{results/nonvina_scorer_transport/summary.json}; that summary is authoritative for their
 versions and checksums. Core score matrices and several public assay tables are included. Other
-inputs, including PDSP, SPD, KiRHub, PKIS1 and HotSpot source data, are not all redistributed. The
+inputs, including PDSP, SPD, KiRHub and PKIS1 source data, are not all redistributed. The
 exact boundary for each analysis is in its result summary or README. The primary and complete-case PDSP paired-QAP tables and
 support-threshold sensitivity can nevertheless be reconstructed from the released aggregate
 target-pair table and Docking-44 matrix with

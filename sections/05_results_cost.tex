@@ -1,4 +1,4 @@
-\subsection{A few hundred ligands recover the map, and five modes carry its experimental agreement}
+\subsection{A few hundred ligands recover the map; five-mode compression is exploratory}
 \label{sec:cost}
 
 Because the map depends on ligand support, it must be estimated on the
@@ -33,9 +33,9 @@ subspaces runs from 0.986 to 0.996, indicating that the five-dimensional subspac
 is stable across folds.
 
 Truncating the residual correlation to those five modes and renormalising to unit
-diagonal improves rank agreement with the experimental target-pair map on all four
-kinase panels, by 0.033 on PKIS2 up to 0.058 on KiRHub, and improves ROC-AUC on
-all four, by 0.014 on PKIS1 up to 0.063 on KiRHub (Figure~\ref{fig:cost}b).
+diagonal gives higher point estimates of rank agreement with the experimental target-pair map
+on all four kinase panels, by 0.033 on PKIS2 up to 0.058 on KiRHub, and higher ROC-AUC point
+estimates on all four, by 0.014 on PKIS1 up to 0.063 on KiRHub (Figure~\ref{fig:cost}b).
 Average precision changes sign across panels: $+0.034$ on DAVIS and $+0.044$ on KiRHub, but
 $-0.035$ on PKIS1 and $-0.027$ on PKIS2. The change is positive in 8 of 20 target deletions on
 PKIS1 and 5 of 20 on PKIS2. The trace rule used no experimental value and the panels were
@@ -43,14 +43,15 @@ scored without retuning it, but PKIS1 was the discovery panel and the six-test v
 sensitivity was unresolved. Its interpretation across the four assay panels remains post hoc.
 
 The participation ratio of the same residual map is 11.6, yet dropping the fourteen directions
-outside the five-mode core raises rank agreement and ROC-AUC instead of lowering
-them. Participation ratio counts directions, not their usefulness for a particular endpoint;
-the spectrum and transfer test therefore answer different questions.
+outside this exploratory five-mode subspace gives higher point estimates of rank agreement and
+ROC-AUC. Participation ratio counts directions, not their usefulness for a particular endpoint;
+the spectrum and external-comparison analysis therefore answer different questions.
 This is a within-scorer statement, and we do not extend it to comparisons between
 scoring functions.
 
-We release the audit as a command-line tool.
-\texttt{analysis/target\_map\_audit.py} takes any dense ligand-by-target score
+We release the map-construction and diagnostic stage of the audit as a command-line tool;
+the transformation-matched null constructions are supplied as separate analysis scripts
+rather than inside the CLI. \texttt{analysis/target\_map\_audit.py} takes any dense ligand-by-target score
 matrix and writes the raw target-correlation map, the centred map, the spectrum of
 each (participation-ratio dimension with its exact mean-squared-correlation
 identity, PC1 variance fraction, entropy dimension, and components reaching 90\% of

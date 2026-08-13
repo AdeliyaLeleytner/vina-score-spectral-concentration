@@ -681,13 +681,13 @@ INPUT_SPECS = {
         "data/frozen/anastassiadis2011_pubchem_identity_2026-08-10.csv",
         "audited PubChem identity crosswalk for the HotSpot compounds",
         "row_level_derived_public",
-        license="PubChem public data; derived crosswalk CC0-1.0",
+        license="LicenseRef-NCBI-PubChem-molecular-data-policy",
     ),
     "hotspot_identity_provenance": InputSpec(
         "data/frozen/anastassiadis2011_pubchem_identity_2026-08-10.provenance.json",
         "provenance for the HotSpot identity crosswalk",
         "derived_public",
-        license="CC0-1.0",
+        license="LicenseRef-NCBI-PubChem-molecular-data-policy",
     ),
     "hotspot_kinase_fasta": InputSpec(
         "data/frozen/dockstring_kinase_receptors.fasta",

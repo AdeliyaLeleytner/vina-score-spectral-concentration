@@ -60,10 +60,12 @@ intervals for those paired differences are $-0.108$ to $+0.123$ and $-0.054$ to 
 These adjusted values describe the two selected-endpoint directional contrasts; they are not
 confirmatory evidence across the threshold search.
 
-Two readings of Table~\ref{tab:s6-frozen-predictors} matter. Centred docking reaches sequence
-identity on ROC-AUC, 0.7105 against 0.7181, and stays below it on average precision, 0.3015
-against 0.4263; pocket identity is the strongest predictor on average precision at 0.4864.
-Centred docking does not pass either structural baseline. The binary annotations behave
+Two readings of Table~\ref{tab:s6-frozen-predictors} matter. Centred docking approaches sequence
+identity on ROC-AUC, 0.7105 against 0.7181, without establishing equivalence, and stays below it
+on average precision, 0.3015 against 0.4263; pocket identity is the strongest predictor on average precision at 0.4864.
+Its ROC-AUC is 0.0023 above pocket identity, but this point-estimate difference is not an
+equivalence or superiority result; on average precision it remains below both structural
+baselines. The binary annotations behave
 differently from the continuous ones under this null: same-family membership has ROC-AUC 0.5971,
 close to chance, yet $p=0.0012$, because only 4 of 190 pairs are same-family and the
 relabelling distribution of that statistic is coarse. A small probability on a two-valued
@@ -409,7 +411,7 @@ shared compounds, giving 59 target pairs.
 \setlength{\tabcolsep}{5pt}
 \caption[Docking and SPD target-pair map agreement]{Agreement between DOCKSTRING target maps and SPD experimental target-pair maps, on 59
 pairs, under both experimental transforms. The docking side is the 12-target local map built on
-the non-overlapping DOCKSTRING support. Source:
+the exact- and connectivity-de-overlapped DOCKSTRING support. Source:
 \path{results/spd_external_validation/geometry_metrics.csv}.}
 \label{tab:s6-spd}
 \begin{tabular}{llrrr}
@@ -615,7 +617,7 @@ order, so the two-way residual ranks a ligand's targets exactly as the column-ce
 the maximum reconstruction error is $1.8\times10^{-15}$. It is not the same ordering as
 column-$z$, which rescales each target before the subtraction: the two differ by up to 33 rank
 positions on this support. A rise in spectral effective dimension after per-ligand centring can
-expose covariance among targets, and it cannot create new within-ligand ranking information.
+reflect covariance among targets, and it cannot create new within-ligand ranking information.
 
 A second frozen benchmark, run on DOCKSTRING rather than Docking-44, points the same way. Over
 6{,}480 ligands with 25{,}214 non-tied

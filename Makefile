@@ -29,7 +29,7 @@ PUBLIC_TESTS = \
 .PHONY: all submission-v5 submission-v4-draft public-evidence public-macros public-figures \
 	verify-public-manifest public-test manuscript-v4 supplement-v4 \
 	manuscript-v5 supplement-v5 figures-v5 v5-test verify-v5-numbers submission-figures \
-	full-test release-check-v5 refresh-public-analyses clean
+	verify-inputs full-test release-check-v5 refresh-public-analyses clean
 
 # The v5 submission build is the default. It regenerates and stages the figures
 # from frozen results, checks load-bearing article and Supplement values, and then
@@ -99,9 +99,12 @@ v5-test: verify-v5-numbers
 full-test:
 	$(PYTHON) -m pytest -q -rs $$(git ls-files 'analysis/test_*.py' 2>/dev/null)
 
+verify-inputs:
+	$(PYTHON) analysis/verify_inputs.py
+
 # One-command local/CI release gate. The default ``all`` target remains the
 # deliberately narrower report reconstruction from frozen result bundles.
-release-check-v5: all full-test
+release-check-v5: all verify-inputs verify-public-manifest full-test
 
 manuscript-v5: verify-v5-numbers
 	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(PDFLATEX) -interaction=nonstopmode -halt-on-error manuscript_v5.tex
@@ -114,19 +117,18 @@ supplement-v5: verify-v5-numbers
 	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(PDFLATEX) -interaction=nonstopmode -halt-on-error supplementary_v5.tex
 	! grep -Eq 'Overfull \\[hv]box|undefined references|undefined citations|Citation .* undefined|Reference .* undefined|Label\(s\) may have changed|Rerun to get cross-references right' supplementary_v5.log
 
-# Four main figures named in citation order. The exploratory pocket-volume figure
-# is embedded only in the Supplement and is deliberately not staged as a main figure.
+# Four main figures named in citation order, plus the graphical abstract.
 submission-figures: figures-v5
 	mkdir -p submission/figures
 	cp figures/v5/fig1_shared_axis.pdf       submission/figures/Fig1.pdf
 	cp figures/v5/fig2_residual_structure.pdf submission/figures/Fig2.pdf
 	cp figures/v5/fig3_external_agreement.pdf submission/figures/Fig3.pdf
 	cp figures/v5/fig4_cost_and_core.pdf     submission/figures/Fig4.pdf
-	cp figures/v5/fig_pocket_volume.pdf     submission/figures/FigS1.pdf
+	$(RM) submission/figures/FigS1.pdf
 	$(RM) submission/figures/Fig5.pdf
 	cp figures/v5/graphical_abstract.pdf     submission/figures/GraphicalAbstract.pdf
 	$(PYTHON) -c 'from PIL import Image; import os; s=Image.open("figures/v5/graphical_abstract.png").convert("RGB"); W,H=920,300; k=min(W/s.width,H/s.height); n=(int(s.width*k),int(s.height*k)); c=Image.new("RGB",(W,H),s.getpixel((4,4))); c.paste(s.resize(n,Image.LANCZOS),((W-n[0])//2,(H-n[1])//2)); p="submission/figures/GraphicalAbstract_920x300.png"; c.save(p,"PNG",optimize=True); b=os.path.getsize(p); assert b<=150000,f"{b} bytes exceeds the 150,000-byte graphical-abstract limit"; print(f"graphical abstract {W}x{H}, {b/1000:.1f} kB")'
-	@echo "submission/figures/ written: Fig1-Fig4, Supplementary FigS1, and graphical abstract"
+	@echo "submission/figures/ written: Fig1-Fig4 and graphical abstract"
 
 # Expensive source-level refresh from the public datasets and fetched HotSpot source.
 # The report build above consumes the frozen, checksum-registered bundles.

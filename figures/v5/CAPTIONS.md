@@ -11,11 +11,8 @@ under the names the journal expects.
 ## Figure 2 — `fig2_residual_structure.pdf`  (`\fig:residual`)
 **Residual structure exceeds matched-null expectations and depends on ligand support.**  (10 words)
 
-## Supplementary Figure S1 — `fig_pocket_volume.pdf`
-**Pocket volume and the residual response to ligand size.**  (9 words)
-
 ## Figure 3 — `fig3_external_agreement.pdf`  (`\fig:external`)
-**Removing the per-ligand offset helps on some pharmacology panels, but not all.**  (12 words)
+**Raw and centred maps differ in panel-dependent ways.**  (8 words)
 
 ## Figure 4 — `fig4_cost_and_core.pdf`  (`\fig:cost`)
 **A few hundred docked ligands recover the source-library map.**  (9 words)

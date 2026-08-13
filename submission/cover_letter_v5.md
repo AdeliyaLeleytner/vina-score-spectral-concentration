@@ -2,18 +2,18 @@
 
 Dear Editors,
 
-Please consider our Research article, “A shared ligand-wide score axis obscures
+Please consider our Methodology article, “A shared ligand-wide score axis obscures
 library-dependent target geometry in docking matrices,” for publication in the
 *Journal of Cheminformatics*.
 
 Multi-target docking matrices are often interpreted as maps of relationships
 between receptors. We show that their raw correlations can instead be dominated
-by a ligand-wide tendency to score favourably across many targets. Removing this
-offset leaves structured target geometry, but the geometry depends on the ligand
-library and its agreement with external pharmacology varies across panels. The
-practical message is simple: audit the shared axis, compare the residual map with
-transformation-matched nulls, and estimate it from a pilot sample drawn from the
-intended chemical domain.
+by a ligand-wide tendency to score favourably across many targets. The centred
+map retains structured geometry, but that geometry depends on the ligand library
+and its agreement with external pharmacology varies across panels. The practical
+message is to audit both maps: diagnose the shared axis, compare the residual map
+with transformation-matched nulls, and estimate it from a pilot sample drawn from
+the intended chemical domain.
 
 The study combines a fixed-pose scorer comparison, matched-null calibration,
 chemical-domain controls, external pharmacology and sequence baselines, and a
@@ -25,19 +25,25 @@ complete-case docking support. We report this result as exploratory and do not
 present predictor fusion as a significant or headline result.
 
 We retain these and the other mixed results that bound the interpretation, and
-provide a tested command-line tool for applying the audit to another docking
+provide a tested command-line tool for applying the map-construction and
+diagnostic stage of the audit to another docking
 matrix. We believe this combination of methodological clarity, practical
-utility and reproducible cheminformatics makes the article a good fit for the
-journal.
+utility and an auditable report-layer package makes the article a good fit for
+the journal.
 
-The release includes the code, frozen redistributable inputs, aggregate external
-target-pair tables, tests and figure sources needed to audit the results and rebuild the manuscript. The
-compound-level PDSP export is not redistributed because we could not identify a
-redistribution licence. Its public access route and checksum are recorded, and
-the released aggregate table is sufficient to reconstruct the primary and
-complete-case permutation tables and support sensitivities. We disclose this boundary explicitly
-so that the editors can
-assess it against the journal's reproducibility policy.
+The report layer of the release candidate includes the code, frozen redistributable inputs,
+aggregate external target-pair tables, tests and figure sources needed to
+re-evaluate every manuscript-facing statistic from checksum-identified artifacts
+and rebuild both PDFs. It is not represented as source-level regeneration of
+every external-data preprocessing or docking stage. The compound-level PDSP
+export is not redistributed because we could not identify a redistribution
+licence. Its public no-login route and checksum are recorded, and the released
+aggregate table reconstructs the primary and complete-case permutation tables
+and support sensitivities. A source-by-source access matrix identifies every
+verified property and every remaining licence, redistribution or clean-replay
+unknown. We ask the editors to determine whether the released aggregate audit
+objects are sufficient for those upstream sources under the journal's
+reproducibility policy.
 
 We confirm that this work is original, is not under consideration elsewhere,
 and has been approved for submission by all authors. The authors declare the

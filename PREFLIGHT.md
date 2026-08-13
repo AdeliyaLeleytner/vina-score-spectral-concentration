@@ -1,6 +1,6 @@
 # Journal of Cheminformatics submission preflight: v5
 
-Article type: **Research article**.
+Article type: **Methodology**.
 
 Exact title:
 
@@ -10,10 +10,10 @@ Exact title:
 ## Claim gate
 
 The submitted claim is deliberately narrower than “docking beats sequence.” Raw
-docking correlations contain a shared ligand-wide score axis. Ligand-wise
-centring reveals a structured but library-dependent target map. The residual map
-agrees better with external pharmacology on some diversified panels, with mixed
-results elsewhere.
+docking correlations contain a shared ligand-wide score axis. The centred map
+retains structured but library-dependent target geometry. Its agreement is
+higher by point estimate on some diversified pharmacology panels and lower on
+others.
 
 The primary PDSP result is a descriptive raw-versus-residual comparison on
 target pairs supported by quantified $K_i$ measurements. It uses the eligible
@@ -40,8 +40,6 @@ Required boundaries:
 - Recovery from about 200 ligands is source-library recovery, not a universal
   threshold.
 - Ligand-wise target ranking gets worse after centring in the boundary audit.
-- The pocket-volume result and display are Supplement-only; the main text contains
-  one limitations cross-reference and makes no mechanistic claim from it.
 - Fixed-pose scorer transport does not compare independent docking pipelines.
 
 ## Report-format gate
@@ -54,7 +52,6 @@ Required boundaries:
 - Main text contains four figures in citation order:
   `fig1_shared_axis`, `fig2_residual_structure`,
   `fig3_external_agreement`, `fig4_cost_and_core`.
-- `fig_pocket_volume` is Supplementary Figure S1, not a main figure.
 - The graphical abstract is 920 by 300 pixels, white-background RGB and no more
   than 150,000 bytes.
 - Main and Supplement use double spacing and line numbers for review.
@@ -65,11 +62,16 @@ Required boundaries:
 
 - `external_sources.csv`, `data_manifest.csv` and `DATA_LICENSES.md` agree on
   access, redistribution and licence boundaries.
+- `JOC_ACCESS_MATRIX.csv` has one row per external source, uses only
+  `VERIFIED`/`UNKNOWN` evidence states and leaves unresolved licence or clean
+  source-replay questions visible for editorial review.
 - Aggregate target-pair tables contain no compound-level activity profiles.
 - PDSP has no located redistribution licence; source-level reconstruction uses
-  the named manual download and recorded SHA-256.
-- The Novartis panel, PKIS1, KiRHub, Anastassiadis, KLIFS, UniProt, ODDT models
-  and DOCKSTRING pose archives have named access routes and integrity checks.
+  the named no-login fetcher and recorded SHA-256.
+- The Novartis panel, PKIS1, KiRHub, KLIFS, UniProt, RCSB/PDBe metadata, ODDT models
+  and DOCKSTRING pose archives have named access routes. Integrity is recorded
+  where available; unresolved source snapshots or checks remain `UNKNOWN` in
+  the access matrix.
 - Reaction Biology Corporation is acknowledged for KiRHub data.
 - The release does not claim to rerun receptor preparation, pose generation or
   docking.
@@ -90,7 +92,8 @@ references, undefined citations and overfull boxes. Source-level reanalysis is
 separate and may require the external inputs above.
 
 For the complete release gate, including the repository-wide suite and explicit
-skip reasons, run `make PYTHON=.venv/bin/python release-check-v5`.
+skip reasons, data/manuscript-source manifests, registered bundle checksums and
+the public-core manifest, run `make PYTHON=.venv/bin/python release-check-v5`.
 
 Before accepting a build:
 
@@ -99,7 +102,7 @@ Before accepting a build:
 2. Inspect every page of both PDFs at final size.
 3. Inspect the graphical abstract and all upload figures independently.
 4. Search the built text for placeholders, stale v4 language, the old title and
-   the removed main-text pocket reference.
+   removed pocket-volume analysis.
 5. Record SHA-256 hashes for the exact PDFs and upload assets.
 
 ## External actions required immediately before submission
@@ -111,10 +114,11 @@ Before accepting a build:
 3. Build and test that exact candidate from a clean archive or checkout.
 4. Deposit the immutable v5 archive, insert its version-specific DOI into the
    availability statement and metadata, and rebuild once more.
-5. Confirm that the journal accepts the source-plus-checksum route for PDSP under
-   its current data-availability policy.
-6. Upload four main figures, Supplementary Figure S1, Additional file 1 and the
-   graphical abstract with matching captions.
+5. Send the source access matrix to the editor and obtain a determination for
+   every policy-relevant `UNKNOWN`, especially PDSP, PKIS1, KiRHub, KLIFS and
+   the PDBbind-derived scorer resources.
+6. Upload four main figures, Additional file 1 and the graphical abstract with
+   matching captions.
 
 Repository: <https://github.com/AdeliyaLeleytner/vina-score-spectral-concentration>
 

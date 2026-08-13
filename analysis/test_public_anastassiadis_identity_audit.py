@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from pathlib import Path
 
 import numpy as np
@@ -168,6 +169,13 @@ def test_frozen_identity_contract_and_candidate_union() -> None:
     ).all()
     forbidden = {"activity", "percent_remaining_activity", "hotspot_value"}
     assert forbidden.isdisjoint(identity.columns)
+
+    provenance = json.loads(audit.DEFAULT_PROVENANCE.read_text())
+    assert "not labelled CC0" in provenance["redistribution"]["notice"]
+    released = json.loads((audit.DEFAULT_OUTPUT / "summary.json").read_text())
+    policy = released["redistribution_boundary"]
+    assert policy["license_label"] == "LicenseRef-NCBI-PubChem-molecular-data-policy"
+    assert "CC0" in policy["not_asserted"]
 
 
 def test_official_workbook_checksum_if_source_is_present() -> None:

@@ -136,7 +136,7 @@ def test_pdsp_two_sided_probability_definition_is_explicit() -> None:
     assert "Holm and Bonferroni adjustments within each 12-row PDSP QAP table" in methods
 
 
-def test_article_has_four_main_figures_and_pocket_is_supplement_only() -> None:
+def test_article_has_exactly_four_report_figures() -> None:
     main_source = read(ROOT / "manuscript_v5.tex")
     supplement_source = "\n".join(read(path) for path in SI_SECTION_PATHS)
     main_figures = re.findall(r"\\includegraphics(?:\[[^]]*\])?\{([^}]+)\}", main_source)
@@ -148,7 +148,7 @@ def test_article_has_four_main_figures_and_pocket_is_supplement_only() -> None:
         "figures/v5/fig4_cost_and_core.pdf",
     ]
     assert "fig_pocket_volume" not in main_source
-    assert supplement_source.count(r"\includegraphics{figures/v5/fig_pocket_volume.pdf}") == 1
+    assert "fig_pocket_volume" not in supplement_source
 
     titles = re.findall(r"\\caption\{\\textbf\{(.+?)\}", main_source, flags=re.DOTALL)
     assert len(titles) == 4
@@ -166,7 +166,6 @@ def test_staged_submission_art_is_exact_and_within_limits() -> None:
         "Fig2.pdf",
         "Fig3.pdf",
         "Fig4.pdf",
-        "FigS1.pdf",
         "GraphicalAbstract.pdf",
         "GraphicalAbstract_920x300.png",
     }
@@ -227,9 +226,7 @@ def test_figure_driver_preserves_support_uncertainty_and_accessibility_contracts
     assert '"ROC-AUC", SLATE, "///"' in source
     assert 'metadata={"CreationDate": None}' in source
     assert 'metadata={"CreationDate": None}' in graphical
-    assert "target-bootstrap range" in source
-    assert "hypothesis-generating" in source
-    assert "not a mechanism" in source
+    assert "fig_pocket_volume" not in source
 
     core = rows("biological_core_modes/panel_metrics.csv")
     exact = [row for row in core if row["reference_support"] == "exact_connectivity_excluded"]
@@ -365,6 +362,7 @@ def test_kinase_and_kirhub_boundaries_match_saved_results(external: str, discuss
 
 def test_safety_panel_claims_match_saved_summary(external: str) -> None:
     summary = json.loads(read(RESULTS / "spd_external_validation" / "summary.json"))
+    bundle_readme = flat(read(RESULTS / "spd_external_validation" / "README.md"))
     floor = summary["key_results"]["primary_floor_at_bound"]
     rectangle = summary["key_results"]["common_support_rectangle"]
     ten = summary["key_results"]["censor_aware_binary"]["10_uM"]
@@ -377,6 +375,30 @@ def test_safety_panel_claims_match_saved_summary(external: str) -> None:
     assert shown(rectangle["residual_partial_rank"], 3) in external
     assert shown(ten["raw_spearman"], 3) in external
     assert shown(ten["residual_spearman"], 3) in external
+
+    assert "frozen v5 manuscript evidence bundle" in bundle_readme
+    assert "not yet part of the manuscript" not in bundle_readme
+    for value in (
+        floor["raw_spearman"],
+        floor["residual_spearman"],
+        floor["residual_minus_raw"],
+        rectangle["raw_spearman"],
+        rectangle["residual_spearman"],
+        rectangle["residual_partial_rank"],
+    ):
+        assert shown(value, 3) in bundle_readme
+    unrestricted = {
+        (row["endpoint"], row["metric"]): float(row["p_positive"])
+        for row in rows("spd_external_validation/target_label_qap.csv")
+        if row["permutation_scheme"] == "unrestricted"
+    }
+    for key in (
+        ("floor_at_bound", "residual_spearman"),
+        ("floor_at_bound", "residual_minus_raw"),
+        ("censor_aware_binary_10uM", "residual_minus_raw"),
+        ("censor_aware_binary_30uM", "residual_minus_raw"),
+    ):
+        assert shown(unrestricted[key], 4) in bundle_readme
 
 
 def test_recovery_domain_and_single_ligand_boundaries_match_artifacts(main: str, discussion: str) -> None:
@@ -406,6 +428,51 @@ def test_recovery_domain_and_single_ligand_boundaries_match_artifacts(main: str,
 # ---------------------------------------------------------------------------
 # Boundaries, disclosure and provenance
 # ---------------------------------------------------------------------------
+
+
+def test_reviewer_requested_claim_boundaries_remain_explicit() -> None:
+    abstract = flat(read(ROOT / "sections" / "00_abstract.tex"))
+    methods = flat(read(ROOT / "sections" / "02_methods.tex"))
+    axis = flat(read(ROOT / "sections" / "03_results_axis.tex"))
+    external = flat(read(ROOT / "sections" / "04_results_external.tex"))
+    cost = flat(read(ROOT / "sections" / "05_results_cost.tex"))
+    discussion = flat(read(ROOT / "sections" / "06_discussion.tex"))
+    manuscript = flat(read(ROOT / "manuscript_v5.tex"))
+    s2 = flat(read(ROOT / "si_sections" / "S2_spectra_nulls.tex"))
+    s3 = flat(read(ROOT / "si_sections" / "S3_transport.tex"))
+    s5 = flat(read(ROOT / "si_sections" / "S5_recovery.tex"))
+    s6 = flat(read(ROOT / "si_sections" / "S6_experimental.tex"))
+
+    assert "alongside the raw one rather than in place of it" in abstract
+    assert "no difference between their outputs can be attributed to a different selected pose" in methods
+    assert "scorer-and-implementation sensitivity at fixed geometry" in methods
+    assert "scorer- and implementation-specific at fixed geometry" in axis
+    assert "reproduces part of the concentration" in axis
+    assert "not identified as the cause" in axis
+    assert "tracks a chemical-domain shift strongly aligned with molecular size" in axis
+    assert "exact- and connectivity-de-overlapped test" in external
+    assert "sharing exact identities or connectivity blocks were excluded" in manuscript
+    assert "approaches the sequence-identity baseline" in discussion
+    assert "without establishing equivalence" in s6
+    assert "five-mode compression is exploratory" in cost
+    assert all(token in cost for token in ("six-test", "sensitivity", "post hoc"))
+    assert "exploratory subspace compression" in s5
+    assert "map-construction and diagnostic stage" in cost
+    assert "null constructions are supplied as separate analysis scripts" in cost
+    assert "does not identify molecular weight as the operative cause" in s2
+
+    narrative = " ".join((abstract, methods, axis, external, cost, discussion, manuscript, s2, s3, s5, s6))
+    forbidden = (
+        r"comes from (?:the )?scoring function(?: alone)?",
+        r"coarse size accounts for",
+        r"how much coarse size explains",
+        r"reaches (?:the )?sequence(?:-identity| identity)",
+        r"chemically non-overlapping",
+        r"the non-overlapping DOCKSTRING support",
+        r"\\subsection\{[^}]*experimental agreement",
+    )
+    for pattern in forbidden:
+        assert not re.search(pattern, narrative, flags=re.IGNORECASE), pattern
 
 
 def test_censoring_and_inference_boundaries_remain_explicit(main: str, discussion: str) -> None:
@@ -478,11 +545,70 @@ def test_external_sources_and_declarations_are_auditable() -> None:
         if source["redistributed"] == "no":
             assert digest or integrity, source["source"]
 
+    with (ROOT / "JOC_ACCESS_MATRIX.csv").open(
+        newline="", encoding="utf-8"
+    ) as handle:
+        access_rows = list(csv.DictReader(handle))
+    assert len(access_rows) == len(sources)
+    assert {row["source_id"] for row in access_rows} == {
+        source["source"] for source in sources
+    }
+    status_columns = [
+        column for column in access_rows[0] if column.endswith("_status")
+    ]
+    assert status_columns
+    assert "analysis_producer_present_status" in status_columns
+    assert "source_producer_present_status" not in access_rows[0]
+    for row in access_rows:
+        assert row["required_artifact"].strip()
+        assert row["evidence_locator"].strip()
+        assert row["remaining_evidence_needed"].strip()
+        assert row["verified_on"] == "2026-08-12"
+        assert all(row[column] in {"VERIFIED", "UNKNOWN"} for column in status_columns)
+        for locator in row["evidence_locator"].split(";"):
+            local = locator.strip()
+            if local.startswith(("analysis/", "data/", "results/", "sections/", "si_sections/")):
+                assert (ROOT / local).is_file(), (row["source_id"], local)
+    assert any(
+        row[column] == "UNKNOWN"
+        for row in access_rows
+        for column in status_columns
+    )
+    by_source = {row["source_id"]: row for row in access_rows}
+    assert by_source["smina 2020.12.10 executable"]["policy_compatible_license_status"] == "UNKNOWN"
+    for column in (
+        "release_includes_consumed_bytes_status",
+        "consumed_digest_recorded_status",
+        "checksum_gate_status",
+    ):
+        assert by_source["RCSB PDB structure metadata"][column] == "UNKNOWN"
+    assert by_source["ChEMBL release 34"]["checksum_gate_status"] == "VERIFIED"
+
     declarations = read(ROOT / "results" / "v5_declarations.tex")
-    for token in ("PDSP", r"\cite{pdspdatabase}", "8103950", "Additional file 1"):
+    for token in (
+        "PDSP",
+        r"\cite{pdspdatabase}",
+        "8103950",
+        "JOC_ACCESS_MATRIX.csv",
+        "remain unknown",
+        "Additional file 1",
+    ):
         assert token in declarations
     references = read(ROOT / "references_v5.tex")
     assert "https://pdsp.unc.edu/databases/kiDownload/download.php" in references
+
+    with (ROOT / "data_manifest.csv").open(newline="", encoding="utf-8") as handle:
+        manifest = list(csv.DictReader(handle))
+    crosswalk_rows = [
+        row for row in manifest if "anastassiadis2011_pubchem_identity" in row["path"]
+    ]
+    assert len(crosswalk_rows) == 2
+    assert {row["license"] for row in crosswalk_rows} == {
+        "LicenseRef-NCBI-PubChem-molecular-data-policy"
+    }
+    license_notes = read(ROOT / "DATA_LICENSES.md")
+    assert "crosswalk is not labelled CC0" in license_notes
+    assert "derived crosswalk is CC0" not in license_notes
 
 
 def test_submission_sources_never_reference_promotional_art() -> None:

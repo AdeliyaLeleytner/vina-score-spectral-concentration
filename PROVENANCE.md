@@ -153,13 +153,6 @@ Delete-one-target jackknifing reevaluates the externally fitted
   score representations on each reduced target set; it does not refit the
 transformations.
 
-## Pocket descriptor sensitivity
-
-The author-derived pocket descriptor table is redistributed under CC BY 4.0 and
-links to source structures in the wwPDB. The exact pocket-definition workflow is
-not executable from the release. The association was selected post hoc and is
-therefore confined to the Supplement as a hypothesis-generating analysis.
-
 ## Numerical authority and software
 
 Frozen CSV and JSON result bundles are the numerical authorities for v5.

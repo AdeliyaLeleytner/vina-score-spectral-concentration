@@ -111,7 +111,6 @@ FIGURE_STAGE_MAP = {
     "Fig2.pdf": "fig2_residual_structure.pdf",
     "Fig3.pdf": "fig3_external_agreement.pdf",
     "Fig4.pdf": "fig4_cost_and_core.pdf",
-    "FigS1.pdf": "fig_pocket_volume.pdf",
     "GraphicalAbstract.pdf": "graphical_abstract.pdf",
 }
 GRAPHICAL_STAGE_NAME = "GraphicalAbstract_920x300.png"
@@ -120,7 +119,6 @@ EXPECTED_TEX_GRAPHICS = {
     "figures/v5/fig2_residual_structure.pdf",
     "figures/v5/fig3_external_agreement.pdf",
     "figures/v5/fig4_cost_and_core.pdf",
-    "figures/v5/fig_pocket_volume.pdf",
 }
 
 INPUT_RE = re.compile(r"\\input\{([^}]+)\}")

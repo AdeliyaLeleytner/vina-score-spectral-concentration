@@ -1,6 +1,6 @@
 # A shared ligand-wide score axis obscures library-dependent target geometry in docking matrices
 
-Reproducibility package for a *Journal of Cheminformatics* Research article.
+Reproducibility package for a *Journal of Cheminformatics* Methodology article.
 
 Multi-target docking matrices are often read as maps of relationships between
 targets. That interpretation can be misleading when some ligands score
@@ -100,10 +100,13 @@ outputs are optional. See
 
 Redistributable inputs and derived result tables are shipped with the release
 candidate. PDSP, the Novartis Secondary Pharmacology Database, PKIS1, KiRHub,
-the Anastassiadis workbook, KLIFS and UniProt must be obtained from their named
-sources when a source-level analysis requires them. Access routes, versions,
-integrity records, licences and fetchers are recorded in `external_sources.csv`,
-`data_manifest.csv` and `DATA_LICENSES.md`.
+KLIFS, UniProt, RCSB/PDBe metadata and the fixed-pose scorer resources must be
+obtained from their named sources when a source-level analysis requires them.
+Access routes, versions, integrity records, licences and fetchers are recorded
+in `external_sources.csv`, `JOC_ACCESS_MATRIX.csv`, `data_manifest.csv` and
+`DATA_LICENSES.md`. The access
+matrix uses only `VERIFIED` and `UNKNOWN`; it exposes unresolved rights or replay
+evidence instead of treating public downloadability as a licence.
 
 The report build does not repeat receptor preparation, pose generation or
 docking. Those upstream stages belong to the cited Docking-44 and DOCKSTRING
@@ -130,6 +133,8 @@ the released aggregate table and Docking-44 matrix.
   reconstruction contracts.
 - `PROVENANCE.md`, `DATA_LICENSES.md`, `data_manifest.csv` and
   `external_sources.csv`: provenance and licensing records.
+- `JOC_ACCESS_MATRIX.csv`: source-by-source access, licence, integrity and replay
+  evidence for editorial review.
 
 ## Licensing and release status
 

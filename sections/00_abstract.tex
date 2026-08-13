@@ -12,7 +12,7 @@ After subtracting each ligand's mean across targets, the residual geometry was m
 than four transformation-matched nulls. The map was also library-dependent: estimates from the lower
 and upper molecular-weight quartiles agreed only weakly. On a Psychoactive Drug Screening Program
 (PDSP) target-pair graph built from quantified affinities, the residual map agreed more closely with experiment than the raw map after
-overlapping chemistry was removed.
+Docking-44 ligands sharing a PDSP connectivity block were excluded.
 This advantage weakened when censored assay cells were restored and largely disappeared when the
 docking map was rebuilt using only compounds with complete docking scores. Evidence elsewhere was mixed: centred
 docking approached, but did not exceed, sequence identity on a kinase endpoint, and the
@@ -20,14 +20,16 @@ raw-to-centred change reversed on KiRHub. A few hundred randomly selected ligand
 both full residual maps.
 
 \noindent\textbf{Conclusions.}
-Raw docking correlations should be checked for a shared ligand-wide score offset. Removing it leaves
-structured geometry that is inexpensive to estimate and informative on some diversified panels, but
-depends on the ligand library and is not a general compound-level target-ranking rule.
+Raw docking correlations should be checked for a shared ligand-wide score offset, and the centred
+map computed and interpreted alongside the raw one rather than in place of it. The centred map
+retains structured geometry that is inexpensive to estimate and informative on some diversified
+panels, but it depends on the ligand library, reverses on one kinase panel, and is not a
+compound-level target-ranking rule.
 
 \noindent\textbf{Scientific Contribution.}
 Ligand-wise normalisation is established; our contribution is a scorer-controlled, null-calibrated
 audit of the resulting geometry against pharmacology and sequence-based baselines, together with a
-cost analysis and tested command-line tool.
+cost analysis and tested map-diagnostic command-line tool.
 
 \noindent\textbf{Keywords:} molecular docking; scoring functions;
 target-correlation map; secondary pharmacology; target cross-reactivity;

@@ -3,14 +3,22 @@
 The repository `LICENSE` applies to author-written software and documentation.
 It does not override upstream data licences.
 
-Three inventories, in order of scope:
+Four inventories, in order of scope:
 
 - `external_sources.csv` — the source inventory for the v5 manuscript:
   its role in the paper, whether it is redistributed, how to obtain it, its
   integrity record, licence and fetcher. Start here.
-- `data_manifest.csv` — repository-wide machine-readable inventory of files that
-  are actually shipped. Its `v4_scope` column distinguishes the strict-public v4
-  inputs from retained historical material.
+- `JOC_ACCESS_MATRIX.csv` — a conservative, source-by-source evidence ledger for
+  the journal's reproducibility rule. `VERIFIED` means that the named property
+  has direct evidence in the release; `UNKNOWN` identifies evidence or an
+  editorial/rights-holder determination still needed. It is not a blanket
+  policy-compliance claim. `analysis_producer_present_status` means that code
+  consuming the external artifact is released; it does not imply that a fetcher,
+  immutable response snapshot or clean replay exists.
+- `data_manifest.csv` — machine-readable inventory of the registered shipped
+  data artifacts. It is not a complete repository file listing. Its `v4_scope`
+  column distinguishes the strict-public v4 inputs from retained historical
+  material.
 - `results/public_core_source_manifest.csv` — the exact files opened by the v4
   evidence builder. Narrower than the v5 evidence base; see the note at the end.
 
@@ -29,34 +37,30 @@ Three inventories, in order of scope:
   `10.7910/DVN/RTQGP1`, and Davis et al. (2011), DOI `10.1038/nbt.1990`.
 - The official PKIS2 S4 table is redistributed under CC BY 4.0. Cite Drewry et
   al. (2017), DOI `10.1371/journal.pone.0181585`.
-- wwPDB-derived pocket descriptors (`data/frozen/toxicodynamics/data/44pockets_analysis.csv`,
-  SHA-256 `23895ada…46ec`) back the exploratory Supplementary pocket analysis.
-  The compact author-derived descriptor table is CC BY 4.0; corresponding
-  structures can be obtained from the wwPDB.
-  The table is released without an executable workflow defining the pockets, and
-  the manuscript labels the result exploratory for that reason.
-
 ## Evidence inputs that are not redistributed
 
-These support external-agreement or scorer-sensitivity analyses. Each is public
-and checksum-pinned; none is ours to redistribute unless its terms say
-otherwise.
+These support external-agreement or scorer-sensitivity analyses. Access,
+integrity and redistribution evidence is source-specific; unresolved properties
+are marked `UNKNOWN` in `JOC_ACCESS_MATRIX.csv` rather than inferred from public
+visibility.
 
-- **PDSP $K_i$ database** — the primary exploratory sequence-and-family increment and the
-  Certified-subset agreement are computed from it. No redistribution licence was
+- **PDSP $K_i$ database** — the primary exploratory raw-versus-residual map comparison and the
+  Certified-subset sensitivity are computed from it. No redistribution licence was
   located. Download from `https://pdsp.unc.edu/databases/kiDownload/download.php`;
   the export consumed here has SHA-256
   `45c9a18ac30f1fad350d1dde186bc1f226c5a75d474ca50f50713852a5637ac6`, recorded
   with row counts in `results/pdsp_counterscreen_retrieval/summary.json`. Cite
-  Roth et al. (2000). There is no fetcher script: the portal serves the export
-  through a form, so retrieval is manual and checksum-verified after the fact.
+  Roth et al. (2000). `analysis/fetch_pdsp_ki_database.py` retrieves the public,
+  no-login CSV route and validates its byte count, header and SHA-256. This
+  resolves retrieval mechanics but does not supply a redistribution licence.
 - **Novartis Secondary Pharmacology Database** — the safety-panel partial
   agreements. The Zenodo record `8103950` release is CC BY 4.0. The row-level
-  source is not duplicated here; the accepted file has SHA-256
+  source is not duplicated here; `analysis/fetch_spd_source.py` retrieves the
+  exact no-login file and checks the required header, byte count and SHA-256. The accepted file has SHA-256
   `7132723f85e746de2f8387d01dcde6ffff703c92561fda9751cbd6753e900240`. Cite
   Sutherland et al. (2023).
 - **PKIS1 publisher archive** — third panel defining the frozen kinase endpoint,
-  and the discovery panel for the five-mode core. Not redistributed. Retrieve
+  and the discovery panel for the exploratory five-mode compression. Not redistributed. Retrieve
   from the official publisher URL and checksum-validate with
   `analysis/fetch_pkis1_supplement.py`. Accepted SHA-256
   `1ffbe7fd0b4fc1ef72f2434a2b247d15c0f2b4d3c34668f112f4b4c9e4ead7dc`; cite
@@ -73,22 +77,23 @@ otherwise.
   activity rows or per-compound profiles. Cite DOI `10.1038/s41587-026-03090-8`,
   consult `https://kirhub.fredhutch.org/` for the current data notice, and
   acknowledge Reaction Biology Corporation.
-- **Anastassiadis Supplementary Table 3** — supplies the identity/de-leakage
-  crosswalk only. Not redistributed. The fetcher retrieves the official publisher
-  workbook and accepts only SHA-256
-  `cd756bf2b6ad541a1781508c563caf0da6da876dfb71f2546fbff02e13d98684`. Cite
-  Anastassiadis et al. (2011), DOI `10.1038/nbt.2017`. The included PubChem
-  identity/provenance crosswalk contains no HotSpot assay values; PubChem
-  molecular records are public data and the derived crosswalk is CC0-1.0.
 - **KLIFS** — the 85-residue ATP-pocket identity baseline on the 190-pair kinase
   endpoint. The API response is not redistributed. Derived pocket identities are
   released with response checksum
   (`041a159e662a27696554867acbe1ac7fb35d36f71483d42ab4ac90e219dbef8f`) and
   retrieval provenance; cite KLIFS and observe current database terms.
 - **UniProt** — receptor sequence-identity baselines. API responses, released as
-  derived identities with response checksums recorded per analysis
+  derived identities with response checksums recorded per analysis. The PDSP
+  and SPD snapshots have checksum-gated fetchers
   (`051690a9…1b408a` for the PDSP mapping, `b0f6213a…15689` for the safety
   panel).
+- **RCSB PDB and PDBe/SIFTS** — support the receptor-species sensitivity and
+  the nine-pair cross-panel target mapping. The derived tables are shipped, but
+  the exact upstream API responses and executable producers were not retained;
+  the access matrix therefore leaves their source-byte, digest, checksum-gate
+  and clean-replay states unknown. RCSB programmatic PDB data are CC0; a precise
+  JoC-compatible licence determination for the consumed SIFTS mapping remains
+  to be recorded.
 - **ODDT scoring resources** — RF-Score v1--v3, NNScore 2.0 and PLECscore
   linear use ODDT 0.7 package resources derived from PDBbind 2016. Training-table,
   coefficient and fitted-model checksums are recorded in
@@ -109,6 +114,21 @@ otherwise.
 The ChEMBL release-34 extract used for the ligand-wise ranking boundary is
 redistributed under CC BY-SA 3.0 with its provenance record and SHA-256 in
 `data_manifest.csv`.
+
+## Historical release material not used for v5 conclusions
+
+The retained strict-public v4 audit includes an Anastassiadis/HotSpot identity
+workflow, but v5 does not use that panel or crosswalk for a scientific claim.
+The source workbook is not redistributed; its official publisher copy is pinned
+to SHA-256
+`cd756bf2b6ad541a1781508c563caf0da6da876dfb71f2546fbff02e13d98684`.
+The included identity/provenance crosswalk is a mixed-source table containing
+workbook identifiers, PubChem molecular records and author-generated resolution
+fields, but no HotSpot assay values. It follows the NCBI/PubChem molecular-data
+policy; because NCBI cannot transfer possible third-party contributor rights,
+the crosswalk is not labelled CC0. This historical material is registered by
+the separate public-core manifest, not `external_sources.csv` or the JoC access
+matrix.
 
 Author-generated summaries and target annotations are released under CC BY 4.0
 unless an upstream condition applies. Software assistants used during editing

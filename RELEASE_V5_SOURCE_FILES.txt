@@ -13,6 +13,7 @@
 CITATION.cff
 CLAIM.md
 DATA_LICENSES.md
+JOC_ACCESS_MATRIX.csv
 Makefile
 PREFLIGHT.md
 PROVENANCE.md
@@ -29,7 +30,10 @@ analysis/experimental_map_reliability.py
 analysis/fetch_anastassiadis_supplement.py
 analysis/fetch_dockstring_full_receptor_sequences.py
 analysis/fetch_dockstring_receptor_sequences.py
+analysis/fetch_pdsp_ki_database.py
 analysis/fetch_pdsp_uniprot.py
+analysis/fetch_spd_source.py
+analysis/fetch_spd_uniprot.py
 analysis/fixtures/target_map_audit_synthetic.csv
 analysis/make_public_manuscript_figures.py
 analysis/make_v5_figures.py
@@ -63,7 +67,9 @@ analysis/test_build_public_core_macros.py
 analysis/test_dockstring_positive_score_ranking_sensitivity.py
 analysis/test_experimental_map_reliability.py
 analysis/test_fetch_dockstring_receptor_sequences.py
+analysis/test_fetch_pdsp_ki_database.py
 analysis/test_fetch_pdsp_uniprot.py
+analysis/test_fetch_spd_inputs.py
 analysis/test_make_public_manuscript_figures.py
 analysis/test_make_sea_graph_figure.py
 analysis/test_nonvina_scorer_transport.py
@@ -125,6 +131,8 @@ results/experimental_map_reliability/same_support_bootstrap.csv
 results/experimental_map_reliability/same_support_geometry.csv
 results/experimental_map_reliability/same_support_split_half.csv
 results/experimental_map_reliability/summary.json
+results/manuscript_evidence.json
+results/manuscript_source_manifest.csv
 results/nonvina_scorer_min_loading_interval/min_loading_intervals.csv
 results/nonvina_scorer_min_loading_interval/summary.json
 results/nonvina_scorer_transport/output_checksums.json

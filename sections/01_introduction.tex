@@ -48,8 +48,8 @@ alongside these: how many ligands must be docked before the estimated map settle
 
 We address these gaps with a fixed-pose scorer comparison, four transformation-matched nulls,
 chemical-domain controls, external pharmacology and sequence baselines, and a sampling-cost analysis.
-The shared axis appears across the tested scorers. Removing it leaves structured geometry, but that
-geometry changes with the ligand library and its external agreement varies by panel
+The shared axis appears across the tested scorers. The centred map retains structured geometry, but
+that geometry changes with the ligand library and its external agreement varies by panel
 (Figures~\ref{fig:axis}--\ref{fig:external}). A few hundred ligands from the source-library domain
 closely recover the full maps (Figure~\ref{fig:cost}). We therefore treat the residual map as a
 library-conditional diagnostic, not as an intrinsic protein network or a compound-level target-ranking

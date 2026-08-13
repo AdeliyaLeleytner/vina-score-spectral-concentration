@@ -22,9 +22,7 @@ CC~BY~4.0.  DOCKSTRING v1 and the derived row-aligned identity contract retain
 Apache-2.0 and cite the source release \cite{dockstring2022}.  The DAVIS-Complete
 V3 table is the exact upstream TSV export, recompressed without content changes,
 under CC0-1.0 \cite{davis2011,wu2025davis}.  The official PKIS2 S4 workbook is
-included under CC~BY~4.0 \cite{drewry2017}.  The derived pocket-descriptor table
-used in the exploratory Supplementary analysis is also included; readers can
-retrieve the corresponding structures from the wwPDB.
+included under CC~BY~4.0 \cite{drewry2017}.
 
 \emph{Not redistributed; obtainable from the named source against a recorded
 checksum.}  The exploratory PDSP comparison uses the PDSP $K_\mathrm{i}$ database
@@ -35,24 +33,31 @@ recorded in \path{results/pdsp_counterscreen_retrieval/summary.json}.  The
 Novartis Secondary Pharmacology Database \cite{sutherland2023} is CC~BY~4.0 at
 Zenodo record \texttt{8103950} and is not duplicated here; the accepted file has
 SHA-256 \texttt{7132723f\ldots00240}.  The PKIS1 publisher archive
-\cite{elkins2016}, the Anastassiadis workbook \cite{anastassiadis2011} and the
-KiRHub workbook \cite{saifudeen2026} are each retrieved by a checksum-gated
+\cite{elkins2016} and the KiRHub workbook \cite{saifudeen2026} are each retrieved by a checksum-gated
 fetcher in \path{analysis/}, named per source in \path{external_sources.csv}.
 KiRHub inhibition data are the
 property of Reaction Biology Corporation and require acknowledgement, so the
 release contains aggregate analytical summaries only.  KLIFS pocket identities
 \cite{klifs2021} and UniProt sequence records are API responses, released as
 derived identities with the response checksum and retrieval provenance rather
-than as copies.  \path{external_sources.csv} is the machine-readable inventory of
+than as copies.  The RCSB-derived receptor-species audit is released as a
+checksum-identified 43-accession table; its versioned GraphQL producer remains
+an explicit unknown in the access ledger.  \path{external_sources.csv} is the machine-readable inventory of
 all of the above --- role in this paper, redistribution status, access route,
-integrity record, licence and fetcher --- and \path{data_manifest.csv} together with
+integrity record, licence and fetcher.  \path{JOC_ACCESS_MATRIX.csv} records, for
+each source, which access, licence, checksum, producer and replay properties have
+been verified and which remain unknown; it is an evidence ledger rather than an
+editorial determination.  \path{data_manifest.csv} together with
 \path{DATA_LICENSES.md} remain the authorities for the files that are shipped.
 
-The redistributed files are sufficient to rebuild the spectral results,
-transformation-matched nulls, chemical-domain controls and calibration-recovery
-analyses.  Source-level reconstruction of the external-agreement analyses
-requires the PDSP and Novartis files named above.  The release contains their
-derived target-pair summaries, and
+The redistributed inputs and frozen result bundles support report-layer replay of the
+spectral results, transformation-matched nulls, chemical-domain controls and
+calibration-recovery analyses; a clean source-level replay has not yet been logged.
+Source-level reconstruction of a particular external-agreement or
+fixed-pose analysis requires the corresponding upstream datasets and toolchain
+resources named in \path{JOC_ACCESS_MATRIX.csv}; these include PDSP, SPD, PKIS1,
+KiRHub, KLIFS, UniProt, RCSB and PDBe/SIFTS metadata, and the fixed-pose scorer resources.  The
+release contains derived target-pair summaries for PDSP and SPD, and
 \path{analysis/reproduce_pdsp_derived_qap.py} reconstructs all reported PDSP
 permutation rows from the aggregate table and redistributed docking matrix.  It
 does not rerun upstream
@@ -60,7 +65,7 @@ receptor preparation, pose generation or docking; those stages belong to the
 cited Docking-44 and DOCKSTRING studies.
 
 The MIT-licensed analysis code, frozen inputs, tests, result bundles, manuscript
-and Supplement sources and generated figures are assembled in the project repository
+and Supplement sources and figure-generation scripts are assembled in the project repository
 \cite{projectrepository}.
 A version-specific immutable archive will be cited only after the release
 candidate is tagged, rebuilt from a clean clone and deposited; the present draft
@@ -74,7 +79,7 @@ released under CC~BY~4.0 unless an identified upstream condition applies.
 S1--S7: data provenance and preprocessing contracts; correlation and covariance
 spectra, missing-score sensitivity and the four transformation-matched null
 constructions; fixed-pose scorer transport; chemical-domain and support
-controls; calibration recovery and the five-mode core; the experimental
+controls; calibration recovery and exploratory five-mode compression; the experimental
 resources, endpoint definitions, homology-preserving nulls and normalisation
 comparisons; and the software, environment and audit-tool contracts.
 

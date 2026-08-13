@@ -2147,7 +2147,7 @@
       "fetch_anastassiadis_supplement.py": "4229f4b01940acd9c6aa39324bd13b8cd01ce61de52d2714fab0f1b5896d0002",
       "public_anastassiadis_identity_audit.py": "8586461a37eddc3e10925284810b3b62477ab09115865618d8dd8387be4efc6a",
       "public_anastassiadis_panel_validation.py": "091d6b57fcb2fd2243edc3bd60b0d1809cce3d179057b5884a219c99db754688",
-      "test_public_anastassiadis_identity_audit.py": "41771304bd5ea77524afbbf5b71441cc7ce39a01223b2170c250739ebed67e00",
+      "test_public_anastassiadis_identity_audit.py": "13507024c7ce738be207ec4f423bf678db810de1c4091cee112e2e7ce4cca426",
       "test_public_anastassiadis_panel_validation.py": "ef8a97f991edadc2974f3ea59092d5d0d77fe665107983906e935449f7090318"
     },
     "experimental_support": {

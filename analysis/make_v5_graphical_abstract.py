@@ -162,7 +162,7 @@ def main() -> None:
                 ha="left", va="bottom")
     ax.set_xlabel("200-ligand map agreement, Spearman $\\rho$",
                   fontsize=7.2, color=INK, labelpad=2)
-    ax.set_title("a small pilot recovers the map", fontsize=8.2, pad=4, color=INK)
+    ax.set_title("source-library pilot recovery", fontsize=8.2, pad=4, color=INK)
 
     OUT.mkdir(parents=True, exist_ok=True)
     figure.savefig(

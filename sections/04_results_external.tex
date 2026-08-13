@@ -18,12 +18,13 @@ remain below the 0.05 threshold when the full set of cutoffs is considered.
 Two structural baselines on the identical 190 pairs set the scale. Receptor-domain sequence
 identity gives ROC-AUC 0.718 and average precision 0.426, and identity across the aligned
 85-residue KLIFS ATP pocket gives 0.708 and 0.486. On ROC-AUC, the centred map approaches these
-structural baselines: it is within 0.008 of sequence identity and
-0.002 of pocket identity, having started 0.12 below. On average precision it remains below
+structural baselines: it is 0.008 below sequence identity and
+0.002 above pocket identity, having started about 0.12 below each. These point estimates do not
+establish equivalence or superiority. On average precision it remains below
 both. The corresponding gains in continuous Spearman agreement over the same 190 pairs are much
 smaller: $+0.016$ on DAVIS and $+0.044$ on PKIS2.
 
-PDSP gives the largest point-estimate separation between the two docking maps, but it also exposes
+PDSP gives the largest point-estimate separation between the two docking maps, but it also shows
 the clearest support boundary. Its exact-only graph contains 148 target pairs over 21 targets,
 estimated from 10 to 92 shared compounds per edge. Before building the docking map, we removed every
 Docking-44 row whose connectivity block appeared among any analyzed PDSP compound. The exact-only
@@ -48,10 +49,10 @@ Complete-case deletion changes the chemical domain, so this is a
 support-selection sensitivity rather than a pure imputation contrast. Raising the minimum shared-compound
 rule from 10 to 30 preserves the direction but changes the graph size and effect magnitude. QAP keeps
 edges that share a target together, but does not propagate uncertainty from estimating each edge on
-its own compound set. We therefore treat the PDSP result as promising but support-sensitive.
+its own compound set. We therefore treat the PDSP result as descriptive and support-sensitive.
 
 Not every receptor in the panel is docked into a human structure, and the sequence baseline is
-human throughout. An audit of all 43 PDB accessions finds five non-human receptor chains:
+human throughout. An audit of RCSB PDB metadata for all 43 accessions \cite{berman2000} finds five non-human receptor chains:
 GRIN1 (rat), ADRB1 (turkey, eight mutations), PTGS1 (sheep), PTGS2 and HTR3A (mouse); the other
 non-human chains in these entries are crystallisation aids on a human receptor --- T4 lysozyme
 and BRIL fusions, nanobodies, murine Fab fragments, G-protein and scFv16 chains --- and are not
@@ -62,7 +63,7 @@ increment over the sequence-and-family baseline is $+0.061$ in continuous agreem
 and $+0.063$ in top-decile retrieval. The point estimates are smaller on this construct-clean sensitivity but
 remain positive after removing the two proxied receptors.
 
-The Novartis safety panel provides a chemically non-overlapping test. It covers 12 targets and
+The Novartis safety panel provides an exact- and connectivity-de-overlapped test. It covers 12 targets and
 1{,}975 InChIKeys, and all shared connectivity blocks were removed before the docking map was
 built. Most selected activity rows are right-censored. Against a fixed centred assay map, the
 reported-bound endpoint moves from $\rho=0.149$ to 0.372; the 10\,$\mu$M endpoint changes only

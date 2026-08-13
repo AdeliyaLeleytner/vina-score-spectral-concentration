@@ -69,8 +69,11 @@ scaffold-disjoint folds.
 
 To separate the scoring function from the pose search, we rescored one fixed block of retained
 DOCKSTRING poses: 2{,}000 ligands by 9 targets, 18{,}000 cells, each holding the top AutoDock
-Vina pose. Because every scorer sees the same geometry, any difference between their outputs
-comes from the function and not from where the molecule was placed. smina 2020.12.10 supplied
+Vina pose. Because every scorer sees the same geometry, no difference between their outputs
+can be attributed to a different selected pose. The outputs still differ in implementation,
+molecular and receptor perception, training set and software environment, so what the
+comparison isolates is scorer-and-implementation sensitivity at fixed geometry, not the
+behaviour of independent end-to-end docking pipelines. smina 2020.12.10 supplied
 the Vina and Vinardo functions \cite{smina2013,vinardo2016}, ODDT 0.7 supplied RF-Score v1, v2
 and v3, NNScore 2.0 and PLECscore linear
 \cite{oddt2015,rfscore2010,ballester2014rfscore,nnscore2011,plecscore2019}, and the released

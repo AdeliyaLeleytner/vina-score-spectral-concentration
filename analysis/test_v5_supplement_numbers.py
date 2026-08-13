@@ -90,7 +90,11 @@ def test_supplement_documents_the_v5_build_and_pinned_xlrd() -> None:
 
     makefile = read(ROOT / "Makefile")
     assert re.search(r"^export SOURCE_DATE_EPOCH$", makefile, flags=re.MULTILINE)
-    assert re.search(r"^release-check-v5:\s+all\s+full-test$", makefile, flags=re.MULTILINE)
+    assert re.search(
+        r"^release-check-v5:\s+all\s+verify-inputs\s+verify-public-manifest\s+full-test$",
+        makefile,
+        flags=re.MULTILINE,
+    )
 
     workflow = read(ROOT / ".github" / "workflows" / "v5-report.yml")
     for action in ("actions/checkout@v6", "actions/setup-python@v6", "actions/upload-artifact@v7"):
@@ -315,18 +319,3 @@ def test_single_ligand_boundary_matches_observed_contrasts_and_null() -> None:
         assert shown(row["observed"], 4) in text
         assert shown(row["null_mean"], 4) in text
         assert shown(row["one_sided_empirical_p"], 4) in text
-
-
-def test_pocket_result_and_figure_are_supplement_only() -> None:
-    pocket_source = read(ROOT / "si_sections" / "S2_spectra_nulls.tex")
-    main_source = read(ROOT / "manuscript_v5.tex")
-    summary = json.loads(read(RESULTS / "residual_mechanism" / "analysis_summary.json"))
-    pocket = summary["exploratory_pocket_volume"]
-
-    assert main_source.count("fig_pocket_volume") == 0
-    assert pocket_source.count(r"\includegraphics{figures/v5/fig_pocket_volume.pdf}") == 1
-    assert shown(pocket["pocket_volume_vs_residual_mw_slope_spearman_rho"], 3) in pocket_source
-    assert shown(pocket["within_family_permutation_two_sided_p"], 3) in pocket_source
-    low, high = pocket["target_bootstrap_95_interval"]
-    assert shown(low, 3) in pocket_source and shown(high, 3) in pocket_source
-    assert str(pocket["n_targets_with_complete_pocket_volume"]) in pocket_source
