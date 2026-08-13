@@ -1,0 +1,642 @@
+{
+  "schema_version": "1.0.0",
+  "scope": "Numerical claim families reported in manuscript.tex and supplementary_information.tex",
+  "interpretation": {
+    "all_reported_numeric_claims_present_and_checksum_verifiable_in_public_frozen_artifacts": true,
+    "all_reported_numeric_claims_recomputable_from_public_frozen_artifacts": false,
+    "all_source_level_analyses_rerunnable_from_row_level_inputs_bundled_in_the_release": false,
+    "important_distinction": "A public frozen result can authenticate and rebuild the report layer without permitting recomputation of the statistic from public row-level or sufficient aggregate data. The reproduction_level field distinguishes row-level reanalysis, aggregate recomputation and checksum-authenticated report reconstruction.",
+    "public_artifact_definition": "A regular, non-symlink file tracked in the public release and authenticated below by SHA-256.",
+    "external_input_definition": "An upstream file, API snapshot, pose archive or software environment not bundled in the release; its access and rights boundary is stated under restricted_or_nonbundled_inputs."
+  },
+  "planned_public_only_submission_scope": {
+    "policy": "The next manuscript report layer will use only frozen row-level inputs redistributed for Docking-44, DOCKSTRING, DAVIS and PKIS2. A claim is not submission-eligible merely because a restricted-derived aggregate is public.",
+    "keep_main_claim_ids": [
+      "CLM-SPECTRAL",
+      "CLM-CHEMICAL-DOMAIN",
+      "CLM-PROBE-RECOVERY",
+      "CLM-DENSE-RANKING"
+    ],
+    "rebuild_before_use_claim_ids": [
+      "CLM-FEATURE-CONTROLS",
+      "CLM-DAVIS-CENSORING",
+      "CLM-REPORT-REGISTRY"
+    ],
+    "remove_from_submission_report_layer_claim_ids": [
+      "CLM-FIXED20-FACTORIAL",
+      "CLM-LOCKED-ENDPOINT",
+      "CLM-SPD-SENSITIVITY",
+      "CLM-BROAD-CHEMBL-RANKING",
+      "CLM-LEGACY-SPARSE",
+      "CLM-NONVINA-RESCORING",
+      "CLM-VINA-TERMS"
+    ]
+  },
+  "reproduction_levels": {
+    "row_level_reanalysis": "The released row- or cell-level input and analysis code are sufficient for a source-level rerun of the claim family.",
+    "aggregate_recomputation": "Released aggregate statistics are sufficient to recompute the reported effect sizes or retrieval metrics, but not the original row-level experimental transformation.",
+    "checksum_authenticated_report_reconstruction": "The public package authenticates and reuses frozen analysis outputs; exact source-level regeneration additionally requires an external input or environment."
+  },
+  "restricted_or_nonbundled_inputs": [
+    {
+      "id": "EXT-PKIS1",
+      "name": "PKIS1 publisher supplement archive",
+      "status": "public publisher supplement, not redistributed in the release",
+      "source_sha256": "1ffbe7fd0b4fc1ef72f2434a2b247d15c0f2b4d3c34668f112f4b4c9e4ead7dc",
+      "retrieval_script": "analysis/fetch_pkis1_supplement.py",
+      "claim_ids": [
+        "CLM-FEATURE-CONTROLS",
+        "CLM-FIXED20-FACTORIAL",
+        "CLM-LOCKED-ENDPOINT"
+      ],
+      "public_substitutes": [
+        "results/released_pair_geometry_ledger/target_pair_geometry.csv",
+        "results/fixed20_estimand_decomposition/summary.json"
+      ],
+      "boundary": "The release permits aggregate fixed-panel recomputation but does not contain PKIS1 compound-by-target rows."
+    },
+    {
+      "id": "EXT-KIRHUB",
+      "name": "KiRHub source workbook",
+      "status": "not redistributed; underlying inhibition-data licence is not asserted separately from the article licence and the portal identifies Reaction Biology Corporation as owner",
+      "source_sha256": "d9eef358396b193834b0c4d48ccd8cadb43697a6458cdcb50415af5a7e4e0b03",
+      "retrieval_script": "analysis/fetch_kirhub_supplement.py",
+      "claim_ids": [
+        "CLM-FEATURE-CONTROLS",
+        "CLM-FIXED20-FACTORIAL",
+        "CLM-LOCKED-ENDPOINT"
+      ],
+      "public_substitutes": [
+        "results/released_pair_geometry_ledger/target_pair_geometry.csv",
+        "results/kirhub_external_validation/summary.json"
+      ],
+      "boundary": "The 190 released target-pair correlations support aggregate geometry and retrieval calculations; the release cannot recreate KiRHub compound-level preprocessing."
+    },
+    {
+      "id": "EXT-KLIFS",
+      "name": "KLIFS API response used for pocket identities and kinase groups",
+      "status": "checksum-identified API snapshot, not redistributed",
+      "source_sha256": "041a159e662a27696554867acbe1ac7fb35d36f71483d42ab4ac90e219dbef8f",
+      "retrieval_script": "analysis/klifs_pocket_control.py",
+      "claim_ids": [
+        "CLM-LOCKED-ENDPOINT"
+      ],
+      "public_substitutes": [
+        "results/klifs_pocket_control/target_pairs.csv",
+        "results/strict_klifs_group_qap/summary.json"
+      ],
+      "boundary": "Released pair-level pocket identities and frozen QAP outputs reproduce the report layer, but the API snapshot itself is external."
+    },
+    {
+      "id": "EXT-SPD",
+      "name": "Novartis Secondary Pharmacology Database activity export and UniProt mapping",
+      "status": "public CC BY 4.0 upstream data, not duplicated in the release",
+      "source_sha256": "7132723f85e746de2f8387d01dcde6ffff703c92561fda9751cbd6753e900240",
+      "secondary_source_sha256": "26ebfda18fabdbaf605f14329f2c439e47427ff315f4160f3a68439ae7bf1729",
+      "retrieval_script": "analysis/spd_external_validation.py",
+      "claim_ids": [
+        "CLM-SPD-SENSITIVITY"
+      ],
+      "public_substitutes": [
+        "results/spd_external_validation/summary.json"
+      ],
+      "boundary": "The source is openly obtainable, but the archived package only authenticates the frozen analysis output."
+    },
+    {
+      "id": "EXT-POSES",
+      "name": "DOCKSTRING pose archives, receptor files and target configurations",
+      "status": "public upstream DOCKSTRING artifacts, not duplicated in the release archive",
+      "source_reference": "DOCKSTRING v1, doi:10.6084/m9.figshare.16511577.v1",
+      "claim_ids": [
+        "CLM-NONVINA-RESCORING",
+        "CLM-VINA-TERMS"
+      ],
+      "public_substitutes": [
+        "results/nonvina_scorer_transport/summary.json",
+        "results/dockstring_vina_terms/analysis_summary.json"
+      ],
+      "boundary": "The public score matrices are sufficient for the central map claims, but fixed-pose rescoring requires separately downloaded pose archives."
+    },
+    {
+      "id": "EXT-ODDT39",
+      "name": "ODDT 0.7 Python 3.9 scorer environment and smina executable",
+      "status": "non-default technical environment, not recreated by the Python 3.12 container",
+      "claim_ids": [
+        "CLM-NONVINA-RESCORING"
+      ],
+      "public_substitutes": [
+        "results/nonvina_scorer_transport/summary.json"
+      ],
+      "boundary": "The source code records the scorer contract, while the default release verifies rather than regenerates ODDT fixed-pose scores."
+    },
+    {
+      "id": "EXT-UPSTREAM-DOCKING",
+      "name": "Receptor preparation, pose generation and upstream Vina docking campaigns",
+      "status": "not rerun by the release; supplied by the cited source studies",
+      "claim_ids": [
+        "CLM-SPECTRAL",
+        "CLM-CHEMICAL-DOMAIN",
+        "CLM-PROBE-RECOVERY"
+      ],
+      "public_substitutes": [
+        "data/frozen/df_final_v4.csv.gz",
+        "data/frozen/dockstring-dataset.tsv.gz"
+      ],
+      "boundary": "The article audits released score matrices and does not claim to reproduce receptor preparation, docking poses or absolute affinity accuracy."
+    }
+  ],
+  "claims": [
+    {
+      "id": "CLM-SPECTRAL",
+      "planned_scope_status": "keep_main",
+      "claim_family": "Shared ligand axis, raw/residual spectra, PR, covariance and matched residual nulls in the two large Vina matrices",
+      "manuscript_locations": [
+        "manuscript.tex:769-825",
+        "supplementary_information.tex:S2"
+      ],
+      "external_input_ids": [],
+      "reproduction_level": "row_level_reanalysis",
+      "public_inputs": [
+        {
+          "path": "data/frozen/df_final_v4.csv.gz",
+          "sha256": "25436e49b9fc80421d8499ef289ed8ef00b4ab35b904c7d930fc377f493e1d51"
+        },
+        {
+          "path": "data/frozen/dockstring-dataset.tsv.gz",
+          "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/spectral_audit.py",
+        "analysis/refresh_residual_null_evidence.py",
+        "analysis/build_manuscript_evidence.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/evidence_summary.json",
+          "sha256": "1696d2abdaa7915c3e05ee30c522a8cc03502fd9e9d436118ceee9ef4e990ca3"
+        }
+      ],
+      "boundary": "The released matrices permit reanalysis of score geometry, not regeneration of the upstream docked poses."
+    },
+    {
+      "id": "CLM-CHEMICAL-DOMAIN",
+      "planned_scope_status": "keep_main",
+      "claim_family": "Low/high molecular-size-domain non-transport and matched chemically disjoint controls",
+      "manuscript_locations": [
+        "manuscript.tex:888-952",
+        "supplementary_information.tex:S6"
+      ],
+      "external_input_ids": [],
+      "reproduction_level": "row_level_reanalysis",
+      "public_inputs": [
+        {
+          "path": "data/frozen/df_final_v4.csv.gz",
+          "sha256": "25436e49b9fc80421d8499ef289ed8ef00b4ab35b904c7d930fc377f493e1d51"
+        },
+        {
+          "path": "data/frozen/dockstring-dataset.tsv.gz",
+          "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/chemical_context_geometry.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/chemical_context_geometry/summary.json",
+          "sha256": "1a8472369493859538044a7fb1c6dd479a2f7d3798ab5c09f1711a9212bec11e"
+        }
+      ],
+      "boundary": "The molecular-weight split is explicitly post hoc and supports a library-conditional descriptive result, not causal attribution to molecular weight."
+    },
+    {
+      "id": "CLM-PROBE-RECOVERY",
+      "planned_scope_status": "keep_main",
+      "claim_family": "Support-specific recovery of target-correlation maps from 200-500 ligands",
+      "manuscript_locations": [
+        "manuscript.tex:953-975",
+        "supplementary_information.tex:S6"
+      ],
+      "external_input_ids": [],
+      "reproduction_level": "row_level_reanalysis",
+      "public_inputs": [
+        {
+          "path": "data/frozen/df_final_v4.csv.gz",
+          "sha256": "25436e49b9fc80421d8499ef289ed8ef00b4ab35b904c7d930fc377f493e1d51"
+        },
+        {
+          "path": "data/frozen/dockstring-dataset.tsv.gz",
+          "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/calibration_panel_recovery.py",
+        "analysis/spectral_audit.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/calibration_panel_recovery/summary.csv",
+          "sha256": "bb8aad373e7fc4a34a852b7feea610d3eb80fd11f691760d906d2f3817cff3cf"
+        }
+      ],
+      "boundary": "This is same-support recovery and does not establish a universal 200-ligand threshold or cross-domain transport."
+    },
+    {
+      "id": "CLM-FEATURE-CONTROLS",
+      "planned_scope_status": "rebuild_davis_pkis2_only_before_use",
+      "claim_family": "Group-held-out physicochemical/count-Morgan prediction and stable-hash/row-permuted nuisance-component map controls",
+      "manuscript_locations": [
+        "manuscript.tex:844-850",
+        "manuscript.tex:1175-1251",
+        "supplementary_information.tex:S3"
+      ],
+      "external_input_ids": [
+        "EXT-PKIS1",
+        "EXT-KIRHUB"
+      ],
+      "reproduction_level": "aggregate_recomputation",
+      "public_inputs": [
+        {
+          "path": "data/frozen/dockstring-dataset.tsv.gz",
+          "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+        },
+        {
+          "path": "results/released_pair_geometry_ledger/target_pair_geometry.csv",
+          "sha256": "d7e7ee2bd9381595f344f61dbdf748f57cebc146e5bdb66ef577e915676c4ff6"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/descriptor_rank_matched_controls.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/descriptor_rank_matched_controls/summary.json",
+          "sha256": "a1914cabee94aec2a145363aeaa78feb05e921e18603c09216304f30f2e0c97b"
+        }
+      ],
+      "boundary": "Docking-side held-out performance is row-level reproducible; agreement with PKIS1 and KiRHub is recomputable from their released aggregate target maps, not their compound rows."
+    },
+    {
+      "id": "CLM-FIXED20-FACTORIAL",
+      "planned_scope_status": "remove_from_submission_report_layer",
+      "claim_family": "Complete raw/centred docking-by-experiment factorial, fixed-endpoint increments and cross-panel geometry",
+      "manuscript_locations": [
+        "manuscript.tex:998-1157",
+        "supplementary_information.tex:S4"
+      ],
+      "external_input_ids": [
+        "EXT-PKIS1",
+        "EXT-KIRHUB"
+      ],
+      "reproduction_level": "aggregate_recomputation",
+      "public_inputs": [
+        {
+          "path": "results/released_pair_geometry_ledger/target_pair_geometry.csv",
+          "sha256": "d7e7ee2bd9381595f344f61dbdf748f57cebc146e5bdb66ef577e915676c4ff6"
+        },
+        {
+          "path": "data/frozen/dockstring-dataset.tsv.gz",
+          "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/fixed20_estimand_decomposition.py",
+        "analysis/test_released_pair_geometry_ledger.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/fixed20_estimand_decomposition/summary.json",
+          "sha256": "3af63e85a66e4c02e1c6c0325910bb6cfaa645ca6f368b8c08e07564714ffbda"
+        }
+      ],
+      "boundary": "All factorial effect sizes are recoverable from released edges. Frozen permutation outputs authenticate exact reported probabilities; source-level regeneration of PKIS1/KiRHub row transformations needs the external workbooks."
+    },
+    {
+      "id": "CLM-LOCKED-ENDPOINT",
+      "planned_scope_status": "remove_from_submission_report_layer",
+      "claim_family": "Locked 15-pair endpoint, KiRHub retrieval, sequence/pocket baselines and strict within-KLIFS-group controls",
+      "manuscript_locations": [
+        "manuscript.tex:1020-1038",
+        "manuscript.tex:1252-1305",
+        "supplementary_information.tex:S5"
+      ],
+      "external_input_ids": [
+        "EXT-PKIS1",
+        "EXT-KIRHUB",
+        "EXT-KLIFS"
+      ],
+      "reproduction_level": "aggregate_recomputation",
+      "public_inputs": [
+        {
+          "path": "results/released_pair_geometry_ledger/target_pair_geometry.csv",
+          "sha256": "d7e7ee2bd9381595f344f61dbdf748f57cebc146e5bdb66ef577e915676c4ff6"
+        },
+        {
+          "path": "results/klifs_pocket_control/target_pairs.csv",
+          "sha256": "08238b207ac4f9f991193db0d0e03063403727f98aa1230cbfe636eeb6501a23"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/kirhub_external_validation.py",
+        "analysis/klifs_pocket_control.py",
+        "analysis/strict_klifs_group_qap.py",
+        "analysis/test_released_pair_geometry_ledger.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/kirhub_external_validation/summary.json",
+          "sha256": "519193dac9713147a2c4fdb6e1379ec18885e33bcfb1a4c2fd9e0cfc39efeec9"
+        },
+        {
+          "path": "results/strict_klifs_group_qap/summary.json",
+          "sha256": "f66006d0904cec7f8af023463cd45a07d3696ddfee873704c8c177f8c2067592"
+        }
+      ],
+      "boundary": "AUROC, AP and geometry correlations are recomputable from released edges; exact source-table preprocessing and KLIFS snapshot retrieval are external."
+    },
+    {
+      "id": "CLM-DAVIS-CENSORING",
+      "planned_scope_status": "rebuild_davis_only_before_use",
+      "claim_family": "DAVIS pKd-floor audit and binary above-floor geometry sensitivity",
+      "manuscript_locations": [
+        "manuscript.tex:1005-1011",
+        "manuscript.tex:1252-1262",
+        "supplementary_information.tex:S4"
+      ],
+      "external_input_ids": [],
+      "reproduction_level": "row_level_reanalysis",
+      "public_inputs": [
+        {
+          "path": "data/frozen/davis_complete.tab.gz",
+          "sha256": "e5614549ec970bf24bd58d04d8a74feb8f8a53806410eaa8d84d24e96a4ff827"
+        },
+        {
+          "path": "data/frozen/dockstring-dataset.tsv.gz",
+          "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/davis_fixed20_censoring_sensitivity.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/davis_fixed20_censoring_sensitivity/summary.json",
+          "sha256": "95c06a03bdcc4459270f6cd73111d9d9da63490f190fa231bcd0dd177f538ff9"
+        }
+      ],
+      "boundary": "The check quantifies reporting-limit status and does not recover censored quantitative affinities."
+    },
+    {
+      "id": "CLM-SPD-SENSITIVITY",
+      "planned_scope_status": "remove_from_submission_report_layer",
+      "claim_family": "Mixed-family, heavily censored Secondary Pharmacology Database sensitivity",
+      "manuscript_locations": [
+        "manuscript.tex:633-642",
+        "manuscript.tex:1301-1304",
+        "supplementary_information.tex:433-441"
+      ],
+      "external_input_ids": [
+        "EXT-SPD"
+      ],
+      "reproduction_level": "checksum_authenticated_report_reconstruction",
+      "public_inputs": [
+        {
+          "path": "results/spd_external_validation/summary.json",
+          "sha256": "20e0dc80a34a47baa25d887380e70338641e32c32ad554dfe408586e64e0b8e9"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/spd_external_validation.py",
+        "analysis/build_manuscript_evidence.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/manuscript_evidence.json",
+          "sha256": "64db9be9641f4b4118c01980020c513db185c79cc6b9497af2b3436d1941bf2c"
+        }
+      ],
+      "boundary": "The default archive verifies the released SPD summary; row-level regeneration requires downloading the checksum-identified public upstream files."
+    },
+    {
+      "id": "CLM-BROAD-CHEMBL-RANKING",
+      "planned_scope_status": "remove_from_submission_report_layer",
+      "claim_family": "Broad DOCKSTRING-ChEMBL observed-pair ranking and endpoint-restricted arms",
+      "manuscript_locations": [
+        "manuscript.tex:427-464",
+        "manuscript.tex:1319-1376",
+        "supplementary_information.tex:S7"
+      ],
+      "external_input_ids": [],
+      "reproduction_level": "row_level_reanalysis",
+      "public_inputs": [
+        {
+          "path": "data/frozen/dockstring-dataset.tsv.gz",
+          "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+        },
+        {
+          "path": "data/frozen/chembl_dockstring_ranking_activities_2026-08-05.csv.gz",
+          "sha256": "10f99671b9cb126510ca84a6838a52b3791b3508d3490a043929d8054e2dc23a"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/dockstring_chembl_ranking_benchmark.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/dockstring_chembl_ranking/summary.json",
+          "sha256": "b716fe25a60627926c6bcf95c32bcb2458a6d9d341272c0ffc8808454a32ccba"
+        }
+      ],
+      "boundary": "This evaluates only observed target pairs under a non-random assay process; it is not unmeasured-target retrieval."
+    },
+    {
+      "id": "CLM-DENSE-RANKING",
+      "planned_scope_status": "keep_main",
+      "claim_family": "Dense exact-structure-matched DAVIS and PKIS2 ranking checks",
+      "manuscript_locations": [
+        "manuscript.tex:643-685",
+        "manuscript.tex:1385-1426",
+        "supplementary_information.tex:S7"
+      ],
+      "external_input_ids": [],
+      "reproduction_level": "row_level_reanalysis",
+      "public_inputs": [
+        {
+          "path": "data/frozen/dockstring-dataset.tsv.gz",
+          "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+        },
+        {
+          "path": "data/frozen/davis_complete.tab.gz",
+          "sha256": "e5614549ec970bf24bd58d04d8a74feb8f8a53806410eaa8d84d24e96a4ff827"
+        },
+        {
+          "path": "data/frozen/pkis2_s4.xlsx",
+          "sha256": "48ead22a1f860cd0d5096fa87d5acd329f722fe8d65e693bb0be682a333e2a2c"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/dense_davis_benchmark.py",
+        "analysis/dense_pkis2_benchmark.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/dense_davis_benchmark.json",
+          "sha256": "d8c333da4d2f6ceb63ee7355495e790f89575241418623acc90d68f80195efa1"
+        },
+        {
+          "path": "results/dense_pkis2_benchmark.json",
+          "sha256": "a95093fb2ff6568e7342824ea8100ad292ae0623bf7de47b6aee18a1c84fa837"
+        }
+      ],
+      "boundary": "Aggregate estimands are primary; outcome-conditioned strata and equivalence margins are post hoc sensitivities."
+    },
+    {
+      "id": "CLM-LEGACY-SPARSE",
+      "planned_scope_status": "remove_from_submission_report_layer",
+      "claim_family": "Legacy sparse Docking-44-ChEMBL ranking sensitivity and centering-panel check",
+      "manuscript_locations": [
+        "manuscript.tex:687-740",
+        "manuscript.tex:1378-1383",
+        "supplementary_information.tex:618-626"
+      ],
+      "external_input_ids": [],
+      "reproduction_level": "row_level_reanalysis",
+      "public_inputs": [
+        {
+          "path": "data/frozen/df_final_v4.csv.gz",
+          "sha256": "25436e49b9fc80421d8499ef289ed8ef00b4ab35b904c7d930fc377f493e1d51"
+        },
+        {
+          "path": "data/frozen/negative_results_paper/analysis/chembl_affinity_long.csv.gz",
+          "sha256": "656a989dd3ddec6bdf212e27cfcc9b79fe37b6c3dfec0a684d843c23217f3526"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/ranking_centering_panel_sensitivity.py",
+        "analysis/build_manuscript_evidence.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/ranking_centering_panel_sensitivity/summary.json",
+          "sha256": "d91be8838f3b35e770614bb37d0ecfd70616b10e718512dcee69e292dcbd8e50"
+        }
+      ],
+      "boundary": "This small sparse support is a secondary sensitivity and should not carry the operational narrative."
+    },
+    {
+      "id": "CLM-NONVINA-RESCORING",
+      "planned_scope_status": "remove_from_submission_report_layer",
+      "claim_family": "Fixed-Vina-pose sensitivity across non-Vina scoring functions",
+      "manuscript_locations": [
+        "manuscript.tex:400-426",
+        "manuscript.tex:854-862",
+        "supplementary_information.tex:122-147"
+      ],
+      "external_input_ids": [
+        "EXT-POSES",
+        "EXT-ODDT39"
+      ],
+      "reproduction_level": "checksum_authenticated_report_reconstruction",
+      "public_inputs": [
+        {
+          "path": "results/nonvina_scorer_transport/summary.json",
+          "sha256": "a86bcfe3064d6abc155a5f31143c725ec71267cfc35211ec8867decce913e345"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/nonvina_scorer_transport.py",
+        "analysis/nonvina_scorer_oddt_worker.py",
+        "analysis/build_manuscript_evidence.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/manuscript_evidence.json",
+          "sha256": "64db9be9641f4b4118c01980020c513db185c79cc6b9497af2b3436d1941bf2c"
+        }
+      ],
+      "boundary": "The analysis is conditional on Vina-selected poses and is not an independent redocking or scorer-generality test."
+    },
+    {
+      "id": "CLM-VINA-TERMS",
+      "planned_scope_status": "remove_from_submission_report_layer",
+      "claim_family": "Within-Vina fixed-pose term attribution",
+      "manuscript_locations": [
+        "manuscript.tex:499-513",
+        "manuscript.tex:857-862",
+        "supplementary_information.tex:S2"
+      ],
+      "external_input_ids": [
+        "EXT-POSES"
+      ],
+      "reproduction_level": "checksum_authenticated_report_reconstruction",
+      "public_inputs": [
+        {
+          "path": "results/dockstring_vina_terms/analysis_summary.json",
+          "sha256": "51dae3ad54d9061472525ab5744790e1aceeb4a1770ea1f61e2ec7bdc9260a17"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/dockstring_vina_term_decomposition.py",
+        "analysis/build_manuscript_evidence.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/manuscript_evidence.json",
+          "sha256": "64db9be9641f4b4118c01980020c513db185c79cc6b9497af2b3436d1941bf2c"
+        }
+      ],
+      "boundary": "This attributes retained-pose arithmetic and is neither causal term ablation nor redocking."
+    },
+    {
+      "id": "CLM-REPORT-REGISTRY",
+      "planned_scope_status": "rebuild_public_only_before_use",
+      "claim_family": "Generation and consistency checking of every registered high-risk manuscript value",
+      "manuscript_locations": [
+        "manuscript.tex:42-1638",
+        "supplementary_information.tex:35-627"
+      ],
+      "external_input_ids": [],
+      "reproduction_level": "checksum_authenticated_report_reconstruction",
+      "public_inputs": [
+        {
+          "path": "data_manifest.csv",
+          "sha256": "2afcdf3695b9efe6e4c706f45da452a6879649cc052a92358c139d8292972309"
+        },
+        {
+          "path": "results/manuscript_source_manifest.csv",
+          "sha256": "23f6e99a4eaccefe4edea6295427d3d85f9e4464ef1c28f415afb208edfb2eef"
+        },
+        {
+          "path": "results/manuscript_evidence.json",
+          "sha256": "64db9be9641f4b4118c01980020c513db185c79cc6b9497af2b3436d1941bf2c"
+        }
+      ],
+      "analysis_scripts": [
+        "analysis/verify_inputs.py",
+        "analysis/build_manuscript_evidence.py",
+        "analysis/make_reported_results.py",
+        "analysis/verify_reported_results.py"
+      ],
+      "public_outputs": [
+        {
+          "path": "results/reported_values.json",
+          "sha256": "83986266acf7475214142015aa7ec4a0411a58862347c946947185da6012f7f2"
+        },
+        {
+          "path": "results/evidence_macros.tex",
+          "sha256": "8a0cd1675b02a976c83c9682e28aa4547119d55fa76906d0202c173869108ae7"
+        },
+        {
+          "path": "results/main_spectral_metrics_table.tex",
+          "sha256": "f65bbf5769f56461ef265807562939f42de881f06a0b385e7af664b3dc035521"
+        },
+        {
+          "path": "results/supplement_tables.tex",
+          "sha256": "4a0059813b11575dd221eb01ffbd2affbd41ad5a82764c8696911b9b387b09b9"
+        }
+      ],
+      "boundary": "This proves deterministic report reconstruction from public frozen artifacts; it does not upgrade checksum-only upstream analyses to row-level reanalyses."
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+name: v5 report and release checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out the release candidate
+        uses: actions/checkout@v6
+
+      - name: Install CPython 3.12.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12.11"
+          cache: pip
+          cache-dependency-path: requirements.lock
+
+      - name: Install TeX and PDF inspection tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            make poppler-utils texlive-latex-base texlive-latex-extra \
+            texlive-fonts-recommended
+
+      - name: Install the pinned Python environment
+        run: python -m pip install --requirement requirements.lock
+
+      - name: Rebuild the report and run the complete test suite
+        run: make PYTHON=python release-check-v5
+
+      - name: Check PDF fonts and page metadata
+        run: |
+          pdffonts manuscript_v5.pdf
+          pdffonts supplementary_v5.pdf
+          pdfinfo manuscript_v5.pdf
+          pdfinfo supplementary_v5.pdf
+
+      - name: Retain the tested submission artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: jcheminf-v5-submission
+          if-no-files-found: error
+          path: |
+            submission/files/Manuscript.pdf
+            submission/files/Additional_file_1.pdf
+            submission/figures/

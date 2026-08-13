@@ -1,0 +1,88 @@
+{
+  "analysis_status": "strict_public_descriptive_sequence_geometry_control",
+  "claim_boundary": "Target-label QAP preserves each map but does not sample proteins, structures or scoring engines. Sequence identity is a cheap baseline; the analysis cannot assign causality or establish biological function.",
+  "inputs": {
+    "alignment": {
+      "alignment": "global BLOSUM62; gap-open -10; gap-extend -0.5",
+      "biopython_version": "1.87",
+      "identity_denominator": "all alignment columns, including gaps",
+      "identity_matrix_sha256": "f1a9bc3e294534c0c14e447e7b1c4c25194e020311f0928d58d534bd21f3f03b",
+      "maximum_pre_symmetrization_orientation_difference": 0.01875693387342295,
+      "tie_rule": "mean identity of the first optimal alignment in both sequence orientations, making the result invariant to arbitrary target order"
+    },
+    "matrix": {
+      "complete_ligands": 260060,
+      "matrix_sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64",
+      "positive_scores_clipped_to_zero": 5393,
+      "targets": 58
+    },
+    "sequence_source": {
+      "fasta_sha256": "bc487a29e0c9c3347e0b01e0ad52f6424ab2b0c95065ffd44561c990e506c260",
+      "manifest_sha256": "f0f23fbc4a2d51a4f65133f9bb16f17641014e7f5fcffe396707fdba2c890fb7",
+      "maximum_sequence_length": 580,
+      "minimum_sequence_length": 186,
+      "targets": 58
+    }
+  },
+  "interpretation": "Across all 58 heterogeneous targets both raw and residual score maps show modest protein-sequence alignment, and their difference is tested rather than assumed. The 21-kinase subset is reported twice because a row-centred residual is defined relative to its target panel: once after centring within all 58 targets and once after restricting and centring within the 21 kinases. These are map associations, not pose validation or evidence that docking outperforms sequence-based panel design.",
+  "producer": "analysis/public_sequence_geometry_controls.py",
+  "qap": [
+    {
+      "context": "all_58_targets_centered_within_58",
+      "difference_null_q025": -0.09074730599634402,
+      "difference_null_q975": 0.09611919630941293,
+      "edges": 1653,
+      "permutations": 100000,
+      "raw_null_q025": -0.12020807459828056,
+      "raw_null_q975": 0.1270025767024377,
+      "raw_qap_p_one_sided": 0.025739742602573973,
+      "raw_sequence_pearson": 0.12604625096764102,
+      "residual_minus_raw_qap_p_one_sided": 0.3663663363366366,
+      "residual_minus_raw_sequence_pearson": 0.016136383865438447,
+      "residual_null_q025": -0.051371462944753955,
+      "residual_null_q975": 0.07126451738553981,
+      "residual_qap_p_one_sided": 0.00032999670003299966,
+      "residual_sequence_pearson": 0.14218263483307947,
+      "seed": 20260917,
+      "targets": 58
+    },
+    {
+      "context": "common_21_kinases_embedded_in_58_target_centering",
+      "difference_null_q025": -0.09820530835772995,
+      "difference_null_q975": 0.1049028011158424,
+      "edges": 210,
+      "permutations": 100000,
+      "raw_null_q025": -0.17133550650244664,
+      "raw_null_q975": 0.22202673208661883,
+      "raw_qap_p_one_sided": 0.6998230017699822,
+      "raw_sequence_pearson": -0.05985833549899684,
+      "residual_minus_raw_qap_p_one_sided": 0.00014999850001499985,
+      "residual_minus_raw_sequence_pearson": 0.19212940722944877,
+      "residual_null_q025": -0.1253940692035033,
+      "residual_null_q975": 0.1815460855446904,
+      "residual_qap_p_one_sided": 0.05704942950570494,
+      "residual_sequence_pearson": 0.1322710717304519,
+      "seed": 21260917,
+      "targets": 21
+    },
+    {
+      "context": "common_21_kinases_centered_within_21",
+      "difference_null_q025": -0.13449261711809649,
+      "difference_null_q975": 0.14502503326574034,
+      "edges": 210,
+      "permutations": 100000,
+      "raw_null_q025": -0.17003004508872557,
+      "raw_null_q975": 0.22455102048385295,
+      "raw_qap_p_one_sided": 0.6987630123698763,
+      "raw_sequence_pearson": -0.05985833549899684,
+      "residual_minus_raw_qap_p_one_sided": 0.00016999830001699983,
+      "residual_minus_raw_sequence_pearson": 0.2634005127609332,
+      "residual_null_q025": -0.11087639967015077,
+      "residual_null_q975": 0.15917610087379677,
+      "residual_qap_p_one_sided": 0.010259897401025989,
+      "residual_sequence_pearson": 0.20354217726193635,
+      "seed": 22260917,
+      "targets": 21
+    }
+  ]
+}

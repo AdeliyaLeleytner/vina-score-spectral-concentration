@@ -1,0 +1,184 @@
+\sisection{S1. Data, estimands and overlap}
+
+\sisubsection{S1.1 Row-level sources and preprocessing}
+
+Two docking score matrices carry every spectral result in the paper. Both are secondary use
+of released tables. We ran no docking and made no measurement.
+
+Docking-44 is the frozen export of Nikitin et al.~\cite{nikitin2025}, redistributed as
+\path{data/frozen/df_final_v4.csv.gz} under CC BY 4.0: 13{,}283{,}042 bytes, SHA-256
+beginning \texttt{25436e49b9fc}. The carrier file has 47 PDB-named score columns. Every analysis
+selects the 44 structures mapped to the 44 toxicity-relevant targets in the published source
+panel; the appended 8pm6 (BSEP), 6itm (FXR) and 9fzj (PXR) columns are outside that panel and are
+excluded before score statistics are computed. The selected matrix therefore holds 12{,}651
+ligands by 44 Vina-GPU~2.0 target columns \cite{ding2023}, or 556{,}644 cells. Of these, 8{,}159 cells are missing, which is 1.4657\%
+of the matrix, and they sit in 3{,}354 ligand rows. One target, 4mqs, holds 3{,}352 of the
+8{,}159 and is missing for 26.50\% of rows; the next largest, 8st0, holds 1{,}007. We
+replaced each missing cell by the mean of its target column. No cell in the selected 44-column
+matrix is strictly positive, so the clip-at-zero rule removed nothing, and we keep it because it is the
+released preprocessing contract.
+
+DOCKSTRING is DOCKSTRING v1 \cite{dockstring2022}, redistributed as
+\path{data/frozen/dockstring-dataset.tsv.gz} under Apache-2.0: 26{,}561{,}332 bytes, SHA-256
+beginning \texttt{e15a58258dbd}. The source table has 260{,}155 rows by 58 AutoDock Vina
+columns \cite{vina2010}. Ninety-five rows carry at least one of the 339 missing cells, and we
+dropped those rows rather than impute them, leaving 260{,}060 complete rows and 15{,}083{,}480
+cells. We clipped 5{,}393 strictly positive cells to zero, which is 0.0358\% of the complete
+matrix. Section~S2.1 reports what happens if those cells are kept instead.
+
+\begin{table}[htbp]
+\centering
+\caption{The two Vina score matrices and the supports used throughout. Full SHA-256 digests,
+byte counts and licences for every input are in \protect\path{results/public_core_source_manifest.csv}.}
+\label{tab:s1sources}
+\small
+\begin{tabular}{lrr}
+\toprule
+ & Docking-44 & DOCKSTRING-58 \\
+\midrule
+Redistributed file & \path{df_final_v4.csv.gz} & \path{dockstring-dataset.tsv.gz} \\
+Licence & CC BY 4.0 & Apache-2.0 \\
+Source rows & 12{,}651 & 260{,}155 \\
+Targets & 44 & 58 \\
+Rows dropped for missingness & 0 & 95 \\
+Analysis rows & 12{,}651 & 260{,}060 \\
+Analysis cells & 556{,}644 & 15{,}083{,}480 \\
+Missing cells in the source & 8{,}159 & 339 \\
+Missing-cell rule & target-column mean & row dropped \\
+Strictly positive cells & 0 & 5{,}393 \\
+Positive-cell rule & clip to zero (no effect) & clip to zero \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Every file the evidence builder reads is declared in
+\path{results/public_core_source_manifest.csv}, one row per file with its path, kind, licence,
+byte count and SHA-256. The manifest has 149 rows: 111 input records, 37 code records and one
+output record.
+Its own digest is stored in \path{results/public_core_source_manifest.sha256};
+\texttt{make verify-public-manifest} re-hashes both the manifest and every registered file.
+The builder \path{analysis/build_public_core_evidence.py} opens files only through the declared
+table: an undeclared key raises, a symlink anywhere along the path raises, a resolved path outside
+the package raises, and 12 inputs carry a pinned digest that aborts the build on any mismatch. A
+repository-wide manifest covering licence and redistribution status for every frozen file is
+\path{data_manifest.csv}. The assay panels are described in S6, where they are used.
+
+\sisubsection{S1.2 Map and dimension estimands}
+
+Let $X$ be an $N\times P$ score matrix with ligands in rows and targets in columns. The
+\emph{target map} of $X$ is the $P\times P$ sample Pearson correlation matrix of its columns.
+We call its $P(P-1)/2$ strict-upper-triangle entries the \emph{edges} of the map. The
+\emph{residual surface} is the two-way-centred matrix
+\begin{equation}
+\Gamma_{ij}=X_{ij}-\bar X_{i\cdot}-\bar X_{\cdot j}+\bar X_{\cdot\cdot},
+\label{eq:s1residual}
+\end{equation}
+and the \emph{residual map} is the target map of $\Gamma$. Correlation already removes and
+rescales column means, so the only operative difference between the two maps is subtraction of
+each ligand's mean across targets. Equation~\ref{eq:s1residual} makes every residual row sum to
+zero, so the residual map carries one exactly zero eigenvalue and at most $P-1$ free
+directions: 43 for Docking-44 and 57 for DOCKSTRING-58.
+
+We summarise a map by the participation-ratio dimension of its correlation eigenvalues
+$\lambda_k$,
+\begin{equation}
+r_{\mathrm{PR}}=\frac{\left(\sum_k\lambda_k\right)^2}{\sum_k\lambda_k^2}
+=\frac{P}{1+(P-1)\,\overline{r_{jk}^{\,2}}},
+\label{eq:s1pr}
+\end{equation}
+where the bar averages the squared off-diagonal correlations \cite{roy2007,mazzucato2016}. The
+second form follows from $\sum_k\lambda_k=P$ and $\sum_k\lambda_k^2=P+2\sum_{j<k}r_{jk}^2$, so
+PR is an exact re-expression of one scalar: the mean squared target correlation. It runs from 1
+when every $|r_{jk}|=1$ to $P$ when every $r_{jk}=0$.
+
+What PR does not measure matters as much. It is not an algebraic rank, and no eigenvalue is
+driven to zero when PR falls. Two maps with the same mean squared correlation have the same PR
+however their edges are arranged, so PR by itself cannot separate one strong block of targets
+from many weak pairs. PR counts no binding modes and no independent physical mechanisms, and it
+is not an estimate of a molecular dimension. Where a claim needs the arrangement of edges
+rather than their mean square, we report edge-rank agreement or sign agreement instead.
+
+Every quantity here is conditional on a fixed target panel and a stated ligand support.
+Docking-44 fixes 44 PDB structures selected by its source project, DOCKSTRING-58 fixes 58 gene
+symbols selected by its own, and neither panel is a sample from anything. Changing $P$ changes
+both the edge population and the bound on PR. Changing the library changes the correlations,
+and S4 measures by how much.
+
+\sisubsection{S1.3 Overlap of the two Vina matrices}
+
+The producer is \path{analysis/cross_panel_overlap_audit.py} and the frozen output is
+\path{results/cross_panel_overlap_audit/summary.json}. We recomputed Standard InChIKeys from
+the Docking-44 analysis SMILES with the pinned RDKit \cite{rdkit2025}, and read DOCKSTRING keys
+and Bemis--Murcko scaffolds \cite{murcko1996} from the frozen identity contract
+\path{data/frozen/dockstring_identity_contract_2026-08-03.csv.gz}.
+
+The two matrices come from different projects, but they are not disjoint samples
+(Table~\ref{tab:s1overlap}). 582 ligands match on the full Standard InChIKey. Collapsing
+stereochemical and protonation suffixes to the 14-character connectivity block gives 804 shared
+blocks, covering 804 Docking-44 rows and 1{,}014 DOCKSTRING rows. 1{,}340 non-empty
+Bemis--Murcko scaffolds are shared, and they cover 7{,}529 Docking-44 rows, 59.5\% of that
+matrix, against 25{,}614 DOCKSTRING rows, 9.8\% of the larger one.
+
+On the target side, a curated mapping audited against PDBe/SIFTS \cite{dana2019sifts} matches nine receptor
+identities. Seven of the nine Docking-44 structures are human: 2vt4 is turkey ADRB1 (P07700)
+and 3ln1 is mouse PTGS2 (Q05769), each an orthologue of the human entry DOCKSTRING scores.
+Three of the nine mapped pairs dock into the same receptor structure DOCKSTRING itself used,
+namely 2vt4, 3ln1 and 6cm4. The broad family labels overlap in a single entry, nuclear
+receptor, out of 12 labels on the Docking-44 side and 6 on the DOCKSTRING side.
+
+\begin{table}[htbp]
+\centering
+\caption{Chemical and receptor overlap between the two Vina matrices, from
+\protect\path{results/cross_panel_overlap_audit/summary.json}.}
+\label{tab:s1overlap}
+\small
+\begin{tabular}{lrr}
+\toprule
+Shared identity & Docking-44 rows & DOCKSTRING rows \\
+\midrule
+582 full Standard InChIKeys & 582 & 582 \\
+804 connectivity blocks & 804 & 1{,}014 \\
+1{,}340 Bemis--Murcko scaffolds & 7{,}529 (59.5\%) & 25{,}614 (9.8\%) \\
+\midrule
+\multicolumn{3}{l}{9 mapped receptor identities, 7 with a human Docking-44 structure} \\
+\multicolumn{3}{l}{3 mapped pairs sharing the receptor structure DOCKSTRING used} \\
+\multicolumn{3}{l}{1 shared broad family label (nuclear receptor) of 12 and 6} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We therefore call the two matrices separately generated, and never independent. Agreement
+between them is replication across matrices built by different projects with the same
+underlying scoring function, not evidence from disjoint chemistry or disjoint receptors.
+
+\sisubsection{S1.4 How to read ranges and probabilities}
+
+No bracketed range in this Supplement is a confidence interval for a superpopulation of
+targets. Both panels are fixed, so a target is not a draw from anything, and no interval here
+supports a statement about proteins outside the 44 structures and 58 gene symbols analysed.
+Four kinds of statement appear, and they quantify different operations.
+
+\emph{Simulation ranges} are the 2.5th and 97.5th percentiles over repetitions of a null
+construction, 500 repetitions per family in S2.3. They describe the spread of the simulation
+and say nothing about sampling error in the observed value they are compared with.
+
+\emph{Repeated-sample ranges} are the same percentiles over a stated resampling operation
+applied to the observed data: 1{,}000 equal-$n$ random supports in S2.2, 200 size-matched
+splits into halves sharing no whole chemical group in S4, and 100 calibration samples at each
+size in S5.
+
+\emph{Cluster bootstrap intervals} are percentile intervals from resampling whole chemical
+groups with replacement, Butina clusters for Docking-44 \cite{butina1999} and Bemis--Murcko
+scaffolds for DOCKSTRING, at 5{,}000 replicates per scheme. Where both schemes apply we report
+the conservative union of the two intervals. The resampling unit is a chemical group and not a
+ligand, so these intervals cover ligand-side variation only, with the target panel held fixed.
+
+\emph{Permutation probabilities} are Monte Carlo target-label probabilities. One complete
+relabelling of the docking target panel is applied to the rows and columns of its map while the
+experimental map stays fixed \cite{hubert1976}, using 50{,}000 relabellings on the kinase and
+safety-panel endpoints and 20{,}000 on the PDSP graph. All permutation and simulation
+probabilities use the add-one rule, so 500 null repetitions floor at $1/501=0.0020$ and
+50{,}000 relabellings floor at $1/50{,}001$.
+
+Replicate-level values behind every range are in the frozen outputs named at the head of each
+subsection, so any percentile reported here can be recomputed from the released files.

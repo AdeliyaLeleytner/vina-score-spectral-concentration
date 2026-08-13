@@ -1,0 +1,240 @@
+\sisection{S7. Software, environment and the released audit tool}
+
+\sisubsection{S7.1 Environment and report build}
+
+The v5 report layer uses CPython 3.12.11 and the pinned \path{requirements.lock}. The lock file was
+produced by \texttt{uv pip compile requirements.txt --python-version 3.12 --output-file
+requirements.lock} and includes transitive dependencies. Table~\ref{tab:s7env} lists the
+interpreter and the components imported directly by the analysis and report code.
+
+\begin{table}[htbp]
+\centering
+\caption{Release interpreter and directly imported components. Package versions come from
+\texttt{requirements.lock}; the interpreter is also pinned in \texttt{environment.yml}.}
+\label{tab:s7env}
+\small
+\begin{tabular}{ll}
+\toprule
+Component & Version \\
+\midrule
+CPython & 3.12.11 \\
+NumPy \cite{numpy2020} & 1.26.4 \\
+pandas & 2.3.2 \\
+SciPy \cite{scipy2020} & 1.16.2 \\
+scikit-learn & 1.7.2 \\
+RDKit \cite{rdkit2025} & 2025.03.6 \\
+Matplotlib \cite{matplotlib2007} & 3.10.6 \\
+Biopython & 1.87 \\
+openpyxl & 3.1.5 \\
+xlrd & 2.0.2 \\
+pytest & 9.1.1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The normative local environment and the report build are:
+
+\begin{verbatim}
+uv venv --python 3.12.11 .venv
+uv pip install --python .venv/bin/python -r requirements.lock
+make PYTHON=.venv/bin/python all
+\end{verbatim}
+
+\path{Dockerfile} is the independent packaging check rather than a second dependency
+specification. It starts from \texttt{python:3.12.11-slim}, adds a TeX Live subset, installs the
+same \path{requirements.lock} through \texttt{pip}, and runs \texttt{make all}.
+
+The default target is a report-layer build over frozen results. \texttt{make all} invokes
+\texttt{submission-v5}: \texttt{verify-v5-numbers} regenerates and stages the submission figures,
+including the graphical abstract, verifies the v5 report manifest, and runs the v5 consistency
+and aggregate-reconstruction tests. \texttt{manuscript-v5} and
+\texttt{supplement-v5} then compile the two PDFs twice with
+\texttt{SOURCE\_DATE\_EPOCH=1786320000}. This build does not rerun every scientific producer,
+create a release tag or mint a DOI. PDF bytes can still differ across TeX distributions even
+when the text and page count agree.
+
+The included \path{.github/workflows/v5-report.yml} is configured to run the complete
+\texttt{release-check-v5} target in a clean Linux checkout and retain the tested PDFs and staged
+artwork. That target also verifies the repository data and manuscript-source manifests, all
+registered result-bundle checksums and the separate 149-row public-core manifest before running
+the committed test inventory. This continuous-integration layer becomes meaningful only when
+every registered input is present in the committed release candidate.
+
+The v5 manifest, \path{results/v5_report_source_manifest.csv}, records the exact local source,
+frozen-result and build-contract files consumed by this report layer. It does not claim that the
+upstream scientific producers were rerun. The strict public-core audit is separate. Its manifest,
+\path{results/public_core_source_manifest.csv}, has 149 records: 111 inputs, 37 code files and one
+output. \texttt{make verify-public-manifest} re-hashes the manifest and every registered file
+without rewriting them. Some result bundles also carry \path{output_checksums.json}; coverage is
+partial, so bundle summaries and metadata remain part of the frozen-output record.
+
+Stochastic stages use explicit per-analysis seeds rather than one global value.
+Table~\ref{tab:s7seeds} lists selected support and scorer seeds behind the reported results;
+experimental-permutation seeds are specified with their endpoint contracts in S6 and in the
+producer metadata. Changing a seed keeps the design but changes the replicate rows.
+
+\begin{table}[htbp]
+\centering
+\caption{Selected support and scorer seeds for analyses reported in the main text. Sources are the metadata or
+summary files in \texttt{calibration\_panel\_recovery}, \texttt{biological\_core\_modes} and
+\texttt{nonvina\_scorer\_transport}; holdout seeds are also set in their producer script.}
+\label{tab:s7seeds}
+\small
+\begin{tabular}{lr}
+\toprule
+Analysis & Seed \\
+\midrule
+Calibration recovery, DOCKSTRING-58 & 20260803 \\
+Calibration recovery, Docking-44 & 20260804 \\
+Chemical-group holdout, DOCKSTRING-58 & 20260805 \\
+Chemical-group holdout, Docking-44 & 20260806 \\
+DOCKSTRING 15{,}000-row working support & 71 \\
+Exploratory five-mode compression & 20260808 \\
+Fixed-pose ligand subset & 20260802 \\
+Fixed-pose cluster bootstrap, Bemis--Murcko & 20260805 \\
+Fixed-pose cluster bootstrap, Butina & 20260806 \\
+ODDT internal training & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Fixed-pose source rescoring used a separate environment. ODDT 0.7 supplies RF-Score, NNScore and
+PLECscore \cite{oddt2015}; the released workflow runs its worker under CPython 3.9.23 from
+conda-forge. That stage executes
+\path{analysis/nonvina_scorer_oddt_worker.py} as a subprocess under the 3.9 interpreter, writes a
+CSV of scores, and the spectral statistics are computed under the 3.12.11 environment from that
+CSV. Both interpreter strings are written into the \texttt{toolchain} block of
+\path{results/nonvina_scorer_transport/summary.json}. The 3.9 environment carries SciPy 1.13.1,
+whose \texttt{scipy.sparse.vstack} no longer accepts a map object; the worker patches
+\texttt{sparse\_vstack} in two ODDT namespaces to materialise the iterator into a list before
+stacking, which the same record states has no numerical effect. The smina binary
+\cite{smina2013} is identified by version string \texttt{smina 2020.12.10 conda-forge:b08c07c}
+and by SHA-256, and it is not redistributed.
+
+The report build therefore verifies and renders released results; it is not a source-level
+clean-clone regeneration claim. \path{external_sources.csv} inventories the external datasets and
+assay resources used by v5, with access, redistribution, licence, integrity and provenance fields.
+The fixed-pose scorer toolchain additionally depends on ODDT training resources, DOCKSTRING
+receptor PDBQTs and the smina executable identified in
+\path{results/nonvina_scorer_transport/summary.json}; that summary is authoritative for their
+versions and checksums. Core score matrices and several public assay tables are included. Other
+inputs, including PDSP, SPD, KiRHub and PKIS1 source data, are not all redistributed. The
+exact boundary for each analysis is in its result summary or README. The primary and complete-case PDSP paired-QAP tables and
+support-threshold sensitivity can nevertheless be reconstructed from the released aggregate
+target-pair table and Docking-44 matrix with
+\path{analysis/reproduce_pdsp_derived_qap.py}; this does not reconstruct the upstream
+compound-level PDSP preprocessing.
+
+Fixed-pose rescoring additionally requires the DOCKSTRING pose archives, an external smina binary
+and the Python 3.9 ODDT environment with its training tables. Its released scores and metrics are
+frozen and checksum-recorded. The \texttt{refresh-public-analyses} target reruns a public subset;
+it is not a universal producer pipeline.
+
+The package starts from published score matrices. It does not rerun receptor preparation, search-box
+selection, pose generation or docking, and those stages belong to the cited Docking-44 and
+DOCKSTRING releases \cite{nikitin2025,dockstring2022}.
+
+\sisubsection{S7.2 The reusable target-map audit}
+
+\path{analysis/target_map_audit.py} applies the target-map checks of this paper to any new dense
+score matrix. A test asserts that it imports nothing beyond the standard library, NumPy and
+pandas, and that its source contains no reference to this project's evidence builder or to any
+named dataset, so it carries no dependency on the manuscript.
+
+The input is one table with a \texttt{.csv}, \texttt{.tsv}, \texttt{.csv.gz} or \texttt{.tsv.gz}
+suffix; the separator follows from the suffix and any other suffix is rejected. The table needs
+at least 4 rows, no duplicate column names and at least 3 target columns. Selection of the target
+columns is required and takes exactly one of two forms, an explicit ordered list or a regular
+expression searched against the column names. Table~\ref{tab:s7cli} is the complete command-line
+interface.
+
+\begin{table}[htbp]
+\centering
+\caption{Every option \texttt{analysis/target\_map\_audit.py} implements. The parser accepts no
+others.}
+\label{tab:s7cli}
+\small
+\begin{tabular}{llp{6.6cm}}
+\toprule
+Option & Default & Effect \\
+\midrule
+\texttt{input} (positional) & required & dense CSV/TSV table, optionally gzipped \\
+\texttt{-{}-output-dir} & required & destination; must be absent or empty \\
+\texttt{-{}-target-columns} & one of two required & ordered comma-separated target names \\
+\texttt{-{}-target-regex} & one of two required & pattern searched against column names \\
+\texttt{-{}-ligand-id} & none & identifier column; must have no missing value \\
+\texttt{-{}-domain-column} & none & complete numeric column with non-zero range \\
+\texttt{-{}-imputation} & \texttt{error} & \texttt{error}, \texttt{target-mean} or
+\texttt{target-median} \\
+\texttt{-{}-domain-quantiles} & none & number of quantile bins; requires a domain column, and a
+domain column requires it \\
+\texttt{-{}-pilot-sizes} & none & comma-separated row counts for held-out recovery \\
+\texttt{-{}-pilot-repeats} & 100 & replicates per pilot size \\
+\texttt{-{}-top-edge-count} & 10 & how many strongest positive and negative edges are compared \\
+\texttt{-{}-panel-k} & none & number of medoid targets under distance $1-|r|$ \\
+\texttt{-{}-seed} & 0 & seed for the pilot row permutations \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The tool fails closed. A missing target cell stops the run unless an imputation policy is chosen,
+a nonnumeric cell always stops it and the message names up to 5 offending cells, and a
+zero-variance target column stops it. All numerical work and validation finish before the output
+directory is created, so a violated contract leaves no partial audit on disk. Errors print to
+standard error with the prefix \texttt{target-map-audit: error:} and exit with status 2.
+
+Six files are always written. \path{preprocessing_contract.json} records the schema version, the
+SHA-256 of the script that produced the run, the input path with its byte count and digest, the
+selected columns, the missing-data policy with any imputed values, the seed, the definition of
+each surface, and a numerical check that row centring leaves every within-row pairwise target
+difference unchanged. \path{spectra.json} holds, for the raw and the two-way-centred surface,
+the participation-ratio dimension together with its exact mean-squared-correlation identity and
+the absolute discrepancy between the two, the entropy effective dimension, the PC1 variance
+fraction, the number of components reaching 90\% of trace, the mean and mean absolute edge
+correlation, the negative-edge fraction, and the full eigenspectrum.
+\path{target_correlation_raw.csv} and \path{target_correlation_two_way_centered.csv} hold the
+square maps, \path{signed_edges.csv} the upper-triangle edge table under both transforms, and
+\path{output_checksums.json} the byte count and SHA-256 of every file written.
+
+Three optional analyses add files only when requested. \texttt{-{}-domain-quantiles} writes
+\path{domain_bin_edges.csv} and \path{domain_map_comparisons.csv}, comparing every pair of
+quantile bins under both transforms; bin boundaries come from NumPy quantiles, a value equal to
+an interior boundary joins the higher bin, and each bin needs at least 3 rows.
+\texttt{-{}-pilot-sizes} writes \path{pilot_recovery_replicates.csv} and
+\path{pilot_recovery_summary.csv}: each replicate permutes the rows, splits them into a pilot
+block and its row-disjoint complement, and compares the two maps on edge-rank Spearman, sign
+agreement, mean absolute and root-mean-squared edge difference, and top positive and top negative
+edge precision. Each replicate stores a SHA-256 of its sampled row indices, and the summary
+reports the mean, the median and the 2.5--97.5\% range. \texttt{-{}-panel-k} writes
+\path{target_panel_medoids.csv} and \path{target_panel_summary.json} from a deterministic
+farthest-first initialisation followed by PAM swaps on distance $1-|r|$; both files carry the
+warning that the result is not a biologically validated target panel.
+
+A worked invocation on the shipped 20-ligand synthetic fixture, which has 4 target columns and a
+molecular-weight column, is:
+
+\begin{verbatim}
+.venv/bin/python analysis/target_map_audit.py \
+  analysis/fixtures/target_map_audit_synthetic.csv \
+  --output-dir results/my_target_map_audit \
+  --target-regex '^target_' --ligand-id ligand_id \
+  --domain-column molecular_weight --domain-quantiles 2 \
+  --pilot-sizes 8 --pilot-repeats 20 \
+  --top-edge-count 3 --panel-k 2 --seed 20260810
+\end{verbatim}
+
+It writes 12 files and prints a JSON summary reporting 20 rows, 4 targets, a raw
+participation-ratio dimension of 1.757 and a two-way-centred dimension of 1.850. The fixture is
+built so that the residual map reverses between the light and heavy halves of the library: the
+test suite asserts an edge-rank correlation below $-0.8$ and sign agreement below 0.5 between the
+two molecular-weight bins. That is the support-dependence effect of the main text written into a
+synthetic invariant.
+
+The tool ships with \path{analysis/test_target_map_audit.py}, 7 tests that pass in about 1
+second. They check the import restriction, the exactness of the participation-ratio identity
+together with rank invariance under row centring, a complete run whose recorded checksums match
+the files on disk, byte-for-byte determinism across two runs at the same seed, explicit column
+selection from a gzipped TSV, fail-closed behaviour on missing and malformed cells, and rejection
+of an invalid role column, an incomplete optional-analysis specification and a non-empty output
+directory. The last of these also asserts that a pre-existing user file in that directory is left
+untouched. \path{analysis/TARGET_MAP_AUDIT.md} is the user-facing documentation.

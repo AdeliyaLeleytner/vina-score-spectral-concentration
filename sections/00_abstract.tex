@@ -1,0 +1,36 @@
+\section*{Abstract}
+
+\noindent\textbf{Background.}
+Target--target correlations in multi-target docking matrices are often read as cross-reactivity
+maps. Yet a ligand that scores favourably against one receptor often scores favourably against
+many, creating a shared axis that can obscure target-specific relationships. We tested this axis
+across scoring functions, matched nulls and external pharmacology.
+
+\noindent\textbf{Results.}
+Eight scoring outputs evaluated on the same fixed poses all had a near-uniform leading component.
+After subtracting each ligand's mean across targets, the residual geometry was more concentrated
+than four transformation-matched nulls. The map was also library-dependent: estimates from the lower
+and upper molecular-weight quartiles agreed only weakly. On a Psychoactive Drug Screening Program
+(PDSP) target-pair graph built from quantified affinities, the residual map agreed more closely with experiment than the raw map after
+Docking-44 ligands sharing a PDSP connectivity block were excluded.
+This advantage weakened when censored assay cells were restored and largely disappeared when the
+docking map was rebuilt using only compounds with complete docking scores. Evidence elsewhere was mixed: centred
+docking approached, but did not exceed, sequence identity on a kinase endpoint, and the
+raw-to-centred change reversed on KiRHub. A few hundred randomly selected ligands closely recovered
+both full residual maps.
+
+\noindent\textbf{Conclusions.}
+Raw docking correlations should be checked for a shared ligand-wide score offset, and the centred
+map computed and interpreted alongside the raw one rather than in place of it. The centred map
+retains structured geometry that is inexpensive to estimate and informative on some diversified
+panels, but it depends on the ligand library, reverses on one kinase panel, and is not a
+compound-level target-ranking rule.
+
+\noindent\textbf{Scientific Contribution.}
+Ligand-wise normalisation is established; our contribution is a scorer-controlled, null-calibrated
+audit of the resulting geometry against pharmacology and sequence-based baselines, together with a
+cost analysis and tested map-diagnostic command-line tool.
+
+\noindent\textbf{Keywords:} molecular docking; scoring functions;
+target-correlation map; secondary pharmacology; target cross-reactivity;
+effective dimension; reproducibility

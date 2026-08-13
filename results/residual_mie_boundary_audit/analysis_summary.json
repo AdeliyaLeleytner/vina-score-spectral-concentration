@@ -49,12 +49,12 @@
     "positive_cells_clipped_to_zero": 0
   },
   "rank_identity": {
-    "statement": "within-ligand two-way-residual ranking equals column-z ranking",
-    "mathematical_reason": "two_way_residual[i,j] = column_z[i,j] - row_mean[i]",
-    "floating_point_tie_policy": "column-z ranks are reused after verifying the score identity",
-    "maximum_absolute_score_reconstruction_error": 8.881784197001252e-16,
-    "maximum_absolute_rank_difference": 0.0,
-    "all_rankings_identical": true
+    "statement": "within-ligand two-way-residual ranking equals column-centred ranking",
+    "mathematical_reason": "two_way_residual[i,j] = column_centred[i,j] - row_mean(column_centred)[i]",
+    "floating_point_tie_policy": "each representation is ranked independently; the two-way residual preserves the ordering of column-centred scores, not of column-z",
+    "maximum_absolute_score_reconstruction_error": 1.7763568394002505e-15,
+    "maximum_absolute_rank_difference": 33.0,
+    "all_rankings_identical": false
   },
   "null_diagnostics": {
     "null_replicates": 5000,

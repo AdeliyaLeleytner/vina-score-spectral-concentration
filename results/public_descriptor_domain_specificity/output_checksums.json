@@ -1,0 +1,13 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "README.md": "586c7ed36f4081363179c83cb19a911fde076027e0380adc66ac02ae31126f5a",
+    "descriptor_correlations.csv": "3366300933e16922925db9a1995fb58917fd619d8461a1438f9f5958162e2fc6",
+    "descriptor_extremes.csv": "612ddebc50aa7e16fb1e0521fce77405e48085253a7aad09d0458f3e6d6d339f",
+    "descriptor_family_summary.csv": "7a82b6389842bda9c0ad539ea51c6761d9f5a6adc8162e4f49e46e2a8a90b76a",
+    "descriptor_random_disjoint_controls.csv": "7fcd38c3ee980e0a44e8c30490c282a2ed98b089cbbf093f5ca315e284ddcb80",
+    "descriptor_random_disjoint_summary.csv": "c1fae7298fe7360d7b0ab32d7dc459720c51919cea7f9d481f2a14f94270d225",
+    "summary.json": "228659ba8b4c94374dd054895137f524b60a84f5b43203a947b1a9f2a01fb577"
+  },
+  "scope": "all output files except this checksum manifest"
+}

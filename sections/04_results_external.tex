@@ -1,0 +1,93 @@
+\subsection{Agreement with measured target relationships improves on some panels}
+
+We compared the raw and residual maps with target relationships measured in external assays.
+The kinase endpoint comes from the experimental panels alone and uses no docking score. On the
+20 kinases shared by DAVIS,
+PKIS2 and PKIS1, a target pair counts as positive when its centred experimental correlation
+falls in the upper decile of at least two of those panels, which labels 15 of the 190 pairs;
+we refer to this as the frozen analysis endpoint. The release does not establish when it was fixed
+relative to inspection of KiRHub. Inference permutes the 20 docking target labels 50{,}000 times
+while the experimental endpoint stays fixed.
+
+Raw Vina target geometry gives an area under the receiver operating characteristic curve
+(ROC-AUC) of 0.597 and average precision of 0.236. Removing each ligand's mean raises these to
+0.710 and 0.301, respectively (Figure~\ref{fig:external}b). The paired increments are $+0.114$
+and $+0.066$. These gains are descriptive: the analysis is post hoc, and the result does not
+remain below the 0.05 threshold when the full set of cutoffs is considered.
+
+Two structural baselines on the identical 190 pairs set the scale. Receptor-domain sequence
+identity gives ROC-AUC 0.718 and average precision 0.426, and identity across the aligned
+85-residue KLIFS ATP pocket gives 0.708 and 0.486. On ROC-AUC, the centred map approaches these
+structural baselines: it is 0.008 below sequence identity and
+0.002 above pocket identity, having started about 0.12 below each. These point estimates do not
+establish equivalence or superiority. On average precision it remains below
+both. The corresponding gains in continuous Spearman agreement over the same 190 pairs are much
+smaller: $+0.016$ on DAVIS and $+0.044$ on PKIS2.
+
+PDSP gives the largest point-estimate separation between the two docking maps, but it also shows
+the clearest support boundary. Its exact-only graph contains 148 target pairs over 21 targets,
+estimated from 10 to 92 shared compounds per edge. Before building the docking map, we removed every
+Docking-44 row whose connectivity block appeared among any analyzed PDSP compound. The exact-only
+endpoint shared 63 full keys and 116 connectivity blocks with Docking-44; the broader conservative
+mask removed 128 docking rows. Raw-map
+agreement is $\rho=0.044$, whereas residual-map agreement is 0.295. The smaller Certified Data
+subset shows the same direction, 0.074 versus 0.425 (Figure~\ref{fig:external}a).
+
+Two-sided paired QAP places this separation in the tail under unrestricted target relabelling:
+the raw-to-residual difference in continuous agreement is 0.251, with $p=0.0020$ and Holm-adjusted
+$p=0.0240$ across the 12-row table. Under within-family relabelling, the same descriptive contrast
+gives $p=0.0134$ and Holm-adjusted $p=0.1016$. Adding residual docking to a sequence-and-family
+baseline raises continuous agreement by 0.096 on this support, but none of the adjusted fusion tests
+falls below 0.05. These probabilities describe a post-hoc analysis family, not a confirmatory test.
+
+The support sensitivities are more important than the smallest probability. Restoring right-censored
+cells at their reported bounds lowers residual agreement to 0.076. Rebuilding both docking maps on
+the 9{,}221 rows complete across all 44 targets changes the comparison to $-0.099$ for raw docking
+and 0.046 for residual docking; the sequence-and-family fusion then becomes slightly worse when
+residual docking is added. This deletion is driven almost entirely by missing scores for CHRM2.
+Complete-case deletion changes the chemical domain, so this is a
+support-selection sensitivity rather than a pure imputation contrast. Raising the minimum shared-compound
+rule from 10 to 30 preserves the direction but changes the graph size and effect magnitude. QAP keeps
+edges that share a target together, but does not propagate uncertainty from estimating each edge on
+its own compound set. We therefore treat the PDSP result as descriptive and support-sensitive.
+
+Not every receptor in the panel is docked into a human structure, and the sequence baseline is
+human throughout. An audit of RCSB PDB metadata for all 43 accessions \cite{berman2000} finds five non-human receptor chains:
+GRIN1 (rat), ADRB1 (turkey, eight mutations), PTGS1 (sheep), PTGS2 and HTR3A (mouse); the other
+non-human chains in these entries are crystallisation aids on a human receptor --- T4 lysozyme
+and BRIL fusions, nanobodies, murine Fab fragments, G-protein and scFv16 chains --- and are not
+species substitutions
+(\path{results/docking_structure_species/structure_species.csv}). Two of the five, ADRB1 and
+HTR3A, fall in the PDSP graph. Dropping them leaves 119 pairs over 19 targets, on which the
+increment over the sequence-and-family baseline is $+0.061$ in continuous agreement
+and $+0.063$ in top-decile retrieval. The point estimates are smaller on this construct-clean sensitivity but
+remain positive after removing the two proxied receptors.
+
+The Novartis safety panel provides an exact- and connectivity-de-overlapped test. It covers 12 targets and
+1{,}975 InChIKeys, and all shared connectivity blocks were removed before the docking map was
+built. Most selected activity rows are right-censored. Against a fixed centred assay map, the
+reported-bound endpoint moves from $\rho=0.149$ to 0.372; the 10\,$\mu$M endpoint changes only
+from 0.348 to 0.388. On the largest outcome-blind complete rectangle, 102 compounds measured on
+the same 11 targets, agreement moves from 0.055 to 0.575 (Figure~\ref{fig:external}a), and all
+leave-one-target-out differences on the reported-bound endpoint are positive. The remaining
+endpoint and assay-transform values are in Supplementary Section S6.
+
+After rank control for sequence identity, family, pair support and target coverage, only one of
+three residual associations has a one-sided family-preserving tail area below 0.05. The raw map
+also retains partial agreement and exceeds the residual map in partial rank at 10\,$\mu$M, so this does not
+establish a general increment beyond homology. On the complete 102-compound rectangle, residual
+partial rank is $+0.371$, compared with $-0.220$ for the raw map.
+
+Raw and centred experimental maps encode different edges: the former captures shared response
+magnitude, whereas the latter captures target-relative response. Changing both the assay and docking
+transforms at once would therefore make the docking-side effect uninterpretable. Every comparison in
+Figure~\ref{fig:external} holds the experimental map fixed and varies only the docking map.
+
+On KiRHub the comparison moves in the opposite direction. Against the upper decile of the
+centred KiRHub target-pair map, 19 positives among the same 190 pairs, raw docking gives
+ROC-AUC 0.751 and average precision 0.331, while centred docking gives 0.744 and 0.289. The
+paired target-label probabilities for a positive gain are 0.53 on ROC-AUC and 0.92 on average
+precision. This is a non-replication of the centred-minus-raw gain on a fourth kinase panel,
+showing that the sign of the docking-side effect is not fixed across panels. The raw and centred
+maps are nevertheless each associated with the experimental map on their own
+(ROC-AUC $p=0.0063$ raw and $p=0.0024$ centred).

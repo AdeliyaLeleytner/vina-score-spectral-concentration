@@ -1,0 +1,64 @@
+\subsection{A few hundred ligands recover the map; five-mode compression is exploratory}
+\label{sec:cost}
+
+Because the map depends on ligand support, it must be estimated on the
+relevant chemical domain. We therefore asked how large a pilot sample drawn from the source library
+must be docked before the estimate settles. We drew 100 random calibration
+samples at each of seven sizes from 50 to 5,000 ligands and compared each
+estimated residual map with the full-matrix map by edge-rank agreement
+(Figure~\ref{fig:cost}a). Mean agreement for Docking-44 is 0.813 at 50 ligands,
+0.942 at 200 and 0.976 at 500; DOCKSTRING-58 gives 0.766, 0.918 and 0.965 at the
+same sizes. Most of the recovery occurs by 200 ligands. The next tenfold increase, from 500
+to 5,000, adds only 0.022 on Docking-44 and 0.032 on DOCKSTRING-58.
+
+Results are similar under a five-fold chemical-group holdout, run on all of Docking-44 and
+on a fixed 15{,}000-ligand DOCKSTRING support, with calibration ligands drawn from
+four folds and the reference map from the fifth: mean agreement at 200 ligands is
+0.927 for Docking-44 and 0.916 for DOCKSTRING-58, rising to 0.959 and 0.958 at
+500. In practical terms, a two-stage design at 200 ligands scores 11,600 of the
+15,083,480 DOCKSTRING-58 cells, about 1,300-fold fewer; for Docking-44 it is 8,800
+of 556,644, a 63-fold reduction. On the frozen 20-kinase retrieval endpoint of
+Figure~\ref{fig:external}b, a 200-ligand sample gives mean ROC-AUC 0.701 and a
+500-ligand sample gives 0.706, against 0.710 from all 260{,}060 DOCKSTRING ligands. These are
+score-surface recovery diagnostics on the source library: a calibration sample recovers the
+geometry of the library it came from.
+
+An exploratory compression analysis asks whether the residual map is equally informative in every direction. On the 20-kinase
+DOCKSTRING support, the smallest docking-only subspace holding at least half of the
+residual trace has five modes, covering 0.517 of a trace spread over 19 positive
+eigenvalues. The rule uses only the docking eigenvalues, with no experimental
+values, and returns five in every one of five scaffold-disjoint folds;
+across the ten fold pairs the mean squared canonical correlation between fold
+subspaces runs from 0.986 to 0.996, indicating that the five-dimensional subspace
+is stable across folds.
+
+Truncating the residual correlation to those five modes and renormalising to unit
+diagonal gives higher point estimates of rank agreement with the experimental target-pair map
+on all four kinase panels, by 0.033 on PKIS2 up to 0.058 on KiRHub, and higher ROC-AUC point
+estimates on all four, by 0.014 on PKIS1 up to 0.063 on KiRHub (Figure~\ref{fig:cost}b).
+Average precision changes sign across panels: $+0.034$ on DAVIS and $+0.044$ on KiRHub, but
+$-0.035$ on PKIS1 and $-0.027$ on PKIS2. The change is positive in 8 of 20 target deletions on
+PKIS1 and 5 of 20 on PKIS2. The trace rule used no experimental value and the panels were
+scored without retuning it, but PKIS1 was the discovery panel and the six-test validation
+sensitivity was unresolved. Its interpretation across the four assay panels remains post hoc.
+
+The participation ratio of the same residual map is 11.6, yet dropping the fourteen directions
+outside this exploratory five-mode subspace gives higher point estimates of rank agreement and
+ROC-AUC. Participation ratio counts directions, not their usefulness for a particular endpoint;
+the spectrum and external-comparison analysis therefore answer different questions.
+This is a within-scorer statement, and we do not extend it to comparisons between
+scoring functions.
+
+We release the map-construction and diagnostic stage of the audit as a command-line tool;
+the transformation-matched null constructions are supplied as separate analysis scripts
+rather than inside the CLI. \texttt{analysis/target\_map\_audit.py} takes any dense ligand-by-target score
+matrix and writes the raw target-correlation map, the centred map, the spectrum of
+each (participation-ratio dimension with its exact mean-squared-correlation
+identity, PC1 variance fraction, entropy dimension, and components reaching 90\% of
+trace), and a signed edge table. Optional arguments add the domain-quantile map
+comparison of Figure~\ref{fig:residual}b and a calibration-recovery curve of the
+kind in Figure~\ref{fig:cost}a, with each pilot map compared against its
+row-disjoint complement. Each run records its preprocessing contract and SHA-256
+hashes for every file written. The tool ships with
+\texttt{analysis/test\_target\_map\_audit.py} and
+\texttt{analysis/TARGET\_MAP\_AUDIT.md}.

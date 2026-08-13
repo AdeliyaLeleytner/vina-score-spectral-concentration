@@ -44,9 +44,9 @@ file is then computed with the release ``.venv`` interpreter.  Both interpreter
 versions are recorded in the emitted summary.
 
 What this cannot show.  These are rescorings of *retained Vina poses*.  A scorer
-that would have selected a different pose during search is not simulated, so a
-scorer's agreement with Vina here is a lower bound on how different a full
-re-docking run could be.  Glide and GOLD are commercial and are not tested.
+that would have selected a different pose during search is not simulated, so
+agreement could differ in either direction in a full re-docking run.  Glide and
+GOLD are commercial and are not tested.
 """
 
 from __future__ import annotations
@@ -1107,8 +1107,8 @@ def main() -> None:
             "This is a rescoring of retained AutoDock Vina poses, not an independent "
             "re-docking: each scorer is evaluated on the pose Vina selected, so a scoring "
             "function that would have chosen a different pose during search is not "
-            "simulated, and agreement with Vina here is an upper bound on the agreement a "
-            "full re-docking run would show. RF-Score, NNScore and PLECscore are trained on "
+            "simulated, so agreement could differ in either direction in a full re-docking "
+            "run. RF-Score, NNScore and PLECscore are trained on "
             "PDBbind crystal complexes and are being applied off-distribution to docked "
             "poses; RF-Score v3 additionally takes Vina terms as input features and is "
             "therefore not scoring-function-independent. The panel is nine structurally "

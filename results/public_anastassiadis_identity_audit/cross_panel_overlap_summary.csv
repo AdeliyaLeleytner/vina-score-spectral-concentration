@@ -1,0 +1,7 @@
+panel,hotspot_support,hotspot_records,usable_hotspot_structures,reference_rows,reference_unique_full_inchikeys,reference_unique_connectivities,exact_full_standard_inchikey_overlap,connectivity_overlap,connectivity_only_overlap,conservative_de_leakage_connectivity_overlap
+DAVIS,all_178,178,157,72,72,72,15,19,4,22
+DAVIS,complete_fixed21_176,176,155,72,72,72,15,19,4,22
+DOCKSTRING,all_178,178,157,260060,257791,250513,134,137,3,156
+DOCKSTRING,complete_fixed21_176,176,155,260060,257791,250513,133,136,3,155
+PKIS2,all_178,178,157,645,640,637,4,4,0,4
+PKIS2,complete_fixed21_176,176,155,645,640,637,4,4,0,4

@@ -1,0 +1,7 @@
+representation,informative_experimental_pairs,score_order_changed_pairs,score_order_changed_fraction,strict_score_order_reversal_pairs,strict_score_order_reversal_fraction,clipped_score_ties,unclipped_score_ties
+absolute_vina,25214,0,0,0,0,1058,1058
+column_standardized,25214,12,0.00047592607281668914,12,0.00047592607281668914,0,0
+two_way_residual,25214,36,0.0014277782184500675,36,0.0014277782184500675,0,0
+target_centered_unscaled,25214,0,0,0,0,0,0
+two_way_centered_unscaled,25214,0,0,0,0,0,0
+target_centered_residual_scaled,25214,63,0.0024986118822876179,63,0.0024986118822876179,0,0

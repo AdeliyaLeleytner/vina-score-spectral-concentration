@@ -2,8 +2,25 @@ from __future__ import annotations
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import pytest
 
 from analysis import make_sea_graph_figure as figure
+
+
+_OPTIONAL_INPUTS = (
+    figure.DEFAULT_SEA,
+    figure.DEFAULT_PAIRS,
+    figure.DEFAULT_ANNOTATIONS,
+    figure.DEFAULT_PANEL_METRICS,
+)
+
+pytestmark = pytest.mark.skipif(
+    not all(path.is_file() for path in _OPTIONAL_INPUTS),
+    reason=(
+        "historical SEA display inputs are intentionally outside the v5 "
+        "release archive"
+    ),
+)
 
 
 def _inputs() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:

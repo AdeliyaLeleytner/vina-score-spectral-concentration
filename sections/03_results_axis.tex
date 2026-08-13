@@ -1,0 +1,85 @@
+\subsection{A shared component in every scoring output}
+\label{sec:axis}
+
+We computed eight scoring outputs on one identical block of retained DOCKSTRING poses,
+2{,}000 ligands by nine targets, with the top AutoDock Vina pose held fixed in each of the
+18{,}000 cells. Pose selection is therefore common to all eight, so nothing that separates them can
+be attributed to a different selected pose. The remaining differences are scorer- and
+implementation-specific at fixed geometry.
+
+Across the eight, the leading principal component of the target correlation matrix carries
+between 0.414 and 0.669 of the variance. Its loading vector has cosine 0.950 to 0.986
+with the uniform target direction, and no loading is negative in any output. Thus, in every scorer
+tested, the largest single component is a common rise and fall across targets. Removing each
+ligand's mean across targets raises the participation-ratio dimension
+in all eight (Figure~\ref{fig:axis}).
+
+Four descriptive criteria were written down before the non-Vina scores were inspected: enough
+variance in PC1, a nearly uniform positive loading vector, a low raw participation ratio, and a
+clear rise after centring. Seven outputs meet all four on their point estimates. PLECscore misses
+the PC1 and raw-dimension gates, although only the PC1 miss is clear relative to its uncertainty.
+The complete criteria and intervals are reported in Supplementary Section S3.
+
+The size of the shared component varies with scorer feature class (Figure~\ref{fig:axis}a).
+Atom-pair contact-count models are highest, empirical interaction-term sums follow, and NNScore
+and PLECscore are lower. This ordering is consistent with contact counts loading more strongly
+on molecular bulk, but the related model lineages and common retained poses prevent a causal
+interpretation.
+
+The same ordering holds under every leave-one-target-out analysis and most larger target subsets,
+but weakens on the smallest subsets. The eight outputs are not eight independent functions:
+Vina and smina evaluate the same function, Vinardo reweights the same empirical form, the
+three RF-Scores are versions of one model, and RF-Score v3 takes the Vina intermolecular
+terms as input features, which leaves about four scoring lineages.
+
+The same pattern appears in the two full Vina matrices, each with its own target count. On
+Docking-44 (12{,}651 ligands, 44 targets) PC1 carries 0.733 of the target-correlation
+variance at cosine 0.970 to the uniform direction, and the raw participation ratio is 1.834.
+On DOCKSTRING-58 (260{,}060 ligands, 58 targets) the three values are 0.659, 0.969 and 2.266.
+A 44-column matrix, in other words, has fewer than two participation-ratio effective directions.
+
+\subsection{What remains after the offset is removed}
+
+Removing each ligand's mean across targets leaves a residual with participation-ratio
+dimension 9.295 on Docking-44 and 18.158 on DOCKSTRING-58, each measured on the same
+deterministic 12{,}000-ligand support used for that matrix's nulls. Part of this rise is
+mechanical: the operation caps the residual dimension at $P-1$, which is 43
+and 57 for these two matrices, and it pushes any estimate upward. The question is whether a
+matrix with no target-resolved structure at all would also land near 9 or 18 after the same
+steps. The matched nulls do not.
+
+The Docking-44 complete-case value is higher. Supplementary Section S2 shows that this reflects
+a chemically different ligand support, driven largely by one incomplete target column, rather
+than an imputation-only effect.
+
+We ran four transformation-matched null constructions through the same pipeline on the
+same supports, 500 repetitions each (Figure~\ref{fig:residual}a). An additive null adds
+independent Gaussian noise with the observed target-specific residual standard deviations to
+fitted grand, ligand and target effects. A column-permutation null permutes each observed
+residual target column independently across ligands. A direction null replaces each ligand's
+residual by a random direction in the zero-sum subspace, with its norm preserved. A
+size-conditioned null permutes each processed raw target column within ten equally populated
+molecular-weight bins, which keeps each target's score distribution inside a coarse size
+domain while destroying any cross-target correspondence for a given ligand.
+
+The three nulls that ignore molecular size sit against the ceiling. Their median residual
+dimensions are 42.400, 42.403 and 42.628 on Docking-44, and 56.482, 56.481 and 56.612 on
+DOCKSTRING-58, with 95\% simulation ranges at most 0.11 wide. Both observed values fall below
+all 500 repetitions of all three. The size-conditioned null is the only construction that
+moves away from the ceiling, to medians of 34.875 and 47.039, which are 0.81 and 0.83 of the
+bound. Conditioning on coarse ligand size therefore reproduces part of the concentration, but not
+most of it:
+the size-conditioned null closes 23.8\% of the distance between the one-bin version and
+the observed value on Docking-44, and 25.1\% on DOCKSTRING-58.
+
+The residual map does depend on the library it was estimated from. Residual maps estimated on
+the lower and upper molecular-weight quartiles of the same library agree at rank correlation
+0.205 for Docking-44 (all 12{,}651 ligands) and 0.351 for DOCKSTRING-58 (a 15{,}000-ligand
+random support), shown in Figure~\ref{fig:residual}b. Across 200 size-matched splits of the
+same library into halves sharing no whole chemical group, the same comparison gives 0.992 and
+0.994. These controls show the disagreement tracks a chemical-domain shift strongly aligned with
+molecular size rather than ordinary finite-support variation, but
+molecular weight was selected post hoc and covaries with other chemical properties; it is not
+identified as the cause. Between the two quartile maps, 42.5\% of target-pair correlations
+change sign on Docking-44 and 36.7\% on DOCKSTRING-58. Estimate the map on the library that
+will be screened.

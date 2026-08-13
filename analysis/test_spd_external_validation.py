@@ -160,7 +160,10 @@ def test_released_summary_and_no_compound_identifiers() -> None:
     assert summary["key_results"]["primary_floor_at_bound"]["pairs"] == 59
     assert summary["key_results"]["primary_floor_at_bound"][
         "residual_spearman"
-    ] == pytest.approx(0.33302162478083)
+    ] == pytest.approx(0.37229690239625957)
+    assert "raw-unit two-way centring" in summary["primary_contract"][
+        "docking_predictor"
+    ]
     prohibited = {"inchi_key", "inchikey", "connectivity_key", "smiles", "RowId"}
     for path in spd.DEFAULT_OUTPUT.glob("*.csv"):
         assert not (prohibited & set(pd.read_csv(path, nrows=0).columns)), path.name

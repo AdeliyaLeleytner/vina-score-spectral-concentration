@@ -1,0 +1,7 @@
+cdk2_context,source_compound_column_1_based,compound,cas_number,canonical_target,source_target_alias,exclusion_rule
+mean_cyclin_A_and_E,126,SB 202474,172747-50-1,AKT1,AKT1,remove ligand from dense complete-case analysis
+mean_cyclin_A_and_E,155,VEGF Receptor 2 Kinase Inhibitor II,288144-20-7,MAPK14,P38a/MAPK14,remove ligand from dense complete-case analysis
+cyclin_A_only,126,SB 202474,172747-50-1,AKT1,AKT1,remove ligand from dense complete-case analysis
+cyclin_A_only,155,VEGF Receptor 2 Kinase Inhibitor II,288144-20-7,MAPK14,P38a/MAPK14,remove ligand from dense complete-case analysis
+cyclin_E_only,126,SB 202474,172747-50-1,AKT1,AKT1,remove ligand from dense complete-case analysis
+cyclin_E_only,155,VEGF Receptor 2 Kinase Inhibitor II,288144-20-7,MAPK14,P38a/MAPK14,remove ligand from dense complete-case analysis

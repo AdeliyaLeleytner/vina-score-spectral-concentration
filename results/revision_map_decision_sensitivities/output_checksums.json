@@ -1,0 +1,18 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "README.md": "88301d523e45111e64e258af2964a730f596e53c285014c3ce967733f2572954",
+    "metadata.json": "fa589281c8ceee35a6acf894a3652f117eeba3ed7f16f3afc890503988ed725c",
+    "mw_decile_continuous_trends.csv": "2307b74774f47b4c37fbe873a88070bf4a847c57c57bf1ec48cb3cc32c157885",
+    "mw_decile_maps.csv": "1ef503732fa74e8e2514ce38b0ef8642e9cd1072aefb2f92d48c0a23454c8c19",
+    "mw_decile_pair_distances.csv": "01470fa5455fa1e1f50cb8c0e728df0d9617a3f9cc39032f20b5cd70efa39443",
+    "mw_equal_n_random_disjoint_controls.csv": "dd83b2bafdafe71021f55a00a384eee32538f08d576ed5e7140c08cbb924d3b9",
+    "mw_threshold_sweep.csv": "0f54902491d3c81af250a874f90904e7af3708e1390100e0cae18e0d8623b2ae",
+    "mw_threshold_sweep_summary.csv": "f57a613cc2bb6ffde55dc514132379eb0a9ad554fe4df001481daac8ce5d7d1c",
+    "recovery_decision_metrics.csv": "cd1d6b3aee8e3ca76fa10f6007281ccebb3fa085d4d6b035d6e0d4db6c3ce02f",
+    "recovery_decision_summary.csv": "5a653378fce8ffdf47071031e53e18a33ce77bf5f120b1e4d10748842c4bb7b9",
+    "recovery_edge_metrics.csv": "21155e8401ee2bc8743f18d68047b133f9f799715d99a4bf5187bc046b905c24",
+    "recovery_edge_summary.csv": "783301c16759a4db399c59847757d5ca1b31286459d07e8938ecdec79461ae07",
+    "recovery_medoid_selections.csv": "bd3268be5bb150762415f07dc63c00312457cd8c44214015cbbd80c30f91038b"
+  }
+}

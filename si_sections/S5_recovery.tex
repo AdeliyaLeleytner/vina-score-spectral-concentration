@@ -1,0 +1,359 @@
+\sisection{S5. Calibration recovery and exploratory subspace compression}
+
+S5.1 and S5.2 come from \path{analysis/calibration_panel_recovery.py}, with frozen outputs in
+\path{results/calibration_panel_recovery/}. The matched random comparison in S5.2 comes from
+\path{analysis/public_scaffold_holdout_recovery.py} and
+\path{results/public_scaffold_holdout_recovery/}. S5.3 comes from
+\path{analysis/biological_core_modes.py} and \path{results/biological_core_modes/}.
+
+\sisubsection{S5.1 Recovery of the source-library map}
+
+One replicate draws $n$ ligands without replacement from the complete row list, two-way-centres
+the sampled score block, and takes the target correlation matrix of the centred block. Recovery
+is the Spearman correlation between the upper triangle of that map and the upper triangle of the
+full-matrix map: 946 target pairs for Docking-44 and 1{,}653 for DOCKSTRING-58. The draw reads no
+experimental value and no score threshold. We ran 100 replicates at each of seven sizes, with
+seed 20260803 for DOCKSTRING-58 and seed 20260804 for Docking-44, both recorded in
+\path{results/calibration_panel_recovery/metadata.json}.
+
+The estimand declared in that file is recovery of the full-matrix map, so a calibration sample is
+a subset of the rows its own reference is built from. A separate bundle runs both reference
+scopes side by side on the same design. Scoring each sample against the map of the rows it did
+not use gives 0.940 at 200 ligands and 0.973 at 500 for Docking-44, against 0.941 and 0.975 when
+the calibration rows stay in the reference; for DOCKSTRING-58 the four values are 0.920, 0.965,
+0.920 and 0.966
+(\path{results/revision_map_decision_sensitivities/recovery_edge_summary.csv}). The choice of
+reference scope moves the mean by at most 0.002.
+
+\begin{table}[htbp]
+\centering
+\caption{Recovery of the full-matrix residual target map from an outcome-blind calibration
+sample. Entries are means over 100 replicates per size with 2.5--97.5\% repeated-sample ranges.
+Source: \texttt{results/calibration\_panel\_recovery/summary.csv}. The reference residual
+participation ratios are 9.303 for Docking-44 and 18.206 for DOCKSTRING-58.}
+\label{tab:s5curve}
+\small
+\begin{tabular}{lrlrr}
+\toprule
+Matrix & $n$ & Map $\rho$ & Plug-in PR & OAS PR \\
+\midrule
+Docking-44 & 50 & 0.813 [0.657, 0.901] & 7.13 & 10.50 \\
+Docking-44 & 100 & 0.898 [0.772, 0.946] & 7.83 & 9.70 \\
+Docking-44 & 200 & 0.942 [0.898, 0.962] & 8.63 & 9.67 \\
+Docking-44 & 500 & 0.976 [0.961, 0.984] & 9.03 & 9.47 \\
+Docking-44 & 1{,}000 & 0.987 [0.977, 0.991] & 9.21 & 9.43 \\
+Docking-44 & 2{,}000 & 0.994 [0.991, 0.996] & 9.24 & 9.35 \\
+Docking-44 & 5{,}000 & 0.998 [0.997, 0.999] & 9.27 & 9.32 \\
+\midrule
+DOCKSTRING-58 & 50 & 0.766 [0.665, 0.822] & 12.80 & 18.70 \\
+DOCKSTRING-58 & 100 & 0.861 [0.808, 0.896] & 14.94 & 18.10 \\
+DOCKSTRING-58 & 200 & 0.918 [0.885, 0.938] & 16.48 & 18.15 \\
+DOCKSTRING-58 & 500 & 0.965 [0.951, 0.972] & 17.42 & 18.11 \\
+DOCKSTRING-58 & 1{,}000 & 0.982 [0.977, 0.986] & 17.90 & 18.25 \\
+DOCKSTRING-58 & 2{,}000 & 0.991 [0.987, 0.992] & 18.01 & 18.19 \\
+DOCKSTRING-58 & 5{,}000 & 0.996 [0.995, 0.997] & 18.15 & 18.22 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:s5curve} gives the full curve. Going from 50 to 200 ligands adds 0.129 for
+Docking-44 and 0.152 for DOCKSTRING-58; going from 200 to 500 adds 0.034 and 0.047. A further
+tenfold increase, from 500 to 5{,}000, adds 0.022 and 0.032. The replicate spread narrows faster
+than the mean rises. At 50 ligands the 2.5--97.5\% range spans 0.244 for Docking-44 and 0.158 for
+DOCKSTRING-58; at 200 ligands it spans 0.065 and 0.052.
+
+The plug-in participation ratio of a small sample is biased downward, because finite-sample
+correlation noise inflates the mean squared off-diagonal correlation. Oracle approximating
+shrinkage removes most of that bias \cite{chen2010}. At 200 ligands the plug-in estimate is 8.63
+against the Docking-44 reference of 9.303, while the shrunk estimate is 9.67. For DOCKSTRING-58
+the two estimates are 16.48 and 18.15 against a reference of 18.206. Recovering the ordering of
+the map and recovering its participation ratio are separate questions at these sizes.
+
+\begin{table}[htbp]
+\centering
+\caption{Score cells needed by a two-stage calibration design. Full-matrix cells are ligands
+times targets. Source: the \texttt{cost\_examples} block of
+\texttt{results/calibration\_panel\_recovery/metadata.json}.}
+\label{tab:s5cells}
+\small
+\begin{tabular}{lrrrlr}
+\toprule
+Matrix & Ligands & Targets & $n$ & Cells scored & Reduction \\
+\midrule
+Docking-44 & 12{,}651 & 44 & 200 & 8{,}800 of 556{,}644 (1.58\%) & 63.3-fold \\
+Docking-44 & 12{,}651 & 44 & 500 & 22{,}000 of 556{,}644 (3.95\%) & 25.3-fold \\
+DOCKSTRING-58 & 260{,}060 & 58 & 200 & 11{,}600 of 15{,}083{,}480 (0.077\%) & 1{,}300.3-fold \\
+DOCKSTRING-58 & 260{,}060 & 58 & 500 & 29{,}000 of 15{,}083{,}480 (0.192\%) & 520.1-fold \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:s5cells} gives the arithmetic for both matrices. Every calibration ligand is
+scored against every target, so the reduction in cells equals the reduction in ligands and the
+target count cancels. The two matrices differ by a factor of 20.6 in that reduction because
+DOCKSTRING-58 has 20.6 times more rows.
+
+Two downstream quantities were tracked on the same replicates. The first is retrieval of the
+strongest edges of the full-matrix map: labelling the top decile of reference edges positive and
+ranking by the sample's edge values gives, at 200 ligands, ROC-AUC 0.980 and average precision
+0.862 for Docking-44, and 0.976 and 0.855 for DOCKSTRING-58. At 500 ligands the four values are
+0.991, 0.930, 0.990 and 0.933. The second is the frozen 20-kinase analysis endpoint, in which
+a target pair is positive when its centred experimental correlation falls in the upper decile of
+at least two assay panels, labelling 15 of 190 pairs. That endpoint applies to DOCKSTRING-58
+only, because the 20 kinases are DOCKSTRING columns.
+
+\begin{table}[htbp]
+\centering
+\caption{The frozen 20-kinase experimental-pair endpoint, 15 positives of 190, evaluated from the
+DOCKSTRING-58 calibration samples. Entries are means over 100 replicates with 2.5--97.5\% ranges.
+The last row is the value from all 260{,}060 complete DOCKSTRING rows. Sources:
+\texttt{results/calibration\_panel\_recovery/summary.csv} and the
+\texttt{reference\_experimental\_pair\_metrics} block of the same directory's
+\texttt{metadata.json}.}
+\label{tab:s5endpoint}
+\small
+\begin{tabular}{lll}
+\toprule
+$n$ & ROC-AUC & Average precision \\
+\midrule
+50 & 0.677 [0.594, 0.757] & 0.229 [0.140, 0.350] \\
+100 & 0.691 [0.595, 0.768] & 0.259 [0.180, 0.353] \\
+200 & 0.701 [0.646, 0.772] & 0.269 [0.188, 0.344] \\
+500 & 0.706 [0.672, 0.742] & 0.276 [0.213, 0.340] \\
+1{,}000 & 0.708 [0.680, 0.743] & 0.293 [0.232, 0.341] \\
+2{,}000 & 0.710 [0.686, 0.732] & 0.291 [0.242, 0.328] \\
+5{,}000 & 0.710 [0.696, 0.722] & 0.296 [0.255, 0.318] \\
+\midrule
+260{,}060 & 0.710 & 0.301 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:s5endpoint} shows that this endpoint saturates earlier than the map itself.
+ROC-AUC reaches 0.701 at 200 ligands against the full-matrix 0.710, and from 500 ligands upward
+the replicate mean stays within 0.005 of that value. Average precision is noisier and not
+monotone: the mean at 2{,}000 ligands, 0.291, sits below the mean at 1{,}000, 0.293. The
+full-matrix average precision of 0.301 lies inside the 2.5--97.5\% range at every size from 200
+upward, so these replicates cannot separate a 200-ligand sample from the complete matrix on that
+metric.
+
+These are score-surface diagnostics. A calibration sample recovers the map of the library it was
+drawn from, and it neither validates a pose nor estimates an affinity.
+
+\sisubsection{S5.2 Chemical-group-held-out recovery}
+
+The holdout design splits each library into five \texttt{GroupKFold} folds of whole chemical
+groups. Groups are the frozen \texttt{Butina\_clusters} labels for Docking-44, 8{,}150 clusters
+over 12{,}651 rows \cite{butina1999}, and RDKit Bemis--Murcko scaffolds for DOCKSTRING-58 on a
+fixed simple-random 15{,}000-row support drawn with seed 71, giving 11{,}905 groups
+\cite{murcko1996,rdkit2025}. Calibration samples come only from the four training folds and the
+reference map is estimated on the held-out fold, so no chemical group appears on both sides. The
+producing script asserts an empty intersection of training and held-out group labels in every
+split and raises on any overlap. We drew 25 samples per fold at 200 ligands and 25 at 500, giving
+125 samples per matrix and size, with seed 20260805 for DOCKSTRING-58 and seed 20260806 for
+Docking-44.
+
+Per fold, Docking-44 holds out 2{,}530 or 2{,}531 ligands over 1{,}629 to 1{,}631 clusters, with
+6{,}519 to 6{,}521 clusters left for calibration. DOCKSTRING-58 holds out 3{,}000 ligands over
+2{,}357 to 2{,}387 scaffolds, with 9{,}518 to 9{,}548 left for calibration
+(\path{results/calibration_panel_recovery/scaffold_holdout_metrics.csv}). The residual
+participation ratio of the held-out fold itself moves from 8.72 to 10.23 across the Docking-44
+folds and from 17.60 to 18.18 across the DOCKSTRING-58 folds, so the target of recovery is not
+identical from fold to fold.
+
+\begin{table}[htbp]
+\centering
+\caption{Recovery of a held-out chemical-group fold's residual map from calibration ligands in
+the other four folds. Entries are the mean over 125 samples, the standard deviation, and the
+observed extremes. Source:
+\texttt{results/calibration\_panel\_recovery/scaffold\_holdout\_summary.csv}.}
+\label{tab:s5group}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Matrix & $n$ & Mean $\rho$ & SD & Minimum--maximum \\
+\midrule
+Docking-44 & 200 & 0.927 & 0.023 & 0.830--0.964 \\
+Docking-44 & 500 & 0.959 & 0.011 & 0.918--0.977 \\
+DOCKSTRING-58 & 200 & 0.916 & 0.011 & 0.880--0.938 \\
+DOCKSTRING-58 & 500 & 0.958 & 0.006 & 0.934--0.970 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:s5group} gives the result. Against the simple-random values of
+Table~\ref{tab:s5curve}, holding out whole chemical groups costs 0.015 of mean agreement for
+Docking-44 at 200 ligands and 0.002 for DOCKSTRING-58; at 500 ligands the two costs are 0.016 and
+0.006. The worst single Docking-44 replicate at 200 ligands reaches 0.830, so the spread across
+folds is wider than the gap between the two designs.
+
+A separate bundle repeats the holdout against a matched random comparator that uses the same
+calibration and evaluation sizes in each replicate but samples rows rather than groups. That
+bundle applies a stricter grouping rule, canonical non-isomeric Bemis--Murcko scaffolds for
+cyclic molecules and Standard-InChIKey connectivity blocks for acyclic molecules, and it
+estimates Docking-44 target means fold-locally so that held-out scores never enter the
+imputation. Its group-held-out means differ from Table~\ref{tab:s5group} by at most 0.003 in all
+four rows.
+
+\begin{table}[htbp]
+\centering
+\caption{Chemical-group holdout against a size-matched random-row holdout, 125 paired replicates
+per row. Entries are means with 2.5--97.5\% repeated-sample ranges. Sources:
+\texttt{scaffold\_holdout\_summary.csv},
+\texttt{matched\_random\_row\_holdout\_summary.csv} and
+\texttt{chemical\_group\_minus\_random\_summary.csv} in
+\texttt{results/public\_scaffold\_holdout\_recovery/}.}
+\label{tab:s5matched}
+\small
+\begin{tabular}{lrlll}
+\toprule
+Matrix & $n$ & Group-held-out $\rho$ & Matched-random $\rho$ & Paired difference \\
+\midrule
+Docking-44 & 200 & 0.925 [0.884, 0.956] & 0.935 [0.884, 0.960] & $-0.010$ [$-0.057$, 0.041] \\
+Docking-44 & 500 & 0.958 [0.926, 0.975] & 0.968 [0.943, 0.980] & $-0.011$ [$-0.050$, 0.019] \\
+DOCKSTRING-58 & 200 & 0.914 [0.889, 0.933] & 0.917 [0.893, 0.934] & $-0.003$ [$-0.034$, 0.029] \\
+DOCKSTRING-58 & 500 & 0.958 [0.945, 0.965] & 0.960 [0.950, 0.968] & $-0.002$ [$-0.018$, 0.011] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Every paired central range in Table~\ref{tab:s5matched} includes zero. All four point estimates
+are negative, so the group split is the harder of the two by 0.010 and 0.011 for Docking-44 and
+by 0.003 and 0.002 for DOCKSTRING-58. These are composition ranges over repeated splits on one
+fixed target panel. They are not equivalence tests, and we do not read them as evidence that the
+two designs are interchangeable.
+
+The group split is harder by a structural diagnostic as well. For every held-out ligand we
+computed the exact maximum Tanimoto similarity to the whole calibration pool on achiral
+radius-2, 2{,}048-bit Morgan fingerprints \cite{morgan1965,rogers2010}. Median maxima across the
+five folds run from 0.485 to 0.541 under the group split and from 0.630 to 0.644 under the
+matched random split for Docking-44, and from 0.467 to 0.472 against 0.491 to 0.493 for
+DOCKSTRING-58
+(\path{results/public_scaffold_holdout_recovery/heldout_maximum_morgan_tanimoto_summary.csv}).
+Close analogues survive the split: in the worst Docking-44 fold, 3.0\% of held-out ligands still
+have a calibration neighbour at Tanimoto 1, which is bit-vector identity on this fingerprint and
+not molecular identity. The split is not fingerprint-cluster-disjoint, and it measures recovery
+inside one source collection rather than transfer to an external library.
+
+\sisubsection{S5.3 Exploratory five-mode compression}
+
+This analysis runs on the 20 DOCKSTRING kinase columns shared with the assay panels, named in
+\texttt{provenance/targets} of \path{results/biological_core_modes/summary.json}, over the 190
+target pairs they define. Of the 260{,}060 complete DOCKSTRING rows we removed the 481 whose
+14-character connectivity block appears in an assay panel, leaving 259{,}579, and clipped 22
+positive scores to zero. A conservative variant also removes the 3{,}039 rows sharing a cyclic
+Bemis--Murcko scaffold with an assay compound, leaving 256{,}540. KiRHub supplies compound names
+without structures, so neither exclusion can be applied against it.
+
+The endpoint here is not the frozen endpoint of S5.1. Each panel supplies its own positives: the
+upper decile of that panel's centred experimental target-pair correlations, 19 of 190 for every
+panel. Rank agreement is the Spearman correlation between the docking and the experimental edge
+vectors, and the retrieval metrics score the docking edges against those 19 labels.
+
+\begin{table}[htbp]
+\centering
+\caption{The retained residual eigenvalues on the 20-kinase DOCKSTRING support. The correlation
+trace is 20 and 19 eigenvalues are positive. Sources:
+\texttt{results/biological\_core\_modes/retained\_eigenvalue\_spectrum.csv} for the eigenvalues,
+and \texttt{selection\_rule/full\_eigenvalues} in the same directory's \texttt{summary.json} for
+the cumulative fractions.}
+\label{tab:s5spectrum}
+\small
+\begin{tabular}{rrr}
+\toprule
+Mode & Eigenvalue & Cumulative fraction of trace \\
+\midrule
+1 & 4.130 & 0.207 \\
+2 & 2.133 & 0.313 \\
+3 & 1.732 & 0.400 \\
+4 & 1.201 & 0.460 \\
+5 & 1.140 & 0.517 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The selection rule takes the smallest $k$ whose leading residual eigenvalues reach half the
+residual trace. Table~\ref{tab:s5spectrum} shows why that $k$ is five: four modes reach 0.460 of
+the trace and five reach 0.517. The rule reads the docking eigenvalues alone. Under the
+conservative scaffold exclusion it returns the same $k$, at cumulative fraction 0.517. The
+participation ratio of the same 20-target residual map is 11.62
+(\texttt{local\_20\_correlation\_PR} in \path{results/manuscript_evidence.json}), which is 2.3
+times the number of retained modes.
+
+Stability under a scaffold-disjoint split is in
+\path{results/biological_core_modes/scaffold_support_stability.csv}. Whole Bemis--Murcko groups
+go to five folds by SHA-256 assignment, with acyclic molecules grouped by recomputed InChIKey
+connectivity block. Folds hold 50{,}256 to 55{,}261 ligands over 19{,}800 to 20{,}323 groups. The
+rule returns $k=5$ in every fold, at cumulative fractions from 0.514 to 0.520. Measured against
+the all-rows subspace, a fold's five-mode subspace has mean squared canonical correlation from
+0.996 to 0.998 and maximum principal angle from 3.6 to 7.7 degrees. Across the ten fold pairs
+(\path{results/biological_core_modes/scaffold_support_pairwise_stability.csv}) the same
+quantities run from 0.986 to 0.996 and from 6.5 to 13.8 degrees.
+
+\begin{table}[htbp]
+\centering
+\caption{Agreement of the docking target map with each experimental panel, before and after
+truncating the residual correlation to five modes and renormalising to unit diagonal. Source: the
+\texttt{exact\_connectivity\_excluded} rows of
+\texttt{results/biological\_core\_modes/panel\_metrics.csv}. PKIS1 was the discovery panel.}
+\label{tab:s5panels}
+\small
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+& \multicolumn{3}{c}{Rank agreement} & \multicolumn{3}{c}{ROC-AUC} & \multicolumn{3}{c}{Average precision} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+Panel & Full & 5 modes & $\Delta$ & Full & 5 modes & $\Delta$ & Full & 5 modes & $\Delta$ \\
+\midrule
+PKIS1 & 0.174 & 0.210 & $+0.036$ & 0.664 & 0.677 & $+0.014$ & 0.300 & 0.265 & $-0.035$ \\
+DAVIS & 0.280 & 0.326 & $+0.046$ & 0.755 & 0.791 & $+0.036$ & 0.340 & 0.375 & $+0.034$ \\
+PKIS2 & 0.287 & 0.320 & $+0.033$ & 0.713 & 0.730 & $+0.017$ & 0.295 & 0.268 & $-0.027$ \\
+KiRHub & 0.322 & 0.379 & $+0.058$ & 0.744 & 0.807 & $+0.063$ & 0.289 & 0.333 & $+0.044$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:s5panels} gives the per-panel deltas. Rank agreement and ROC-AUC rise on all four
+panels. Average precision splits: it rises on DAVIS and KiRHub and falls on PKIS1 and PKIS2.
+Under the conservative scaffold exclusion the same pattern holds, with every delta within 0.010
+of the value shown. The largest movement is the DAVIS average-precision delta, which goes from
+$+0.034$ to $+0.025$.
+
+\begin{table}[htbp]
+\centering
+\caption{Single-target deletions. Each panel is re-evaluated after dropping one of the 20
+kinases, and the entry counts how many of the 20 deletions give a positive
+five-mode-minus-full delta, with the median delta in parentheses. Source:
+\texttt{target\_jackknife} in
+\texttt{results/biological\_core\_modes/summary.json} and the same directory's
+\texttt{target\_jackknife.csv}.}
+\label{tab:s5jack}
+\small
+\begin{tabular}{lccc}
+\toprule
+Panel & Rank agreement & ROC-AUC & Average precision \\
+\midrule
+PKIS1 & 18/20 ($+0.037$) & 18/20 ($+0.018$) & 8/20 ($-0.002$) \\
+DAVIS & 19/20 ($+0.043$) & 20/20 ($+0.037$) & 16/20 ($+0.043$) \\
+PKIS2 & 19/20 ($+0.034$) & 20/20 ($+0.019$) & 5/20 ($-0.014$) \\
+KiRHub & 19/20 ($+0.055$) & 18/20 ($+0.052$) & 18/20 ($+0.047$) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:s5jack} makes the split explicit. The average-precision gain is positive in only 5
+of 20 deletions on PKIS2 and 8 of 20 on PKIS1, and its median delta is negative on both panels.
+The selection rule survives every deletion: $k=5$ in all 80 panel-by-deletion rows, at cumulative
+fractions from 0.508 to 0.541.
+
+On the three panels scored without retuning, a quadratic assignment test that applies 50{,}000
+complete relabellings of the 20 docking targets gives a mean five-mode-minus-full delta of 0.045
+for rank agreement at one-sided probability 0.013, and 0.039 for ROC-AUC at probability 0.013.
+The average-precision mean delta is 0.017 at probability 0.080. Holm correction across the three
+metrics gives 0.038, 0.038 and 0.080; correcting across both low-mode representations, six tests
+in total, gives 0.063, 0.063 and 0.159
+(\path{results/biological_core_modes/omnibus_validation_qap.csv}).
+
+The trace rule read no experimental value, and the three evaluation panels were scored without
+retuning it. That does not make the comparison a clean test. The 50\% convention was fixed after
+these resources had been inspected, and PKIS1 served as the discovery panel. We treat the result
+as post hoc exploratory evidence that needs a new external panel.

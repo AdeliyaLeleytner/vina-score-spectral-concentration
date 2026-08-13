@@ -21,22 +21,30 @@
       "equal_rank_sequence_family_residual": 0.5,
       "full_sequence_identity": 0.65,
       "raw_docking": 0.2,
-      "residual_docking": 0.3
+      "residual_docking": 0.25
     }
   },
   "certified_data_sensitivity": {
-    "raw_continuous_spearman": 0.07402817471949304,
-    "residual_continuous_spearman": 0.4447633981994003,
-    "residual_minus_raw": 0.3707352234799073,
+    "raw_continuous_spearman": 0.0743822555005224,
+    "residual_continuous_spearman": 0.42480841703996064,
+    "residual_minus_raw": 0.35042616153943823,
     "target_pairs": 78,
     "targets": 15
+  },
+  "complete_case_support_sensitivity": {
+    "docking_rows": 9221,
+    "interpretation": "complete Docking-44 rows after PDSP connectivity-overlap exclusion; this changes chemical support and is not a pure imputation contrast",
+    "raw_continuous_spearman": -0.09869066436659918,
+    "residual_continuous_spearman": 0.04625430799927445,
+    "sequence_family_continuous_spearman": 0.23870872807949167,
+    "sequence_family_residual_continuous_spearman": 0.20064358329213708
   },
   "decision": "prioritize three target counterscreens for a query target",
   "go_no_go_rule": "GO only if residual-vs-raw gain survives aligned-target QAP, most target deletions, censor-aware endpoints, Certified-Data-only, and a majority of identical-support blocks",
   "go_no_go_verdict": "NO_GO_GENERAL_COUNTERSCREEN",
   "identical_chemical_support_blocks": {
     "five_target_blocks_with_at_least_20_complete_compounds": 113,
-    "fraction_positive_residual_minus_raw_auc_top20": 0.6017699115044248,
+    "fraction_positive_residual_minus_raw_auc_top20": 0.6106194690265486,
     "median_complete_compounds": 21.0,
     "median_residual_minus_raw_auc_top20": 0.0625
   },
@@ -46,12 +54,12 @@
       "sha256": "25436e49b9fc80421d8499ef289ed8ef00b4ab35b904c7d930fc377f493e1d51"
     },
     "pdsp": {
-      "basename": "pdsp_ki_database.csv",
+      "basename": "KiDatabase.csv",
       "sha256": "45c9a18ac30f1fad350d1dde186bc1f226c5a75d474ca50f50713852a5637ac6",
       "url": "https://pdsp.unc.edu/databases/kiDownload/download.php"
     },
     "uniprot": {
-      "basename": "pdsp_uniprot.tsv",
+      "basename": "pdsp_uniprot_fullurl.tsv",
       "sha256": "051690a9647c3af3ad71708d935485c73bdbffc07772b0ec8c6f484e9c1b408a",
       "url": "https://rest.uniprot.org/uniprotkb/search"
     }
@@ -59,16 +67,92 @@
   "limitations": [
     "pairwise PDSP endpoints use nonidentical compound and publication supports",
     "exact-only correlations condition on a quantifiable Ki and are activity/MNAR sensitive",
+    "the primary PDSP association is unstable to the Docking-44 missing-score/support contract",
     "target labels and families are a fixed, nonrandom Docking-44 panel",
     "all predictor combinations and evaluations are post hoc",
     "top-edge retrieval does not establish prospective ligand-level target retrieval"
   ],
   "minimum_pair_support": 10,
+  "minimum_pair_support_sensitivity": [
+    {
+      "minimum_pair_support": 10,
+      "raw_continuous_spearman": 0.04389624523852712,
+      "residual_continuous_spearman": 0.29527980247059826,
+      "residual_fusion_increment_continuous_spearman": 0.09633399778793866,
+      "residual_minus_raw_continuous_spearman": 0.2513835572320711,
+      "sequence_family_continuous_spearman": 0.23870872807949167,
+      "sequence_family_residual_continuous_spearman": 0.33504272586743034,
+      "target_pairs": 148,
+      "targets": 21
+    },
+    {
+      "minimum_pair_support": 12,
+      "raw_continuous_spearman": 0.026625265137434132,
+      "residual_continuous_spearman": 0.2843541580109773,
+      "residual_fusion_increment_continuous_spearman": 0.0830815079387045,
+      "residual_minus_raw_continuous_spearman": 0.25772889287354317,
+      "sequence_family_continuous_spearman": 0.2372657497102622,
+      "sequence_family_residual_continuous_spearman": 0.3203472576489667,
+      "target_pairs": 140,
+      "targets": 21
+    },
+    {
+      "minimum_pair_support": 15,
+      "raw_continuous_spearman": 0.03518700787401574,
+      "residual_continuous_spearman": 0.2559741805530123,
+      "residual_fusion_increment_continuous_spearman": 0.06701303884045903,
+      "residual_minus_raw_continuous_spearman": 0.22078717267899656,
+      "sequence_family_continuous_spearman": 0.23257850064472366,
+      "sequence_family_residual_continuous_spearman": 0.2995915394851827,
+      "target_pairs": 128,
+      "targets": 21
+    },
+    {
+      "minimum_pair_support": 20,
+      "raw_continuous_spearman": 0.005272587010436789,
+      "residual_continuous_spearman": 0.20167804703887174,
+      "residual_fusion_increment_continuous_spearman": 0.04290332052713619,
+      "residual_minus_raw_continuous_spearman": 0.19640546002843495,
+      "sequence_family_continuous_spearman": 0.23272701770492638,
+      "sequence_family_residual_continuous_spearman": 0.27563033823206257,
+      "target_pairs": 98,
+      "targets": 20
+    },
+    {
+      "minimum_pair_support": 25,
+      "raw_continuous_spearman": 0.09933114669753683,
+      "residual_continuous_spearman": 0.4326966364396425,
+      "residual_fusion_increment_continuous_spearman": 0.16053159896760433,
+      "residual_minus_raw_continuous_spearman": 0.33336548974210567,
+      "sequence_family_continuous_spearman": 0.21657689527680862,
+      "sequence_family_residual_continuous_spearman": 0.37710849424441295,
+      "target_pairs": 72,
+      "targets": 20
+    },
+    {
+      "minimum_pair_support": 30,
+      "raw_continuous_spearman": -0.040995475113122175,
+      "residual_continuous_spearman": 0.2253393665158371,
+      "residual_fusion_increment_continuous_spearman": 0.08067863522964268,
+      "residual_minus_raw_continuous_spearman": 0.26633484162895926,
+      "sequence_family_continuous_spearman": 0.1007239819004525,
+      "sequence_family_residual_continuous_spearman": 0.18140261713009517,
+      "target_pairs": 51,
+      "targets": 20
+    }
+  ],
   "pdsp_audit": {
+    "all_analyzed_pdsp_docking_connectivity_block_overlap": 128,
+    "all_analyzed_pdsp_docking_full_inchikey_overlap": 69,
     "certified_compound_target_cells": 317,
     "certified_compounds": 44,
     "certified_targets": 20,
+    "docking_compounds_after_overlap_exclusion": 12523,
+    "docking_compounds_before_overlap_exclusion": 12651,
+    "docking_compounds_excluded_for_pdsp_connectivity_overlap": 128,
     "downloaded_rows": 98678,
+    "exact_pdsp_docking_connectivity_block_overlap": 116,
+    "exact_pdsp_docking_full_inchikey_overlap": 63,
     "strict_compound_target_cells": 1560,
     "strict_compounds": 481,
     "strict_source_rows_before_median_aggregation": 3722,
@@ -76,18 +160,19 @@
   },
   "primary_decision_metrics": {
     "base_best_partner_at_3": 0.5555555555555556,
-    "fusion_best_partner_at_3": 0.7222222222222222,
-    "fusion_increment_best_partner_at_3": 0.16666666666666663,
+    "fusion_best_partner_at_3": 0.6666666666666666,
+    "fusion_increment_best_partner_at_3": 0.11111111111111105,
     "raw_best_partner_at_3": 0.3888888888888889,
-    "raw_top10_auc": 0.4741854636591479,
-    "residual_best_partner_at_3": 0.6666666666666666,
-    "residual_minus_raw_best_partner_at_3": 0.27777777777777773,
-    "residual_minus_raw_top10_auc": 0.22556390977443613,
-    "residual_top10_auc": 0.699749373433584
+    "raw_top10_auc": 0.47468671679198,
+    "residual_best_partner_at_3": 0.6111111111111112,
+    "residual_minus_raw_best_partner_at_3": 0.22222222222222227,
+    "residual_minus_raw_top10_auc": 0.20651629072681715,
+    "residual_top10_auc": 0.6812030075187971
   },
   "primary_target_pairs": 148,
   "primary_targets": 21,
   "qap_permutations_per_scheme": 20000,
+  "residual_transform": "two_way",
   "seed": 20260803,
   "versions": {
     "biopython": "1.87",

@@ -48,6 +48,10 @@ DEFAULT_QAP_PERMUTATIONS = 20_000
 DEFAULT_SEED = 20260803
 PRIMARY_TOP_FRACTION = 0.10
 
+# The manuscript defines the residual as the additive two-way ANOVA residual in raw
+# score units. Frozen bundles produced before 2026-08-12 used "column_z_row_center".
+RESIDUAL_TRANSFORM = "two_way"
+
 PDSP_DOWNLOAD_URL = "https://pdsp.unc.edu/databases/kiDownload/download.php"
 UNIPROT_REST_URL = "https://rest.uniprot.org/uniprotkb/search"
 
@@ -234,20 +238,60 @@ def cell_matrix(cells: pd.DataFrame) -> pd.DataFrame:
     ).sort_index(axis=1)
 
 
-def docking_geometries(path: Path) -> tuple[list[str], dict[str, np.ndarray]]:
+def residual_surface(scores: np.ndarray, transform: str = RESIDUAL_TRANSFORM) -> np.ndarray:
+    """Remove the per-ligand offset.
+
+    ``two_way`` is the manuscript's definition, the additive two-way ANOVA
+    residual in raw score units:
+    ``Gamma_ij = X_ij - mean_i - mean_j + grand_mean``. It is what the
+    transformation-matched nulls, the residual-mechanism analysis and the
+    released ``target_map_audit.py`` all compute, so it is the canonical
+    transform here.
+
+    ``column_z_row_center`` standardises each target column before removing the
+    ligand mean. It is retained because earlier frozen result bundles were
+    produced with it; the two differ whenever target columns have unequal
+    spread, and on Docking-44 they give target-pair maps agreeing at Spearman
+    0.960 with 7.1% of pairs differing in sign.
+    """
+    if transform == "two_way":
+        centred = scores - scores.mean(axis=0)
+        return centred - centred.mean(axis=1, keepdims=True)
+    if transform == "column_z_row_center":
+        scales = scores.std(axis=0, ddof=1)
+        if np.any(scales <= 0):
+            raise ValueError("Docking-44 contains a constant target column")
+        column_z = (scores - scores.mean(axis=0)) / scales
+        return column_z - column_z.mean(axis=1, keepdims=True)
+    raise ValueError(f"unknown residual transform {transform!r}")
+
+
+def docking_geometries(
+    path: Path,
+    transform: str = RESIDUAL_TRANSFORM,
+    excluded_ligand_ids: set[int] | None = None,
+) -> tuple[list[str], dict[str, np.ndarray]]:
     pdb_columns = list(PDB_TO_GENE)
-    scores = pd.read_csv(path, usecols=pdb_columns)[pdb_columns].to_numpy(dtype=float)
+    usecols = pdb_columns + (["ligand_id"] if excluded_ligand_ids else [])
+    frame = pd.read_csv(path, usecols=usecols)
+    if excluded_ligand_ids:
+        observed = set(frame["ligand_id"].astype(int)) & excluded_ligand_ids
+        if observed != excluded_ligand_ids:
+            missing = sorted(excluded_ligand_ids - observed)
+            raise ValueError(f"excluded Docking-44 ligand IDs not found: {missing}")
+        frame = frame.loc[
+            ~frame["ligand_id"].astype(int).isin(excluded_ligand_ids)
+        ].reset_index(drop=True)
+    scores = frame[pdb_columns].to_numpy(dtype=float)
     scores = np.minimum(scores, 0.0)
     means = np.nanmean(scores, axis=0)
     if not np.isfinite(means).all():
         raise ValueError("at least one Docking-44 target column is entirely missing")
     missing = np.where(np.isnan(scores))
     scores[missing] = means[missing[1]]
-    scales = scores.std(axis=0, ddof=1)
-    if np.any(scales <= 0):
+    if np.any(scores.std(axis=0, ddof=1) <= 0):
         raise ValueError("Docking-44 contains a constant target column")
-    column_z = (scores - scores.mean(axis=0)) / scales
-    residual = column_z - column_z.mean(axis=1, keepdims=True)
+    residual = residual_surface(scores, transform)
     genes = [PDB_TO_GENE[pdb] for pdb in pdb_columns]
     raw_geometry = np.corrcoef(scores, rowvar=False)
     residual_geometry = np.corrcoef(residual, rowvar=False)
@@ -580,9 +624,13 @@ def qap_paired_gains(
             for metric in base_metrics
         }
     )
-    exceed = {
+    exceed_upper = {
         scheme: {key: 0 for key in observed}
         for scheme in ("all_target_labels", "within_curated_family")
+    }
+    exceed_lower = {
+        scheme: {key: 0 for key in observed}
+        for scheme in exceed_upper
     }
     family = family_labels(targets)
     rng = np.random.default_rng(seed)
@@ -590,7 +638,7 @@ def qap_paired_gains(
     residual_matrix = predictor_matrices["residual_docking"]
 
     for _ in range(permutations):
-        for scheme in exceed:
+        for scheme in exceed_upper:
             order = (
                 rng.permutation(len(targets))
                 if scheme == "all_target_labels"
@@ -607,15 +655,24 @@ def qap_paired_gains(
             fusion_null = fast_metrics(candidate_fusion)
             for metric in raw_metrics:
                 key = ("residual_minus_raw_joint_label", metric)
-                if residual_null[metric] - raw_null[metric] >= observed[key]:
-                    exceed[scheme][key] += 1
+                null_value = residual_null[metric] - raw_null[metric]
+                if null_value >= observed[key]:
+                    exceed_upper[scheme][key] += 1
+                if null_value <= observed[key]:
+                    exceed_lower[scheme][key] += 1
                 key = ("residual_increment_to_sequence_family", metric)
-                if fusion_null[metric] - base_metrics[metric] >= observed[key]:
-                    exceed[scheme][key] += 1
+                null_value = fusion_null[metric] - base_metrics[metric]
+                if null_value >= observed[key]:
+                    exceed_upper[scheme][key] += 1
+                if null_value <= observed[key]:
+                    exceed_lower[scheme][key] += 1
 
     rows: list[dict[str, object]] = []
-    for scheme, counts in exceed.items():
+    for scheme, upper_counts in exceed_upper.items():
         for (contrast, metric), value in observed.items():
+            key = (contrast, metric)
+            upper_p = (upper_counts[key] + 1) / (permutations + 1)
+            lower_p = (exceed_lower[scheme][key] + 1) / (permutations + 1)
             rows.append(
                 {
                     "permutation_scheme": scheme,
@@ -623,9 +680,162 @@ def qap_paired_gains(
                     "metric": metric,
                     "observed_gain": value,
                     "permutations": int(permutations),
-                    "one_sided_qap_p": float((counts[(contrast, metric)] + 1) / (permutations + 1)),
+                    "one_sided_qap_p": float(upper_p),
+                    "two_sided_qap_p": float(
+                        min(1.0, 2.0 * min(upper_p, lower_p))
+                    ),
                 }
             )
+    result = pd.DataFrame(rows)
+    probabilities = result["two_sided_qap_p"].to_numpy(dtype=float)
+    order = np.argsort(probabilities, kind="mergesort")
+    holm = np.empty_like(probabilities)
+    running_maximum = 0.0
+    for rank, index in enumerate(order):
+        running_maximum = max(
+            running_maximum,
+            float((len(probabilities) - rank) * probabilities[index]),
+        )
+        holm[index] = min(1.0, running_maximum)
+    result["holm_adjusted_two_sided_qap_p"] = holm
+    result["bonferroni_adjusted_two_sided_qap_p"] = np.minimum(
+        1.0, probabilities * len(probabilities)
+    )
+    return result
+
+
+def complete_case_support_sensitivity(
+    docking_path: Path,
+    primary_pairs: pd.DataFrame,
+    primary_targets: Sequence[str],
+    *,
+    excluded_ligand_ids: set[int],
+    transform: str,
+    permutations: int,
+    seed: int,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Re-evaluate the frozen PDSP graph on complete Docking-44 rows.
+
+    Complete-case deletion changes chemical support as well as missing-data
+    handling, so this is a support-contract sensitivity rather than an estimate
+    of a pure imputation effect.
+    """
+    columns = ["ligand_id", *PDB_TO_GENE]
+    frame = pd.read_csv(docking_path, usecols=columns)
+    frame = frame.loc[
+        ~frame["ligand_id"].astype(int).isin(excluded_ligand_ids)
+    ].reset_index(drop=True)
+    complete = frame.loc[:, list(PDB_TO_GENE)].notna().all(axis=1)
+    scores = frame.loc[complete, list(PDB_TO_GENE)].to_numpy(dtype=float)
+    scores = np.minimum(scores, 0.0)
+    residual = residual_surface(scores, transform)
+    genes = [PDB_TO_GENE[pdb] for pdb in PDB_TO_GENE]
+    matrices = {
+        "raw_docking": np.corrcoef(scores, rowvar=False),
+        "residual_docking": np.corrcoef(residual, rowvar=False),
+    }
+    aligned = {
+        name: align_docking_matrix(genes, matrix, primary_targets)
+        for name, matrix in matrices.items()
+    }
+    target_index = {target: index for index, target in enumerate(primary_targets)}
+    first = np.asarray(
+        [target_index[value] for value in primary_pairs["target_a"]], dtype=int
+    )
+    second = np.asarray(
+        [target_index[value] for value in primary_pairs["target_b"]], dtype=int
+    )
+    pairs = primary_pairs.drop(
+        columns=[
+            column
+            for column in (
+                "equal_rank_sequence_family",
+                "equal_rank_sequence_residual",
+                "equal_rank_sequence_family_residual",
+            )
+            if column in primary_pairs
+        ]
+    ).copy()
+    for name, matrix in aligned.items():
+        pairs[name] = matrix[first, second]
+    pairs = add_fixed_fusions(pairs)
+    global_table, _ = observed_metric_tables(pairs)
+    selected = global_table.loc[np.isclose(global_table["top_fraction"], 0.10)].copy()
+    selected.insert(0, "docking_rows", int(len(scores)))
+    selected.insert(0, "sensitivity", "complete_case_pdsp_overlap_excluded")
+    qap = qap_paired_gains(
+        pairs, primary_targets, aligned, permutations, seed
+    )
+    qap.insert(0, "docking_rows", int(len(scores)))
+    qap.insert(0, "sensitivity", "complete_case_pdsp_overlap_excluded")
+    return selected, qap
+
+
+def minimum_pair_support_sensitivity(
+    primary_pairs: pd.DataFrame,
+    thresholds: Sequence[int] = (10, 12, 15, 20, 25, 30),
+) -> pd.DataFrame:
+    """Describe how the external comparison changes with pair support.
+
+    This is a frozen descriptive sweep over the number of jointly measured
+    PDSP compounds required for an edge. It does not add another inferential
+    family and therefore carries no permutation probabilities.
+    """
+    rows: list[dict[str, object]] = []
+    for threshold in thresholds:
+        base = primary_pairs.loc[
+            primary_pairs["pair_support"].ge(int(threshold))
+        ].drop(
+            columns=[
+                column
+                for column in (
+                    "equal_rank_sequence_family",
+                    "equal_rank_sequence_residual",
+                    "equal_rank_sequence_family_residual",
+                )
+                if column in primary_pairs
+            ]
+        )
+        pairs = add_fixed_fusions(
+            base.reset_index(drop=True)
+        )
+        raw = global_metrics(pairs, "raw_docking", PRIMARY_TOP_FRACTION)
+        residual = global_metrics(pairs, "residual_docking", PRIMARY_TOP_FRACTION)
+        baseline = global_metrics(
+            pairs, "equal_rank_sequence_family", PRIMARY_TOP_FRACTION
+        )
+        fusion = global_metrics(
+            pairs,
+            "equal_rank_sequence_family_residual",
+            PRIMARY_TOP_FRACTION,
+        )
+        rows.append(
+            {
+                "minimum_pair_support": int(threshold),
+                "target_pairs": int(len(pairs)),
+                "targets": int(
+                    len(set(pairs["target_a"]) | set(pairs["target_b"]))
+                ),
+                "raw_continuous_spearman": raw["continuous_spearman"],
+                "residual_continuous_spearman": residual[
+                    "continuous_spearman"
+                ],
+                "residual_minus_raw_continuous_spearman": (
+                    residual["continuous_spearman"]
+                    - raw["continuous_spearman"]
+                ),
+                "sequence_family_continuous_spearman": baseline[
+                    "continuous_spearman"
+                ],
+                "sequence_family_residual_continuous_spearman": fusion[
+                    "continuous_spearman"
+                ],
+                "residual_fusion_increment_continuous_spearman": (
+                    fusion["continuous_spearman"]
+                    - baseline["continuous_spearman"]
+                ),
+            }
+        )
     return pd.DataFrame(rows)
 
 
@@ -794,14 +1004,14 @@ baseline reaches {primary['base_best_partner_at_3']:.3f}.
 
 ## Interpretation boundary and decision
 
-**NO-GO as a general counterscreen selector.** Although the exact-only graph
-passes aligned-target QAP and every target deletion, the operational advantage
-does not survive restoration of explicit right-censored non-binders. Pair
-endpoints in the pooled graph also use different compounds and publication
-campaigns. The defensible positive result is narrower: residual geometry
-retrieves affinity relationships *conditional on both targets having
-quantifiable Ki values*. That conditional graph is a mechanistic hypothesis,
-not yet a prospective counterscreen rule.
+**NO-GO as a general counterscreen selector.** The exact-only, mean-imputed
+comparison is encouraging, including after Docking-44 compounds with PDSP
+connectivity overlap are removed. It is not robust enough for an operational
+claim. The advantage weakens when explicit right-censored non-binders are
+restored and largely disappears when the docking map is rebuilt on chemically
+shifted complete-case support. Pair endpoints also use different compounds and
+publication campaigns. The result is therefore an exploratory, conditional
+association rather than a prospective counterscreen rule.
 
 Raw PDSP data are not included because no redistribution license was located.
 Download from `{PDSP_DOWNLOAD_URL}` and verify the checksum recorded in
@@ -824,7 +1034,58 @@ def run(args: argparse.Namespace) -> dict:
     experimental = cell_matrix(cells)
     certified = cell_matrix(certified_cells)
 
-    docking_genes, docking = docking_geometries(Path(args.docking_csv))
+    transform = getattr(args, "residual_transform", RESIDUAL_TRANSFORM)
+    exact_pdsp_keys = set(cells["full_inchikey"].astype(str).unique())
+    exact_pdsp_connectivity_blocks = {value[:14] for value in exact_pdsp_keys}
+    analyzed_pdsp_keys = set(bound_cells["full_inchikey"].astype(str).unique())
+    analyzed_pdsp_connectivity_blocks = {
+        value[:14] for value in analyzed_pdsp_keys
+    }
+    docking_identity = pd.read_csv(
+        args.docking_csv, usecols=["ligand_id", "Cleaned SMILES"]
+    )
+    docking_identity["full_inchikey"] = [
+        standard_inchi_key(value) for value in docking_identity["Cleaned SMILES"]
+    ]
+    docking_identity["connectivity_block"] = docking_identity["full_inchikey"].str[:14]
+    overlap_mask = docking_identity["connectivity_block"].isin(
+        analyzed_pdsp_connectivity_blocks
+    )
+    excluded_ligand_ids = set(
+        docking_identity.loc[overlap_mask, "ligand_id"].astype(int)
+    )
+    docking_keys = set(docking_identity["full_inchikey"].dropna().astype(str))
+    docking_blocks = set(
+        docking_identity["connectivity_block"].dropna().astype(str)
+    )
+    audit.update(
+        {
+            "docking_compounds_before_overlap_exclusion": int(len(docking_identity)),
+            "exact_pdsp_docking_full_inchikey_overlap": int(
+                len(exact_pdsp_keys & docking_keys)
+            ),
+            "exact_pdsp_docking_connectivity_block_overlap": int(
+                len(exact_pdsp_connectivity_blocks & docking_blocks)
+            ),
+            "all_analyzed_pdsp_docking_full_inchikey_overlap": int(
+                len(analyzed_pdsp_keys & docking_keys)
+            ),
+            "all_analyzed_pdsp_docking_connectivity_block_overlap": int(
+                len(analyzed_pdsp_connectivity_blocks & docking_blocks)
+            ),
+            "docking_compounds_excluded_for_pdsp_connectivity_overlap": int(
+                len(excluded_ligand_ids)
+            ),
+            "docking_compounds_after_overlap_exclusion": int(
+                len(docking_identity) - len(excluded_ligand_ids)
+            ),
+        }
+    )
+    docking_genes, docking = docking_geometries(
+        Path(args.docking_csv),
+        transform,
+        excluded_ligand_ids=excluded_ligand_ids,
+    )
     overlap_targets = sorted(set(experimental.columns) & set(docking_genes))
     aligned_overlap = {
         name: align_docking_matrix(docking_genes, matrix, overlap_targets)
@@ -860,6 +1121,18 @@ def run(args: argparse.Namespace) -> dict:
         aligned,
         args.qap_permutations,
         args.seed,
+    )
+    complete_case_metrics, complete_case_qap = complete_case_support_sensitivity(
+        Path(args.docking_csv),
+        primary,
+        primary_targets,
+        excluded_ligand_ids=excluded_ligand_ids,
+        transform=transform,
+        permutations=args.qap_permutations,
+        seed=args.seed,
+    )
+    support_sensitivity = minimum_pair_support_sensitivity(
+        primary,
     )
     jackknife = target_jackknife(primary)
 
@@ -900,9 +1173,21 @@ def run(args: argparse.Namespace) -> dict:
     predictions = targetwise_predictions(primary)
 
     primary.to_csv(output / "target_pairs.csv", index=False)
+    pd.DataFrame({"ligand_id": sorted(excluded_ligand_ids)}).to_csv(
+        output / "excluded_docking44_ligand_ids.csv", index=False
+    )
     global_table.to_csv(output / "global_retrieval_metrics.csv", index=False)
     query_table.to_csv(output / "targetwise_retrieval_metrics.csv", index=False)
     qap.to_csv(output / "paired_qap.csv", index=False)
+    complete_case_metrics.to_csv(
+        output / "complete_case_support_metrics.csv", index=False
+    )
+    complete_case_qap.to_csv(
+        output / "complete_case_support_qap.csv", index=False
+    )
+    support_sensitivity.to_csv(
+        output / "minimum_pair_support_sensitivity.csv", index=False
+    )
     jackknife.to_csv(output / "target_jackknife.csv", index=False)
     certified_global.to_csv(output / "certified_global_metrics.csv", index=False)
     certified_query.to_csv(output / "certified_targetwise_metrics.csv", index=False)
@@ -969,6 +1254,7 @@ def run(args: argparse.Namespace) -> dict:
         "primary_target_pairs": int(len(primary)),
         "primary_targets": int(len(set(primary["target_a"]) | set(primary["target_b"]))),
         "minimum_pair_support": int(args.min_pair_support),
+        "residual_transform": str(args.residual_transform),
         "primary_decision_metrics": {
             "raw_top10_auc": raw_auc,
             "residual_top10_auc": residual_auc,
@@ -980,6 +1266,32 @@ def run(args: argparse.Namespace) -> dict:
             "fusion_best_partner_at_3": fusion_best3,
             "fusion_increment_best_partner_at_3": fusion_best3 - base_best3,
         },
+        "complete_case_support_sensitivity": {
+            "docking_rows": int(complete_case_metrics["docking_rows"].iloc[0]),
+            "interpretation": (
+                "complete Docking-44 rows after PDSP connectivity-overlap exclusion; "
+                "this changes chemical support and is not a pure imputation contrast"
+            ),
+            "raw_continuous_spearman": metric(
+                complete_case_metrics, "raw_docking", "continuous_spearman"
+            ),
+            "residual_continuous_spearman": metric(
+                complete_case_metrics, "residual_docking", "continuous_spearman"
+            ),
+            "sequence_family_continuous_spearman": metric(
+                complete_case_metrics,
+                "equal_rank_sequence_family",
+                "continuous_spearman",
+            ),
+            "sequence_family_residual_continuous_spearman": metric(
+                complete_case_metrics,
+                "equal_rank_sequence_family_residual",
+                "continuous_spearman",
+            ),
+        },
+        "minimum_pair_support_sensitivity": support_sensitivity.to_dict(
+            orient="records"
+        ),
         "certified_data_sensitivity": {
             "target_pairs": int(len(certified_pairs)),
             "targets": int(len(set(certified_pairs["target_a"]) | set(certified_pairs["target_b"]))),
@@ -1035,6 +1347,7 @@ def run(args: argparse.Namespace) -> dict:
         "limitations": [
             "pairwise PDSP endpoints use nonidentical compound and publication supports",
             "exact-only correlations condition on a quantifiable Ki and are activity/MNAR sensitive",
+            "the primary PDSP association is unstable to the Docking-44 missing-score/support contract",
             "target labels and families are a fixed, nonrandom Docking-44 panel",
             "all predictor combinations and evaluations are post hoc",
             "top-edge retrieval does not establish prospective ligand-level target retrieval",
@@ -1056,6 +1369,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--min-pair-support", type=int, default=DEFAULT_MIN_PAIR_SUPPORT)
     parser.add_argument("--qap-permutations", type=int, default=DEFAULT_QAP_PERMUTATIONS)
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
+    parser.add_argument(
+        "--residual-transform", choices=("two_way", "column_z_row_center"),
+        default=RESIDUAL_TRANSFORM,
+        help="per-ligand offset removal; two_way is the manuscript definition",
+    )
     return parser.parse_args()
 
 

@@ -27,6 +27,7 @@ from residual_mie_boundary_audit import (  # noqa: E402
     contribution_arrays,
     derive_strict_active_pairs,
     metric_value_matrices,
+    average_rank_matrix,
     preprocess_score_representations,
     rank_score_representations,
     switch_edges_in_place,
@@ -121,12 +122,19 @@ class ResidualMIEBoundaryUnitTests(unittest.TestCase):
         ranks, diagnostics = rank_score_representations(
             representations, selected_rows
         )
-        np.testing.assert_array_equal(
-            ranks["column_z"], ranks["two_way_residual"]
+        # Under the manuscript's definition the residual preserves the ordering of
+        # column-centred scores, not of column-z scores; the two differ whenever
+        # target columns have unequal spread.
+        absolute = representations["absolute"]
+        column_centred = absolute - absolute.mean(axis=0)
+        expected = average_rank_matrix(
+            column_centred - column_centred.mean(axis=1, keepdims=True)
         )
-        self.assertEqual(diagnostics["maximum_absolute_rank_difference"], 0.0)
+        np.testing.assert_array_equal(expected, ranks["two_way_residual"])
+        self.assertGreater(diagnostics["maximum_absolute_rank_difference"], 0.0)
+        self.assertFalse(diagnostics["all_rankings_identical"])
         self.assertLessEqual(
-            diagnostics["maximum_absolute_score_reconstruction_error"], 1e-14
+            diagnostics["maximum_absolute_score_reconstruction_error"], 1e-12
         )
         self.assertGreater(counts["missing_cells_before_imputation"], 0)
 
@@ -151,10 +159,16 @@ class ResidualMIEBoundaryFrozenOutputTests(unittest.TestCase):
         self.assertEqual(counts["compounds"], 190)
         self.assertEqual(counts["represented_targets"], 39)
         self.assertEqual(counts["ranking_panel_targets"], 44)
-        self.assertTrue(self.summary["rank_identity"]["all_rankings_identical"])
-        self.assertEqual(
+        self.assertFalse(self.summary["rank_identity"]["all_rankings_identical"])
+        self.assertGreater(
             self.summary["rank_identity"]["maximum_absolute_rank_difference"], 0.0
         )
+        self.assertIn(
+            "column-centred ranking", self.summary["rank_identity"]["statement"]
+        )
+        readme = (RESULTS / "README.md").read_text(encoding="utf-8")
+        self.assertIn("column-centred score order", readme)
+        self.assertNotIn("exactly identical to\ncolumn-z", readme)
 
     def test_expected_absolute_and_column_z_pair_weighted_estimates(self) -> None:
         def estimate(representation: str, metric: str) -> float:
@@ -175,10 +189,10 @@ class ResidualMIEBoundaryFrozenOutputTests(unittest.TestCase):
             0.45227906976744187,
             places=12,
         )
-        self.assertAlmostEqual(
+        self.assertNotAlmostEqual(
             estimate("two_way_residual", "mean_rank_percentile"),
             estimate("column_z", "mean_rank_percentile"),
-            places=15,
+            places=6,
         )
 
     def test_null_and_bootstrap_tables_are_complete(self) -> None:

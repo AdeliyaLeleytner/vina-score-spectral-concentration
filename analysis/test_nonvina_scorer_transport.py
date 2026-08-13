@@ -163,6 +163,8 @@ class TransportArtifactTests(unittest.TestCase):
         self.assertGreaterEqual(support["n_non_vina_scorers"], 1)
         self.assertTrue(self.summary["claim_boundary"].strip())
         self.assertIn("re-docking", self.summary["claim_boundary"])
+        self.assertIn("either direction", self.summary["claim_boundary"])
+        self.assertNotIn("upper bound", self.summary["claim_boundary"])
         boundary = self.summary["reproducibility_boundary"]
         self.assertFalse(boundary["independent_redocking_per_scorer"])
         self.assertIn("Python 3.9", boundary["source_restricted_oddt_stage"]["environment"])

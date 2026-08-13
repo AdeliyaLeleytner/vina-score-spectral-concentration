@@ -1,0 +1,628 @@
+\sisection{S6. Experimental resources, endpoints and boundaries}
+
+This section defines the external endpoints and records the sensitivity checks and negative
+results behind the main-text comparisons. Values come from frozen files under \path{results/},
+and each table names its source. These analyses are exploratory and post hoc as recorded in their
+summary files. ``Frozen'' identifies a reproducible analysis definition; it does not imply
+prospective registration. The homology controls in S6.3 were added after the first comparison.
+Except for the explicitly corrected PDSP family, nominal probabilities are descriptive and are
+not adjusted across the wider search.
+
+\sisubsection{S6.1 The frozen kinase endpoint}
+
+The endpoint uses no docking score. DAVIS, PKIS2 and PKIS1 share 20 kinase labels, giving 190
+unordered target pairs. Within each panel we two-way centred the raw activity matrix, correlated
+its target columns, and called a pair positive when its centred correlation fell in the upper
+decile of that panel. A pair is positive for the endpoint when it is positive in at least two of
+the three panels, which labels 15 of the 190 pairs; 7 of those 15 are positive in all three
+panels. Panel sizes are 72 compounds for DAVIS, 645 for PKIS2 and 360 for PKIS1
+(\path{results/replicated_pair_retrieval/summary.json}).
+
+The docking predictor is built on a reference support that excludes the assay chemistry. Any
+DOCKSTRING row whose 14-character Standard InChI connectivity block appears in one of the three
+panels was removed before any correlation was computed: 1{,}050 blocks and 481 rows, leaving
+259{,}579 of 260{,}060 rows. Positive scores are clipped to zero; the unclipped sensitivity is in
+S6.2.
+
+Inference permutes the 20 docking target labels and holds the experimental endpoint and every
+structural control fixed. Each draw is one complete relabelling applied to the rows and columns
+of the docking map, so all 190 edges move together. Probabilities are one-sided for a positive
+association with the add-one correction, over 50{,}000 permutations at seed 20260803. Because
+the analysis is post hoc, they are descriptive directional tail areas. With
+50{,}000 draws the smallest attainable value is $2.0\times10^{-5}$.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption[Predictors of the frozen 190-pair kinase endpoint]{Predictors of the frozen 190-pair kinase endpoint, 15 positives, evaluated on identical
+pairs. Probabilities are one-sided target-label permutation values over 50{,}000 draws at seed
+20260803. Source: \path{results/klifs_pocket_control/locked_endpoint_retrieval.csv}.}
+\label{tab:s6-frozen-predictors}
+\begin{tabular}{lrrrr}
+\toprule
+Predictor & ROC-AUC & $p$ & Average precision & $p$ \\
+\midrule
+Raw Vina target map            & 0.5966 & 0.155  & 0.2355 & 0.0113 \\
+Centred Vina target map        & 0.7105 & 0.0069 & 0.3015 & 0.0014 \\
+Receptor-domain sequence identity & 0.7181 & 0.0070 & 0.4263 & $2.0\times10^{-5}$ \\
+KLIFS 85-residue pocket identity  & 0.7082 & 0.0103 & 0.4864 & $2.0\times10^{-5}$ \\
+Same KLIFS family              & 0.5971 & 0.0012 & 0.1916 & 0.0021 \\
+Same KLIFS group               & 0.6514 & 0.0431 & 0.1265 & 0.0160 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The paired increments from raw to centred docking, computed under the same relabellings, are
+$+0.1139$ in ROC-AUC and $+0.0660$ in average precision, with target-label probabilities 0.0334
+and 0.0166 and Holm-adjusted values 0.0334 and 0.0333 across the two metrics. The 95\% null
+intervals for those paired differences are $-0.108$ to $+0.123$ and $-0.054$ to $+0.058$.
+These adjusted values describe the two selected-endpoint directional contrasts; they are not
+confirmatory evidence across the threshold search.
+
+Two readings of Table~\ref{tab:s6-frozen-predictors} matter. Centred docking approaches sequence
+identity on ROC-AUC, 0.7105 against 0.7181, without establishing equivalence, and stays below it
+on average precision, 0.3015 against 0.4263; pocket identity is the strongest predictor on average precision at 0.4864.
+Its ROC-AUC is 0.0023 above pocket identity, but this point-estimate difference is not an
+equivalence or superiority result; on average precision it remains below both structural
+baselines. The binary annotations behave
+differently from the continuous ones under this null: same-family membership has ROC-AUC 0.5971,
+close to chance, yet $p=0.0012$, because only 4 of 190 pairs are same-family and the
+relabelling distribution of that statistic is coarse. A small probability on a two-valued
+predictor here reports rarity of the configuration, not separation.
+
+Centred Vina geometry is not itself a stand-in for the annotations it is being compared with. Its
+rank association with pocket identity is 0.0669 ($p=0.175$), with same-family 0.1123 ($p=0.0637$)
+and with same-group 0.0307 ($p=0.266$)
+(\path{results/klifs_pocket_control/annotation_associations.csv}).
+
+\sisubsection{S6.2 Threshold and transform sensitivity of the kinase gain}
+
+The upper decile is one cut of a continuous experimental map. Table~\ref{tab:s6-threshold} sweeps
+the cut from 5\% to 30\%. The declared omnibus covers the five thresholds 0.05, 0.10, 0.15, 0.20
+and 0.25: the mean paired gain is $+0.0723$ in ROC-AUC at $p=0.0605$ and $+0.0323$ in average
+precision at $p=0.0759$, over 50{,}000 draws at seed 20360803, with 95\% null intervals $-0.080$
+to $+0.093$ and $-0.049$ to $+0.051$. Neither omnibus reaches 0.05. The gain is an upper-tail
+result and is not stable across the whole threshold family: at 0.25 the ROC-AUC gain is $+0.0003$
+and the average-precision gain is $-0.0125$.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption[Threshold family for the experimental upper tail]{Threshold family for the experimental upper tail. The 10\% row is the frozen endpoint.
+Rows at 0.075, 0.125 and 0.30 are outside the declared omnibus family. Source:
+\path{results/replicated_pair_retrieval/threshold_sensitivity.csv}.}
+\label{tab:s6-threshold}
+\begin{tabular}{rrrrrrrr}
+\toprule
+Upper-tail & Positive & \multicolumn{3}{c}{ROC-AUC} & \multicolumn{3}{c}{Average precision} \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-8}
+fraction & pairs & raw & centred & $\Delta$ & raw & centred & $\Delta$ \\
+\midrule
+0.050 &  9 & 0.6262 & 0.7041 & $+0.0780$ & 0.1922 & 0.2090 & $+0.0168$ \\
+0.075 & 14 & 0.5913 & 0.6952 & $+0.1039$ & 0.2398 & 0.2967 & $+0.0569$ \\
+0.100 & 15 & 0.5966 & 0.7105 & $+0.1139$ & 0.2355 & 0.3015 & $+0.0660$ \\
+0.125 & 21 & 0.6475 & 0.7588 & $+0.1113$ & 0.2580 & 0.3431 & $+0.0850$ \\
+0.150 & 24 & 0.6606 & 0.7636 & $+0.1029$ & 0.3109 & 0.3537 & $+0.0427$ \\
+0.200 & 35 & 0.6431 & 0.7095 & $+0.0664$ & 0.3290 & 0.3777 & $+0.0487$ \\
+0.250 & 47 & 0.6535 & 0.6538 & $+0.0003$ & 0.3992 & 0.3868 & $-0.0125$ \\
+0.300 & 56 & 0.6499 & 0.6530 & $+0.0031$ & 0.4353 & 0.4329 & $-0.0024$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The endpoint also depends on how the experimental matrix is preprocessed before its target
+columns are correlated. Table~\ref{tab:s6-transform} gives three preprocessing choices. Centring
+then correlating is the primary rule and reproduces the primary labels exactly. Column
+$z$-scoring before centring keeps 15 positives but changes which pairs they are, with Jaccard
+0.429 against the primary label set, and it raises the paired gain to $+0.2510$ in ROC-AUC.
+Column inverse-normal ranks before centring give 18 positives and Jaccard 0.500. The paired gain
+is positive under all three rules, and its size moves by a factor of 2.2 in ROC-AUC. Clipping is
+not what carries the result: with positive scores left unclipped, the endpoint gives raw 0.5943
+and centred 0.7101 in ROC-AUC, and raw 0.2335 and centred 0.3006 in average precision.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption[Experimental-transform sensitivity of the frozen endpoint]{Experimental-transform sensitivity of the frozen endpoint. Jaccard is the overlap of the
+positive-pair set with the primary labels. Source:
+\path{results/replicated_pair_retrieval/summary.json}, key
+\texttt{experimental\_transform\_sensitivity}.}
+\label{tab:s6-transform}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+Experimental & Pos. & \multicolumn{3}{c}{ROC-AUC} & \multicolumn{3}{c}{Average precision} & \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-8}
+transform & pairs & raw & centred & $p(\Delta)$ & raw & centred & $p(\Delta)$ & Jaccard \\
+\midrule
+Centre, then correlate       & 15 & 0.5966 & 0.7105 & 0.0344   & 0.2355 & 0.3015 & 0.0171   & 1.000 \\
+$z$-score, then centre       & 15 & 0.5170 & 0.7680 & 0.00034  & 0.2233 & 0.3994 & 0.00032  & 0.429 \\
+Rank-normal, then centre     & 18 & 0.5346 & 0.7109 & 0.0018   & 0.1576 & 0.2708 & 0.0020   & 0.500 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The first row reproduces the selected endpoint's observed statistics. Its tail areas differ
+slightly from S6.1 because this transform-sensitivity run used an independent permutation stream
+(seed 20460803 rather than 20260803); the interpretation is unchanged.
+
+The remaining sensitivities hold the endpoint fixed and vary the support. Deleting one target at
+a time leaves the ROC-AUC gain positive in all 20 deletions, from $+0.0294$ (KDR omitted) to
+$+0.1659$ (AKT1 omitted), and the average-precision gain positive in all 20, from $+0.0049$ to
+$+0.1003$ (\path{results/replicated_pair_retrieval/target_jackknife.csv}). Five independent
+15{,}000-ligand reference supports at seeds 11, 29, 47, 71 and 97 give ROC-AUC gains from
+$+0.1105$ to $+0.1185$ and average-precision gains from $+0.0326$ to $+0.0792$. Rebuilding the
+endpoint from two panels and testing on the third gives ROC-AUC gains from $+0.0508$ to $+0.0960$
+and average-precision gains from $-0.0128$ to $+0.0677$, so one of the three held-out
+constructions loses on average precision
+(\path{results/replicated_pair_retrieval/support_sensitivities.csv}).
+
+\sisubsection{S6.3 Homology-restricted permutation}
+
+This is the weakest structural point in the paper and we state it in full. The permutation of
+S6.1 lets any docking target label move to any position. Kinases in one KLIFS group are more
+alike than kinases from different groups, so an unrestricted null can be broken by group
+structure alone. The restricted scheme allows a target label to exchange only with targets in the
+same KLIFS group. Every draw is still a complete bijection of all 20 labels, and the experimental
+endpoint, sequence identity and pocket identity stay fixed.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption[Exchangeability blocks of the fixed 20-kinase panel]{Exchangeability blocks of the fixed 20-kinase panel. Source:
+\path{results/strict_klifs_group_qap/exchangeability_blocks.csv}.}
+\label{tab:s6-blocks}
+\begin{tabular}{llrrr}
+\toprule
+KLIFS group & Targets & Size & Movable & Label orders \\
+\midrule
+TK    & ABL1, CSF1R, EGFR, FGFR1, IGF1R, JAK2, & 11 & yes & 39{,}916{,}800 \\
+      & KDR, KIT, LCK, MET, SRC & & & \\
+AGC   & AKT1, AKT2, ROCK1 & 3 & yes & 6 \\
+CMGC  & CDK2, MAPK1, MAPK14 & 3 & yes & 6 \\
+STE   & MAP2K1 & 1 & no & 1 \\
+CAMK  & MAPKAPK2 & 1 & no & 1 \\
+Other & PLK1 & 1 & no & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The restricted space has $11!\times 3!\times 3! = 1{,}437{,}004{,}800$ orders. Of the 20 target
+labels, 17 can move and 3 cannot. Of the 190 pair positions, 187 can receive a different
+predictor value and 3 cannot, those being the pairs among the singleton groups. TK dominates
+what is left: 154 of 190 positions (81.1\%) involve a TK target, so the test is mostly a test of
+the TK block. The primary null drew 100{,}000 group-restricted orders at seed 20260805, of which
+99{,}997 were unique.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption[Within-KLIFS-group restricted permutation]{Within-KLIFS-group restricted permutation of centred Vina target geometry. Probabilities
+are one-sided for a positive association with the add-one correction. Source:
+\path{results/strict_klifs_group_qap/restricted_partial_qap.csv}.}
+\label{tab:s6-restricted}
+\begin{tabular}{llrrrr}
+\toprule
+Experimental map & Control & $\rho$ & $p$ & Null median & Null 95\% interval \\
+\midrule
+Three-panel mean & none & 0.2676 & 0.167 & 0.1346 & $-0.019$ to $0.434$ \\
+Three-panel mean & sequence $+$ pocket & 0.2247 & 0.197 & 0.1030 & $-0.063$ to $0.415$ \\
+KiRHub & none & 0.3216 & 0.117 & 0.1867 & $0.035$ to $0.422$ \\
+KiRHub & sequence $+$ pocket & 0.2799 & 0.166 & 0.1614 & $-0.019$ to $0.419$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The two sequence-and-pocket-adjusted rows have exact counterparts under the unrestricted null of
+S6.1, at the same point estimates: $p=0.0140$ for the three-panel mean and $p=0.0068$ for KiRHub
+(\path{results/klifs_pocket_control/partial_geometry_qap.csv}). Restricting relabelling to KLIFS
+groups moves both to 0.197 and 0.166.
+
+The restricted null is broad enough that every observed value falls below its one-sided 5\%
+critical value. Relabelling only the TK block gives much the same result, while exact enumeration
+of the two three-target blocks has only 36 orders and little resolution. A stricter within-family
+scheme is not useful here: only four pairs can exchange, leaving 16 orders and a smallest possible
+one-sided probability of 0.0625. Full diagnostics are in
+\path{results/strict_klifs_group_qap/summary.json}.
+
+Homology-preserving nulls were also run on the two secondary-pharmacology resources. PDSP was a
+post-hoc analysis. Under within-family relabelling, its residual-minus-raw contrasts had
+two-sided probabilities of 0.0134 for continuous agreement, 0.2155 for top-decile ROC-AUC and
+0.0209 for best-partner recall. Their Holm-adjusted values across the full 12-test PDSP family
+were 0.1016, 0.2560 and 0.1254; the corresponding Bonferroni values were 0.1608, 1.000 and
+0.2508. For the residual increment over the sequence-plus-family baseline, the smallest
+within-family values were 0.0095 before adjustment, 0.0855 after Holm adjustment and 0.1140 after
+Bonferroni adjustment. We therefore treat the PDSP homology pattern as exploratory. On the
+Novartis panel, whose directional tests remain one-sided, the residual-minus-raw gain did not
+persist on any of the three endpoints. The residual map itself remained associated with each
+endpoint under the same null. Exact contrasts are in
+\path{results/pdsp_counterscreen_retrieval/paired_qap.csv} and
+\path{results/spd_external_validation/summary.json}.
+
+The PDSP point estimates beyond a sequence-plus-family baseline also depend on docking support,
+as detailed in S6.4. On the Novartis panel, evidence beyond those controls was endpoint-specific:
+it remained for the residual map at 10\,$\mu$M, but the raw map also retained partial agreement.
+The signal therefore appears in the broader docking geometry and is not unique to centring.
+Kinase-group membership remains a viable explanation of the kinase result. The restricted test
+also assumes exchangeability within each KLIFS group; groups still differ in family, pocket,
+construct and assay context.
+
+\sisubsection{S6.4 PDSP support, censoring and the counterscreen decision}
+
+The PDSP $K_\mathrm{i}$ download holds 98{,}678 rows. The strict contract keeps human rows from
+the allowed recombinant or cloned source vocabulary, exact relations only, positive $K_\mathrm{i}$
+and a valid structure, then takes the median $\mathrm{p}K_\mathrm{i}$ per Standard InChIKey and
+target: 3{,}722 source rows collapse to 1{,}560 compound-target cells over 481 compounds and 27
+exported targets. An experimental edge requires at least 10 shared compounds, which gives the
+primary graph of 148 target pairs over 21 targets. The Certified Data subset is smaller and
+better documented: 44 compounds and 317 cells over 20 exported targets, whose graph has 78 pairs
+over 15 targets.
+The retained values come from heterogeneous publications and assay conditions. Taking medians
+within compound--target cells and using rank correlations do not remove study or batch effects.
+
+We removed PDSP chemistry from the docking reference before building any predictor. Compounds in
+the exact-only endpoint share 63 full Standard InChIKeys and 116 connectivity blocks with
+Docking-44. The censor-aware analyses use additional structures, so the conservative mask was
+built from every PDSP structure entering any reported analysis. It removes 128 Docking-44 rows
+and leaves 12{,}523. The primary geometry uses this de-overlapped support and fills the remaining
+missing docking scores by target-column means. The exclusion list is
+\path{results/pdsp_counterscreen_retrieval/excluded_docking44_ligand_ids.csv}.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption[Raw and residual target maps against the PDSP map]{Raw and residual Docking-44 target maps against the PDSP experimental target-pair map.
+Top-decile labels are the upper 10\% of experimental edges. Sources:
+\path{results/pdsp_counterscreen_retrieval/global_retrieval_metrics.csv} and
+\path{results/pdsp_counterscreen_retrieval/certified_global_metrics.csv}.}
+\label{tab:s6-pdsp}
+\begin{tabular}{llrrrrr}
+\toprule
+Support & Map & Pairs & Positives & Spearman & ROC-AUC & Average precision \\
+\midrule
+Primary   & raw      & 148 & 15 & 0.0439 & 0.4747 & 0.1501 \\
+Primary   & residual & 148 & 15 & 0.2953 & 0.6812 & 0.1771 \\
+Certified & raw      &  78 &  8 & 0.0744 & 0.3786 & 0.0921 \\
+Certified & residual &  78 &  8 & 0.4248 & 0.7607 & 0.2330 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The PDSP analysis was post hoc, so its paired QAP uses two-sided probabilities. The correction
+family contains two contrasts, three metrics and two relabelling schemes, for 12 tests. Under
+unrestricted relabelling, the residual-minus-raw contrast has two-sided values of 0.0020 for
+continuous agreement, 0.0048 for top-decile ROC-AUC and 0.0027 for best-partner recall. The
+corresponding Holm values are 0.0240, 0.0480 and 0.0297; the Bonferroni values are 0.0240, 0.0576
+and 0.0324. Adding the residual map to the sequence-plus-family baseline raises continuous
+agreement by 0.0963 on this support, but its two-sided value of 0.0127 becomes 0.1016 by Holm and
+0.1524 by Bonferroni. The within-family results are summarised in S6.3. These QAPs relabel an
+already estimated edge map: they preserve dependence among target pairs but do not propagate
+uncertainty from estimating each experimental edge on a small, pair-specific compound set.
+
+The docking support is consequential. After the same overlap exclusion, only 9{,}221 Docking-44
+rows have all 44 scores observed. This complete-case subset is chemically shifted relative to
+the full support, so it is not a pure comparison of imputation rules. Of the 3{,}302 rows removed,
+3{,}300 are missing the CHRM2 score column (PDB 4mqs). On it, raw and residual
+continuous agreement are $-0.0987$ and 0.0463, and adding the residual to the
+sequence-plus-family baseline changes agreement by $-0.0381$. For the continuous
+residual-minus-raw contrast, the two-sided QAP value is 0.0713, with Holm 0.7843 and Bonferroni
+0.8556 across its 12-test sensitivity family. Thus the favorable full-support estimate does not
+transfer to this chemically different support. Complete results are in
+\path{results/pdsp_counterscreen_retrieval/complete_case_support_metrics.csv} and
+\path{results/pdsp_counterscreen_retrieval/complete_case_support_qap.csv}.
+
+Censoring changes the experimental graph as well. The exact-only graph conditions on both targets
+having a quantified $K_\mathrm{i}$ for the same compounds. Restoring censored observations at
+their reported bounds expands the primary graph from 148 to 191 pairs and moves residual
+agreement from 0.2953 to 0.0759. Binary recoding of quantified versus censored cells gives 0.0512.
+The Certified graph shows the same weakening. Table~\ref{tab:s6-pdsp-censor} gives both docking
+maps under the restored-censor endpoints.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption[PDSP censor-aware sensitivity]{PDSP censor-aware sensitivity. The final column is
+top-decile ROC-AUC for the residual map. Source:
+\path{results/pdsp_counterscreen_retrieval/censor_sensitivity_metrics.csv}.}
+\label{tab:s6-pdsp-censor}
+\begin{tabular}{lrrrr}
+\toprule
+Support and endpoint & Pairs & Raw $\rho$ & Residual $\rho$ & Residual ROC-AUC \\
+\midrule
+All allowed, reported bounds & 191 & $-0.1536$ & 0.0759 & 0.6140 \\
+All allowed, quantified/censored & 191 & $-0.1643$ & 0.0512 & 0.6544 \\
+Certified, reported bounds & 171 & 0.0041 & 0.1499 & 0.7222 \\
+Certified, quantified/censored & 171 & $-0.0251$ & 0.0568 & 0.6107 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Best-partner retrieval also changes with the censoring rule. With reported-bound insertion, the
+residual map recalls 0.25 versus 0.20 for the raw map. After binary recoding, the residual map
+recalls 0.20 versus 0.35 for the raw map. On the exact-only graph the values are 0.611 and 0.389.
+The sequence-plus-family baseline is 0.556 there; adding the residual map to that baseline reaches
+0.667. These are distinct predictors, and the fusion value is not the residual-only value. Exact
+targetwise results are in
+\path{results/pdsp_counterscreen_retrieval/summary.json} and the companion CSV files.
+
+The minimum compound support for an experimental edge was also varied after seeing the primary
+result. Table~\ref{tab:s6-pdsp-support} is therefore a descriptive sweep, not a separate
+confirmatory test. Changing the cutoff changes the edge set and, at the higher cutoffs, the target
+set. Residual agreement remains above raw agreement in every row, but its size varies, as does the
+increment over the sequence-plus-family baseline.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\caption[Minimum pair-support sensitivity on PDSP]{Minimum shared compounds per PDSP edge.
+The final column is the continuous-agreement increment from adding the residual map to an
+equal-rank sequence-plus-family baseline. Source:
+\path{results/pdsp_counterscreen_retrieval/minimum_pair_support_sensitivity.csv}.}
+\label{tab:s6-pdsp-support}
+\begin{tabular}{rrrrr}
+\toprule
+Minimum compounds & Pairs & Raw $\rho$ & Residual $\rho$ & Fusion increment \\
+\midrule
+10 & 148 &  0.0439 & 0.2953 & 0.0963 \\
+12 & 140 &  0.0266 & 0.2844 & 0.0831 \\
+15 & 128 &  0.0352 & 0.2560 & 0.0670 \\
+20 &  98 &  0.0053 & 0.2017 & 0.0429 \\
+25 &  72 &  0.0993 & 0.4327 & 0.1605 \\
+30 &  51 & $-0.0410$ & 0.2253 & 0.0807 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A support control isolates the effect of pooling different compounds into different edges. There
+are 113 five-target blocks in which at least 20 compounds are measured on all five targets, with
+a median of 21 complete compounds. Across those blocks the median residual-minus-raw difference
+in top-20\% ROC-AUC is $+0.0625$, and 61.1\% of blocks are positive.
+
+The frozen go/no-go rule required a residual-versus-raw gain under aligned-target permutation,
+most target deletions, the censor-aware endpoints, the Certified-only support and a majority of
+identical-support blocks. The recorded verdict is
+\texttt{NO\_GO\_GENERAL\_COUNTERSCREEN}. The remaining pattern is narrow: the residual map is
+more similar to the exact-only PDSP graph when both targets have a quantifiable $K_\mathrm{i}$
+for shared compounds. It is not a general ordering for deciding which
+counterscreens to run, and we do not present it as one.
+
+\sisubsection{S6.5 SPD endpoints, censoring and normalisation comparison}
+
+The Novartis Safety Profiling Database export covers 12 human targets. For each target, the
+analysis uses the candidate direct binding or inhibition assay group with the largest coverage;
+ties are broken by the smaller group identifier.
+ESR1, PGR and PTGS2 had a second campaign available
+(\path{results/spd_external_validation/assay_selection.csv}). The panel holds 1{,}975 full
+Standard InChIKeys across 1{,}925 connectivity blocks, and none of the 1{,}975 keys matches a
+DOCKSTRING compound exactly. We removed all 932 shared connectivity blocks from the docking side
+anyway, dropping 1{,}364 DOCKSTRING rows. Of 11{,}126 selected activity rows, 10{,}188 are
+right-censored, which is 91.6\%; 938 rows carry an exact value. An experimental edge requires 40
+shared compounds, giving 59 target pairs.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption[Docking and SPD target-pair map agreement]{Agreement between DOCKSTRING target maps and SPD experimental target-pair maps, on 59
+pairs, under both experimental transforms. The docking side is the 12-target local map built on
+the exact- and connectivity-de-overlapped DOCKSTRING support. Source:
+\path{results/spd_external_validation/geometry_metrics.csv}.}
+\label{tab:s6-spd}
+\begin{tabular}{llrrr}
+\toprule
+Experimental endpoint & Assay map & Raw $\rho$ & Residual $\rho$ & Difference \\
+\midrule
+Reported bound ranks     & centred & 0.1488 & 0.3723 & $+0.2235$ \\
+Reported bound ranks     & raw     & 0.3826 & 0.5139 & $+0.1313$ \\
+Active at 10\,$\mu$M     & centred & 0.3479 & 0.3884 & $+0.0404$ \\
+Active at 10\,$\mu$M     & raw     & 0.2786 & 0.5881 & $+0.3095$ \\
+Active at 30\,$\mu$M     & centred & 0.1804 & 0.4513 & $+0.2709$ \\
+Active at 30\,$\mu$M     & raw     & 0.1635 & 0.3344 & $+0.1709$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Against the centred assay map, the residual representation is associated with all three endpoints
+under unrestricted target relabelling ($p=0.0124$, $0.0052$ and $0.0058$). Its gain over raw is
+supported for reported-bound ranks and 30\,$\mu$M ($p=0.0376$ and $0.0206$), but not for
+10\,$\mu$M ($p=0.3811$). That endpoint is a counterexample within the same resource. After rank
+control for sequence, family, support and coverage, residual partial agreement on reported-bound
+ranks is 0.2405 at $p=0.0572$; we therefore make no beyond-control claim for this endpoint.
+Family-preserving results are in S6.3.
+
+The observation mask is target-specific, so we also built the largest outcome-blind complete
+rectangle, which fixes the compound set across targets: 102 compounds measured on the same 11
+targets, all except EGFR, giving 55 pairs. There raw agreement is 0.0552 and residual agreement
+is 0.5752, a difference of $+0.5200$, with raw partial rank $-0.2201$ and residual partial rank
+$+0.3706$. Deleting one target at a time from the primary endpoint leaves all 12 differences
+positive, from $+0.1610$ (DRD2 omitted) to $+0.3107$ (ADORA2A omitted)
+(\path{results/spd_external_validation/target_jackknife.csv}). The exact-only surface is too thin
+to carry anything: at minimum support 5 it has 28 pairs with raw 0.3905 and residual 0.4037,
+and at minimum support 10 it has 16 pairs with raw $-0.2208$ and residual $-0.0059$.
+
+Two-way centring is not the only within-ligand normalisation that works, and it is not the best
+one on this panel. Table~\ref{tab:s6-norm} compares five representations on the same three
+endpoints and the same de-leaked support.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption[Normalisation controls on the SPD panel]{Normalisation controls on the SPD panel, 59 pairs per cell, Spearman agreement with the
+fixed centred assay map. Source: \path{results/spd_normalization_controls/metrics.csv}.}
+\label{tab:s6-norm}
+\begin{tabular}{lrrr}
+\toprule
+Docking representation & Bound ranks & 10\,$\mu$M & 30\,$\mu$M \\
+\midrule
+Raw, target-standardised          & 0.1488 & 0.3479 & 0.1804 \\
+Standard centring                 & 0.3723 & 0.3884 & 0.4513 \\
+Within-ligand ordinal             & 0.3663 & 0.2877 & 0.3633 \\
+Ligand efficiency, raw            & 0.2849 & 0.2933 & 0.2642 \\
+Ligand efficiency, centred        & 0.4494 & 0.2828 & 0.4445 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Ligand-efficiency centring is best on reported-bound ranks, while standard centring is best at
+10\,$\mu$M. No paired contrast against standard centring reaches $p=0.05$. The ligand-efficiency
+advantage is stable across target deletions only for the reported-bound endpoint. Exact
+permutation and deletion results are in
+\path{results/spd_normalization_controls/target_label_qap.csv} and
+\path{results/spd_normalization_controls/target_jackknife.csv}. The choice of normalisation is a
+workflow decision that should be reported; its ranking on one panel does not transfer.
+
+The ordinal transform is the clearest case of non-transfer. It is worse than the column-$z$ plus
+row-centred comparator on all four kinase panels and in all 20 target deletions. The equal-weight
+difference is $-0.0424$ (two-sided $p=0.0560$). Its only advantage over this comparator is on the
+thresholded kinase endpoint, ROC-AUC 0.7303 versus 0.7181, and the paired permutation does not
+support that difference ($p=0.321$).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption[Within-ligand ordinal geometry on four kinase panels]{Within-ligand ordinal geometry against the column-$z$ plus row-centred comparator on four kinase panels, Spearman
+agreement with each panel's fixed centred target map. Source:
+\path{results/ordinal_docking_geometry/representation_metrics.csv} and
+\path{results/ordinal_docking_geometry/paired_target_label_qap.csv}.}
+\label{tab:s6-ordinal}
+\begin{tabular}{lrrrr}
+\toprule
+Panel & Column-$z$ + row-centred & Ordinal & Difference & Two-sided $p$ \\
+\midrule
+DAVIS  & 0.2925 & 0.2526 & $-0.0399$ & 0.0909 \\
+PKIS2  & 0.3003 & 0.2462 & $-0.0541$ & 0.0302 \\
+PKIS1  & 0.1854 & 0.1419 & $-0.0435$ & 0.0712 \\
+KiRHub & 0.3361 & 0.3040 & $-0.0321$ & 0.1386 \\
+Equal-weight mean & 0.2786 & 0.2362 & $-0.0424$ & 0.0560 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\sisubsection{S6.6 The KiRHub non-replication}
+
+KiRHub supplies 92 drugs by 20 kinase targets, 1{,}840 cells with none missing, as residual
+activity at a single 1\,$\mu$M drug concentration and $K_\mathrm{m}$ ATP. The measurement has a
+hard ceiling: 372 cells (20.2\%) sit at exactly 100 and 9 cells (0.49\%) at exactly 0, and the
+per-target ceiling fraction runs from 0.076 (FGFR1) to 0.511 (AKT2), with a median of 0.185
+(\path{results/kirhub_external_validation/target_ceiling_audit.csv}).
+
+The docking comparison uses a KiRHub-only endpoint: the upper decile of the centred KiRHub
+target-pair map, 19 positives among 190 pairs. Raw docking gives ROC-AUC 0.7510 and average
+precision 0.3312; centred docking gives 0.7436 and 0.2895. Both paired differences are negative,
+and neither supports a positive gain. Exact probabilities and null distributions are in
+\path{results/kirhub_external_validation/summary.json}. This is a non-replication of the
+centred-minus-raw gain on a fourth kinase panel.
+
+No choice of docking-side transform recovers it (Table~\ref{tab:s6-kirhub-transform}). Removing
+target offsets alone leaves the correlation unchanged, as it must. Removing the per-ligand mean
+loses 0.042 in average precision. Column $z$-scoring or inverse-normal ranks before centring
+recovers ROC-AUC to 0.753 and 0.754 while leaving average precision at 0.282 and 0.285. Leaving
+positive scores unclipped changes ROC-AUC by less than 0.003 in either representation.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption[Docking-side transforms against the KiRHub endpoint]{Docking-side transforms against the KiRHub-only endpoint, 190 pairs with 19 positives.
+Source: \path{results/kirhub_external_validation/transform_sensitivity.csv}.}
+\label{tab:s6-kirhub-transform}
+\begin{tabular}{lrr}
+\toprule
+Docking transform & ROC-AUC & Average precision \\
+\midrule
+Raw                                & 0.7510 & 0.3312 \\
+Target centring only               & 0.7510 & 0.3312 \\
+Per-ligand centring                & 0.7436 & 0.2895 \\
+Two-way centring                   & 0.7436 & 0.2895 \\
+$z$-score, then centre             & 0.7528 & 0.2821 \\
+Rank-normal, then centre           & 0.7544 & 0.2845 \\
+Raw, unclipped                     & 0.7485 & 0.3273 \\
+Two-way centred, unclipped         & 0.7433 & 0.2892 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Chemical independence from the earlier panels can only be audited by name. KiRHub tables and the
+portal give no machine-readable structures for the 92 drugs, so no InChIKey, connectivity or
+scaffold comparison is possible, and the DOCKSTRING reference support could not be de-leaked
+against KiRHub compounds the way it was for DAVIS, PKIS2 and PKIS1. Exact normalised names match
+the DAVIS 72-drug panel in 11 cases. Removing those 11 leaves 81 drugs, and the KiRHub
+experimental geometry then agrees with the three-panel mean at 0.8166 rather than 0.8340, and
+recovers the frozen endpoint at ROC-AUC 0.9699 rather than 0.9634 and average precision 0.7353
+rather than 0.6937 (\path{results/kirhub_external_validation/drug_name_overlap_sensitivity.csv}).
+The overlap does not carry the KiRHub experimental result, and the overlap sensitivity is a check
+on the experimental side only; it is not a structure-level independence claim. Using
+CDK2--cyclin E instead of CDK2--cyclin A moves the three-panel geometry agreement from 0.8340 to
+0.8335.
+
+One distinction must stay sharp. Centring the KiRHub \emph{assay} matrix helps: recovery of the
+frozen endpoint rises from ROC-AUC 0.8034 to 0.9634 and average precision from 0.5971 to 0.6937.
+Centring the \emph{docking} matrix against the KiRHub endpoint does not. These are different
+sides of the comparison and the first does not support the second.
+
+\sisubsection{S6.7 Ligand-level retrieval boundary}
+
+The claims above concern target-pair maps. Ranking targets for one ligand is a different
+estimand, and on that estimand centring is worse. The frozen benchmark takes ChEMBL records with
+an exact relation for $K_\mathrm{i}$, $K_\mathrm{d}$, IC$_{50}$ or EC$_{50}$, medians them per
+compound-target cell, and calls a cell active at $\mathrm{pChEMBL} \geq 6.0$. Against the
+44-target Docking-44 panel this gives 500 active compound-target pairs over 190 compounds and 39
+represented targets, spread over 166 Butina clusters. Compounds carry a median of 1 active target
+and at most 14.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption[Single-ligand target retrieval on the frozen ChEMBL active set]{Single-ligand target retrieval on the frozen ChEMBL active set, compound-balanced
+weighting. Lower mean rank percentile is better; higher top-$k$ is better. Intervals are
+Butina-cluster bootstrap 95\% intervals over 5{,}000 replicates. Source:
+\path{results/residual_mie_boundary_audit/observed_metrics.csv} and
+\path{results/residual_mie_boundary_audit/paired_contrasts.csv}.}
+\label{tab:s6-ligand}
+\begin{tabular}{lrrrl}
+\toprule
+Metric & Absolute Vina & Two-way residual & Difference & Cluster 95\% interval \\
+\midrule
+Mean rank percentile & 0.4017 & 0.4296 & $+0.0279$ & $-0.0013$ to $+0.0570$ \\
+Top-1 rate           & 0.0601 & 0.0622 & $+0.0021$ & $-0.0279$ to $+0.0316$ \\
+Top-3 rate           & 0.1580 & 0.1118 & $-0.0462$ & $-0.0917$ to $-0.0025$ \\
+Top-5 rate           & 0.2361 & 0.1641 & $-0.0720$ & $-0.1254$ to $-0.0218$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Top-3 and top-5 retrieval both fall, and both cluster intervals exclude zero. The top-5 hit rate
+falls from 23.6\% to 16.4\%. Mean rank percentile moves in the unfavourable direction, from 0.4017 to
+0.4296, but its cluster interval includes zero. Pair-weighted estimates point the same way:
+0.4182 versus 0.4456 in mean rank percentile and 0.210 versus 0.166 in top-5 retrieval.
+
+Both representations still beat a degree-preserving null. The null preserves every compound's
+active count and every target's frequency. Absolute Vina gives mean rank percentile 0.4017 versus
+0.4551 under the null and top-5 retrieval 0.2361 versus 0.1577. The two-way residual gives 0.4296
+versus 0.4981 and 0.1641 versus 0.1253 ($p=0.0002$ and $p=0.0212$). Full results are in
+\path{results/residual_mie_boundary_audit/null_summary.csv}. Target-specific ordering survives
+removal of the shared axis, but absolute scores retrieve more actives at fixed $k$.
+
+The algebra explains why the two-way residual cannot help here. Within one ligand,
+$\Gamma_{ij} = (X_{ij} - \bar X_{\cdot j}) - c_i$, where $c_i$ is that ligand's mean of the
+column-centred scores. Subtracting a constant from all of a ligand's entries cannot change their
+order, so the two-way residual ranks a ligand's targets exactly as the column-centred scores do;
+the maximum reconstruction error is $1.8\times10^{-15}$. It is not the same ordering as
+column-$z$, which rescales each target before the subtraction: the two differ by up to 33 rank
+positions on this support. A rise in spectral effective dimension after per-ligand centring can
+reflect covariance among targets, and it cannot create new within-ligand ranking information.
+
+A second frozen benchmark, run on DOCKSTRING rather than Docking-44, points the same way. Over
+6{,}480 ligands with 25{,}214 non-tied
+target pairs on 31 targets, mean per-ligand pairwise ordering accuracy is 0.5371 for absolute
+Vina, 0.5304 for column-$z$ and 0.5294 for the two-way residual; the residual-minus-absolute
+difference is $-0.0077$ with a conservative 95\% interval of $-0.0220$ to $+0.0061$
+(\path{results/dockstring_chembl_ranking/representation_summary.csv} and
+\path{results/dockstring_chembl_ranking/contrast_summary.csv}).

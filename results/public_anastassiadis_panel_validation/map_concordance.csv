@@ -1,0 +1,7 @@
+anastassiadis_transformation,comparison_panel,targets,target_pairs,target_pair_spearman,target_pair_pearson
+row_centered_correlation,DAVIS,21,210,0.76506626324536,0.780457063006128
+row_centered_correlation,PKIS2,21,210,0.751496794549925,0.760645858986148
+raw_correlation,DAVIS,21,210,0.689729277955768,0.717258401129048
+raw_correlation,PKIS2,21,210,0.52640066344232,0.622017462641116
+column_rank_then_row_centered,DAVIS,21,210,0.513485566566135,0.547737092491515
+column_rank_then_row_centered,PKIS2,21,210,0.438274272497271,0.493144253540191

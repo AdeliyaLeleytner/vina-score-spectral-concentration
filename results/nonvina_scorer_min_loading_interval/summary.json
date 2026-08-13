@@ -1,0 +1,113 @@
+{
+  "analysis": "cluster-bootstrap interval for the minimum PC1 loading",
+  "analysis_status": "descriptive_post_hoc_sensitivity",
+  "why": "The released transport table records pc1_min_loading as a point value only, so the all-loadings-positive half of the second criterion carried no uncertainty. This recomputes it from the frozen scores.",
+  "interval_rule": "conservative union of the Bemis-Murcko-scaffold and Butina-cluster 95% bootstrap intervals, matching the released table's other columns",
+  "replicates_per_scheme": 5000,
+  "seeds": {
+    "murcko": 20260805,
+    "butina": 20260806
+  },
+  "support": {
+    "ligands": 2000,
+    "targets": 9,
+    "scorers": 8,
+    "murcko_groups": 1876,
+    "butina_clusters": 1957
+  },
+  "inputs": {
+    "fixed_pose_scores": {
+      "path": "results/nonvina_scorer_transport/fixed_pose_scores.csv.gz",
+      "sha256": "8c0d10d2c31150a12dbd29ad419de65b5bc5ff902339faa7eb335987d1935e6b"
+    },
+    "dockstring_dataset": {
+      "path": "data/frozen/dockstring-dataset.tsv.gz",
+      "sha256": "e15a58258dbd613374e499bb17e5428a0df3f1f53b34758042f8e3cd3b53eb64"
+    }
+  },
+  "by_scorer": {
+    "released_vina": {
+      "pc1_min_loading": 0.08196720032065333,
+      "murcko_interval95_low": 0.05202381628555015,
+      "murcko_interval95_high": 0.10920228988319283,
+      "butina_interval95_low": 0.05337718544145076,
+      "butina_interval95_high": 0.10937545881097317,
+      "union_interval95_low": 0.05202381628555015,
+      "union_interval95_high": 0.10937545881097317,
+      "interval_excludes_zero": true
+    },
+    "smina_vina": {
+      "pc1_min_loading": 0.09452708969622806,
+      "murcko_interval95_low": 0.0657144402141844,
+      "murcko_interval95_high": 0.12105123031726686,
+      "butina_interval95_low": 0.06676719637021836,
+      "butina_interval95_high": 0.12126514209318132,
+      "union_interval95_low": 0.0657144402141844,
+      "union_interval95_high": 0.12126514209318132,
+      "interval_excludes_zero": true
+    },
+    "vinardo": {
+      "pc1_min_loading": 0.152747418131979,
+      "murcko_interval95_low": 0.09923928610805045,
+      "murcko_interval95_high": 0.1998583352952195,
+      "butina_interval95_low": 0.10239197781938221,
+      "butina_interval95_high": 0.1983586124623583,
+      "union_interval95_low": 0.09923928610805045,
+      "union_interval95_high": 0.1998583352952195,
+      "interval_excludes_zero": true
+    },
+    "rfscore_v1": {
+      "pc1_min_loading": 0.06406094270006946,
+      "murcko_interval95_low": 0.04389132153804468,
+      "murcko_interval95_high": 0.0838895201946444,
+      "butina_interval95_low": 0.04517280218636815,
+      "butina_interval95_high": 0.08205778982874201,
+      "union_interval95_low": 0.04389132153804468,
+      "union_interval95_high": 0.0838895201946444,
+      "interval_excludes_zero": true
+    },
+    "rfscore_v2": {
+      "pc1_min_loading": 0.046861826400310835,
+      "murcko_interval95_low": 0.027517537883934393,
+      "murcko_interval95_high": 0.06529466312654668,
+      "butina_interval95_low": 0.02902219394563534,
+      "butina_interval95_high": 0.06373969340056125,
+      "union_interval95_low": 0.027517537883934393,
+      "union_interval95_high": 0.06529466312654668,
+      "interval_excludes_zero": true
+    },
+    "rfscore_v3": {
+      "pc1_min_loading": 0.05719078084122401,
+      "murcko_interval95_low": 0.03708722990150015,
+      "murcko_interval95_high": 0.076258823588476,
+      "butina_interval95_low": 0.03853996756041543,
+      "butina_interval95_high": 0.07468946274504899,
+      "union_interval95_low": 0.03708722990150015,
+      "union_interval95_high": 0.076258823588476,
+      "interval_excludes_zero": true
+    },
+    "nnscore": {
+      "pc1_min_loading": 0.1342154079067432,
+      "murcko_interval95_low": 0.11293201345991252,
+      "murcko_interval95_high": 0.1534154654512036,
+      "butina_interval95_low": 0.11454529873995631,
+      "butina_interval95_high": 0.15298053134811454,
+      "union_interval95_low": 0.11293201345991252,
+      "union_interval95_high": 0.1534154654512036,
+      "interval_excludes_zero": true
+    },
+    "plecscore_linear": {
+      "pc1_min_loading": 0.22347873474148142,
+      "murcko_interval95_low": 0.19778124680200665,
+      "murcko_interval95_high": 0.24631814997885,
+      "butina_interval95_low": 0.1982055716712949,
+      "butina_interval95_high": 0.24738384246641787,
+      "union_interval95_low": 0.19778124680200665,
+      "union_interval95_high": 0.24738384246641787,
+      "interval_excludes_zero": true
+    }
+  },
+  "scorers_whose_interval_crosses_zero": [],
+  "released_cosine_interval_reproduction_max_abs_error": 0.00018362205275124222,
+  "claim_boundary": "A ligand-side resampling on one fixed nine-target block of retained AutoDock Vina poses. It quantifies uncertainty in the minimum loading under chemical resampling; it says nothing about unseen targets or poses another scoring function would select in its own search."
+}

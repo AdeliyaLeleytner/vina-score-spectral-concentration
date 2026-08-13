@@ -8,10 +8,10 @@ frozen package inputs and compares three score representations:
 
 * ``absolute``: clipped and column-mean-imputed Vina scores;
 * ``column_z``: target-wise z scores across the full Docking-44 support; and
-* ``two_way_residual``: row-centered ``column_z`` scores.
+* ``two_way_residual``: the two-way ANOVA residual in raw score units.
 
 Subtracting a row constant cannot change within-ligand target order.  Therefore
-``column_z`` and ``two_way_residual`` must have identical rankings; this is an
+``column_z`` and ``two_way_residual`` need NOT have identical rankings; this is an
 explicit tested identity, not an empirical approximation.
 
 Inference has two levels.  Paired uncertainty is estimated by resampling whole
@@ -205,8 +205,10 @@ def preprocess_score_representations(
 
     This mirrors the legacy benchmark preprocessing: numeric coercion, clipping
     positive Vina scores to zero, target-mean imputation, then target-wise sample
-    standardization (ddof=1).  The two-way residual is the row-centered column-z
-    matrix because the column-z matrix has zero column means by construction.
+    standardization (ddof=1).  The two-way residual is the manuscript's definition,
+    the additive two-way ANOVA residual in raw score units, so within one ligand it
+    preserves the ordering of column-centred scores rather than of column-z scores.
+    Bundles frozen before 2026-08-12 row-centred the column-z matrix instead.
     """
 
     missing = set(DOCK44).difference(score_frame.columns)
@@ -228,7 +230,8 @@ def preprocess_score_representations(
     if np.any(column_sds <= 0):
         raise ValueError("at least one target column has zero score variance")
     column_z = (absolute - column_means) / column_sds
-    two_way_residual = column_z - column_z.mean(axis=1, keepdims=True)
+    column_centred = absolute - column_means
+    two_way_residual = column_centred - column_centred.mean(axis=1, keepdims=True)
     return (
         {
             "absolute": absolute,
@@ -257,32 +260,37 @@ def rank_score_representations(
     representations: dict[str, np.ndarray],
     selected_rows: np.ndarray,
 ) -> tuple[dict[str, np.ndarray], dict[str, float | bool]]:
-    """Rank representations while enforcing the exact row-shift identity.
+    """Rank each representation, and record the row-shift identity that does hold.
 
-    Floating-point subtraction can perturb the last bit of values that were
-    exactly tied before row centering.  The mathematical ranking is nevertheless
-    invariant.  We therefore rank ``column_z`` once and reuse those ranks for the
-    analytically identical ``two_way_residual`` representation after verifying
-    the score identity itself.
+    Under the manuscript's definition the two-way residual is the column-centred
+    matrix minus each ligand's mean, so within a ligand it preserves the ordering
+    of **column-centred** scores, not of column-z scores. Those two orderings
+    differ whenever target columns have unequal spread, so each representation is
+    ranked independently and the identity that survives is checked explicitly.
     """
 
+    absolute = representations["absolute"][selected_rows]
     column_z = representations["column_z"][selected_rows]
     residual = representations["two_way_residual"][selected_rows]
-    reconstructed = column_z - column_z.mean(axis=1, keepdims=True)
-    maximum_reconstruction_error = float(np.max(np.abs(residual - reconstructed)))
-    if maximum_reconstruction_error > 1e-14:
-        raise AssertionError("two-way residual does not equal row-centered column-z")
 
-    column_z_ranks = average_rank_matrix(column_z)
+    column_centred = absolute - representations["absolute"].mean(axis=0)
+    reconstructed = column_centred - column_centred.mean(axis=1, keepdims=True)
+    maximum_reconstruction_error = float(np.max(np.abs(residual - reconstructed)))
+    if maximum_reconstruction_error > 1e-12:
+        raise AssertionError("two-way residual does not equal row-centred column-centred scores")
+
     ranks = {
-        "absolute": average_rank_matrix(representations["absolute"][selected_rows]),
-        "column_z": column_z_ranks,
-        "two_way_residual": column_z_ranks.copy(),
+        "absolute": average_rank_matrix(absolute),
+        "column_z": average_rank_matrix(column_z),
+        "two_way_residual": average_rank_matrix(residual),
     }
+    maximum_rank_difference = float(
+        np.max(np.abs(ranks["column_z"] - ranks["two_way_residual"]))
+    )
     return ranks, {
         "maximum_absolute_score_reconstruction_error": maximum_reconstruction_error,
-        "maximum_absolute_rank_difference": 0.0,
-        "all_rankings_identical": True,
+        "maximum_absolute_rank_difference": maximum_rank_difference,
+        "all_rankings_identical": bool(maximum_rank_difference == 0.0),
     }
 
 
@@ -835,9 +843,10 @@ These are weak aggregate retrieval results, not prospective target discovery.
 
 ## Exact boundary
 
-Within each ligand, the two-way residual equals the column-z vector minus one
-row-specific constant. Consequently its target order is exactly identical to
-column-z (maximum rank difference =
+Within each ligand, the two-way residual equals the column-centred score vector
+minus one row-specific constant. Consequently its target order is exactly
+identical to the column-centred score order. It need not equal the column-z order
+(maximum rank difference =
 {summary['rank_identity']['maximum_absolute_rank_difference']:.1f}). The rise in
 spectral effective dimension after row centering can reveal residual covariance,
 but row centering itself cannot create a new within-ligand ranking signal.
@@ -946,19 +955,20 @@ def run_audit(
         "preprocessing_counts": preprocessing,
         "rank_identity": {
             "statement": (
-                "within-ligand two-way-residual ranking equals column-z ranking"
+                "within-ligand two-way-residual ranking equals column-centred ranking"
             ),
             "mathematical_reason": (
-                "two_way_residual[i,j] = column_z[i,j] - row_mean[i]"
+                "two_way_residual[i,j] = column_centred[i,j] - row_mean(column_centred)[i]"
             ),
             "floating_point_tie_policy": (
-                "column-z ranks are reused after verifying the score identity"
+                "each representation is ranked independently; the two-way residual "
+                "preserves the ordering of column-centred scores, not of column-z"
             ),
             "maximum_absolute_score_reconstruction_error": identity_diagnostics[
                 "maximum_absolute_score_reconstruction_error"
             ],
             "maximum_absolute_rank_difference": maximum_rank_difference,
-            "all_rankings_identical": True,
+            "all_rankings_identical": identity_diagnostics["all_rankings_identical"],
         },
         "null_diagnostics": null_diagnostics,
         "privacy_boundary": {

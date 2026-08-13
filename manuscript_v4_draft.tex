@@ -1,0 +1,712 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{charter}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{lineno}
+\usepackage{cite}
+\usepackage[hidelinks]{hyperref}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[font=small,labelfont=bf]{caption}
+\input{results/public_core_macros.tex}
+
+\hypersetup{
+  pdftitle={Two-way centering reveals distributed target-relative structure and limits score-surface compression in Vina docking matrices},
+  pdfauthor={Adeliya Leleytner, Victor Safronov, Maxim Fedorov}
+}
+
+\doublespacing
+\linenumbers
+\renewcommand{\arraystretch}{1.15}
+
+\title{Two-way centering reveals distributed target-relative structure and
+limits score-surface compression in Vina docking matrices}
+
+\author{
+Adeliya Leleytner$^{1,*}$, Victor Safronov$^{1}$, Maxim Fedorov$^{1}$\\[4pt]
+\small $^{1}$Institute for Information Transmission Problems of the Russian Academy of Sciences\\
+\small (Kharkevich Institute), Bolshoy Karetny per. 19, Moscow 127051, Russia\\
+\small $^{*}$Correspondence: \texttt{a.leleytner@gmail.com}
+}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\textbf{Background.}
+Shared ligand effects can dominate dense reverse-docking matrices and obscure
+how targets differ relative to one another. We asked what structure remains
+after removing additive ligand and target effects, whether it can be compressed
+from a small fixed target subset, and whether that distinction matters for
+designing experimental kinase panels.
+
+\textbf{Results.}
+We audited two separately generated Vina-family matrices containing
+\DffRows{} ligands by \DffTargets{} targets and \DsRows{} by \DsTargets{}.
+Two-way centering increased participation-ratio dimension from \DffRawPR{} to
+\DffResidualPR{} and from \DsRawPR{} to \DsResidualPR{}, while the residual
+maps remained more correlated than three transformation-matched nulls and
+varied across ligand-property domains. Global residual-map edge ordering was
+recoverable from 200 random same-library ligands, although exact extreme-edge
+recovery was lower. Selected-target reconstruction exposed a sharper boundary:
+with eight observed targets, variance-weighted out-of-group $R^2$ was
+\DffSelectorRawRtwo{} and \DsSelectorRawRtwo{} for raw scores but only
+\DffSelectorResidualRtwo{} and \DsSelectorResidualRtwo{} for residual scores.
+In a fixed 21-kinase comparison using DAVIS, PKIS2 and Anastassiadis
+HotSpot profiles, panels selected from residual Vina maps without assay values
+had lower signed co-response coverage loss than raw-map panels in
+\PanelTransferPositiveCells{}/\PanelTransferTotalCells{} panel--size cells; the
+joint normalized loss improvement was \PanelTransferJointAUC{}
+(exploratory one-sided $p=\PanelTransferJointP{}$ in a post-hoc shared
+target-label randomization on the fixed 21-target set, adjusted for the maximum
+over three objectives). Row
+centering also increased pairwise agreement among all three experimental maps,
+whereas exact-support Vina--experiment map agreement remained moderate.
+
+\textbf{Conclusions.}
+The tested Vina matrices contain a dominant, readily compressible ligand axis
+and a weaker distributed target-relative component. Separating these components
+changes what a reduced target panel preserves. The result supports
+transformation-matched spectral auditing and assay-value-blind panel design,
+not affinity prediction, unseen-target retrieval or a general claim that
+centering improves docking.
+
+\medskip\noindent\textbf{Scientific Contribution.}
+We connect spectral concentration to a concrete design consequence: raw Vina
+scores can appear highly compressible because they preserve a shared ligand
+axis, whereas residual target-relative variation is distributed across more
+targets. A fixed-target, assay-value-blind comparison across three public kinase
+panels tests this distinction while explicitly delimiting it from affinity
+prediction and biological validation.
+\end{abstract}
+
+\noindent\textbf{Keywords:} AutoDock Vina; reverse docking; target-correlation
+map; chemical applicability domain; effective dimension; panel design;
+reproducibility.
+
+\section{Introduction}
+
+Reverse docking and multi-target virtual screening turn individual docking
+calculations into a ligand-by-target matrix. Such matrices underpin target
+fishing, off-target assessment and multiobjective ligand design
+\cite{luo2017,lapillo2019,lee2020crds,krause2023}. They are also increasingly
+available at a scale at which correlations among targets are impossible to
+ignore: DOCKSTRING, for example, contains more than 15 million Vina scores and
+was explicitly proposed for multiobjective optimization and transfer-learning
+benchmarks \cite{dockstring2022}. If many target columns respond similarly to
+the same compounds, treating them as independent objectives can duplicate
+Vina-defined computation and obscure what a computational panel distinguishes.
+
+The shared variation has familiar sources. Empirical docking scores respond to
+ligand size, flexibility and contact opportunity, while receptors differ in
+pocket geometry and score distribution \cite{pan2003,vigers2004,jacobsson2006}.
+Target-wise and two-directional normalizations have therefore long been used in
+reverse docking \cite{carta2007,sepresa2009,casey2009,luo2017}, and principal
+components of docking profiles have been used as compound or protein
+descriptors \cite{fukunishi2005,fukunishi2006,fukunishi2018}. Neither
+normalization nor PCA is new. What remains unresolved is an operational question:
+whether the target relationships inferred from a large docking matrix are
+properties of the receptor panel, or properties of that panel \emph{on the
+ligand library used to estimate them}.
+
+This distinction matters because a correlation map is a population-dependent
+object. For a score matrix $X\in\mathbb{R}^{N\times P}$, its target map contains
+correlations between columns across the observed $N$ ligands. Changing the
+ligand distribution can change those correlations even if the receptors and
+scoring program are unchanged. Conversely, if a map can be estimated from a
+small, representative sample of the intended library, it can guide an early
+decision---for example, prioritizing a compact computational subset---without
+requiring the complete $N\times P$ screen. Recovering a map and compressing the
+underlying score surface are nevertheless different tasks. A panel can recover
+the dominant ligand-wide score tendency while failing to preserve weaker
+target-relative deviations. Global matrix geometry is also not a ligand-wise
+target-ranking rule: subtracting one constant from every target score of a
+ligand cannot change that ligand's target order.
+
+Related matrix-design problems have been studied with experimental kinase
+profiles: focused mini-panels can approximate a prespecified selectivity index,
+compound-based networks can identify representative kinases, and informer-set
+methods choose compounds for a new assay \cite{bembenek2018,zhang2019informer,
+laufkotter2020}. Profile-QSAR and reverse-docking profiles instead use measured
+or predicted activity vectors as descriptors for supervised prediction
+\cite{martin2011pqsar,lee2012profiles}. Protein-subset selection in CANDO was
+optimized against drug--indication recovery, whereas active-learning studies
+have selected individual compound--assay experiments using compound or protein
+features \cite{mangione2019cando,kangas2014active}. Those supervised objectives
+are not interchangeable with ours. Here a fixed target subset and its
+reconstruction model are learned only from a fully scored Vina pilot; utility is
+then measured on ligands and omitted target columns that played no role in
+selection or fitting. Experimental profiles remain an external boundary rather
+than labels used to choose the Vina panel.
+
+We address these questions with two separately generated Vina-family score
+matrices, one spanning 44 secondary-pharmacology receptors and one spanning 58
+DOCKSTRING targets \cite{nikitin2025,dockstring2022}. We first separate a shared
+ligand-wide score axis from the residual target map and use participation-ratio
+(PR) dimension as a compact re-expression of mean squared target correlation,
+not as a new statistic. We then test map transport across molecular-property
+domains and ask a deployment-level question: after fully scoring a pilot set,
+how well can selected target scores reconstruct uncomputed raw and residual
+target columns for chemically held-out ligands? Finally, three public kinase
+profiles---DAVIS, PKIS2 and Anastassiadis HotSpot---provide a fixed-target test
+of whether panels selected from raw or residual Vina maps cover signed
+experimental co-response neighbourhoods \cite{davis2011,wu2025davis,drewry2017,
+anastassiadis2011}. Experimental values are never used for Vina panel selection,
+and every plausible evaluation-compound connectivity is removed from the Vina
+calibration support.
+
+The contribution is therefore an empirical and operational audit, rather than
+a proposed normalization algorithm. Table~\ref{tab:scope} states the decisions
+licensed by each object and the interpretations deliberately kept outside the
+claim.
+
+\begin{table}[htbp]
+\centering
+\caption{Objects in the audit and their interpretation boundaries.}
+\label{tab:scope}
+\small
+\begin{tabular}{p{0.22\linewidth}p{0.34\linewidth}p{0.34\linewidth}}
+\toprule
+Object & Supported use & Not established here \\
+\midrule
+Correlation spectrum & Compact dependence audit on a stated matrix and
+preprocessing contract & Algebraic rank, intrinsic molecular dimension or
+docking quality \\
+Residual target map & Computational redundancy and signed co-variation on a
+stated ligand support & A portable protein network or true biophysical
+specificity \\
+Pilot panel and reconstruction & Approximate prediction of omitted Vina score
+columns and a score-cell break-even within a declared ligand domain & Exact
+recovery of target-specific residuals, extreme-score hit lists or transport to
+an unspecified chemical population \\
+Experimental panel coverage & Assay-value-blind coverage of signed co-response
+neighbourhoods on the fixed 21-kinase panel & Affinity calibration, causal
+validation, compound ranking or retrieval of unmeasured targets \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\input{results/v4_methods_draft.tex}
+
+\section{Results}
+
+\subsection{A shared ligand axis masks a dependent residual target map}
+
+The two full score matrices showed the same qualitative structure despite their
+different ligand collections and target panels. In Docking-44, the first
+principal component explained 73.3\% of column-standardized variance and the PR
+dimension was \DffRawPR{}. In DOCKSTRING-58, the corresponding values were
+65.9\% and \DsRawPR{}. The PC1 loading vector was nearly parallel to a uniform
+target vector (cosine similarities \DffAxisCosine{} and \DsAxisCosine{};
+Fig.~\ref{fig:spectra}a), consistent with a shared favourable-score direction
+rather than one target-specific contrast.
+
+For a $P$-target correlation matrix $C$, PR dimension is
+\begin{equation}
+r_{\mathrm{PR}}
+=\frac{\left(\sum_k\lambda_k\right)^2}{\sum_k\lambda_k^2}
+=\frac{P}{1+(P-1)\overline{r_{ij}^{2}}},
+\label{eq:pr}
+\end{equation}
+where $\lambda_k$ are the eigenvalues and the bar averages squared correlations
+over unique target pairs. Thus the headline dimensions correspond directly to
+mean squared target correlations of \DffRawMeanRtwo{} and \DsRawMeanRtwo{};
+PR provides an interpretable common scale but no information beyond the complete
+correlation spectrum.
+
+We removed additive ligand and target main effects,
+\begin{equation}
+\Gamma_{ij}=X_{ij}-\bar X_{i\cdot}-\bar X_{\cdot j}+\bar X_{\cdot\cdot},
+\label{eq:center}
+\end{equation}
+and recomputed unit-variance target correlations. Thus the raw and residual
+spectra use the same post-transformation scaling. In Eq.~\ref{eq:center}, correlation already removes column
+means, the practical difference from the original map is removal of the
+ligand-wise common score. PR dimensions increased to \DffResidualPR{} and
+\DsResidualPR{}, while mean squared correlations fell to
+\DffResidualMeanRtwo{} and \DsResidualMeanRtwo{} (Fig.~\ref{fig:spectra}b,c).
+The residual maps contained both positive and negative edges, rather than the
+mostly positive raw maps, but they were not close to independent noise.
+
+Row centring imposes a zero row sum and therefore a compositional constraint,
+including one zero spectral mode. We tested whether that constraint or
+ligand-specific residual magnitude could explain the observed concentration on
+the same deterministic 12,000-ligand supports. Median residual PR was
+\DffNullMedianLow{}--\DffNullMedianHigh{} in Docking-44 and
+\DsNullMedianLow{}--\DsNullMedianHigh{} in DOCKSTRING under (i) an additive
+Gaussian surface with target-specific residual variances, (ii) independent
+permutation of empirical residual target columns, and (iii) random directions
+in the zero-sum target subspace preserving every ligand's residual row norm
+(Fig.~\ref{fig:spectra}e). Every null value exceeded the corresponding observed
+PR. The observed residual dependence is therefore not explained by these three
+specified transformation-matched null constructions. This model-conditional
+comparison does not exclude every mechanical alternative, distinguish among
+structured alternatives or identify the dependence as biologically correct.
+
+A fourth null asked how much of the residual map follows from target-specific
+molecular-size gradients alone. It independently permuted each processed raw
+target column within ten molecular-weight bins, thereby preserving each
+target's empirical score distribution within a coarse size domain while
+destroying cross-target ligand correspondence, and then repeated row centring.
+Median null PR fell to \DffMWConditionedNullPR{} and
+\DsMWConditionedNullPR{}, explaining \DffMWConditionedExplainedShare{} and
+\DsMWConditionedExplainedShare{} of the one-bin-null to observed-PR gap. Yet
+the same null recovered much of the residual edge ordering (median map
+Spearman \DffMWConditionedMapRho{} and \DsMWConditionedMapRho{}) and edge signs
+(\DffMWConditionedSignAgreement{} and \DsMWConditionedSignAgreement{}).
+Size-conditioned target marginals can therefore reproduce much of \emph{which}
+target pairs co-vary, but not the strength and spectral concentration of their
+joint dependence. Random partitions with the same bin sizes produced no such
+shift, and five- to twenty-bin sensitivities approached a plateau
+(Supplementary Section~S2.3).
+
+Two sensitivities bounded preprocessing choices. Without target-wise variance
+standardization, covariance-spectrum PR still increased from \DffCovRawPR{} to
+\DffCovResidualPR{} and from \DsCovRawPR{} to \DsCovResidualPR{}; scaling
+therefore affects the magnitude but not the direction of the result. In
+Docking-44, full-support target-median imputation gave residual PR
+\DffMedianImputeResidualPR{} and observed-cell additive fitting gave
+\DffMissingAwareResidualPR{}, close to the primary \DffResidualPR{}. Complete
+rows alone gave \DffCompleteCaseResidualPR{}, but the same-sized random supports
+ranged only \DffEqualNResidualPRLow{}--\DffEqualNResidualPRHigh{}; the complete-
+case shift was attributable to a strongly size-enriched chemical support rather
+than to sample size. Restricting the mean-imputed matrix to those same complete
+rows reproduced the complete-case value exactly, excluding the imputed cells as
+the source of that contrast (Supplementary Section~S2).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/public_core/fig1_spectra_residual.pdf}
+\caption{Shared and residual spectral structure of the two public Vina panels.
+(a) Target loadings on the leading score-surface principal component, oriented
+toward the positive uniform vector; dotted lines mark uniform loadings and the
+inset reports cosine similarity to that vector. (b) Correlation-spectrum
+variance fractions before and after two-way centering; the algebraically zero
+residual mode is omitted from the logarithmic display. (c) Hierarchically
+ordered residual target--target correlation map for Docking-44. (d) The
+corresponding residual map for DOCKSTRING-58. (e) Observed residual
+participation-ratio dimension, normalized by its $P-1$ maximum, against
+additive-Gaussian, column-permutation, row-norm-preserving, and ten-bin
+molecular-weight-conditioned raw-score nulls on the same deterministic
+$n=12{,}000$ ligand support. Null points are medians and bars are 2.5--97.5\%
+simulation ranges.}
+\label{fig:spectra}
+\end{figure}
+
+\subsection{Target maps vary across multiple ligand-property domains, most strongly along molecular size}
+
+We next asked whether a residual map estimated on one part of chemical space
+described another. Molecular weight was selected after preliminary inspection
+and is treated as an exploratory domain coordinate, not a causal mechanism. In
+the lower and upper molecular-weight quartiles, residual edge-rank agreement was
+\DffMWQuartileRho{} for Docking-44 and \DsMWQuartileRho{} for
+DOCKSTRING-58 (Fig.~\ref{fig:domain}a). The Docking-44 value uses all 12,651
+ligands; the DOCKSTRING value uses a fixed, score-blind 15,000-ligand random support
+(seed 71) for descriptor computation. This was not the disagreement expected
+from finite samples of the same library: matched-size random-disjoint supports
+gave agreements near one. Nor was it a generic consequence of chemical
+disjointness. When whole Butina clusters (Docking-44) or Bemis--Murcko groups
+(DOCKSTRING-58) were assigned to disjoint halves while matching the molecular-
+weight distribution, median residual-map agreements were
+\DffMWMatchedControlRho{} and \DsMWMatchedControlRho{}.
+
+The support effect was graded rather than unique to one molecular axis. Using
+inclusive lower/upper threshold tails, molecular weight, heavy-atom
+count and Labute accessible surface area gave residual-map agreements of
+\DffSizeAxisRhoRange{} in Docking-44 and \DsSizeAxisRhoRange{} in
+DOCKSTRING. The corresponding ranges across topological polar surface area,
+clogP, rotatable-bond count and ring count were \DffOtherAxisRhoRange{} and
+\DsOtherAxisRhoRange{} (Fig.~\ref{fig:domain}d). Each of the 14 observed
+contrasts lay below the 2.5th percentile of 200 random-row-disjoint controls
+matched to its actual low/high tail sizes. Molecular weight correlated
+strongly with heavy-atom count ($\rho=0.935$ and 0.965) and accessible surface
+area ($\rho=0.968$ and 0.979), identifying one highly collinear size-related
+family rather than three independent replications. All seven comparisons were
+examined post hoc. The gradient in effect size narrows the observed association
+but does not establish size or contact opportunity as causal; the four other
+axes also differed from their matched random controls. Inclusive thresholds
+retained ties, so discrete descriptors produced larger tails (the DOCKSTRING
+ring-count split covered the entire 15,000-row support between its two disjoint
+tails).
+
+The contrast was not tied to the quartile cut. Across lower/upper tail fractions
+from 10\% through 40\%, residual-map agreement ranged from 0.201 to 0.259 in
+Docking-44 and from 0.174 to 0.528 in DOCKSTRING-58. At every threshold the
+observed agreement was below the 2.5th percentile of its equal-$N$ random-
+disjoint control (Fig.~\ref{fig:domain}b). Within either the low- or high-weight
+band, chemical-group-disjoint halves remained highly concordant, making unstable
+estimation inside a restricted band an unlikely explanation.
+
+Finally, ten non-overlapping, equally populated molecular-weight bins replaced a
+binary split. Map dissimilarity increased steadily with separation of bin
+medians: the descriptive slopes were 0.220 and 0.316 dissimilarity units per
+100~Da, and the corresponding Spearman correlations were
+\DffMWContinuumRho{} and \DsMWContinuumRho{} (Fig.~\ref{fig:domain}c). These
+45 pairwise distances reuse ten maps and are not independent observations. In
+DOCKSTRING, the quartile result also reproduced across six separately seeded
+15,000-ligand supports (residual $\rho$ range 0.325--0.361;
+Supplementary Section~S3). Together, these controls document a large and
+threshold-robust domain shift within both source matrices; they do not establish
+molecular weight as its sole cause.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/public_core/fig2_support_domain.pdf}
+\caption{Chemical-domain dependence of residual Vina target-correlation maps.
+(a) Diamonds show the observed edge-rank Spearman correlation between low- and
+high-molecular-weight quartile maps (0.205 for Docking-44 and 0.351 for
+DOCKSTRING-58). Open circles and bars show medians and 2.5--97.5\% ranges across
+200 whole-chemical-group-disjoint splits for the full support after MW matching
+and separately within each MW quartile; the global matched medians were 0.992
+and 0.994. Chemical groups are inherited source cluster labels for Docking-44 and
+Bemis--Murcko scaffolds, with acyclic compounds as singletons, for
+DOCKSTRING-58. The small DOCKSTRING ticks show the observed residual contrast
+in six seeded 15,000-ligand supports; Docking-44 uses all 12,651 ligands. These
+repeated-split composition ranges and seeded-support values are not confidence
+intervals. (b) Residual-map agreement across 10--40\% low/high tail definitions;
+dotted lines and bands are means and 2.5--97.5\% ranges across 100 equal-size
+random-row-disjoint control supports; unlike panel a, chemical groups may recur
+across their halves. The quartile definition differs from the 25\% sweep point
+by at most one boundary ligand because the producers use different tie rules.
+(c) Pairwise map dissimilarity among ten equal-size MW bins versus their
+median-MW separation. Marker size encodes bin-index separation; the fits are
+descriptive because the 45 pairs reuse ten maps. (d) Residual low/high
+threshold-tail map agreement along seven ligand-descriptor axes. Filled points
+are observed contrasts; open points and bars are medians and 2.5--97.5\%
+ranges from 200 matched-tail-size random-row-disjoint controls. Every observed
+contrast lies below its control range, with the largest changes along the
+correlated molecular-size axes. Inclusive thresholds retain ties, so discrete
+descriptors can have expanded tails. All descriptor comparisons were selected
+post hoc and are descriptive; these panels diagnose support dependence but do
+not identify a causal molecular property or establish biological target
+relationships.}
+\label{fig:domain}
+\end{figure}
+
+\subsection{Source-library pilots recover target maps, but residual scores resist panel compression}
+
+Support dependence implies that a map should be calibrated on the intended
+library, but not necessarily that the complete screen must be run first. We drew
+100 simple-random pilot samples of 200 or 500 ligands from each source matrix and
+compared each estimated residual map with the map on its row-disjoint complement.
+With 200 ligands, mean edge-rank agreement was \DffProbeTwoHundred{} for
+Docking-44 and \DsProbeTwoHundred{} for DOCKSTRING-58; with 500 it was
+\DffProbeFiveHundred{} and \DsProbeFiveHundred{}
+(Fig.~\ref{fig:recovery}a). Edge-sign and strongest-edge recovery were lower
+than global agreement, and are reported in Supplementary Section~S4.
+
+Recovery also persisted under five-fold chemical-group holdout. Calibration
+ligands were sampled from four folds and compared with the residual map of the
+fifth; cyclic scaffolds had zero overlap by construction and acyclic compounds
+were separated by standardized connectivity. Mean agreements at 200 ligands
+were \DffScaffoldProbeTwoHundred{} and \DsScaffoldProbeTwoHundred{}, increasing
+to \DffScaffoldProbeFiveHundred{} and \DsScaffoldProbeFiveHundred{} at 500.
+Matched random-row holdouts were similar, and all paired central ranges for the
+group-minus-random contrast included zero. This is a same-library
+chemical-group sensitivity, not transport to a shifted external library.
+
+Map recovery alone did not establish that a small panel preserved the score
+surface. We therefore used five chemical-group-disjoint folds, selected
+$k=4,6,8,10,12$ targets from a 500-ligand calibration sample, fitted
+multivariate Ridge models using only those selected raw target scores, and
+predicted omitted targets in the held-out fold. For the raw score surface,
+median variance-weighted omitted-target $R^2$ increased rapidly with $k$; at
+$k=8$ it was \DffSelectorRawRtwo{} in Docking-44 and \DsSelectorRawRtwo{} in
+DOCKSTRING-58. For the row-centred residual surface, however, the corresponding
+values were only \DffSelectorResidualRtwo{} and
+\DsSelectorResidualRtwo{} (Fig.~\ref{fig:recovery}b). Thus most apparent raw
+compressibility followed the shared ligand axis removed by centring, whereas
+target-relative deviations were distributed across more targets.
+
+This residual gap was not a bookkeeping artifact caused by predicting raw
+scores and centring them afterwards. Directly fitting the residual outcomes
+from the same selected raw predictors gave $R^2=\DffSelectorDirectResidualRtwo{}$
+and \DsSelectorDirectResidualRtwo{}, differing from the derived-residual route
+by only \DffSelectorDirectResidualDelta{} and
+\DsSelectorDirectResidualDelta{}. Both multivariate fits exceeded a
+selected-target PC1 baseline (\DffSelectorResidualPCOneRtwo{} and
+\DsSelectorResidualPCOneRtwo{}; Fig.~\ref{fig:recovery}d). On the targets
+omitted by both a designed panel and each of three fixed random panels, the
+designed residual panel improved mean $R^2$ in every fold; median gains were
+\DffSelectorCommonResidualDelta{} and \DsSelectorCommonResidualDelta{}.
+Because only three random panels were fixed in advance, this comparison is
+descriptive rather than a tail probability.
+
+The simpler map-coverage objective remained useful but answered a weaker
+question. Eight medoids selected from a 200-ligand pilot retained 72\% and 80\%
+of the full-map improvement over median random panels, rising to 85\% and 90\%
+at 500 ligands (Fig.~\ref{fig:recovery}c). A two-stage design with 200 fully
+scored pilot ligands and eight targets thereafter would use 19.5\% and 13.9\%
+of the complete score cells. These savings describe Vina computation, not
+affinity prediction, and the residual reconstruction results show why raw-map
+coverage must not be mistaken for preservation of target-relative information.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/public_core/fig3_pilot_decision.pdf}
+\caption{Recovery and compression of source-library Vina maps. (a) Global
+edge-rank agreement between maps estimated from 200 or 500 random calibration
+ligands and their row-disjoint complement maps. Points are means and bars are
+2.5--97.5\% ranges over 100 supports. (b) Median omitted-target
+variance-weighted $R^2$ for score and row-centred residual surfaces when
+$k=4$--12 selected raw target scores are observed. Lines join medians and bars
+span five chemical-group-disjoint folds. (c) Pilot-medoid coverage expressed as
+the fraction of the random-to-full-map nearest-distance gap remaining. These
+are Vina score-compression diagnostics, not affinity predictions or a biological
+target optimum. (d) At $k=8$, multivariate Ridge residual reconstruction after
+raw-score prediction, direct residual-outcome Ridge using the same selected raw
+predictors, and a selected-target PC1 baseline. Points are fold medians and bars
+span five folds; the direct fit is an artifact check rather than a deployment
+policy.}
+\label{fig:recovery}
+\end{figure}
+
+\subsection{Residual-map selection improves fixed-target co-response coverage without validating affinity prediction}
+
+We first established that the experimental target maps were themselves
+repeatable. On the same fixed 21 kinases, median disjoint-half residual-map
+agreement was \DavisSplitRho{} for DAVIS, \PkistwoSplitRho{} for PKIS2 and
+\HotspotSplitRho{} for the \HotspotLigands{}-compound Anastassiadis HotSpot
+panel (Fig.~\ref{fig:experimental}a). The HotSpot 2.5--97.5\% split range was
+\HotspotSplitRhoLow{}--\HotspotSplitRhoHigh{}. These panels differ in compounds
+and assay format and are not independent samples of a common population, but
+they supply three observed co-response geometries on the same target labels.
+
+Removing each compound's mean response made those geometries more concordant.
+DAVIS--PKIS2 edge-rank agreement increased from
+\ExperimentalCrossRawRho{} to \ExperimentalCrossRho{}; DAVIS--HotSpot increased
+from \DavisHotspotRawRho{} to \DavisHotspotResidualRho{}, and PKIS2--HotSpot
+from \PkistwoHotspotRawRho{} to \PkistwoHotspotResidualRho{}
+(Fig.~\ref{fig:experimental}d). This does not show that centring recovers a true
+biophysical network. It shows that a target-relative co-response estimand is
+more reproducible across these three assay contexts than the corresponding raw
+correlation map. The residual-over-raw ordering survived all 21
+leave-one-target-out omissions for every assay pair. Because DAVIS contains a
+substantial released pKd floor, these cross-assay arrows remain descriptive;
+the panel-transfer result below was also checked after independently ranking
+ligands within each experimental target before row centring. That scale-free
+sensitivity retained \PanelRankPositiveCells{}/15 positive cells (mean
+contrast \PanelRankConservativeMean{}, adjusted $p=\PanelRankP{}$).
+
+We then tested a bounded design consequence without using assay values for
+selection. For each of $k=4,6,8,10,12$, all target subsets were scored on either
+the raw or row-centred DOCKSTRING map after every plausible DAVIS, PKIS2 or
+HotSpot evaluation-compound connectivity had been removed from the calibration
+support. Numerically optimal subsets were evaluated by signed experimental
+co-response coverage loss $1-r$ on each assay panel. To avoid favourable tie
+selection, the primary contrast used the best raw-map optimum minus the worst
+residual-map optimum; positive values favour the residual selector. This
+conservative contrast was positive in \PanelTransferPositiveCells{} of
+\PanelTransferTotalCells{} assay--$k$ cells, with mean
+\PanelTransferConservativeMean{} (Fig.~\ref{fig:experimental}b). The joint
+normalized area-under-the-loss-curve improvement was \PanelTransferJointAUC{};
+a shared 20,000-permutation target-label test, adjusted for the maximum over the
+three assay objectives, gave one-sided $p=\PanelTransferJointP{}$. Because the
+three-panel transfer analysis was introduced post hoc, this is an exploratory
+conditional randomization result on the fixed 21-target set, not confirmatory
+error control for the full analysis history. In a HotSpot
+chemical-cluster multiplier, all 2,000 perturbations favoured the residual
+selector (median \HotspotClusterMedian{}, 2.5--97.5\%
+\HotspotClusterLow{}--\HotspotClusterHigh{}).
+The result was not carried by one kinase: after omitting each target and
+reselecting both panels on the remaining 20-target maps, the joint AUC contrast
+remained positive in \PanelTargetLooPositive{}/\PanelTargetLooTotal{} analyses
+(range \PanelTargetLooAucLow{}--\PanelTargetLooAucHigh{}), with
+\PanelTargetLooCellWinsLow{}--\PanelTargetLooCellWinsHigh{} of 15 cells
+positive per omission. These strongly overlapping leave-one-target-out values
+are influence checks, not 21 independent confirmations or a second $p$-value;
+their magnitude is small relative to the full $0$--$2$ signed-distance scale.
+
+Sequence identity remained a competitive panel-design comparator: the
+lexicographic residual Vina panel had lower loss in only 9 of the 15 cells.
+Accordingly, the result is not evidence that docking replaces sequence-based
+panel design. It shows that, when Vina is used as the design signal, removing
+the shared ligand axis changes the selected subset in a direction that more
+often covers observed target-relative co-response structure on this fixed
+kinase panel.
+
+The affinity boundary remained deliberately separate. Exact full Standard
+InChIKey matching to DOCKSTRING yielded \DavisSameSupportLigands{} informative
+DAVIS ligands and \PkistwoSameSupportLigands{} PKIS2 ligands. Vina--experiment
+residual-map agreement was only \DavisSameSupportRho{} and
+\PkistwoSameSupportRho{} (Fig.~\ref{fig:experimental}c), with broad de-leaked
+DOCKSTRING references of \DavisBroadSupportRho{} and
+\PkistwoBroadSupportRho{}. Chemical-cluster bootstrap ranges were 0.098--0.369
+and 0.163--0.391. Thus panel-level transfer does not imply that Vina predicts
+affinities, compound orderings or experimental maps on identical ligands.
+
+Nor is a target map a ligand-wise ranking rule. Subtracting a ligand row mean is
+exactly order invariant:
+\begin{equation}
+(X_{ij}-\bar X_{i\cdot})-(X_{ik}-\bar X_{i\cdot})=X_{ij}-X_{ik}.
+\label{eq:ranking}
+\end{equation}
+Equation~\ref{eq:ranking} shows that only a target-dependent operation, such as unequal target scaling, can alter
+that order, in which case it defines a new score rule requiring task-level
+validation. This algebraic boundary prevents the increase in residual dimension
+from being read as evidence of improved target fishing.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/public_core/fig4_experimental_boundary.pdf}
+\caption{Experimental-map reproducibility, assay-value-blind panel transfer,
+and the docking--experiment boundary on 21 fixed kinase targets. (a)
+Two-way-centred experimental edge-map agreement across 2,000 disjoint halves of
+DAVIS, PKIS2 and the Anastassiadis HotSpot panel. DAVIS and PKIS2 keep Butina
+clusters within a half; HotSpot uses ligand rows. (b) Signed co-response
+coverage-loss contrasts over $k$. Solid circles are the conservative best-raw
+minus worst-residual contrast over every numerically optimal Vina panel;
+positive values favour the residual selector. Dotted crosses compare the
+sequence-identity panel with the lexicographic residual panel. Vina panels were
+selected without assay values after excluding all plausible evaluation-compound
+connectivities from the calibration support. (c) Score- and residual-map
+agreement between Vina and experiment on 56 exact DAVIS and 154 exact PKIS2
+Standard InChIKey matches, compared with de-leaked broad-support Vina maps;
+bars are 2.5--97.5\% ranges across 2,000 Butina-cluster bootstraps. (d) Paired
+raw and row-centred edge-map agreement across DAVIS--PKIS2, DAVIS--HotSpot and
+PKIS2--HotSpot assay pairs. All comparisons are conditional on the fixed target
+panel; cross-panel experimental agreement is not an attenuation-corrected noise
+ceiling.}
+\label{fig:experimental}
+\end{figure}
+
+\section{Discussion}
+
+The main result is a distinction between two kinds of apparent redundancy. Raw
+Vina matrices were dominated by a shared ligand axis and were readily
+reconstructed from a small target subset. After that axis was removed, the
+remaining target-relative surface had higher effective dimension and markedly
+lower held-out reconstruction accuracy. The increase in PR therefore has a
+concrete meaning: a reduced panel that preserves general score favourability can
+still discard much of the variation that distinguishes targets from one
+another. It does not mean that the residual is biologically correct, that
+centring improves docking, or that every target must be measured.
+
+The novelty is consequently not PR, PCA or two-way centring. PR is an exact
+re-expression of mean squared target correlation (Eq.~\ref{eq:pr}), and docking
+profile normalization predates this study
+\cite{fukunishi2005,fukunishi2006,sepresa2009,luo2017}. The contribution is a
+transformation-matched audit that connects spectrum, ligand support and a
+declared panel-design loss. It shows why map recovery, score reconstruction and
+experimental panel coverage must be tested separately rather than inferred from
+one low-dimensional summary.
+
+That separation changes the interpretation of computational savings. A few
+hundred source-library ligands recovered global map ordering and a medoid
+coverage objective, but the stronger out-of-group test showed that eight targets
+explained 70--90\% of raw omitted-target variance and only 22--28\% of residual
+variance. Direct residual fitting produced the same result, excluding a
+prediction-then-centring artifact. Designed residual panels also outperformed
+three fixed random panels on common omitted targets in every fold. These are
+score-surface results on the tested ligand domains; they are not affinity
+prediction or permission to omit mandatory safety targets.
+
+The three experimental panels provide a different, bounded consequence.
+Row-centred co-response maps were more concordant than raw maps for every assay
+pair. Without using assay values, residual-map Vina panels had lower signed
+co-response coverage loss than raw-map panels in 14 of 15 assay--size cells,
+including a shared-label permutation result across DAVIS, PKIS2 and HotSpot;
+reselection after each single-target omission preserved a positive joint
+contrast in all 21 cases.
+This supports residual Vina maps as one panel-design signal on the fixed 21
+kinases. Sequence identity remained competitive, and exact-support
+Vina--experiment correlations were only moderate. The analysis therefore does
+not establish affinity calibration, target retrieval, compound ranking or the
+superiority of docking over sequence-based design.
+
+Ligand support remains part of every map claim. Residual maps changed across
+all seven examined descriptor domains, most strongly along the collinear
+molecular-weight, heavy-atom and accessible-surface family. Three matched nulls,
+including preservation of each residual row norm, showed that the residual
+concentration was not a consequence of the centring constraint alone. A
+size-conditioned null recovered much of the signed edge ordering but only part
+of the concentration gap. These post-hoc results identify support-dependent,
+non-independent score variation, not a biochemical mechanism.
+
+\begin{table}[htbp]
+\centering
+\caption{A decision-oriented audit for a dense ligand--target score matrix.}
+\label{tab:audit}
+\small
+\begin{tabular}{p{0.06\linewidth}p{0.31\linewidth}p{0.52\linewidth}}
+\toprule
+Step & Operation & Decision or boundary \\
+\midrule
+1 & Declare the score, receptor and ligand-support contract & Prevent maps from
+different populations or preprocessing rules being treated as the same object. \\
+2 & Inspect the raw spectrum and PC1 loadings & Quantify a shared score axis;
+do not interpret PR as algebraic rank or docking quality. \\
+3 & Remove additive main effects and compare with matched nulls & Test residual
+dependence beyond centring mechanics, without assigning biological meaning. \\
+4 & Re-estimate the map across relevant chemical domains & Detect a support
+change before transporting edges or clusters to an intended library. \\
+5 & Measure row-disjoint pilot recovery at candidate sample sizes & Choose the
+calibration size for the actual output of interest: global map, edge signs or a
+declared panel loss. \\
+6 & Reconstruct both raw and residual held-out score surfaces & Detect panels
+that preserve the shared ligand axis but lose target-relative variation. \\
+7 & Evaluate experimental panel utility without assay-value leakage & Keep
+computational coverage, experimental co-response and affinity prediction as
+separate claims. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Several limits determine how far these results can travel. Both large matrices
+use Vina-family scores and overlap by \SharedExactLigands{} exact molecular
+identities, \SharedConnectivityBlocks{} connectivity blocks,
+\SharedTargetIdentities{} mapped targets and \SharedReceptorStructures{}
+receptor structures; they are separately generated resources, not independent
+samples of all chemistry and proteins. Targets were fixed and all ranges are
+conditional on them. Pilot calibration remained within each source library.
+The three kinase panels share target identities and some compounds, use
+different assay formats, and are not independent biological replications.
+HotSpot inference used row rather than chemical-cluster split halves, although
+the panel-transfer result retained its sign in the reported cluster multiplier.
+Single-target deletion cannot exclude joint influence by a redundant kinase
+group.
+The sequence comparator used global identity and was not an exhaustive
+protein-panel design benchmark.
+
+Finally, the analysis begins with frozen published scores. It reruns the
+matrix-level transformations and comparisons but not receptor preparation,
+search-box selection, pose generation or upstream docking. It can therefore
+diagnose dependence, support sensitivity and compression in the released
+scores, but cannot adjudicate pose correctness, absolute affinity or docking
+quality.
+
+\section{Conclusions}
+
+In two large Vina-family matrices, a dominant ligand axis made raw scores appear
+far more compressible than the target-relative residual surface. Residual maps
+were support dependent, recoverable from modest source-library pilots and useful
+for choosing fixed kinase panels that more often covered signed experimental
+co-response structure than raw-map panels. Exact-support affinity agreement
+remained moderate and sequence-based panels remained competitive. The practical
+workflow is therefore bounded: report raw and residual spectra, test
+reconstruction on held-out chemical groups, select panels under a declared loss,
+and validate experimental uses separately. This distinguishes computational
+score compression from biological or affinity claims.
+
+\section*{Abbreviations}
+
+ARI, adjusted Rand index; AUC, area under the curve; GCV, generalized
+cross-validation; MIP, mixed-integer programming; MW, molecular weight; OAS,
+Oracle Approximating Shrinkage; PAM, Partitioning Around Medoids; PC1, first
+principal component; PR, participation ratio; QAP, quadratic assignment
+procedure; $R^2$, coefficient of determination; RMSE, root-mean-square error;
+SSE, sum of squared errors; SST, total sum of squares.
+
+\input{results/v4_declarations_draft.tex}
+
+\input{references_public.tex}
+
+\end{document}

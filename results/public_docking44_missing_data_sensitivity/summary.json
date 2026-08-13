@@ -1,0 +1,137 @@
+{
+  "analysis_status": "standalone_public_revision_sensitivity",
+  "chemistry": {
+    "effect_size_direction": "excluded incomplete rows minus complete rows",
+    "invalid_smiles_for_heavy_atom_calculation": 0,
+    "no_hypothesis_tests": true,
+    "rdkit_version": "2025.03.6"
+  },
+  "claim_boundary": "The analysis diagnoses sensitivity of one fixed Docking-44 Vina matrix to its observed missingness pattern. Equal-N controls separate unusual complete-case support from sample-size reduction descriptively, but are not a population randomization test because missingness was not randomized. Chemical effect sizes describe association with inclusion and do not identify a causal missingness mechanism. Zero residual completion is an additive-model sensitivity and does not recover unknown docking scores.",
+  "complete_row_identity_check": {
+    "interpretation": "these two surfaces are algebraically identical; their comparison verifies that the complete-case contrast is a support change, not an imputation change",
+    "maximum_absolute_score_difference_between_observed_complete_rows_and_primary_imputed_restricted_rows": 0.0
+  },
+  "data_dictionary": {
+    "equal_n_control_estimand": "distribution of residual PR across random ligand subsets having exactly the complete-case row count, drawn from the primary full processed surface",
+    "missingness": "a missing docking-score cell; mechanism is not assumed to be random",
+    "observational_unit": "one ligand row scored against 44 targets",
+    "primary_estimand": "target-correlation participation-ratio dimension of the two-way-centred target-mean-imputed surface"
+  },
+  "equal_n_random_support_control": {
+    "fraction_random_supports_at_or_below_complete_case": 1.0,
+    "interpretation": "descriptive equal-N support-selection diagnostic, not a population p-value; every random support is sampled from the primary mean-imputed full ligand set without replacement",
+    "interquartile_range": 0.10772482606184042,
+    "mean": 9.295143506845198,
+    "median": 9.2939524718749,
+    "median_absolute_deviation": 0.054287597557297396,
+    "n": 1000,
+    "observed_complete_case_minus_full_primary": 4.66728337227581,
+    "observed_complete_case_minus_random_mean": 4.675051808147066,
+    "observed_complete_case_minus_random_median": 4.676242843117365,
+    "observed_complete_case_residual_pr": 13.970195314992264,
+    "q025": 9.128065682551316,
+    "q10": 9.193108842331025,
+    "q25": 9.242915156232796,
+    "q75": 9.350639982294636,
+    "q90": 9.395691454954367,
+    "q975": 9.445165945541433,
+    "repetitions": 1000,
+    "rows_per_random_support": 9297,
+    "seed": 20260811,
+    "standard_deviation": 0.08034241742467343
+  },
+  "input": {
+    "path": "data/frozen/df_final_v4.csv.gz",
+    "sha256": "25436e49b9fc80421d8499ef289ed8ef00b4ab35b904c7d930fc377f493e1d51"
+  },
+  "matrix": {
+    "complete_row_index_sha256": "97f6aa16119648c1fb1265b403efb91e09d6304023b9ce132b19afed78b945a6",
+    "complete_rows": 9297,
+    "excluded_row_index_sha256": "b53f9a058469a2d63aa98518ef7bab030bdcc2b7d0e93cb5d8e84944135bccc8",
+    "missing_cell_fraction": 0.014657483059190434,
+    "missing_cells": 8159,
+    "positive_cells_clipped_to_zero": 0,
+    "rows": 12651,
+    "rows_with_any_missing_score": 3354,
+    "targets": 44,
+    "total_cells": 556644
+  },
+  "observed_cell_wls_diagnostics": {
+    "converged": true,
+    "iterations": 7,
+    "maximum_absolute_observed_row_residual_mean": 6.0442606991802126e-15,
+    "maximum_absolute_observed_target_residual_mean": 3.1549413918113375e-16,
+    "maximum_target_effect_update": 2.1760371282653068e-14,
+    "objective": "unweighted least squares over observed cells",
+    "tolerance": 1e-12,
+    "unobserved_residual_completion": 0.0
+  },
+  "producer": "analysis/public_docking44_missing_data_sensitivity.py",
+  "schema_version": "1.0.0",
+  "spectral_sensitivity": {
+    "complete_rows_observed_scores": {
+      "interpretation": "complete-case support; no imputation is applied",
+      "ligands": 9297,
+      "observed_cells_used": 409068,
+      "raw_pr": 1.319779601339926,
+      "residual_entropy_rank": 25.447865114874443,
+      "residual_mean_absolute_correlation": 0.1773762842040975,
+      "residual_pc1_fraction": 0.20840262130325699,
+      "residual_pcs_for_90pct": 31,
+      "residual_pr": 13.970195314992264,
+      "residual_pr_difference_vs_primary": 4.66728337227581,
+      "residual_pr_ratio_vs_primary": 1.501701338356747
+    },
+    "observed_cell_wls_zero_residual_completion": {
+      "interpretation": "additive effects fitted only on observed cells; missing residuals are completed by their fitted additive expectation of zero",
+      "ligands": 12651,
+      "observed_cells_used": 548485,
+      "residual_entropy_rank": 20.47172662931123,
+      "residual_mean_absolute_correlation": 0.238995848378383,
+      "residual_pc1_fraction": 0.26676732018934296,
+      "residual_pcs_for_90pct": 29,
+      "residual_pr": 9.662954036597483,
+      "residual_pr_difference_vs_primary": 0.36004209388102915,
+      "residual_pr_ratio_vs_primary": 1.0387020855510642
+    },
+    "target_mean_imputation_full_support": {
+      "interpretation": "primary full-support preprocessing",
+      "ligands": 12651,
+      "observed_cells_used": 556644,
+      "raw_pr": 1.834045574797235,
+      "residual_entropy_rank": 19.990770268410273,
+      "residual_mean_absolute_correlation": 0.24572754029801525,
+      "residual_pc1_fraction": 0.27411075084466585,
+      "residual_pcs_for_90pct": 29,
+      "residual_pr": 9.302911942716454,
+      "residual_pr_difference_vs_primary": 0.0,
+      "residual_pr_ratio_vs_primary": 1.0
+    },
+    "target_mean_imputed_restricted_to_complete_rows": {
+      "interpretation": "primary processed matrix restricted to exactly the complete-case rows",
+      "ligands": 9297,
+      "observed_cells_used": 409068,
+      "raw_pr": 1.319779601339926,
+      "residual_entropy_rank": 25.447865114874443,
+      "residual_mean_absolute_correlation": 0.1773762842040975,
+      "residual_pc1_fraction": 0.20840262130325699,
+      "residual_pcs_for_90pct": 31,
+      "residual_pr": 13.970195314992264,
+      "residual_pr_difference_vs_primary": 4.66728337227581,
+      "residual_pr_ratio_vs_primary": 1.501701338356747
+    },
+    "target_median_imputation_full_support": {
+      "interpretation": "same full support; changes only imputed values",
+      "ligands": 12651,
+      "observed_cells_used": 556644,
+      "raw_pr": 1.8354428459001955,
+      "residual_entropy_rank": 20.27780992510879,
+      "residual_mean_absolute_correlation": 0.24167173305322104,
+      "residual_pc1_fraction": 0.26904251981153204,
+      "residual_pcs_for_90pct": 29,
+      "residual_pr": 9.527862666479459,
+      "residual_pr_difference_vs_primary": 0.22495072376300485,
+      "residual_pr_ratio_vs_primary": 1.024180678603448
+    }
+  }
+}

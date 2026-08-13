@@ -1,0 +1,13 @@
+{
+  "README.md": "27966e3c638994bec8ad13ab361e5149971c19441058edcacf8ff58b9e1ebf3f",
+  "cross_panel_overlap.csv": "e4fd3bbb1eb3ad58932e79673ed5b1195b2fcd062b96232f170b6888d26f24af",
+  "cross_panel_overlap_sensitivity.csv": "fe1d8aee71d16767e75a39ef20a422d022c6693d0827206374ba8d021c95102e",
+  "cross_panel_robustness.csv": "2a95604b9cc34cc0b87c8f1e5a8a165558df281f08a8d9af9204e182c070a99e",
+  "davis_censoring_edge_audit.csv": "25d0b899466148b25534a3a500672415bde1567f6c29675f1139b78da8b02555",
+  "exact_support_control_replicates.csv": "b375f2840f488ab1232e174e6ea609045fbff6d1a45f644e618e46da60c932de",
+  "exact_support_control_summary.csv": "95e019cfc882db603e7ead88bcf8f67923536d479736f85f736cb9c73b5ea48e",
+  "panel8_cluster_bootstrap.csv": "2fb54bb5837a64a50628fa8da9ae15cf9bbfd767ef33d3f298c7154b17633498",
+  "panel8_coverage.csv": "52e1b7ee9cb49d72be45b9017ae43f894ad13920e664512a82a34259f538c413",
+  "panel8_selections.csv": "aeadf5c2a16454fee758987a9de0594a9888f6cebcd121988d65d122744f6e7b",
+  "summary.json": "bbf3d84c7796a8088cb47611284b6d03225e7a5e411b0f0f527c127e6c20a668"
+}

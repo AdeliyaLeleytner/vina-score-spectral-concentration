@@ -2,9 +2,12 @@
 """Freeze receptor-domain sequences from the exact DOCKSTRING 0.3.4 wheel.
 
 The source wheel is downloaded from PyPI, verified byte-for-byte, and is not copied
-into the repository.  Sequences are parsed from the official AutoDockTools PDBQT
-receptors.  Only the 20 canonical amino-acid residue names are translated; every
-other ATOM residue is represented as ``X`` and recorded in the manifest.
+into the repository. Sequences are parsed from the official AutoDockTools PDBQT
+receptors. A residue must contain the protein-backbone atoms N, CA and C; this
+excludes crystallographic ligands, metals and cofactors that also occur as ATOM
+records. Common protonation-state and covalent-modification aliases are translated
+to their parent amino acid. Any other backbone-containing residue is represented as
+``X`` and recorded in the manifest.
 """
 
 from __future__ import annotations
@@ -79,31 +82,82 @@ THREE_TO_ONE = {
     "VAL": "V",
 }
 
+# AutoDockTools/Amber residue aliases present in the exact receptor files.  The
+# mapping is deliberately explicit rather than inferred from the first letter.
+# It can therefore fail visibly if a future wheel introduces a new residue name.
+MODIFIED_TO_ONE = {
+    "HID": "H",
+    "HIE": "H",
+    "HIP": "H",
+    "HIZ": "H",
+    "TPO": "T",
+    "PTR": "Y",
+    "CYM": "C",
+    "CYT": "C",
+    "GLV": "E",
+    "LEV": "L",
+    "MEU": "M",
+    # Additional aliases in the broader 58-target DOCKSTRING receptor set.
+    "CYX": "C",
+    "GLZ": "E",
+    "GLH": "E",
+    "GLO": "E",
+    "DID": "D",
+    "DIC": "D",
+    "TYS": "Y",
+}
+BACKBONE_ATOMS = frozenset({"N", "CA", "C"})
+
 
 def sha256_bytes(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
 
 
-def parse_pdbqt_sequence(content: bytes) -> tuple[str, list[str]]:
-    """Parse one residue per PDB chain/residue/insertion-code key, in file order."""
-    residues: list[str] = []
-    noncanonical: list[str] = []
-    seen: set[tuple[str, str, str]] = set()
+def parse_pdbqt_sequence(
+    content: bytes,
+) -> tuple[str, list[str], list[str], list[str]]:
+    """Parse protein residues in file order and audit every noncanonical record.
+
+    Returns the translated sequence, modified amino-acid aliases that were
+    normalized, unknown backbone-containing residues represented as ``X``, and
+    non-protein ATOM residues excluded because they lack a complete backbone.
+    """
+    ordered_keys: list[tuple[str, str, str, str]] = []
+    residue_atoms: dict[tuple[str, str, str, str], set[str]] = {}
     for line in content.decode("ascii").splitlines():
         if not line.startswith("ATOM"):
             continue
-        key = (line[21:22], line[22:26], line[26:27])
-        if key in seen:
+        residue = line[17:20].strip().upper()
+        # Some PDBQT resources blank the chain identifier and reuse a residue
+        # number for a protein residue and a non-protein ATOM record. Including
+        # the residue name prevents those records from being merged.
+        key = (line[21:22], line[22:26], line[26:27], residue)
+        atom = line[12:16].strip().upper()
+        if key not in residue_atoms:
+            ordered_keys.append(key)
+            residue_atoms[key] = set()
+        residue_atoms[key].add(atom)
+
+    residues: list[str] = []
+    modified: list[str] = []
+    unknown_backbone: list[str] = []
+    excluded_nonprotein: list[str] = []
+    for key in ordered_keys:
+        residue = key[3]
+        if not BACKBONE_ATOMS.issubset(residue_atoms[key]):
+            excluded_nonprotein.append(residue)
             continue
-        seen.add(key)
-        residue = line[17:20].strip()
-        amino_acid = THREE_TO_ONE.get(residue, "X")
-        residues.append(amino_acid)
-        if amino_acid == "X":
-            noncanonical.append(residue)
+        if residue in THREE_TO_ONE:
+            residues.append(THREE_TO_ONE[residue])
+        elif residue in MODIFIED_TO_ONE:
+            residues.append(MODIFIED_TO_ONE[residue])
+            modified.append(residue)
+        else:
+            residues.append("X")
+            unknown_backbone.append(residue)
     if not residues:
-        raise ValueError("PDBQT contained no ATOM residues")
-    return "".join(residues), noncanonical
+        raise ValueError("PDBQT contained no protein-backbone residues")
+    return "".join(residues), modified, unknown_backbone, excluded_nonprotein
 
 
 def download_wheel() -> bytes:
@@ -118,20 +172,31 @@ def download_wheel() -> bytes:
 
 
 def freeze_sequences(
-    wheel: bytes, fasta_path: Path, manifest_path: Path
+    wheel: bytes,
+    fasta_path: Path,
+    manifest_path: Path,
+    targets: tuple[str, ...] = TARGETS,
 ) -> list[dict[str, str | int]]:
+    if not targets or len(set(targets)) != len(targets):
+        raise ValueError("receptor target list must be non-empty and unique")
     records: list[dict[str, str | int]] = []
     fasta_lines: list[str] = []
     with zipfile.ZipFile(io.BytesIO(wheel)) as archive:
-        for target in TARGETS:
+        for target in targets:
             member = f"dockstring/resources/targets/{target}_target.pdbqt"
             content = archive.read(member)
-            sequence, noncanonical = parse_pdbqt_sequence(content)
+            (
+                sequence,
+                modified,
+                unknown_backbone,
+                excluded_nonprotein,
+            ) = parse_pdbqt_sequence(content)
             fasta_lines.extend(
                 [
                     (
                         f">{target} source=dockstring-{DOCKSTRING_VERSION} "
-                        f"member={member} noncanonical_as_X=true"
+                        f"member={member} modified_to_parent=true "
+                        f"unknown_backbone_as_X=true nonprotein_ATOM_excluded=true"
                     ),
                     sequence,
                 ]
@@ -147,8 +212,18 @@ def freeze_sequences(
                     "source_pdbqt_sha256": sha256_bytes(content),
                     "sequence_length": len(sequence),
                     "sequence_sha256": sha256_bytes(sequence.encode("ascii")),
-                    "noncanonical_residue_count": len(noncanonical),
-                    "noncanonical_residue_names": ";".join(sorted(set(noncanonical))),
+                    "modified_residue_count": len(modified),
+                    "modified_residue_names": ";".join(sorted(set(modified))),
+                    "unknown_backbone_residue_count": len(unknown_backbone),
+                    "unknown_backbone_residue_names": ";".join(
+                        sorted(set(unknown_backbone))
+                    ),
+                    "excluded_nonprotein_atom_residue_count": len(
+                        excluded_nonprotein
+                    ),
+                    "excluded_nonprotein_atom_residue_names": ";".join(
+                        sorted(set(excluded_nonprotein))
+                    ),
                 }
             )
     fasta_path.parent.mkdir(parents=True, exist_ok=True)
